@@ -198,7 +198,7 @@ class ChangeCotizacion(QtWidgets.QDialog):
         self.setWindowTitle("Modificar cotización")
         self.parent = parent
         self.setModal(True)
-        
+
         self.layout = QtWidgets.QVBoxLayout()
         self.setLayout(self.layout)
 
@@ -254,10 +254,6 @@ class ChangeCotizacion(QtWidgets.QDialog):
     def accept2(self):
         self.parent.loadCotizacion(self.cotizacion_widget.text())
         self.accept()
-
-    def closeEvent(self, event):
-        self.is_closed = True
-        event.accept()
 
 class CorreoDialog(QtWidgets.QDialog):
     def __init__(self, args, target = correo.sendCotizacion):
@@ -509,7 +505,6 @@ class CotizacionWindow(QtWidgets.QMainWindow):
                                 widget.setText(val)
                                 widget.blockSignals(False)
 
-
     def changeInterno(self, state):
         state = bool(state)
         self.responsable_widget.setEnabled(state)
@@ -670,6 +665,10 @@ class CotizacionWindow(QtWidgets.QMainWindow):
         msg.setStandardButtons(QtWidgets.QMessageBox.Ok)
         msg.exec_()
 
+    def closeEvent(self, event):
+        self.is_closed = True
+        event.accept()
+
 class NoNotificacion(QtWidgets.QMessageBox):
     def __init__(self):
         super(NoNotificacion, self).__init__()
@@ -689,6 +688,7 @@ class DescontarWindow(QtWidgets.QMainWindow):
 
         wid = QtWidgets.QWidget(self)
         self.setCentralWidget(wid)
+        self.is_closed = True
 
         self.layout = QtWidgets.QVBoxLayout(wid)
         self.form = QtWidgets.QFrame()
@@ -844,6 +844,10 @@ class DescontarWindow(QtWidgets.QMainWindow):
         msg.setStandardButtons(QtWidgets.QMessageBox.Ok)
         msg.exec_()
 
+    def closeEvent(self, event):
+        self.is_closed = True
+        event.accept()
+
 class PandasModel(QtCore.QAbstractTableModel):
     def __init__(self, data, parent = None):
         QtCore.QAbstractTableModel.__init__(self, parent)
@@ -926,7 +930,7 @@ class BuscarWindow(QtWidgets.QMainWindow):
 
         wid = QtWidgets.QWidget(self)
         self.setCentralWidget(wid)
-
+        self.is_closed = True
         self.layout = QtWidgets.QVBoxLayout(wid)
 
         form = QtWidgets.QFrame()
@@ -1026,6 +1030,10 @@ class BuscarWindow(QtWidgets.QMainWindow):
                 os.rename(old, new)
             except Exception as e: pass
 
+    def closeEvent(self, event):
+        self.is_closed = True
+        event.accept()
+
 class MainWindow(QtWidgets.QMainWindow):
     def __init__(self, parent = None):
         super(QtWidgets.QMainWindow, self).__init__(parent)
@@ -1077,24 +1085,39 @@ class MainWindow(QtWidgets.QMainWindow):
                   (resolution.height() / 2) - (self.frameSize().height() / 2))
 
     def cotizacionHandler(self):
+        self.cotizacion_window.is_closed = False
         self.cotizacion_window.setWindowState(self.cotizacion_window.windowState() & ~QtCore.Qt.WindowMinimized | QtCore.Qt.WindowActive)
         self.cotizacion_window.activateWindow()
         self.cotizacion_window.show()
 
     def descontarHandler(self):
+        self.descontar_window.is_closed = False
         self.descontar_window.setWindowState(self.descontar_window.windowState() & ~QtCore.Qt.WindowMinimized | QtCore.Qt.WindowActive)
         self.descontar_window.activateWindow()
         self.descontar_window.show()
 
     def requestHandler(self):
+        self.request_window.is_closed = False
         self.request_window.setWindowState(self.request_window.windowState() & ~QtCore.Qt.WindowMinimized | QtCore.Qt.WindowActive)
         self.request_window.activateWindow()
         self.request_window.show()
 
     def buscarHandler(self):
+        self.buscar_window.is_closed = False
         self.buscar_window.setWindowState(self.buscar_window.windowState() & ~QtCore.Qt.WindowMinimized | QtCore.Qt.WindowActive)
         self.buscar_window.activateWindow()
         self.buscar_window.show()
+
+    def closeEvent(self, event):
+        cot = self.cotizacion_window.is_closed
+        des = self.descontar_window.is_closed
+        req = self.request_window.is_closed
+        bus = self.buscar_window.is_closed
+        temp = sum([cot, des, req, bus])
+        if temp == 4:
+            event.accept()
+        else:
+            event.ignore()
 
 class RequestWindow(QtWidgets.QMainWindow):
     def __init__(self, parent = None):
@@ -1103,6 +1126,7 @@ class RequestWindow(QtWidgets.QMainWindow):
 
         wid = QtWidgets.QWidget(self)
         self.setCentralWidget(wid)
+        self.is_closed = True
 
         self.layout = QtWidgets.QHBoxLayout(wid)
 
@@ -1142,6 +1166,11 @@ class RequestWindow(QtWidgets.QMainWindow):
         msg.setWindowTitle("Error")
         msg.setStandardButtons(QtWidgets.QMessageBox.Ok)
         msg.exec_()
+
+    def closeEvent(self, event):
+        self.is_closed = True
+        event.accept()
+
 
 if __name__ == '__main__':
     app = QtWidgets.QApplication(sys.argv)

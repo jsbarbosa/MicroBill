@@ -3,17 +3,18 @@
 block_cipher = None
 
 a = Analysis(['main.py'],
-             pathex=['C:\\Users\\Rutherford\\Documents\\MonitoriaMicroscopia\\Cotizaciones'],
+             #pathex=['C:\\Users\\Rutherford\\Documents\\MonitoriaMicroscopia\\Cotizaciones'],
+             pathex=[],
              binaries=[],
              datas=[],
              hiddenimports=[],
              hookspath=[],
              runtime_hooks=[],
-             excludes=[],
+             excludes=["config", "login"],
              win_no_prefer_redirects=False,
              win_private_assemblies=False,
              cipher=block_cipher)
-             
+
 pyz = PYZ(a.pure, a.zipped_data,
              cipher=block_cipher)
 

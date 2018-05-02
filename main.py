@@ -1,17 +1,5 @@
-import os
 import sys
-import config
-import constants
-from time import sleep
-from threading import Thread
 from PyQt5 import QtCore, QtGui, QtWidgets
-
-import correo
-from windows import MainWindow
-
-def threadedCorreo():
-    try: correo.initCorreo()
-    except Exception as e: print(e)
 
 app = QtWidgets.QApplication(sys.argv)
 
@@ -23,9 +11,20 @@ splash = QtWidgets.QSplashScreen(splash_pix, QtCore.Qt.WindowStaysOnTopHint)
 splash.show()
 app.processEvents()
 
-main = MainWindow()
+import os
+import correo
+import config
+import constants
+from time import sleep
+from threading import Thread
+from windows import MainWindow
 
-sleep(2)
+def threadedCorreo():
+    try: correo.initCorreo()
+    except Exception as e: print(e)
+
+main = MainWindow()
+# sleep(2)
 
 thread = Thread(target = threadedCorreo)
 thread.setDaemon(True)
