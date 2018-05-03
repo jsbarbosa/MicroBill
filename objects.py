@@ -152,7 +152,7 @@ class Cotizacion(object):
 class Usuario(object):
     def __init__(self, nombre = None, correo = None, institucion = None, documento = None,
                  direccion = None, ciudad = None, telefono = None, interno = None, responsable = None,
-                 proyecto = None, codigo = None):
+                 proyecto = None, codigo = None, pago = None):
         self.nombre = nombre
         self.correo = correo
         self.institucion = institucion
@@ -164,6 +164,7 @@ class Usuario(object):
         self.responsable = responsable
         self.proyecto = proyecto
         self.codigo = codigo
+        self.pago = pago
 
     def getNombre(self):
         return self.nombre
@@ -198,6 +199,9 @@ class Usuario(object):
     def getCodigo(self):
         return self.codigo
 
+    def getPago(self):
+        return self.pago
+
     def setNombre(self, nombre):
         self.nombre = nombre
 
@@ -230,6 +234,9 @@ class Usuario(object):
 
     def setCodigo(self, codigo):
         self.codigo = codigo
+
+    def setPago(self, pago):
+        self.pago = pago
 
     def save(self):
         global CLIENTES_DATAFRAME

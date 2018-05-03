@@ -256,7 +256,7 @@ class ChangeCotizacion(QtWidgets.QDialog):
         self.accept()
 
 class CorreoDialog(QtWidgets.QDialog):
-    def __init__(self, args, target = correo.sendCotizacion):
+    def __init__(self, args, target):
         super(CorreoDialog, self).__init__()
         self.setWindowTitle("Enviando correo...")
 
@@ -308,6 +308,30 @@ class CorreoDialog(QtWidgets.QDialog):
         self.thread.start()
         self.timeout.start()
 
+class CodigosDialog(QtWidgets.QDialog):
+    def __init__(self):
+        super(CodigosDialog, self).__init__()
+        self.setWindowTitle("Ver códigos")
+        self.layout = QtWidgets.QVBoxLayout()
+        self.setLayout(self.layout)
+
+        self.table = QtWidgets.QTableView()
+        self.layout.addWidget(self.table)
+
+    def setModel(self, df):
+        self.table.setModel(PandasModel(df, checkbox = False))
+
+        self.table.setSizePolicy(QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Minimum)
+
+        self.table.setVerticalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOff)
+        self.table.setHorizontalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOff)
+
+        self.table.resizeColumnsToContents()
+        self.table.setFixedSize(self.table.horizontalHeader().length() + self.table.verticalHeader().width(),
+                                self.table.verticalHeader().length() + self.table.horizontalHeader().height())
+
+        self.resize(self.table.sizeHint())
+
 class CotizacionWindow(QtWidgets.QMainWindow):
     IGNORE = ["proyecto", "codigo"]
     FIELDS = ["Nombre", "Correo", "Teléfono", "Institución", "Documento", "Dirección", "Ciudad", "Interno", "Responsable", "Proyecto", "Código", "Muestra"]
@@ -326,6 +350,7 @@ class CotizacionWindow(QtWidgets.QMainWindow):
         self.resize(700, 570)
 
         self.is_closed = True
+        self.ver_dialog = CodigosDialog()
         self.verticalLayout = QtWidgets.QVBoxLayout(wid)
 
         self.verticalLayout.setContentsMargins(11, 11, 11, 11)
@@ -382,6 +407,10 @@ class CotizacionWindow(QtWidgets.QMainWindow):
         self.equipo_widget = QtWidgets.QComboBox()
         self.equipo_widget.addItems(config.EQUIPOS)
 
+        end_label = QtWidgets.QLabel("Documento final")
+        self.pago_widget = QtWidgets.QComboBox()
+        self.pago_widget.addItems(constants.DOCUMENTOS_FINALES)
+
         self.form_frame_layout.addWidget(nombre_label, 0, 0)
         self.form_frame_layout.addWidget(self.nombre_widget, 0, 1)
         self.form_frame_layout.addWidget(correo_label, 0, 2)
@@ -415,12 +444,16 @@ class CotizacionWindow(QtWidgets.QMainWindow):
         self.form_frame_layout.addWidget(equipo_label, 6, 2)
         self.form_frame_layout.addWidget(self.equipo_widget, 6, 3)
 
+        self.form_frame_layout.addWidget(end_label, 7, 2)
+        self.form_frame_layout.addWidget(self.pago_widget, 7, 3)
+
         self.table = Table(self)
 
         self.button_frame_layout = QtWidgets.QHBoxLayout(self.button_frame)
         self.notificar_widget = QtWidgets.QCheckBox()
         self.notificar_widget.setCheckState(2)
         notificar = QtWidgets.QLabel("Notificar")
+        self.view_button = QtWidgets.QPushButton("Ver códigos")
         self.guardar_button = QtWidgets.QPushButton("Guardar")
         self.limpiar_button = QtWidgets.QPushButton("Limpiar")
 
@@ -428,6 +461,7 @@ class CotizacionWindow(QtWidgets.QMainWindow):
         self.button_frame_layout.addWidget(notificar)
         self.button_frame_layout.addWidget(self.guardar_button)
         self.button_frame_layout.addWidget(self.limpiar_button)
+        self.button_frame_layout.addWidget(self.view_button)
 
         self.total_frame_layout = QtWidgets.QHBoxLayout(self.total_frame)
         total_label = QtWidgets.QLabel("Total:")
@@ -460,6 +494,7 @@ class CotizacionWindow(QtWidgets.QMainWindow):
         self.guardar_button.clicked.connect(self.guardar)
         self.numero_cotizacion.clicked.connect(self.numeroCotizacion)
         self.equipo_widget.currentIndexChanged.connect(self.changeEquipo)
+        self.view_button.clicked.connect(self.verCodigos)
 
         self.interno_widget.setChecked(2)
 
@@ -516,6 +551,7 @@ class CotizacionWindow(QtWidgets.QMainWindow):
         self.table.clean()
         self.cotizacion.setServicios([])
         self.setLastCotizacion()
+        self.ver_dialog.setModel(eval("constants.%s"%self.getEquipo()))
 
     def limpiar(self):
         self.table.clean()
@@ -525,8 +561,14 @@ class CotizacionWindow(QtWidgets.QMainWindow):
             widget.setText("")
             widget.blockSignals(False)
         self.interno_widget.setCheckState(2)
+        self.pago_widget.setCurrentIndex(0)
         self.cotizacion.setServicios([])
         self.autocompletar_widget.setChecked(True)
+
+    def verCodigos(self):
+        df = eval("constants.%s"%self.getEquipo())
+        self.ver_dialog.setModel(df)
+        self.ver_dialog.show()
 
     def numeroCotizacion(self):
         self.dialog = ChangeCotizacion(self)
@@ -537,13 +579,31 @@ class CotizacionWindow(QtWidgets.QMainWindow):
         if self.notificar_widget.isChecked():
             to = self.cotizacion.getUsuario().getCorreo()
             file_name = self.cotizacion.getNumero()
-            self.dialog = CorreoDialog((to, file_name))
+            pago = self.pago_widget.currentText()
+            if pago == "Transferencia interna":
+                self.dialog = CorreoDialog((to, file_name), target = correo.sendCotizacionTransferencia)
+            elif pago == "Factura":
+                self.dialog = CorreoDialog((to, file_name), target = correo.sendCotizacionFactura)
+            elif pago == "Recibo":
+                self.dialog = CorreoDialog((to, file_name), target = correo.sendCotizacionRecibo)
+            else: print("ERROR, not implemented")
             self.dialog.start()
             self.dialog.exec_()
             if self.dialog.exception != None:
                 raise(self.dialog.exception)
         else:
             NoNotificacion().exec_()
+
+    def confirmGuardar(self):
+        msg = QtWidgets.QMessageBox()
+        msg.setIcon(QtWidgets.QMessageBox.Information)
+        msg.setText("¿Está seguro que desea guardar esta cotización?.\nVerifique los datos.")
+        msg.setWindowTitle("Confirmar")
+        msg.setStandardButtons(QtWidgets.QMessageBox.Save | QtWidgets.QMessageBox.Cancel)
+        ans = msg.exec_()
+        if ans == QtWidgets.QMessageBox.Save:
+            return True
+        return False
 
     def guardar(self):
         try:
@@ -560,19 +620,18 @@ class CotizacionWindow(QtWidgets.QMainWindow):
                     else: raise(Exception("Existen campos sin llenar en la información del usuario."))
                 dic[key] = value
             del dic["muestra"]
-            usuario = objects.Usuario(**dic)
-            self.cotizacion.setUsuario(usuario)
-            self.cotizacion.setMuestra(self.muestra_widget.text())
-            if len(self.getServicios()) == 0:
-                raise(Exception("No existen servicios cotizados."))
-            self.cotizacion.save()
-            self.updateAutoCompletar()
-
-            self.sendCorreo()
-
-            self.limpiar()
-
-            self.setLastCotizacion()
+            dic["pago"] = self.pago_widget.currentText()
+            if self.confirmGuardar():
+                usuario = objects.Usuario(**dic)
+                self.cotizacion.setUsuario(usuario)
+                self.cotizacion.setMuestra(self.muestra_widget.text())
+                if len(self.getServicios()) == 0:
+                    raise(Exception("No existen servicios cotizados."))
+                self.cotizacion.save()
+                self.updateAutoCompletar()
+                self.sendCorreo()
+                self.limpiar()
+                self.setLastCotizacion()
 
         except Exception as e:
             self.errorWindow(e)
@@ -617,6 +676,7 @@ class CotizacionWindow(QtWidgets.QMainWindow):
                     except: pass
             if user.getInterno() == "Interno": self.interno_widget.setCheckState(2)
             else: self.interno_widget.setCheckState(0)
+            self.pago_widget.setCurrentText(user.getPago())
             self.muestra_widget.setText(self.cotizacion.getMuestra())
             self.numero_cotizacion.setText(self.cotizacion.getNumero())
             self.setTotal()
@@ -849,24 +909,28 @@ class DescontarWindow(QtWidgets.QMainWindow):
         event.accept()
 
 class PandasModel(QtCore.QAbstractTableModel):
-    def __init__(self, data, parent = None):
+    def __init__(self, data, parent = None, checkbox = True):
         QtCore.QAbstractTableModel.__init__(self, parent)
         self.dataframe = data
         self._data = data.values
+        self.checkbox = checkbox
 
-        temp = []
-        for i in range(self._data.shape[0]):
-            c = QtWidgets.QCheckBox()
-            c.setChecked(True)
-            temp.append(c)
+        if self.checkbox:
+            temp = []
+            for i in range(self._data.shape[0]):
+                c = QtWidgets.QCheckBox()
+                c.setChecked(True)
+                temp.append(c)
 
-        new = np.zeros((self._data.shape[0], self._data.shape[1] + 1), dtype = object)
-        new[:, 0] = temp
-        new[:, 1:] = self._data
+            new = np.zeros((self._data.shape[0], self._data.shape[1] + 1), dtype = object)
+            new[:, 0] = temp
+            new[:, 1:] = self._data
 
-        self._data = new
+            self._data = new
 
-        self.headerdata = ["Guardar"] + list(data.keys())
+            self.headerdata = ["Guardar"] + list(data.keys())
+        else:
+            self.headerdata = list(data.keys())
 
     def rowCount(self, parent=None):
         return self._data.shape[0]
@@ -877,7 +941,7 @@ class PandasModel(QtCore.QAbstractTableModel):
     def data(self, index, role = QtCore.Qt.DisplayRole):
         if not index.isValid():
             return None
-        if (index.column() == 0):
+        if (index.column() == 0 and self.checkbox):
             value = self._data[index.row(), index.column()].text()
         else:
             value = self._data[index.row(), index.column()]
@@ -886,7 +950,7 @@ class PandasModel(QtCore.QAbstractTableModel):
         elif role == QtCore.Qt.DisplayRole:
             return value
         elif role == QtCore.Qt.CheckStateRole:
-            if index.column() == 0:
+            if index.column() == 0 and self.checkbox:
                 if self._data[index.row(), index.column()].isChecked():
                     return QtCore.Qt.Checked
                 else:
@@ -895,7 +959,7 @@ class PandasModel(QtCore.QAbstractTableModel):
     def flags(self, index):
         if not index.isValid():
             return None
-        if index.column() == 0:
+        if index.column() == 0 and self.checkbox:
             return QtCore.Qt.ItemIsEnabled | QtCore.Qt.ItemIsSelectable | QtCore.Qt.ItemIsUserCheckable
         else:
             return QtCore.Qt.ItemIsEnabled | QtCore.Qt.ItemIsSelectable
@@ -1109,14 +1173,15 @@ class MainWindow(QtWidgets.QMainWindow):
         self.buscar_window.show()
 
     def closeEvent(self, event):
-        cot = self.cotizacion_window.is_closed
-        des = self.descontar_window.is_closed
-        req = self.request_window.is_closed
-        bus = self.buscar_window.is_closed
-        temp = sum([cot, des, req, bus])
-        if temp == 4:
+        windows = [self.cotizacion_window, self.descontar_window, self.request_window, self.buscar_window]
+        suma = sum([window.is_closed for window in windows])
+        if suma == 4:
             event.accept()
         else:
+            for window in windows:
+                if not window.is_closed:
+                    window.setWindowState(window.windowState() & ~QtCore.Qt.WindowMinimized | QtCore.Qt.WindowActive)
+                    window.activateWindow()
             event.ignore()
 
 class RequestWindow(QtWidgets.QMainWindow):
@@ -1170,7 +1235,6 @@ class RequestWindow(QtWidgets.QMainWindow):
     def closeEvent(self, event):
         self.is_closed = True
         event.accept()
-
 
 if __name__ == '__main__':
     app = QtWidgets.QApplication(sys.argv)

@@ -3,7 +3,9 @@ import smtplib
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 from email.mime.application import MIMEApplication
-from config import COTIZACION_MENSAJE, COTIZACION_SUBJECT, SERVER, PORT, REPORTE_MENSAJE, REPORTE_SUBJECT, REQUEST_SUBJECT, REQUEST_MENSAJE
+from config import SERVER, PORT, REPORTE_MENSAJE, REPORTE_SUBJECT, REQUEST_SUBJECT, REQUEST_MENSAJE
+from config import COTIZACION_MENSAJE_RECIBO, COTIZACION_MENSAJE_FACTURA, COTIZACION_MENSAJE_FACTURA
+from config import COTIZACION_SUBJECT_RECIBO, COTIZACION_SUBJECT_FACTURA, COTIZACION_SUBJECT_TRANSFERENCIA
 from login import *
 
 import constants
@@ -46,8 +48,14 @@ def sendEmail(to, subject, text, attachments = []):
         if CORREO != None:
             CORREO.sendmail(FROM, to, msg.as_string())
 
-def sendCotizacion(to, file_name):
-    sendEmail(to, COTIZACION_SUBJECT + " - %s"%file_name, COTIZACION_MENSAJE, [file_name])
+def sendCotizacionRecibo(to, file_name):
+    sendEmail(to, COTIZACION_SUBJECT_RECIBO + " - %s"%file_name, COTIZACION_MENSAJE_RECIBO, [file_name])
+
+def sendCotizacionTransferencia(to, file_name):
+    sendEmail(to, COTIZACION_SUBJECT_TRANSFERENCIA + " - %s"%file_name, COTIZACION_MENSAJE_TRANSFERENCIA, [file_name])
+
+def sendCotizacionFactura(to, file_name):
+    sendEmail(to, COTIZACION_SUBJECT_FACTURA + " - %s"%file_name, COTIZACION_MENSAJE_FACTURA, [file_name])
 
 def sendRegistro(to, file_name):
     sendEmail(to, REPORTE_SUBJECT + " - %s"%file_name, REPORTE_MENSAJE, [file_name + "_Reporte"])
