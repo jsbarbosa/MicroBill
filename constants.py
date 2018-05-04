@@ -16,7 +16,7 @@ EQUIPOS_KEYS = ['Código', 'Descripción', 'Interno', 'Externo']
 REGISTRO_KEYS = ['Cotización', 'Fecha', 'Nombre', 'Correo', 'Teléfono', 'Institución', 'Interno',
                   'Responsable', 'Muestra', 'Equipo', 'Valor']
 CLIENTES_KEYS = ['Nombre', 'Correo', 'Teléfono', 'Institución', 'Documento',
-                 'Dirección', 'Ciudad', 'Interno', 'Responsable', 'Proyecto', 'Codigo']
+                 'Dirección', 'Ciudad', 'Interno', 'Responsable', 'Proyecto', 'Código']
 
 DOCUMENTOS_FINALES = ["Transferencia interna", "Factura", "Recibo"]
 

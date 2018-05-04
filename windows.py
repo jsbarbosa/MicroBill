@@ -563,6 +563,7 @@ class CotizacionWindow(QtWidgets.QMainWindow):
         self.interno_widget.setCheckState(2)
         self.pago_widget.setCurrentIndex(0)
         self.cotizacion.setServicios([])
+        self.total_widget.setText("")
         self.autocompletar_widget.setChecked(True)
 
     def verCodigos(self):
