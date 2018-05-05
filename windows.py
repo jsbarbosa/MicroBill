@@ -1209,6 +1209,7 @@ class RequestWindow(QtWidgets.QMainWindow):
         hlayout1.addWidget(self.enviar_button)
         self.layout.addWidget(form1)
 
+        self.correo_widget.returnPressed.connect(self.sendCorreo)
         self.enviar_button.clicked.connect(self.sendCorreo)
 
     def sendCorreo(self):
@@ -1220,6 +1221,8 @@ class RequestWindow(QtWidgets.QMainWindow):
                 self.dialog.exec_()
                 if self.dialog.exception != None:
                     raise(self.dialog.exception)
+                else:
+                    self.close()
             else: raise(Exception("Correo no válido."))
         except Exception as e:
             self.errorWindow(e)
