@@ -59,7 +59,7 @@ class PDFBase():
 
         ptext = '<font size = 10>'
         ptext += "<b>%s</b>" % "Teléfono:"
-        ptext += "&nbsp %s" % usuario.getDocumento()
+        ptext += "&nbsp %s" % usuario.getTelefono()
 
         ptext += "&nbsp &nbsp &nbsp &nbsp <b>%s</b>" % "Dirección:"
         ptext += "&nbsp %s" % usuario.getDireccion()
