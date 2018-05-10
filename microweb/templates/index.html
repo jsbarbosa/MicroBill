@@ -1,0 +1,16 @@
+{% extends 'registration/base.html' %}
+
+{% block title %}Centro de Microscopía{% endblock %}
+
+{% block content %}
+<header>
+  <h1>Welcome page</h1>
+  {% if user.is_authenticated %}
+    Hi {{ user.username }}!
+    <a href="{% url 'logout' %}">logout</a>
+  {% else %}
+    <a href="{% url 'login' %}">login</a>
+  {% endif %}
+</header>
+<hr>
+{% endblock %}
