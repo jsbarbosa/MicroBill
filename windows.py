@@ -1099,25 +1099,28 @@ class BuscarWindow(QtWidgets.QMainWindow):
         self.table.setModel(model)
         self.table.resizeRowsToContents()
         self.table.resizeColumnsToContents()
+
+        self.bools = np.ones(objects.REGISTRO_DATAFRAME.shape[0], dtype = bool)
         # font = QtGui.QFont("Courier New", 8)
         # self.table.setFont(font)
 
         self.resize(800, 600)
 
     def getChanges(self, source):
-        bools = np.ones(objects.REGISTRO_DATAFRAME.shape[0], dtype = bool)
-
         for i in range(len(self.WIDGETS)):
             source = self.FIELDS[i]
             widget = self.WIDGETS[i]
             value = eval("self.%s_widget"%widget).text()
             if value != "":
                 pos = objects.REGISTRO_DATAFRAME[source].str.contains(value, case = False, na = False)
-                bools *= pos
+                self.bools *= pos
+        self.update()
 
+    def update(self):
+        if self.bools.shape[0] != objects.REGISTRO_DATAFRAME.shape[0]:
+            self.bools = np.ones(objects.REGISTRO_DATAFRAME.shape[0], dtype = bool)
         old = self.table.model().dataframe
-
-        df = objects.REGISTRO_DATAFRAME[bools]
+        df = objects.REGISTRO_DATAFRAME[self.bools]
         if not old.equals(df):
             model = PandasModel(df)
             self.table.setModel(model)
@@ -1133,6 +1136,11 @@ class BuscarWindow(QtWidgets.QMainWindow):
 
     def guardar(self):
         folder = QtWidgets.QFileDialog.getExistingDirectory(self, "Select Directory")
+        cwd = os.getcwd()
+        if cwd[0] == "\\":
+            pre = cwd.replace("\\\\", "").split("\\")[0]
+            f = "/".join(folder.split("/")[1:])
+            folder = "//" + pre + "/" + f
         model = self.table.model()
         pos = np.where(model.whereIsChecked())[0]
         cotizacion = objects.Cotizacion()
@@ -1193,6 +1201,7 @@ class MainWindow(QtWidgets.QMainWindow):
             objects.REGISTRO_DATAFRAME = reg
             self.cotizacion_window.setLastCotizacion()
             self.descontar_window.updateDataFrames()
+            self.buscar_window.update()
 
     def centerOnScreen(self):
         resolution = QtWidgets.QDesktopWidget().screenGeometry()

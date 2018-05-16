@@ -1,4 +1,4 @@
-EQUIPOS = ["MBE", "AFM", "Confocal"]
+#EQUIPOS = ["MBE", "AFM", "Confocal"]
 
 
 """
