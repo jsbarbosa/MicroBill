@@ -16,7 +16,6 @@ else: os.makedirs(constants.PDF_DIR)
 class PDFBase():
     def __init__(self, cotizacion = None, is_reporte = False):
         self.cotizacion = cotizacion
-
         if is_reporte:
             self.file_name = self.cotizacion.getNumero() + "_Reporte.pdf"
         else:
@@ -315,7 +314,6 @@ class PDFReporte(PDFBase):
         ptext = '<font size = 10> <b> %s </b></font>'%text
         self.story.append(Paragraph(ptext, self.styles["Center"]))
         self.story.append(Spacer(1, 6))
-
 
         t = Table(self.resumen, [200, 80, 80], 15, hAlign='CENTER')
 

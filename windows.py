@@ -788,6 +788,14 @@ class DescontarWindow(QtWidgets.QMainWindow):
 
         self.layout.addWidget(self.item_frame)
 
+        self.pago_frame = QtWidgets.QFrame()
+        self.pago_layout = QtWidgets.QGridLayout(self.pago_frame)
+        self.check_widget = None
+        self.check_label = None
+        self.referencia_widget = None
+
+        self.layout.addWidget(self.pago_frame)
+
         self.buttons_frame = QtWidgets.QFrame()
         self.buttons_layout = QtWidgets.QHBoxLayout(self.buttons_frame)
         self.guardar_button = QtWidgets.QPushButton("Guardar")
@@ -811,8 +819,8 @@ class DescontarWindow(QtWidgets.QMainWindow):
         self.floats_labels = []
         self.floats_spins = []
         self.cotizacion = objects.Cotizacion()
-        self.init_size = (400, 100)
-        self.resize(*self.init_size)
+        self.init_size = (400, 300)
+        self.setFixedSize(*self.init_size)
 
     def updateDataFrames(self):
         self.cotizacion_widget.update()
@@ -837,7 +845,11 @@ class DescontarWindow(QtWidgets.QMainWindow):
                     val = self.floats_spins[i].value()
                     servicio = servicios[i]
                     servicio.descontar(val)
+                if self.check_widget != None:
+                    if self.check_widget.isChecked:
+                        self.cotizacion.setPago(self.referencia_widget.text())
                 self.cotizacion.save(to_cotizacion = False)
+                self.cotizacion.toRegistro()
                 self.sendCorreo()
             self.clean()
         except Exception as e:
@@ -863,6 +875,7 @@ class DescontarWindow(QtWidgets.QMainWindow):
                 n = len(self.cotizacion.getServicios())
             except: n = 0
 
+            i = 0
             for (i, servicio) in enumerate(self.cotizacion.getServicios()):
                 cod = QtWidgets.QLabel(servicio.getCodigo())
                 dec = QtWidgets.QLabel(servicio.getDescripcion())
@@ -884,6 +897,25 @@ class DescontarWindow(QtWidgets.QMainWindow):
                 self.floats_spins.append(spin)
                 self.floats_labels.append(total)
 
+            if i > 0:
+                self.check_widget = QtWidgets.QCheckBox("Aplicar pago")
+                self.check_label = QtWidgets.QLabel("Referencia:")
+                self.referencia_widget = QtWidgets.QLineEdit()
+
+                self.pago_layout.addWidget(self.check_widget, 0, 0)
+                self.pago_layout.addWidget(self.check_label, 1, 0)
+                self.pago_layout.addWidget(self.referencia_widget, 1, 1)
+
+                self.check_widget.stateChanged.connect(self.checkHandler)
+
+                self.referencia_widget.setText(self.cotizacion.getReferenciaPago())
+                self.check_widget.setChecked(self.cotizacion.isPago())
+                self.checkHandler(self.cotizacion.isPago())
+
+                h = self.init_size[1]
+                h += 18*(len(self.cotizacion.getServicios()) + 2)
+                self.setFixedHeight(h)
+
     def cleanWidgets(self):
         for item in self.floats_labels:
             self.item_layout.removeWidget(item)
@@ -891,10 +923,28 @@ class DescontarWindow(QtWidgets.QMainWindow):
         for item in self.floats_spins:
             self.item_layout.removeWidget(item)
             item.deleteLater()
+        if self.check_widget != None:
+            self.pago_layout.removeWidget(self.check_widget)
+            self.pago_layout.removeWidget(self.check_label)
+            self.pago_layout.removeWidget(self.referencia_widget)
+            self.check_widget.deleteLater()
+            self.check_label.deleteLater()
+            self.referencia_widget.deleteLater()
+
+            self.check_widget = None
+            self.check_label = None
+            self.referencia_widget = None
+
         self.floats_labels = []
         self.floats_spins = []
         self.cotizacion = objects.Cotizacion()
-        self.resize(*self.init_size)
+        self.setFixedSize(*self.init_size)
+
+    def checkHandler(self, state):
+        if state: self.referencia_widget.setEnabled(True)
+        else:
+            self.referencia_widget.setText("")
+            self.referencia_widget.setEnabled(False)
 
     def errorWindow(self, exception):
         error_text = str(exception)
@@ -1049,8 +1099,8 @@ class BuscarWindow(QtWidgets.QMainWindow):
         self.table.setModel(model)
         self.table.resizeRowsToContents()
         self.table.resizeColumnsToContents()
-        font = QtGui.QFont("Courier New", 8)
-        self.table.setFont(font)
+        # font = QtGui.QFont("Courier New", 8)
+        # self.table.setFont(font)
 
         self.resize(800, 600)
 

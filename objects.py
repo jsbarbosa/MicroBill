@@ -24,6 +24,8 @@ class Cotizacion(object):
         self.numero = numero
         self.usuario = usuario
         self.muestra = muestra
+        self.is_pago = False
+        self.referencia_pago = ""
         self.setServicios(servicios)
 
     def getUsuario(self):
@@ -51,6 +53,26 @@ class Cotizacion(object):
     def getMuestra(self):
         return self.muestra
 
+    def isPago(self):
+        return self.is_pago
+
+    def isPagoStr(self):
+        if self.isPago():
+            return "Pago"
+        else:
+            return "Pendiente"
+
+    def getReferenciaPago(self):
+        return self.referencia_pago
+
+    def getEstado(self):
+        total_cotizadas = 0
+        usadas = 0
+        for servicio in self.servicios:
+            usadas += servicio.getCantidad() - servicio.getRestantes()
+            total_cotizadas += servicio.getCantidad()
+        return int(np.floor(100*usadas/total_cotizadas))
+
     def setNumero(self, numero):
         self.numero = numero
 
@@ -66,6 +88,10 @@ class Cotizacion(object):
 
     def setMuestra(self, muestra):
         self.muestra = muestra
+
+    def setPago(self, ref):
+        self.is_pago = True
+        self.referencia_pago = ref
 
     def removeServicio(self, index):
         del self.servicios[index]
@@ -108,7 +134,6 @@ class Cotizacion(object):
         file = os.path.join(constants.OLD_DIR, self.numero + ".pkl")
         with open(file, 'wb') as output:
             pickle.dump(self, output, pickle.HIGHEST_PROTOCOL)
-
         if to_cotizacion:
             self.usuario.save()
             self.toRegistro()
@@ -131,7 +156,8 @@ class Cotizacion(object):
         fields = [self.getNumero(), datetime.now().replace(microsecond = 0),
                     usuario.getNombre(), usuario.getCorreo(), usuario.getTelefono(),
                     usuario.getInstitucion(), usuario.getInterno(), usuario.getResponsable(),
-                    self.getMuestra(), self.getServicios()[0].equipo, self.getTotal()]
+                    self.getMuestra(), self.getServicios()[0].equipo, "%d %%"%self.getEstado(),
+                    self.isPagoStr(), self.getReferenciaPago(), self.getTotal()]
 
         REGISTRO_DATAFRAME.loc[last] = fields
 

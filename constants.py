@@ -17,7 +17,7 @@ PRECIOS_FILE = os.path.join(REGISTERS_DIR, PRECIOS_FILE)
 
 EQUIPOS_KEYS = ['Código', 'Descripción', 'Interno', 'Externo']
 REGISTRO_KEYS = ['Cotización', 'Fecha', 'Nombre', 'Correo', 'Teléfono', 'Institución', 'Interno',
-                  'Responsable', 'Muestra', 'Equipo', 'Valor']
+                  'Responsable', 'Muestra', 'Equipo', 'Estado', 'Pago', 'Referencia', 'Valor']
 CLIENTES_KEYS = ['Nombre', 'Correo', 'Teléfono', 'Institución', 'Documento',
                  'Dirección', 'Ciudad', 'Interno', 'Responsable', 'Proyecto', 'Código']
 
@@ -27,8 +27,5 @@ df = pd.read_excel(PRECIOS_FILE, sheet_name = None)
 EQUIPOS = list(df.keys())
 
 for item in EQUIPOS:
-    # name = '%s.xlsx'%item
-    data = df[item]
-    # name = os.path.join(REGISTERS_DIR, name)
-    # data = pd.read_excel(name).astype(str)
+    data = df[item].astype(str)
     exec("%s = data"%item)
