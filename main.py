@@ -31,7 +31,7 @@ def testFiles():
     """
         Equipo
     """
-    for item in config.EQUIPOS:
+    for item in constants.EQUIPOS:
         df = eval("constants.%s"%item)
         keys = list(df.keys())
         if (keys != constants.EQUIPOS_KEYS):

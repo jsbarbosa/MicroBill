@@ -8,9 +8,12 @@ REGISTERS_DIR = "Registers"
 
 CLIENTES_FILE = "Clientes.xlsx"
 REGISTRO_FILE = "Registro.xlsx"
+PRECIOS_FILE = "Precios.xlsx"
 
 CLIENTES_FILE = os.path.join(REGISTERS_DIR, CLIENTES_FILE)
 REGISTRO_FILE = os.path.join(REGISTERS_DIR, REGISTRO_FILE)
+
+PRECIOS_FILE = os.path.join(REGISTERS_DIR, PRECIOS_FILE)
 
 EQUIPOS_KEYS = ['Código', 'Descripción', 'Interno', 'Externo']
 REGISTRO_KEYS = ['Cotización', 'Fecha', 'Nombre', 'Correo', 'Teléfono', 'Institución', 'Interno',
@@ -20,8 +23,12 @@ CLIENTES_KEYS = ['Nombre', 'Correo', 'Teléfono', 'Institución', 'Documento',
 
 DOCUMENTOS_FINALES = ["Transferencia interna", "Factura", "Recibo"]
 
-for item in config.EQUIPOS:
-    name = '%s.xlsx'%item
-    name = os.path.join(REGISTERS_DIR, name)
-    data = pd.read_excel(name).astype(str)
+df = pd.read_excel(PRECIOS_FILE, sheet_name = None)
+EQUIPOS = list(df.keys())
+
+for item in EQUIPOS:
+    # name = '%s.xlsx'%item
+    data = df[item]
+    # name = os.path.join(REGISTERS_DIR, name)
+    # data = pd.read_excel(name).astype(str)
     exec("%s = data"%item)

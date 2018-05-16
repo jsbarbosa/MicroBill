@@ -405,7 +405,7 @@ class CotizacionWindow(QtWidgets.QMainWindow):
 
         equipo_label = QtWidgets.QLabel("Equipo:")
         self.equipo_widget = QtWidgets.QComboBox()
-        self.equipo_widget.addItems(config.EQUIPOS)
+        self.equipo_widget.addItems(constants.EQUIPOS)
 
         end_label = QtWidgets.QLabel("Documento final")
         self.pago_widget = QtWidgets.QComboBox()
@@ -1179,11 +1179,15 @@ class MainWindow(QtWidgets.QMainWindow):
         if suma == 4:
             event.accept()
         else:
-            for window in windows:
-                if not window.is_closed:
-                    window.setWindowState(window.windowState() & ~QtCore.Qt.WindowMinimized | QtCore.Qt.WindowActive)
-                    window.activateWindow()
-            event.ignore()
+            quit_msg = "Existen ventanas sin cerrar.\n¿Está seguro que desea cerrar el programa?"
+            reply = QtWidgets.QMessageBox.question(self, 'Cerrar',
+                             quit_msg, QtWidgets.QMessageBox.Yes, QtWidgets.QMessageBox.No)
+            if reply == QtWidgets.QMessageBox.Yes:
+                for window in windows:
+                    if not window.is_closed: window.close()
+                event.accept()
+            else:
+                event.ignore()
 
 class RequestWindow(QtWidgets.QMainWindow):
     def __init__(self, parent = None):
