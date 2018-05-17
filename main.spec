@@ -3,7 +3,6 @@
 block_cipher = None
 
 a = Analysis(['main.py'],
-             #pathex=['C:\\Users\\Rutherford\\Documents\\MonitoriaMicroscopia\\Cotizaciones'],
              pathex=[],
              binaries=[],
              datas=[],
