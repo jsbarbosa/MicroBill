@@ -14,7 +14,7 @@ from threading import Thread
 
 class Table(QtWidgets.QTableWidget):
     HEADER = ['Código', 'Descripción', 'Cantidad', 'Valor Unitario', 'Valor Total']
-    def __init__(self, parent, rows = 10, cols = 5):
+    def __init__(self, parent, rows = 25, cols = 5):
         super(Table, self).__init__(rows, cols)
 
         self.parent = parent
@@ -356,7 +356,7 @@ class CotizacionWindow(QtWidgets.QMainWindow):
 
         wid = QtWidgets.QWidget(self)
         self.setCentralWidget(wid)
-        self.resize(700, 570)
+
 
         self.is_closed = True
         self.ver_dialog = CodigosDialog()
@@ -506,6 +506,8 @@ class CotizacionWindow(QtWidgets.QMainWindow):
         self.cotizacion = objects.Cotizacion()
 
         self.setLastCotizacion()
+
+        self.resize(700, 650)
 
     def setAutoCompletar(self):
         for item in self.AUTOCOMPLETE_WIDGETS:
@@ -658,7 +660,9 @@ class CotizacionWindow(QtWidgets.QMainWindow):
             cod = equipo[0] + year
             val = "%04d"%0
 
-        if year != cod[-2:]: print("NEW YEAR")
+        if year != cod[-2:]:
+            cod = cod[:-2] + year
+            val = "%04d"%1
         else: val = "%04d"%(int(val) + 1)
 
         cod = "%s-%s"%(cod, val)
@@ -1170,22 +1174,25 @@ class MainWindow(QtWidgets.QMainWindow):
         wid = QtWidgets.QWidget(self)
         self.setCentralWidget(wid)
 
-        self.layout = QtWidgets.QHBoxLayout(wid)
+        self.layout = QtWidgets.QGridLayout(wid)
 
         self.request_widget = QtWidgets.QPushButton("Solicitar información")
         self.cotizacion_widget = QtWidgets.QPushButton("Generar/Modificar Cotización")
         self.descontar_widget = QtWidgets.QPushButton("Descontar")
         self.buscar_widget = QtWidgets.QPushButton("Buscar")
+        self.open_widget = QtWidgets.QPushButton("Abrir PDFs")
 
-        self.layout.addWidget(self.request_widget)
-        self.layout.addWidget(self.cotizacion_widget)
-        self.layout.addWidget(self.descontar_widget)
-        self.layout.addWidget(self.buscar_widget)
+        self.layout.addWidget(self.cotizacion_widget, 0, 0)
+        self.layout.addWidget(self.descontar_widget, 0, 1)
+        self.layout.addWidget(self.request_widget, 2, 0)
+        self.layout.addWidget(self.buscar_widget, 2, 1)
+        self.layout.addWidget(self.open_widget, 3, 1)
 
         self.request_widget.clicked.connect(self.requestHandler)
         self.cotizacion_widget.clicked.connect(self.cotizacionHandler)
         self.descontar_widget.clicked.connect(self.descontarHandler)
         self.buscar_widget.clicked.connect(self.buscarHandler)
+        self.open_widget.clicked.connect(self.openHandler)
 
         self.request_window = RequestWindow()
         self.cotizacion_window = CotizacionWindow()
@@ -1193,6 +1200,8 @@ class MainWindow(QtWidgets.QMainWindow):
         self.buscar_window = BuscarWindow()
 
         self.centerOnScreen()
+
+        self.setFixedSize(self.layout.sizeHint())
 
         self.update_timer = QtCore.QTimer()
         self.update_timer.setInterval(1000)
@@ -1237,6 +1246,14 @@ class MainWindow(QtWidgets.QMainWindow):
         self.buscar_window.activateWindow()
         self.buscar_window.show()
 
+    def openHandler(self):
+        path = os.path.dirname(sys.executable)
+        path = os.path.join(path, constants.PDF_DIR)
+        try:
+            os.startfile(path)
+        except FileNotFoundError as e:
+            print(e)
+
     def closeEvent(self, event):
         windows = [self.cotizacion_window, self.descontar_window, self.request_window, self.buscar_window]
         suma = sum([window.is_closed for window in windows])
@@ -1270,7 +1287,7 @@ class RequestWindow(QtWidgets.QMainWindow):
         label = QtWidgets.QLabel("Correo:")
         self.correo_widget = QtWidgets.QLineEdit()
         self.enviar_button = QtWidgets.QPushButton("Enviar")
-        self.correo_widget.setFixedWidth(220)
+        self.correo_widget.setFixedWidth(250)
 
         hlayout1.addWidget(label)
         hlayout1.addWidget(self.correo_widget)
@@ -1279,6 +1296,8 @@ class RequestWindow(QtWidgets.QMainWindow):
 
         self.correo_widget.returnPressed.connect(self.sendCorreo)
         self.enviar_button.clicked.connect(self.sendCorreo)
+
+        self.setFixedSize(self.layout.sizeHint())
 
     def sendCorreo(self):
         text = self.correo_widget.text()
