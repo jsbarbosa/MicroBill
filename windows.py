@@ -178,6 +178,15 @@ class AutoLineEdit(QtWidgets.QLineEdit):
         self.setCompleter(completer)
         self.update()
 
+    def event(self, event):
+        if event.type() == QtCore.QEvent.KeyPress and event.key() == QtCore.Qt.Key_Tab:
+            try:
+                self.parent.changeAutocompletar()
+            except:
+                pass
+            return False
+        return QtWidgets.QWidget.event(self, event)
+
     def update(self):
         if type(self.parent) is CotizacionWindow:
             dataframe = objects.CLIENTES_DATAFRAME
@@ -390,8 +399,7 @@ class CotizacionWindow(QtWidgets.QMainWindow):
         telefono_label = QtWidgets.QLabel("Teléfono:")
         self.telefono_widget = AutoLineEdit("Teléfono", self)
 
-        interno_label = QtWidgets.QLabel("Interno:")
-        self.interno_widget = QtWidgets.QCheckBox()
+        self.interno_widget = QtWidgets.QCheckBox("Interno")
         responsable_label = QtWidgets.QLabel("Responsable:")
         self.responsable_widget = AutoLineEdit("Responsable", self)
 
@@ -431,7 +439,6 @@ class CotizacionWindow(QtWidgets.QMainWindow):
 
         self.form_frame_layout.addWidget(responsable_label, 4, 0)
         self.form_frame_layout.addWidget(self.responsable_widget, 4, 1)
-        self.form_frame_layout.addWidget(interno_label, 4, 2)
         self.form_frame_layout.addWidget(self.interno_widget, 4, 3)
 
         self.form_frame_layout.addWidget(proyecto_label, 5, 0)
@@ -450,15 +457,13 @@ class CotizacionWindow(QtWidgets.QMainWindow):
         self.table = Table(self)
 
         self.button_frame_layout = QtWidgets.QHBoxLayout(self.button_frame)
-        self.notificar_widget = QtWidgets.QCheckBox()
+        self.notificar_widget = QtWidgets.QCheckBox("Notificar")
         self.notificar_widget.setCheckState(2)
-        notificar = QtWidgets.QLabel("Notificar")
         self.view_button = QtWidgets.QPushButton("Ver códigos")
         self.guardar_button = QtWidgets.QPushButton("Guardar")
         self.limpiar_button = QtWidgets.QPushButton("Limpiar")
 
         self.button_frame_layout.addWidget(self.notificar_widget)
-        self.button_frame_layout.addWidget(notificar)
         self.button_frame_layout.addWidget(self.guardar_button)
         self.button_frame_layout.addWidget(self.limpiar_button)
         self.button_frame_layout.addWidget(self.view_button)
@@ -507,6 +512,7 @@ class CotizacionWindow(QtWidgets.QMainWindow):
             widget = eval("self.%s_widget"%item)
             widget.textChanged.connect(self.autoCompletar)
             widget.returnPressed.connect(self.changeAutocompletar)
+            # widget.t
 
     def changeAutocompletar(self):
         self.autocompletar_widget.setChecked(False)
@@ -799,12 +805,10 @@ class DescontarWindow(QtWidgets.QMainWindow):
         self.buttons_frame = QtWidgets.QFrame()
         self.buttons_layout = QtWidgets.QHBoxLayout(self.buttons_frame)
         self.guardar_button = QtWidgets.QPushButton("Guardar")
-        self.notificar_widget = QtWidgets.QCheckBox()
+        self.notificar_widget = QtWidgets.QCheckBox("Notificar")
         self.notificar_widget.setCheckState(2)
-        notificar = QtWidgets.QLabel("Notificar")
 
         self.buttons_layout.addWidget(self.notificar_widget)
-        self.buttons_layout.addWidget(notificar)
         self.buttons_layout.addWidget(self.guardar_button)
 
         self.layout.addWidget(self.buttons_frame)
@@ -1096,17 +1100,17 @@ class BuscarWindow(QtWidgets.QMainWindow):
         self.layout.addWidget(self.buttons_frame)
 
         model = PandasModel(objects.REGISTRO_DATAFRAME)
+
         self.table.setModel(model)
         self.table.resizeRowsToContents()
         self.table.resizeColumnsToContents()
 
         self.bools = np.ones(objects.REGISTRO_DATAFRAME.shape[0], dtype = bool)
-        # font = QtGui.QFont("Courier New", 8)
-        # self.table.setFont(font)
 
         self.resize(800, 600)
 
     def getChanges(self, source):
+        self.bools = np.ones(objects.REGISTRO_DATAFRAME.shape[0], dtype = bool)
         for i in range(len(self.WIDGETS)):
             source = self.FIELDS[i]
             widget = self.WIDGETS[i]
@@ -1138,20 +1142,21 @@ class BuscarWindow(QtWidgets.QMainWindow):
         folder = QtWidgets.QFileDialog.getExistingDirectory(self, "Select Directory")
         cwd = os.getcwd()
         if cwd[0] == "\\":
-            pre = cwd.replace("\\\\", "").split("\\")[0]
-            f = "/".join(folder.split("/")[1:])
-            folder = "//" + pre + "/" + f
-        model = self.table.model()
-        pos = np.where(model.whereIsChecked())[0]
-        cotizacion = objects.Cotizacion()
-        for i in pos:
-            cot = model._data[i, 1]
-            try:
-                cotizacion.load(cot).makePDFReporte()
-                old = os.path.join(constants.PDF_DIR, cot + "_Reporte.pdf")
-                new = os.path.join(folder, cot + "_Reporte.pdf")
-                os.rename(old, new)
-            except Exception as e: pass
+            quit_msg = "No es posible grabar desde un computador en red."
+            QtWidgets.QMessageBox.warning(self, 'Error',
+                             quit_msg, QtWidgets.QMessageBox.Ok)
+        else:
+            model = self.table.model()
+            pos = np.where(model.whereIsChecked())[0]
+            cotizacion = objects.Cotizacion()
+            for i in pos:
+                cot = model._data[i, 1]
+                try:
+                    cotizacion.load(cot).makePDFReporte()
+                    old = os.path.join(constants.PDF_DIR, cot + "_Reporte.pdf")
+                    new = os.path.join(folder, cot + "_Reporte.pdf")
+                    os.rename(old, new)
+                except Exception as e: pass
 
     def closeEvent(self, event):
         self.is_closed = True

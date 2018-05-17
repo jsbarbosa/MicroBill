@@ -35,7 +35,7 @@ class PDFBase():
     def makeInfo(self):
         usuario = self.cotizacion.getUsuario()
 
-        self.story.append(FrameBreak())
+        # self.story.append(FrameBreak())
 
         ptext = '<font size = 12><b>%s</b></font>' % "%s - UNIVERSIDAD DE LOS ANDES"%CENTRO.upper()
         self.story.append(Paragraph(ptext, self.styles["Center"]))
@@ -123,15 +123,17 @@ class PDFCotizacion(PDFBase):
         terminos_h = 2.5*cm
 
         last_h = self.doc.bottomMargin + self.doc.height - h
-        self.info_frame = Frame(self.doc.leftMargin, last_h - info_h - space, self.doc.width, info_h, showBoundary = 1)
-        last_h += - info_h - space
-        self.table_frame = Frame(self.doc.leftMargin, last_h - table_h - space, self.doc.width, table_h)
-        last_h += - table_h - space
-        self.observaciones_frame = Frame(self.doc.leftMargin, last_h - observaciones_h - space, self.doc.width, observaciones_h, showBoundary = 1)
-        last_h += - observaciones_h - space
-        self.terminos_frame = Frame(self.doc.leftMargin, last_h - terminos_h - space, self.doc.width, terminos_h, showBoundary = 1)
-        last_h += - terminos_h - space
-        self.end_frame = Frame(self.doc.leftMargin, last_h - 3*cm - space, self.doc.width, 3*cm)
+        self.last_frame = Frame(self.doc.leftMargin, self.doc.bottomMargin, self.doc.width, last_h - cm)
+
+        # self.info_frame = Frame(self.doc.leftMargin, last_h - info_h - space, self.doc.width, info_h, showBoundary = 1)
+        # last_h += - info_h - space
+        # self.table_frame = Frame(self.doc.leftMargin, last_h - table_h - space, self.doc.width, table_h)
+        # last_h += - table_h - space
+        # self.observaciones_frame = Frame(self.doc.leftMargin, last_h - observaciones_h - space, self.doc.width, observaciones_h, showBoundary = 1)
+        # last_h += - observaciones_h - space
+        # self.terminos_frame = Frame(self.doc.leftMargin, last_h - terminos_h - space, self.doc.width, terminos_h, showBoundary = 1)
+        # last_h += - terminos_h - space
+        # self.end_frame = Frame(self.doc.leftMargin, last_h - 3*cm - space, self.doc.width, 3*cm)
 
     def makeTop(self):
         height = 1.5
@@ -181,7 +183,7 @@ class PDFCotizacion(PDFBase):
         table.insert(0, ["COD", "SERVICIO", "CANTIDAD", "PRECIO UNIDAD", "PRECIO TOTAL"])
         table.append(["", "", "", "TOTAL", "{:,}".format(total)])
 
-        self.story.append(FrameBreak())
+        self.story.append(Spacer(1, 24))
 
         t = Table(table, [40, 260, 70, 90, 90], 15, hAlign='CENTER')
 
@@ -194,7 +196,7 @@ class PDFCotizacion(PDFBase):
         self.story.append(t)
 
     def makeObservaciones(self):
-        self.story.append(FrameBreak())
+        # self.story.append(FrameBreak())
         text = "OBSERVACIONES"
         ptext = '<font size = 10> <b> %s </b></font>'%text
         self.story.append(Paragraph(ptext, self.styles["Center"]))
@@ -211,8 +213,10 @@ class PDFCotizacion(PDFBase):
                 ptext = '<font size = 9> <b>%s:</b> <u>%s</u></font>'%item
                 self.story.append(Paragraph(ptext, self.styles["Normal"]))
 
+        self.story.append(Spacer(1, 24))
+
     def makeTerminos(self):
-        self.story.append(FrameBreak())
+        # self.story.append(FrameBreak())
 
         text = "TÉRMINOS Y CONDICIONES"
         ptext = '<font size = 10> <b> %s </b></font>'%text
@@ -223,6 +227,7 @@ class PDFCotizacion(PDFBase):
             text = TERMINOS_Y_CONDICIONES[i]
             ptext = '<font size = 8>%d. %s</font>'%(i + 1, text)
             self.story.append(Paragraph(ptext, self.styles["Normal"]))
+        self.story.append(Spacer(1, 24))
 
     def doAll(self):
         self.makeFrames()
@@ -231,10 +236,12 @@ class PDFCotizacion(PDFBase):
         self.makeTable()
         self.makeObservaciones()
         self.makeTerminos()
-        self.story.append(FrameBreak())
+        # self.story.append(FrameBreak())
         self.makeEnd()
-        temp = PageTemplate(frames = [self.frame1, self.frame2, self.info_frame, self.table_frame,
-                        self.observaciones_frame, self.terminos_frame, self.end_frame],
+        # temp = PageTemplate(frames = [self.frame1, self.frame2, self.info_frame, self.table_frame,
+        #                 self.observaciones_frame, self.terminos_frame, self.end_frame],
+        #             onPage = self.drawPage)
+        temp = PageTemplate(frames = [self.frame1, self.frame2, self.last_frame],
                     onPage = self.drawPage)
         self.build(temp)
 
@@ -261,10 +268,12 @@ class PDFReporte(PDFBase):
         terminos_h = 2.5*cm
 
         last_h = self.doc.bottomMargin + self.doc.height - h
-        self.info_frame = Frame(self.doc.leftMargin, last_h - info_h - space, self.doc.width, info_h, showBoundary = 1)
-        last_h += -info_h - space
+        # self.info_frame = Frame(self.doc.leftMargin, last_h - info_h - space, self.doc.width, info_h, showBoundary = 1)
+        # last_h += -info_h - space
 
-        self.table_frame = Frame(self.doc.leftMargin, self.doc.bottomMargin, self.doc.width, last_h - cm)
+        self.last_frame = Frame(self.doc.leftMargin, self.doc.bottomMargin, self.doc.width, last_h - cm)
+
+        # self.table_frame = Frame(self.doc.leftMargin, self.doc.bottomMargin, self.doc.width, last_h - cm)
 
     def makeTop(self):
         height = 1.5
@@ -295,9 +304,10 @@ class PDFReporte(PDFBase):
 
         self.story.append(Spacer(1, 12))
         self.story.append(t)
+        self.story.append(FrameBreak())
 
     def makeTable(self):
-        self.story.append(FrameBreak())
+        self.story.append(Spacer(1, 24))
         t = Table(self.table, [70, 40, 200, 80, 80, 80], 15, hAlign='CENTER')
 
         t.setStyle(TableStyle([('BOX', (0,0), (-1,-1), 0.25, colors.black),
@@ -334,6 +344,8 @@ class PDFReporte(PDFBase):
         self.makeTable()
         self.makeResumen()
         self.makeEnd()
-        temp = PageTemplate(frames = [self.frame1, self.frame2, self.info_frame, self.table_frame],
+        # temp = PageTemplate(frames = [self.frame1, self.frame2, self.info_frame, self.table_frame],
+        #                 onPage = self.drawPage)
+        temp = PageTemplate(frames = [self.frame1, self.frame2, self.last_frame],
                         onPage = self.drawPage)
         self.build(temp)
