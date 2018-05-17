@@ -1139,13 +1139,13 @@ class BuscarWindow(QtWidgets.QMainWindow):
         self.table.setModel(PandasModel(objects.REGISTRO_DATAFRAME))
 
     def guardar(self):
-        folder = QtWidgets.QFileDialog.getExistingDirectory(self, "Select Directory")
-        cwd = os.getcwd()
-        if cwd[0] == "\\":
+        if os.getcwd()[0] == "\\":
             quit_msg = "No es posible grabar desde un computador en red."
             QtWidgets.QMessageBox.warning(self, 'Error',
                              quit_msg, QtWidgets.QMessageBox.Ok)
+
         else:
+            folder = QtWidgets.QFileDialog.getExistingDirectory(self, "Select Directory")
             model = self.table.model()
             pos = np.where(model.whereIsChecked())[0]
             cotizacion = objects.Cotizacion()
