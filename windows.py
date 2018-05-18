@@ -883,7 +883,7 @@ class DescontarWindow(QtWidgets.QMainWindow):
                 n = len(self.cotizacion.getServicios())
             except: n = 0
 
-            i = 0
+            i = -1
             for (i, servicio) in enumerate(self.cotizacion.getServicios()):
                 cod = QtWidgets.QLabel(servicio.getCodigo())
                 dec = QtWidgets.QLabel(servicio.getDescripcion())
@@ -905,7 +905,7 @@ class DescontarWindow(QtWidgets.QMainWindow):
                 self.floats_spins.append(spin)
                 self.floats_labels.append(total)
 
-            if i > 0:
+            if i >= 0:
                 self.check_widget = QtWidgets.QCheckBox("Aplicar pago")
                 self.check_label = QtWidgets.QLabel("Referencia:")
                 self.referencia_widget = QtWidgets.QLineEdit()
@@ -914,12 +914,15 @@ class DescontarWindow(QtWidgets.QMainWindow):
                 self.pago_layout.addWidget(self.check_label, 1, 0)
                 self.pago_layout.addWidget(self.referencia_widget, 1, 1)
 
-                self.check_widget.stateChanged.connect(self.checkHandler)
-
                 self.referencia_widget.setText(self.cotizacion.getReferenciaPago())
                 self.check_widget.setChecked(self.cotizacion.isPago())
-                self.checkHandler(self.cotizacion.isPago())
 
+                if not self.cotizacion.isPago():
+                    self.check_widget.stateChanged.connect(self.checkHandler)
+                    self.checkHandler(self.cotizacion.isPago())
+                else:
+                    self.check_widget.setEnabled(False)
+                    self.referencia_widget.setEnabled(False)
                 h = self.init_size[1]
                 h += 18*(len(self.cotizacion.getServicios()) + 2)
                 self.setFixedHeight(h)
