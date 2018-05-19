@@ -10,6 +10,8 @@ import objects
 import constants
 import correo
 
+import webbrowser
+
 from threading import Thread
 
 class Table(QtWidgets.QTableWidget):
@@ -131,6 +133,21 @@ class Table(QtWidgets.QTableWidget):
             self.parent.setTotal()
         except Exception as e:
             self.parent.errorWindow(e)
+        self.blockSignals(False)
+
+    def updateInterno(self):
+        self.blockSignals(True)
+
+        cods = self.getCodigos()
+        pos = np.where(np.array(cods) != "")[0]
+
+        for i in pos:
+            cod = cods[i]
+            servicio = self.parent.getServicio(cod)
+            self.item(i, 2).setText("%.1f"%servicio.getCantidad())
+            self.item(i, 3).setText("{:,}".format(servicio.getValorUnitario()))
+            self.item(i, 4).setText("{:,}".format(servicio.getValorTotal()))
+
         self.blockSignals(False)
 
     def setFromCotizacion(self):
@@ -357,7 +374,6 @@ class CotizacionWindow(QtWidgets.QMainWindow):
         wid = QtWidgets.QWidget(self)
         self.setCentralWidget(wid)
 
-
         self.is_closed = True
         self.ver_dialog = CodigosDialog()
         self.verticalLayout = QtWidgets.QVBoxLayout(wid)
@@ -494,13 +510,6 @@ class CotizacionWindow(QtWidgets.QMainWindow):
 
         self.setAutoCompletar()
 
-        self.interno_widget.stateChanged.connect(self.changeInterno)
-        self.limpiar_button.clicked.connect(self.limpiar)
-        self.guardar_button.clicked.connect(self.guardar)
-        self.numero_cotizacion.clicked.connect(self.numeroCotizacion)
-        self.equipo_widget.currentIndexChanged.connect(self.changeEquipo)
-        self.view_button.clicked.connect(self.verCodigos)
-
         self.interno_widget.setChecked(2)
 
         self.cotizacion = objects.Cotizacion()
@@ -508,6 +517,13 @@ class CotizacionWindow(QtWidgets.QMainWindow):
         self.setLastCotizacion()
 
         self.resize(700, 650)
+
+        self.interno_widget.stateChanged.connect(self.changeInterno)
+        self.limpiar_button.clicked.connect(self.limpiar)
+        self.guardar_button.clicked.connect(self.guardar)
+        self.numero_cotizacion.clicked.connect(self.numeroCotizacion)
+        self.equipo_widget.currentIndexChanged.connect(self.changeEquipo)
+        self.view_button.clicked.connect(self.verCodigos)
 
     def setAutoCompletar(self):
         for item in self.AUTOCOMPLETE_WIDGETS:
@@ -554,6 +570,16 @@ class CotizacionWindow(QtWidgets.QMainWindow):
         self.proyecto_widget.setEnabled(state)
         self.codigo_widget.setEnabled(state)
 
+        interno = "Externo"
+        if state: interno = "Interno"
+        try:
+            self.cotizacion.setInterno(interno)
+            self.table.updateInterno()
+
+            self.setTotal()
+        except AttributeError:
+            pass
+
     def changeEquipo(self, i):
         text = self.equipo_widget.currentText()
         self.table.clean()
@@ -563,10 +589,11 @@ class CotizacionWindow(QtWidgets.QMainWindow):
 
     def limpiar(self):
         self.table.clean()
-        for widget in self.WIDGETS:
-            widget = eval("self.%s_widget"%widget)
+        for field in self.WIDGETS:
+            widget = eval("self.%s_widget"%field)
             widget.blockSignals(True)
-            widget.setText("")
+            if field != "interno":
+                widget.setText("")
             widget.blockSignals(False)
         self.interno_widget.setCheckState(2)
         self.pago_widget.setCurrentIndex(0)
@@ -608,9 +635,9 @@ class CotizacionWindow(QtWidgets.QMainWindow):
         msg.setIcon(QtWidgets.QMessageBox.Information)
         msg.setText("¿Está seguro que desea guardar esta cotización?.\nVerifique los datos.")
         msg.setWindowTitle("Confirmar")
-        msg.setStandardButtons(QtWidgets.QMessageBox.Save | QtWidgets.QMessageBox.Cancel)
+        msg.setStandardButtons(QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.Cancel)
         ans = msg.exec_()
-        if ans == QtWidgets.QMessageBox.Save:
+        if ans == QtWidgets.QMessageBox.Yes:
             return True
         return False
 

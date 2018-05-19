@@ -79,6 +79,11 @@ class Cotizacion(object):
     def setUsuario(self, usuario):
         self.usuario = usuario
 
+    def setInterno(self, interno):
+        self.usuario.setInterno(interno)
+        for servicio in self.servicios:
+            servicio.setInterno(interno)
+
     def setServicios(self, servicios):
         codigos = [servicio.getCodigo() for servicio in servicios]
         if len(codigos) != len(set(codigos)):
@@ -157,7 +162,7 @@ class Cotizacion(object):
                     usuario.getNombre(), usuario.getCorreo(), usuario.getTelefono(),
                     usuario.getInstitucion(), usuario.getInterno(), usuario.getResponsable(),
                     self.getMuestra(), self.getServicios()[0].equipo, "%d %%"%self.getEstado(),
-                    self.isPagoStr(), self.getReferenciaPago(), self.getTotal()]
+                    self.isPagoStr(), self.getReferenciaPago(), "{:,}".format(self.getTotal())]
 
         REGISTRO_DATAFRAME.loc[last] = fields
 
@@ -368,6 +373,21 @@ class Servicio(object):
 
     def setRestantes(self):
         self.restantes = self.cantidad - sum(self.usos.values())
+
+    def setInterno(self, interno):
+        self.interno = interno
+        old_valor = self.getValorUnitario()
+        old_total = self.getValorTotal()
+        old_cantidad = self.getCantidad()
+
+        self.setValorUnitario()
+        if old_total == int(old_valor * old_cantidad):
+            self.setValorTotal()
+        else:
+            cantidad = old_total / self.getValorUnitario()
+            cantidad = np.ceil(10 * cantidad) / 10
+            self.setCantidad(cantidad)
+            self.setValorTotal(old_total)
 
     def descontar(self, n):
         if self.restantes >= n:
