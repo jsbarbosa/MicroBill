@@ -25,6 +25,7 @@ class Cotizacion(object):
         self.usuario = usuario
         self.muestra = muestra
         self.is_pago = False
+        self.pdf_file_name = ""
         self.referencia_pago = ""
         self.setServicios(servicios)
 
@@ -65,6 +66,9 @@ class Cotizacion(object):
     def getReferenciaPago(self):
         return self.referencia_pago
 
+    def getFileName(self):
+        return self.pdf_file_name
+
     def getEstado(self):
         total_cotizadas = 0
         usadas = 0
@@ -97,6 +101,9 @@ class Cotizacion(object):
     def setPago(self, ref):
         self.is_pago = True
         self.referencia_pago = ref
+
+    def setFileName(self, name):
+        self.pdf_file_name = name
 
     def removeServicio(self, index):
         del self.servicios[index]

@@ -22,6 +22,8 @@ class PDFBase():
             self.file_name = self.cotizacion.getNumero() + ".pdf"
         self.file_name = os.path.join(constants.PDF_DIR, self.file_name)
 
+        self.cotizacion.setFileName(self.file_name)
+
         self.doc =  SimpleDocTemplate(self.file_name, pagesize = letter,
                                 rightMargin = cm, leftMargin = cm,
                                 topMargin = cm, bottomMargin = cm)

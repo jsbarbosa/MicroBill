@@ -10,9 +10,14 @@ import objects
 import constants
 import correo
 
-import webbrowser
-
+import psutil
+from subprocess import Popen
 from threading import Thread
+
+# a = list(psutil.win_service_iter())
+#
+# a = psutil.pids()
+#
 
 class Table(QtWidgets.QTableWidget):
     HEADER = ['Código', 'Descripción', 'Cantidad', 'Valor Unitario', 'Valor Total']
@@ -630,6 +635,21 @@ class CotizacionWindow(QtWidgets.QMainWindow):
         else:
             NoNotificacion().exec_()
 
+    def closePDF(self, p1, old):
+        new = [proc.pid for proc in psutil.process_iter()]
+        new.remove(p1.pid)
+
+        new = [proc for proc in new if proc not in old]
+        try:
+            for proc in new:
+                p = psutil.Process(proc)
+                if p.parent().name() == "cmd.exe":
+                    print(p.parent().parent().name())
+                    p.terminate()
+            p1.kill()
+        except:
+            pass
+
     def confirmGuardar(self):
         msg = QtWidgets.QMessageBox()
         msg.setIcon(QtWidgets.QMessageBox.Information)
@@ -657,17 +677,41 @@ class CotizacionWindow(QtWidgets.QMainWindow):
                 dic[key] = value
             del dic["muestra"]
             dic["pago"] = self.pago_widget.currentText()
+
+            if len(self.getServicios()) == 0:
+                raise(Exception("No existen servicios cotizados."))
+
+            usuario = objects.Usuario(**dic)
+            self.cotizacion.setUsuario(usuario)
+            self.cotizacion.setMuestra(self.muestra_widget.text())
+            self.cotizacion.makePDFCotizacion()
+
+            path = os.path.dirname(sys.executable)
+            path = os.path.join(path, self.cotizacion.getFileName())
+            if not os.path.exists(path):
+                path = os.path.join(os.getcwd(), self.cotizacion.getFileName())
+
+            old = [proc.pid for proc in psutil.process_iter()]
+
+            p1 = Popen(path, shell = True)
+
             if self.confirmGuardar():
-                usuario = objects.Usuario(**dic)
-                self.cotizacion.setUsuario(usuario)
-                self.cotizacion.setMuestra(self.muestra_widget.text())
-                if len(self.getServicios()) == 0:
-                    raise(Exception("No existen servicios cotizados."))
+                self.closePDF(p1, old)
                 self.cotizacion.save()
                 self.updateAutoCompletar()
                 self.sendCorreo()
                 self.limpiar()
                 self.setLastCotizacion()
+            else:
+                self.closePDF(p1, old)
+                self.cotizacion.setUsuario(None)
+                self.cotizacion.setMuestra(None)
+                for i in range(10):
+                    try:
+                        os.remove(path)
+                        break
+                    except PermissionError:
+                        sleep(0.1)
 
         except Exception as e:
             self.errorWindow(e)
