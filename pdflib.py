@@ -127,16 +127,6 @@ class PDFCotizacion(PDFBase):
         last_h = self.doc.bottomMargin + self.doc.height - h
         self.last_frame = Frame(self.doc.leftMargin, self.doc.bottomMargin, self.doc.width, last_h - cm)
 
-        # self.info_frame = Frame(self.doc.leftMargin, last_h - info_h - space, self.doc.width, info_h, showBoundary = 1)
-        # last_h += - info_h - space
-        # self.table_frame = Frame(self.doc.leftMargin, last_h - table_h - space, self.doc.width, table_h)
-        # last_h += - table_h - space
-        # self.observaciones_frame = Frame(self.doc.leftMargin, last_h - observaciones_h - space, self.doc.width, observaciones_h, showBoundary = 1)
-        # last_h += - observaciones_h - space
-        # self.terminos_frame = Frame(self.doc.leftMargin, last_h - terminos_h - space, self.doc.width, terminos_h, showBoundary = 1)
-        # last_h += - terminos_h - space
-        # self.end_frame = Frame(self.doc.leftMargin, last_h - 3*cm - space, self.doc.width, 3*cm)
-
     def makeTop(self):
         height = 1.5
 
@@ -144,11 +134,11 @@ class PDFCotizacion(PDFBase):
 
         self.story.append(logo)
         self.story.append(Spacer(0, 12))
-        data = [["CÓDIGO UNIANDES", "CÓDIGO S.GESTIÓN"], [CODIGO_UNIANDES, CODIGO_GESTION]]
+        data = [["CÓDIGO S.GESTIÓN"], [CODIGO_GESTION]]
         t = Table(data, 90, 20)
         t.setStyle(TableStyle([('INNERGRID', (0,0), (-1,-1), 0.25, colors.black),
                                ('BOX', (0,0), (-1,-1), 0.25, colors.black),
-                               ('FONTSIZE', (0, 0), (1, 1), 8),
+                               ('FONTSIZE', (0, 0), (-1, -1), 8),
                                ]))
 
         self.story.append(t)
@@ -228,7 +218,10 @@ class PDFCotizacion(PDFBase):
         for i in range(len(TERMINOS_Y_CONDICIONES)):
             text = TERMINOS_Y_CONDICIONES[i]
             ptext = '<font size = 8>%d. %s</font>'%(i + 1, text)
-            self.story.append(Paragraph(ptext, self.styles["Normal"]))
+            self.story.append(Paragraph(ptext, self.styles["Justify"]))
+
+        ptext = '<font size = 8>%d.</font> <font size = 6>%s</font>'%(i + 2, CONFIDENCIALIDAD)
+        self.story.append(Paragraph(ptext, self.styles["Justify"]))
         self.story.append(Spacer(1, 24))
 
     def doAll(self):

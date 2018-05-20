@@ -600,6 +600,7 @@ class CotizacionWindow(QtWidgets.QMainWindow):
             if field != "interno":
                 widget.setText("")
             widget.blockSignals(False)
+        self.setLastCotizacion()
         self.interno_widget.setCheckState(2)
         self.pago_widget.setCurrentIndex(0)
         self.cotizacion.setServicios([])
@@ -637,15 +638,18 @@ class CotizacionWindow(QtWidgets.QMainWindow):
 
     def closePDF(self, p1, old):
         new = [proc.pid for proc in psutil.process_iter()]
-        new.remove(p1.pid)
+        try:
+            new.remove(p1.pid)
+        except:
+            return None
 
         new = [proc for proc in new if proc not in old]
         try:
             for proc in new:
                 p = psutil.Process(proc)
                 if p.parent().name() == "cmd.exe":
-                    print(p.parent().parent().name())
-                    p.terminate()
+                    if (p.parent().parent().name() == "MicroBill.exe") or (p.parent().parent().name() == "python.exe"):
+                        p.terminate()
             p1.kill()
         except:
             pass
@@ -697,7 +701,13 @@ class CotizacionWindow(QtWidgets.QMainWindow):
 
             if self.confirmGuardar():
                 self.closePDF(p1, old)
-                self.cotizacion.save()
+                for i in range(10):
+                    try:
+                        self.cotizacion.save()
+                        break
+                    except PermissionError:
+                        sleep(0.1)
+
                 self.updateAutoCompletar()
                 self.sendCorreo()
                 self.limpiar()
@@ -720,7 +730,6 @@ class CotizacionWindow(QtWidgets.QMainWindow):
         self.cotizacion.setMuestra(None)
 
     def setLastCotizacion(self):
-        # global objects.REGISTRO_DATAFRAME
         year = str(datetime.now().year)[-2:]
 
         equipo = self.getEquipo()
@@ -737,6 +746,7 @@ class CotizacionWindow(QtWidgets.QMainWindow):
         else: val = "%04d"%(int(val) + 1)
 
         cod = "%s-%s"%(cod, val)
+
         self.numero_cotizacion.setText(cod)
         self.cotizacion.setNumero(cod)
 
@@ -814,11 +824,10 @@ class CotizacionWindow(QtWidgets.QMainWindow):
 class NoNotificacion(QtWidgets.QMessageBox):
     def __init__(self):
         super(NoNotificacion, self).__init__()
-        self.setIcon(QtWidgets.QMessageBox.Warning)
+        self.setIcon(QtWidgets.QMessageBox.Information)
         self.setText("El usuario no será notificado.")
         self.setWindowTitle("Warning")
         self.setStandardButtons(QtWidgets.QMessageBox.Ok)
-        #         msg.exec_()
 
 class DescontarWindow(QtWidgets.QMainWindow):
     FIELDS = ["Cotización", "Fecha", "Nombre", "Correo", "Equipo", "Valor"]
@@ -925,7 +934,7 @@ class DescontarWindow(QtWidgets.QMainWindow):
                     servicio = servicios[i]
                     servicio.descontar(val)
                 if self.check_widget != None:
-                    if self.check_widget.isChecked:
+                    if self.check_widget.isChecked():
                         self.cotizacion.setPago(self.referencia_widget.text())
                 self.cotizacion.save(to_cotizacion = False)
                 self.cotizacion.toRegistro()
@@ -985,6 +994,7 @@ class DescontarWindow(QtWidgets.QMainWindow):
                 self.pago_layout.addWidget(self.check_label, 1, 0)
                 self.pago_layout.addWidget(self.referencia_widget, 1, 1)
 
+                self.check_widget.setTristate(False)
                 self.referencia_widget.setText(self.cotizacion.getReferenciaPago())
                 self.check_widget.setChecked(self.cotizacion.isPago())
 
@@ -994,6 +1004,7 @@ class DescontarWindow(QtWidgets.QMainWindow):
                 else:
                     self.check_widget.setEnabled(False)
                     self.referencia_widget.setEnabled(False)
+
                 h = self.init_size[1]
                 h += 18*(len(self.cotizacion.getServicios()) + 2)
                 self.setFixedHeight(h)
@@ -1023,7 +1034,8 @@ class DescontarWindow(QtWidgets.QMainWindow):
         self.setFixedSize(*self.init_size)
 
     def checkHandler(self, state):
-        if state: self.referencia_widget.setEnabled(True)
+        if state:
+            self.referencia_widget.setEnabled(True)
         else:
             self.referencia_widget.setText("")
             self.referencia_widget.setEnabled(False)
@@ -1198,6 +1210,12 @@ class BuscarWindow(QtWidgets.QMainWindow):
                 self.bools *= pos
         self.update()
 
+    def updateAutoCompletar(self):
+        self.equipo_widget.update()
+        self.nombre_widget.update()
+        self.institucion_widget.update()
+        self.responsable_widget.update()
+
     def update(self):
         if self.bools.shape[0] != objects.REGISTRO_DATAFRAME.shape[0]:
             self.bools = np.ones(objects.REGISTRO_DATAFRAME.shape[0], dtype = bool)
@@ -1287,8 +1305,10 @@ class MainWindow(QtWidgets.QMainWindow):
         if (not cli.equals(objects.CLIENTES_DATAFRAME)) | (not reg.equals(objects.REGISTRO_DATAFRAME)):
             objects.CLIENTES_DATAFRAME = cli
             objects.REGISTRO_DATAFRAME = reg
+            self.cotizacion_window.updateAutoCompletar()
             self.cotizacion_window.setLastCotizacion()
             self.descontar_window.updateDataFrames()
+            self.buscar_window.updateAutoCompletar()
             self.buscar_window.update()
 
     def centerOnScreen(self):

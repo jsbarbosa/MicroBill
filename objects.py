@@ -84,7 +84,8 @@ class Cotizacion(object):
         self.usuario = usuario
 
     def setInterno(self, interno):
-        self.usuario.setInterno(interno)
+        try: self.usuario.setInterno(interno)
+        except AttributeError: pass
         for servicio in self.servicios:
             servicio.setInterno(interno)
 
