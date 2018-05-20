@@ -598,6 +598,7 @@ class CotizacionWindow(QtWidgets.QMainWindow):
         self.setLastCotizacion()
         self.interno_widget.setCheckState(2)
         self.pago_widget.setCurrentIndex(0)
+        self.notificar_widget.setChecked(True)
         self.cotizacion.setServicios([])
         self.total_widget.setText("")
         self.autocompletar_widget.setChecked(True)

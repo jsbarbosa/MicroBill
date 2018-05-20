@@ -17,9 +17,9 @@ PRECIOS_FILE = os.path.join(REGISTERS_DIR, PRECIOS_FILE)
 
 EQUIPOS_KEYS = ['Código', 'Descripción', 'Interno', 'Externo']
 REGISTRO_KEYS = ['Cotización', 'Fecha', 'Nombre', 'Correo', 'Teléfono', 'Institución', 'Interno',
-                  'Responsable', 'Muestra', 'Equipo', 'Estado', 'Pago', 'Referencia', 'Valor']
+                  'Responsable', 'Muestra', 'Equipo', 'Estado', 'Pago', 'Referencia', 'Tipo de Pago', 'Valor']
 CLIENTES_KEYS = ['Nombre', 'Correo', 'Teléfono', 'Institución', 'Documento',
-                 'Dirección', 'Ciudad', 'Interno', 'Responsable', 'Proyecto', 'Código']
+                 'Dirección', 'Ciudad', 'Interno', 'Responsable', 'Proyecto', 'Código', 'Tipo de Pago']
 
 DOCUMENTOS_FINALES = ["Transferencia interna", "Factura", "Recibo"]
 

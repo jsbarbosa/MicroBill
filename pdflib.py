@@ -162,8 +162,8 @@ class PDFCotizacion(PDFBase):
                                ('ALIGN', (0, 1), (0, 1), "CENTER"),
                                ('VALIGN', (0, 1), (0, 1), "MIDDLE"),
                                ('SPAN',(0,1),(0,-1)),
-                               ('BACKGROUND', (0, 0), (1, 0), colors.grey),
-                               ('BACKGROUND', (1, 2), (1, 2), colors.grey)
+                               ('BACKGROUND', (0, 0), (1, 0), colors.lightgrey),
+                               ('BACKGROUND', (1, 2), (1, 2), colors.lightgrey)
                                 ]))
 
         self.story.append(Spacer(1, 12))
@@ -181,16 +181,18 @@ class PDFCotizacion(PDFBase):
 
         t.setStyle(TableStyle([('BOX', (0,0), (-1,-1), 0.25, colors.black),
                                ('ALIGN', (0, 0), (-1, 0), "CENTER"),
-                               ('BACKGROUND', (0, 0), (-1, 0), colors.grey),
+                               ('BACKGROUND', (0, 0), (-1, 0), colors.lightgrey),
                                ('ALIGN', (-3, 0), (-1, -1), "RIGHT"),
                                ('SPAN',(0, -1),(-3, -1)),
                                 ]))
         self.story.append(t)
+        self.story.append(Spacer(1, 24))
 
     def makeObservaciones(self):
         # self.story.append(FrameBreak())
         text = "OBSERVACIONES"
         ptext = '<font size = 10> <b> %s </b></font>'%text
+
         self.story.append(Paragraph(ptext, self.styles["Center"]))
         self.story.append(Spacer(1, 6))
 
@@ -293,8 +295,8 @@ class PDFReporte(PDFBase):
                                ('FONTSIZE', (0, 1), (0, 1), 12),
                                ('ALIGN', (0, 0), (-1, -1), "CENTER"),
                                ('VALIGN', (0, 0), (-1, -1), "MIDDLE"),
-                               ('BACKGROUND', (0, 0), (1, 0), colors.grey),
-                               ('BACKGROUND', (1, 2), (1, 2), colors.grey)
+                               ('BACKGROUND', (0, 0), (1, 0), colors.lightgrey),
+                               ('BACKGROUND', (1, 2), (1, 2), colors.lightgrey)
                                 ]))
 
         self.story.append(Spacer(1, 12))
@@ -308,7 +310,7 @@ class PDFReporte(PDFBase):
         t.setStyle(TableStyle([('BOX', (0,0), (-1,-1), 0.25, colors.black),
                                ('ALIGN', (0, 0), (-1, 0), "CENTER"),
                                ('ALIGN', (3, 0), (-1, -1), "CENTER"),
-                               ('BACKGROUND', (0, 0), (-1, 0), colors.grey),
+                               ('BACKGROUND', (0, 0), (-1, 0), colors.lightgrey),
                                ('ALIGN', (-3, 1), (-1, -1), "RIGHT"),
                                 ]))
         self.story.append(t)
@@ -326,7 +328,7 @@ class PDFReporte(PDFBase):
                                ('ALIGN', (0, 0), (-1, 0), "CENTER"),
                                ('ALIGN', (0, 1), (0, -1), "LEFT"),
                                ('ALIGN', (-2, 1), (-1, -1), "RIGHT"),
-                               ('BACKGROUND', (0, 0), (-1, 0), colors.grey),
+                               ('BACKGROUND', (0, 0), (-1, 0), colors.lightgrey),
                                 ]))
 
         self.story.append(t)

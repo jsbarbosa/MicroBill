@@ -170,7 +170,7 @@ class Cotizacion(object):
                     usuario.getNombre(), usuario.getCorreo(), usuario.getTelefono(),
                     usuario.getInstitucion(), usuario.getInterno(), usuario.getResponsable(),
                     self.getMuestra(), self.getServicios()[0].equipo, "%d %%"%self.getEstado(),
-                    self.isPagoStr(), self.getReferenciaPago(), "{:,}".format(self.getTotal())]
+                    self.isPagoStr(), self.getReferenciaPago(), usuario.getPago(), "{:,}".format(self.getTotal())]
 
         REGISTRO_DATAFRAME.loc[last] = fields
 
@@ -285,7 +285,11 @@ class Usuario(object):
         fields = []
         for key in CLIENTES_DATAFRAME.keys():
             key = unidecode(key)
-            fields.append(eval("self.get%s()"%key))
+            try:
+                fields.append(eval("self.get%s()"%key))
+            except: pass
+
+        fields.append(self.getPago())
 
         CLIENTES_DATAFRAME.loc[last] = fields
         CLIENTES_DATAFRAME = CLIENTES_DATAFRAME.drop_duplicates("Nombre", "last")

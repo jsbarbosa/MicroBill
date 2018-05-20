@@ -3,12 +3,21 @@ import smtplib
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 from email.mime.application import MIMEApplication
-from config import SERVER, PORT, REPORTE_MENSAJE, REPORTE_SUBJECT, REQUEST_SUBJECT, REQUEST_MENSAJE
+from config import SERVER, PORT, REPORTE_MENSAJE, REPORTE_SUBJECT, REQUEST_SUBJECT, REQUEST_MENSAJE, DEPENDENCIAS
 from config import COTIZACION_MENSAJE_RECIBO, COTIZACION_MENSAJE_FACTURA, COTIZACION_MENSAJE_TRANSFERENCIA
 from config import COTIZACION_SUBJECT_RECIBO, COTIZACION_SUBJECT_FACTURA, COTIZACION_SUBJECT_TRANSFERENCIA
 from login import *
 
 import constants
+
+dependencias = ("\n" + "\n".join(DEPENDENCIAS)).title()
+
+dependencias = dependencias.replace("De", "de")
+
+COTIZACION_MENSAJE_RECIBO = (COTIZACION_MENSAJE_RECIBO + dependencias).replace("\n", "<br>")
+COTIZACION_MENSAJE_FACTURA = (COTIZACION_MENSAJE_FACTURA + dependencias).replace("\n", "<br>")
+COTIZACION_MENSAJE_TRANSFERENCIA = (COTIZACION_MENSAJE_TRANSFERENCIA + dependencias).replace("\n", "<br>")
+
 
 CORREO = None
 
