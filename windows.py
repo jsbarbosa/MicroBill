@@ -14,11 +14,6 @@ import psutil
 from subprocess import Popen
 from threading import Thread
 
-# a = list(psutil.win_service_iter())
-#
-# a = psutil.pids()
-#
-
 class Table(QtWidgets.QTableWidget):
     HEADER = ['Código', 'Descripción', 'Cantidad', 'Valor Unitario', 'Valor Total']
     def __init__(self, parent, rows = 25, cols = 5):
