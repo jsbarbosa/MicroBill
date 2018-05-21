@@ -7,8 +7,7 @@ TERMINOS_Y_CONDICIONES = ["Para usuarios internos favor realizar el traslado al 
                         "La Universidad no cobra IVA por ser una Institución de educación superior sin ánimo de lucro (Art. 92 de la ley 30 de 1992).",
 			             ]
 
-CONFIDENCIALIDAD = "Para asegurar la confidencialidad de cada individuo se utilizan códigos especiales de identificación. Es decir en lugar de utilizar el nombre y apellidos reales, o incluso el registro de la institución, se asignan otros códigos para su identificación. Por otro lado, el número de personas con acceso a dicha información es limitado. Generalmente se utilizan contraseñas personales para poder acceder a las bases de datos. Algunas de las bases de datos computarizadas pueden registrar quienes accedieron a la base y que información obtuvieron. Por último, los registros de papel se mantienen en un lugar cerrado y protegido."
-
+CONFIDENCIALIDAD = "El contratista se obliga a respetar el carácter confidencial de este documento y de la información, condiciones y documentos relacionados con el mismo, de conformidad con las normas constitucionales y legales aplicables. En consecuencia, el contratista se compromete a no publicar, difundir, comentar o analizar frente a terceros, copiar, reproducir o hacer uso diferente al acordado, de la información que el centro de microscopia le entregue en este documento, ya sea de forma impresa, electrónica, verbal o de cualquier otra manera, o de aquella que el contratista llegue a conocer, teniendo en cuenta que dicha información tiene como finalidad exclusiva, permitir y facilitar la debida prestación de los servicios solicitados."
 CENTRO = "Centro de Microscopía"
 
 DEPENDENCIAS = [CENTRO.upper(),
