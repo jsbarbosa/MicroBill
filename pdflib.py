@@ -32,56 +32,62 @@ class PDFBase():
         self.styles.add(ParagraphStyle(name = 'Center', alignment = TA_CENTER))
         self.styles.add(ParagraphStyle(name = 'Justify', alignment = TA_JUSTIFY))
 
+        border = ParagraphStyle(name = 'Border', alignment = TA_JUSTIFY)
+        border.borderWidth = 0.5
+        border.borderColor = colors.black
+        border.borderRadius = 2
+        border.borderPadding = 3
+        self.styles.add(border)
+
         self.story = []
 
     def makeInfo(self):
         usuario = self.cotizacion.getUsuario()
-
-        # self.story.append(FrameBreak())
-
         ptext = '<font size = 12><b>%s</b></font>' % "%s - UNIVERSIDAD DE LOS ANDES"%CENTRO.upper()
         self.story.append(Paragraph(ptext, self.styles["Center"]))
 
         self.story.append(Spacer(1, 12))
 
-        ptext = '<font size = 10>'
-        ptext += "<b>%s</b>" % "Nombre:"
-        ptext += "&nbsp %s" % usuario.getNombre()
+        h = 3
+        c1 = 2.2*cm
+        c2 = 9*cm
+        c3 = 2.5*cm
+        c4 = self.doc.width - (c1 + c2 + c3)
+        data = [[Paragraph("<b>Nombre:</b>", self.styles["Normal"]),
+            Paragraph(usuario.getNombre(), self.styles["Border"]),
+            Paragraph("<b>Institución:</b>", self.styles["Normal"]),
+            Paragraph(usuario.getInstitucion(), self.styles["Border"])
+            ]]
+        t = Table(data, [c1, c2, c3, c4], hAlign='LEFT')
+        self.story.append(Spacer(1, h))
+        self.story.append(t)
 
-        ptext += "&nbsp &nbsp &nbsp &nbsp <b>%s</b>" % "Institución:"
-        ptext += "&nbsp %s" %  usuario.getInstitucion()
+        data = [[Paragraph("<b>Nit/C.C.:</b>", self.styles["Normal"]),
+            Paragraph(usuario.getDocumento(), self.styles["Border"]),
+            Paragraph("<b>Teléfono:</b>", self.styles["Normal"]),
+            Paragraph(usuario.getTelefono(), self.styles["Border"])
+            ]]
+        t = Table(data, [c1, c2, c3, c4], hAlign='LEFT')
+        self.story.append(Spacer(1, h))
+        self.story.append(t)
 
-        ptext += "&nbsp &nbsp &nbsp &nbsp <b>%s</b>" % "Documento (Nit/C.C.):"
-        ptext += "&nbsp %s" % usuario.getDocumento()
-        ptext += '</font>'
+        data = [[Paragraph("<b>Dirección:</b>", self.styles["Normal"]),
+            Paragraph(usuario.getDireccion(), self.styles["Border"]),
+            Paragraph("<b>Ciudad:</b>", self.styles["Normal"]),
+            Paragraph(usuario.getCiudad(), self.styles["Border"]),
+            ]]
+        t = Table(data, [c1, c2, c3, c4], hAlign='LEFT')
+        self.story.append(Spacer(1, h))
+        self.story.append(t)
 
-        self.story.append(Paragraph(ptext, self.styles["Justify"]))
-        self.story.append(Spacer(1, 6))
-
-        ptext = '<font size = 10>'
-        ptext += "<b>%s</b>" % "Teléfono:"
-        ptext += "&nbsp %s" % usuario.getTelefono()
-
-        ptext += "&nbsp &nbsp &nbsp &nbsp <b>%s</b>" % "Dirección:"
-        ptext += "&nbsp %s" % usuario.getDireccion()
-
-        ptext += "&nbsp &nbsp &nbsp &nbsp <b>%s</b>" % "Ciudad:"
-        ptext += "&nbsp %s" % usuario.getCiudad()
-        ptext += '</font>'
-
-        self.story.append(Paragraph(ptext, self.styles["Justify"]))
-
-        self.story.append(Spacer(1, 6))
-
-        ptext = '<font size = 10>'
-        ptext += "<b>%s</b>" % "Correo:"
-        ptext += "&nbsp %s" % usuario.getCorreo()
-
-        ptext += "&nbsp &nbsp &nbsp &nbsp <b>%s</b>" % "Tipo de Muestra:"
-        ptext += "&nbsp %s" % self.cotizacion.getMuestra()
-        ptext += '</font>'
-
-        self.story.append(Paragraph(ptext, self.styles["Justify"]))
+        data = [[Paragraph("<b>Correo:</b>", self.styles["Normal"]),
+            Paragraph(usuario.getCorreo(), self.styles["Border"]),
+            Paragraph("<b>Muestra:</b>", self.styles["Normal"]),
+            Paragraph(self.cotizacion.getMuestra(), self.styles["Border"]),
+            ]]
+        t = Table(data, [c1, c2, c3, c4], hAlign='LEFT')
+        self.story.append(Spacer(1, h))
+        self.story.append(t)
 
     def makeEnd(self):
         for i in range(len(DEPENDENCIAS)):
@@ -189,7 +195,6 @@ class PDFCotizacion(PDFBase):
         self.story.append(Spacer(1, 24))
 
     def makeObservaciones(self):
-        # self.story.append(FrameBreak())
         text = "OBSERVACIONES"
         ptext = '<font size = 10> <b> %s </b></font>'%text
 
@@ -202,28 +207,31 @@ class PDFCotizacion(PDFBase):
                 ("Proyecto", usuario.getProyecto()),
                 ("Código", usuario.getCodigo())]
 
+        ptext = ""
+
         if usuario.getInterno() == "Interno":
             for item in text:
-                ptext = '<font size = 9> <b>%s:</b> <u>%s</u></font>'%item
-                self.story.append(Paragraph(ptext, self.styles["Normal"]))
+                ptext += '<font size = 9> <b>%s:</b> <u>%s</u></font> <br/>'%item
+
+        self.story.append(Paragraph(ptext, self.styles["Border"]))
 
         self.story.append(Spacer(1, 24))
 
     def makeTerminos(self):
-        # self.story.append(FrameBreak())
-
         text = "TÉRMINOS Y CONDICIONES"
         ptext = '<font size = 10> <b> %s </b></font>'%text
         self.story.append(Paragraph(ptext, self.styles["Center"]))
         self.story.append(Spacer(1, 6))
 
+        ptext = ""
+
         for i in range(len(TERMINOS_Y_CONDICIONES)):
             text = TERMINOS_Y_CONDICIONES[i]
-            ptext = '<font size = 8>%d. %s</font>'%(i + 1, text)
-            self.story.append(Paragraph(ptext, self.styles["Justify"]))
+            ptext += '<font size = 8>%d. %s</font><br/>'%(i + 1, text)
+            # self.story.append(Paragraph(ptext, self.styles["Justify"]))
 
-        ptext = '<font size = 8>%d.</font> <font size = 6>%s</font>'%(i + 2, CONFIDENCIALIDAD)
-        self.story.append(Paragraph(ptext, self.styles["Justify"]))
+        ptext += '<font size = 8>%d.</font> <font size = 6>%s</font>'%(i + 2, CONFIDENCIALIDAD)
+        self.story.append(Paragraph(ptext, self.styles["Border"]))
         self.story.append(Spacer(1, 24))
 
     def doAll(self):
