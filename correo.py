@@ -6,6 +6,8 @@ from email.mime.application import MIMEApplication
 from config import SERVER, PORT, REPORTE_MENSAJE, REPORTE_SUBJECT, REQUEST_SUBJECT, REQUEST_MENSAJE, DEPENDENCIAS
 from config import COTIZACION_MENSAJE_RECIBO, COTIZACION_MENSAJE_FACTURA, COTIZACION_MENSAJE_TRANSFERENCIA
 from config import COTIZACION_SUBJECT_RECIBO, COTIZACION_SUBJECT_FACTURA, COTIZACION_SUBJECT_TRANSFERENCIA
+from config import GESTOR_RECIBO_CORREO, GESTOR_RECIBO_SUBJECT, GESTOR_RECIBO_MENSAJE
+from config import GESTOR_FACTURA_CORREO, GESTOR_FACTURA_SUBJECT, GESTOR_FACTURA_MENSAJE
 from login import *
 
 import constants
@@ -18,6 +20,11 @@ COTIZACION_MENSAJE_RECIBO = (COTIZACION_MENSAJE_RECIBO + dependencias).replace("
 COTIZACION_MENSAJE_FACTURA = (COTIZACION_MENSAJE_FACTURA + dependencias).replace("\n", "<br>")
 COTIZACION_MENSAJE_TRANSFERENCIA = (COTIZACION_MENSAJE_TRANSFERENCIA + dependencias).replace("\n", "<br>")
 
+COTIZACION_MENSAJE_TRANSFERENCIA = (COTIZACION_MENSAJE_TRANSFERENCIA + dependencias).replace("\n", "<br>")
+REQUEST_MENSAJE = (REQUEST_MENSAJE + dependencias).replace("\n", "<br>")
+
+GESTOR_RECIBO_MENSAJE = (GESTOR_RECIBO_MENSAJE + dependencias).replace("\n", "<br>")
+GESTOR_FACTURA_MENSAJE = (GESTOR_FACTURA_MENSAJE + dependencias).replace("\n", "<br>")
 
 CORREO = None
 
@@ -43,9 +50,10 @@ def sendEmail(to, subject, text, attachments = []):
 
     for item in attachments:
         name = os.path.join(constants.PDF_DIR, item + ".pdf")
+        item = os.path.basename(item + ".pdf")
         with open(name, "rb") as file:
             app = MIMEApplication(file.read())
-            app.add_header('Content-Disposition', 'attachment', filename = item + ".pdf")
+            app.add_header('Content-Disposition', 'attachment', filename = item)
             msg.attach(app)
 
     to = [to, FROM]
@@ -71,3 +79,12 @@ def sendRegistro(to, file_name):
 
 def sendRequest(to):
     sendEmail(to, REQUEST_SUBJECT, REQUEST_MENSAJE)
+
+def sendGestorRecibo(file_name):
+    sendEmail(GESTOR_RECIBO_CORREO, GESTOR_RECIBO_SUBJECT + " - %s"%file_name, GESTOR_RECIBO_MENSAJE, [file_name])
+
+def sendGestorFactura(file_name, orden_name):
+    orden_name = orden_name.split(".")[:-1]
+    if type(orden_name) is list:
+        orden_name = ".".join(orden_name)
+    sendEmail(GESTOR_FACTURA_CORREO, GESTOR_FACTURA_SUBJECT + " - %s"%file_name, GESTOR_FACTURA_MENSAJE, [file_name, orden_name])

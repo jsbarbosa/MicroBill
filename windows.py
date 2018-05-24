@@ -249,12 +249,12 @@ class ChangeCotizacion(QtWidgets.QDialog):
         valor_label = QtWidgets.QLabel("Valor:")
         self.valor_widget = QtWidgets.QLabel("")
 
-        self.form_layout.addRow(cotizacion_label, self.cotizacion_widget)
         self.form_layout.addRow(fecha_label, self.fecha_widget)
         self.form_layout.addRow(nombre_label, self.nombre_widget)
         self.form_layout.addRow(correo_label, self.correo_widget)
         self.form_layout.addRow(equipo_label, self.equipo_widget)
         self.form_layout.addRow(valor_label, self.valor_widget)
+        self.form_layout.addRow(cotizacion_label, self.cotizacion_widget)
 
         self.layout.addWidget(self.form)
 
@@ -1254,6 +1254,139 @@ class BuscarWindow(QtWidgets.QMainWindow):
         self.is_closed = True
         event.accept()
 
+class GestorWindow(QtWidgets.QMainWindow):
+    FIELDS = ["Cotización", "Fecha", "Nombre", "Correo", "Equipo", "Valor", "Tipo de Pago"]
+    WIDGETS = ["cotizacion", "fecha", "nombre", "correo", "equipo", "valor", "tipo"]
+    def __init__(self, parent = None):
+        super(QtWidgets.QMainWindow, self).__init__(parent)
+        self.setWindowTitle("Enviar correo a Gestor")
+
+        wid = QtWidgets.QWidget(self)
+        self.setCentralWidget(wid)
+        self.is_closed = True
+        self.layout = QtWidgets.QVBoxLayout(wid)
+
+        self.form = QtWidgets.QFrame()
+        self.form_layout = QtWidgets.QFormLayout(self.form)
+
+        cotizacion_label = QtWidgets.QLabel("Cotización:")
+        self.cotizacion_widget = AutoLineEdit("Cotización", self)
+
+        fecha_label = QtWidgets.QLabel("Fecha:")
+        self.fecha_widget = QtWidgets.QLabel("")
+
+        nombre_label = QtWidgets.QLabel("Nombre:")
+        self.nombre_widget = QtWidgets.QLabel("")
+
+        correo_label = QtWidgets.QLabel("Correo:")
+        self.correo_widget = QtWidgets.QLabel("")
+
+        equipo_label = QtWidgets.QLabel("Equipo:")
+        self.equipo_widget = QtWidgets.QLabel("")
+
+        valor_label = QtWidgets.QLabel("Valor:")
+        self.valor_widget = QtWidgets.QLabel("")
+
+        tipo_label = QtWidgets.QLabel("Tipo de Pago:")
+        self.tipo_widget = QtWidgets.QLabel("")
+
+        self.form_layout.addRow(fecha_label, self.fecha_widget)
+        self.form_layout.addRow(nombre_label, self.nombre_widget)
+        self.form_layout.addRow(correo_label, self.correo_widget)
+        self.form_layout.addRow(equipo_label, self.equipo_widget)
+        self.form_layout.addRow(valor_label, self.valor_widget)
+        self.form_layout.addRow(tipo_label, self.tipo_widget)
+        self.form_layout.addRow(cotizacion_label, self.cotizacion_widget)
+
+        self.buttons = QtWidgets.QDialogButtonBox(QtWidgets.QDialogButtonBox.Ok,
+            QtCore.Qt.Horizontal, self)
+
+        self.layout.addWidget(self.form)
+        self.layout.addWidget(self.buttons)
+        self.buttons.accepted.connect(self.accept)
+        self.layout.addWidget(self.buttons)
+
+        self.cotizacion_widget.textChanged.connect(self.autoCompletar)
+
+        self.setFixedSize(self.layout.sizeHint())
+
+    def updateAutoCompletar(self):
+        self.cotizacion_widget.update()
+
+    def autoCompletar(self, text):
+        if text != "":
+            registro = objects.REGISTRO_DATAFRAME[objects.REGISTRO_DATAFRAME["Cotización"] == text]
+            if len(registro):
+                for (field, widgetT) in zip(self.FIELDS, self.WIDGETS):
+                        val = str(registro[field].values[0])
+                        if val == "nan": val = ""
+                        widget = eval("self.%s_widget"%widgetT)
+                        widget.setText(val)
+
+    def sendCorreo(self):
+        file_name = self.cotizacion_widget.text()
+        pago = self.tipo_widget.text()
+        if pago == "Factura":
+            # options = QtWidgets.QFileDialog.Options()
+            # options |= QtWidgets.QFileDialog.DontUseNativeDialog
+            fileName, _ = QtWidgets.QFileDialog.getOpenFileName(self, "Orden de servicios", "", "Portable Document Format (*.pdf)")
+            if fileName:
+                cwd = os.getcwd()
+                if cwd[0] == "\\":
+                    pre = cwd.replace("\\\\", "").split("\\")[0]
+                    f = "/".join(fileName.split("/")[1:])
+                    fileName = "//" + pre + "/" + f
+                    # quit_msg = "No es posible grabar desde un computador en red."
+                    # QtWidgets.QMessageBox.warning(self, 'Error',
+                    #                  quit_msg, QtWidgets.QMessageBox.Ok)
+                print(fileName)
+                self.dialog = CorreoDialog((file_name, fileName), target = correo.sendGestorFactura)
+                self.dialog.start()
+                self.dialog.exec_()
+                if self.dialog.exception != None:
+                    raise(self.dialog.exception)
+                else: self.clean()
+        elif pago == "Recibo":
+            self.dialog = CorreoDialog((file_name, ), target = correo.sendGestorRecibo)
+            self.dialog.start()
+            self.dialog.exec_()
+            if self.dialog.exception != None:
+                raise(self.dialog.exception)
+            else: self.clean()
+        else:
+            raise(Exception("Los tipos válidos corresponden con: Recibo y Factura."))
+
+    def clean(self):
+        self.cotizacion_widget.blockSignals(True)
+        for widgetT in self.WIDGETS:
+            widget = eval("self.%s_widget"%widgetT)
+            widget.setText("")
+        self.cotizacion_widget.blockSignals(True)
+
+    def accept(self):
+        tipo = self.tipo_widget.text()
+        try:
+            if tipo != '':
+                self.sendCorreo()
+            else:
+                raise(Exception("La cotización actual no tiene tipo."))
+        except Exception as e:
+            self.errorWindow(e)
+
+    def errorWindow(self, exception):
+        error_text = str(exception)
+        msg = QtWidgets.QMessageBox()
+        msg.setIcon(QtWidgets.QMessageBox.Warning)
+        msg.setText(error_text)
+        msg.setWindowTitle("Error")
+        msg.setStandardButtons(QtWidgets.QMessageBox.Ok)
+        msg.exec_()
+
+    def closeEvent(self, event):
+        self.is_closed = True
+        self.clean()
+        event.accept()
+
 class MainWindow(QtWidgets.QMainWindow):
     def __init__(self, parent = None):
         super(QtWidgets.QMainWindow, self).__init__(parent)
@@ -1269,23 +1402,27 @@ class MainWindow(QtWidgets.QMainWindow):
         self.descontar_widget = QtWidgets.QPushButton("Descontar")
         self.buscar_widget = QtWidgets.QPushButton("Buscar")
         self.open_widget = QtWidgets.QPushButton("Abrir PDFs")
+        self.gestor_widget = QtWidgets.QPushButton("A Gestor...")
 
         self.layout.addWidget(self.cotizacion_widget, 0, 0)
         self.layout.addWidget(self.descontar_widget, 0, 1)
         self.layout.addWidget(self.request_widget, 2, 0)
         self.layout.addWidget(self.buscar_widget, 2, 1)
         self.layout.addWidget(self.open_widget, 3, 1)
+        self.layout.addWidget(self.gestor_widget, 4, 1)
 
         self.request_widget.clicked.connect(self.requestHandler)
         self.cotizacion_widget.clicked.connect(self.cotizacionHandler)
         self.descontar_widget.clicked.connect(self.descontarHandler)
         self.buscar_widget.clicked.connect(self.buscarHandler)
         self.open_widget.clicked.connect(self.openHandler)
+        self.gestor_widget.clicked.connect(self.gestorHandler)
 
         self.request_window = RequestWindow()
         self.cotizacion_window = CotizacionWindow()
         self.descontar_window = DescontarWindow()
         self.buscar_window = BuscarWindow()
+        self.gestor_window = GestorWindow()
 
         self.centerOnScreen()
 
@@ -1304,6 +1441,7 @@ class MainWindow(QtWidgets.QMainWindow):
             self.cotizacion_window.updateAutoCompletar()
             self.cotizacion_window.setLastCotizacion()
             self.descontar_window.updateDataFrames()
+            self.gestor_window.updateAutoCompletar()
             self.buscar_window.updateAutoCompletar()
             self.buscar_window.update()
 
@@ -1344,10 +1482,16 @@ class MainWindow(QtWidgets.QMainWindow):
         except FileNotFoundError as e:
             print(e)
 
+    def gestorHandler(self):
+        self.gestor_window.is_closed = False
+        self.gestor_window.setWindowState(self.gestor_window.windowState() & ~QtCore.Qt.WindowMinimized | QtCore.Qt.WindowActive)
+        self.gestor_window.activateWindow()
+        self.gestor_window.show()
+
     def closeEvent(self, event):
-        windows = [self.cotizacion_window, self.descontar_window, self.request_window, self.buscar_window]
+        windows = [self.cotizacion_window, self.descontar_window, self.request_window, self.buscar_window, self.gestor_window]
         suma = sum([window.is_closed for window in windows])
-        if suma == 4:
+        if suma == len(windows):
             event.accept()
         else:
             quit_msg = "Existen ventanas sin cerrar.\n¿Está seguro que desea cerrar el programa?"

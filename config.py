@@ -42,5 +42,14 @@ REPORTE_MENSAJE = "REPORTE_MENSAJE"
 REQUEST_SUBJECT = "Solicitud de información para cotización"
 REQUEST_MENSAJE = "REQUEST_MENSAJE"
 
+GESTOR_RECIBO_CORREO = "js.barbosa10@uniandes.edu.co"
+GESTOR_FACTURA_CORREO = "js.barbosa10@uniandes.edu.co"
+
+GESTOR_RECIBO_SUBJECT = ""
+GESTOR_RECIBO_MENSAJE = ""
+
+GESTOR_FACTURA_SUBJECT = ""
+GESTOR_FACTURA_MENSAJE = ""
+
 SERVER = "smtp-mail.outlook.com"
 PORT = 587
