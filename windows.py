@@ -14,6 +14,8 @@ import psutil
 from subprocess import Popen
 from threading import Thread
 
+config.ADMINS = [""] + config.ADMINS
+
 class Table(QtWidgets.QTableWidget):
     HEADER = ['Código', 'Descripción', 'Cantidad', 'Valor Unitario', 'Valor Total']
     def __init__(self, parent, rows = 25, cols = 5):
@@ -363,8 +365,6 @@ class CotizacionWindow(QtWidgets.QMainWindow):
     FIELDS = ["Nombre", "Correo", "Teléfono", "Institución", "Documento", "Dirección", "Ciudad", "Interno", "Responsable", "Proyecto", "Código", "Muestra"]
     WIDGETS = ["nombre", "correo", "telefono", "institucion", "documento", "direccion", "ciudad", "interno", "responsable", "proyecto", "codigo", "muestra"]
 
-    REGISTRO_FIELDS = ["Cotización", "Fecha", "Nombre", "Correo", "Teléfono", "Institución", "Interno", "Responsable", "Muestra", "Equipo", "Valor"]
-
     AUTOCOMPLETE_FIELDS = ["Nombre", "Correo", "Documento", "Teléfono"]
     AUTOCOMPLETE_WIDGETS = ["nombre", "correo", "documento", "telefono"]
     def __init__(self, parent = None):
@@ -472,6 +472,15 @@ class CotizacionWindow(QtWidgets.QMainWindow):
 
         self.table = Table(self)
 
+        self.elaborado_frame = QtWidgets.QFrame()
+        self.elaborado_layout = QtWidgets.QHBoxLayout(self.elaborado_frame)
+
+        self.elaborado_label = QtWidgets.QLabel("Elaborado por:")
+        self.elaborado_widget = QtWidgets.QComboBox()
+        self.elaborado_widget.addItems(config.ADMINS)
+        self.elaborado_layout.addWidget(self.elaborado_label)
+        self.elaborado_layout.addWidget(self.elaborado_widget)
+
         self.button_frame_layout = QtWidgets.QHBoxLayout(self.button_frame)
         self.notificar_widget = QtWidgets.QCheckBox("Notificar")
         self.notificar_widget.setCheckState(2)
@@ -492,11 +501,13 @@ class CotizacionWindow(QtWidgets.QMainWindow):
         self.cotizacion_frame.setSizePolicy(sizePolicy)
         self.total_frame.setSizePolicy(sizePolicy)
         self.button_frame.setSizePolicy(sizePolicy)
+        self.elaborado_frame.setSizePolicy(sizePolicy)
 
         self.cotizacion_frame_layout.setAlignment(QtCore.Qt.AlignRight)
         self.total_frame_layout.setAlignment(QtCore.Qt.AlignRight)
         self.button_frame_layout.setAlignment(QtCore.Qt.AlignRight)
         self.verticalLayout.setAlignment(QtCore.Qt.AlignRight)
+        self.elaborado_layout.setAlignment(QtCore.Qt.AlignRight)
 
         self.total_frame_layout.addWidget(total_label)
         self.total_frame_layout.addWidget(self.total_widget)
@@ -506,6 +517,7 @@ class CotizacionWindow(QtWidgets.QMainWindow):
         self.verticalLayout.addWidget(self.form_frame)
         self.verticalLayout.addWidget(self.table)
         self.verticalLayout.addWidget(self.total_frame)
+        self.verticalLayout.addWidget(self.elaborado_frame)
         self.verticalLayout.addWidget(self.button_frame)
 
         self.setAutoCompletar()
@@ -601,6 +613,7 @@ class CotizacionWindow(QtWidgets.QMainWindow):
         self.notificar_widget.setChecked(True)
         self.cotizacion.setServicios([])
         self.total_widget.setText("")
+        self.elaborado_label.setText("Elaborado por:")
         self.autocompletar_widget.setChecked(True)
 
     def verCodigos(self):
@@ -680,6 +693,11 @@ class CotizacionWindow(QtWidgets.QMainWindow):
 
             if len(self.getServicios()) == 0:
                 raise(Exception("No existen servicios cotizados."))
+
+            if self.cotizacion.getElaborado() != "":
+                self.cotizacion.setModificado(self.elaborado_widget.currentText())
+            else:
+                self.cotizacion.setElaborado(self.elaborado_widget.currentText())
 
             usuario = objects.Usuario(**dic)
             self.cotizacion.setUsuario(usuario)
@@ -767,6 +785,8 @@ class CotizacionWindow(QtWidgets.QMainWindow):
             self.pago_widget.setCurrentText(user.getPago())
             self.muestra_widget.setText(self.cotizacion.getMuestra())
             self.numero_cotizacion.setText(self.cotizacion.getNumero())
+            self.elaborado_label.setText("Modificado por:")
+            self.elaborado_widget.setCurrentIndex(0)
             self.setTotal()
             self.table.setFromCotizacion()
 
@@ -815,6 +835,7 @@ class CotizacionWindow(QtWidgets.QMainWindow):
 
     def closeEvent(self, event):
         self.is_closed = True
+        self.ver_dialog.close()
         event.accept()
 
 class NoNotificacion(QtWidgets.QMessageBox):
@@ -925,13 +946,15 @@ class DescontarWindow(QtWidgets.QMainWindow):
         servicios = self.cotizacion.getServicios()
         try:
             if len(servicios):
+                if self.check_widget != None:
+                    if self.check_widget.isChecked():
+                        self.cotizacion.setPago(self.referencia_widget.text())
+                        self.cotizacion.setAplicado(self.elaborado_widget.currentText())
+
                 for i in range(len(self.floats_spins)):
                     val = self.floats_spins[i].value()
                     servicio = servicios[i]
                     servicio.descontar(val)
-                if self.check_widget != None:
-                    if self.check_widget.isChecked():
-                        self.cotizacion.setPago(self.referencia_widget.text())
                 self.cotizacion.save(to_cotizacion = False)
                 self.cotizacion.toRegistro()
                 self.sendCorreo()
@@ -952,7 +975,6 @@ class DescontarWindow(QtWidgets.QMainWindow):
                         if val == "nan": val = ""
                         widget = eval("self.%s_widget"%widgetT)
                         widget.setText(val)
-
             self.cleanWidgets()
             try:
                 self.cotizacion = self.cotizacion.load(text)
@@ -985,10 +1007,16 @@ class DescontarWindow(QtWidgets.QMainWindow):
                 self.check_widget = QtWidgets.QCheckBox("Aplicar pago")
                 self.check_label = QtWidgets.QLabel("Referencia:")
                 self.referencia_widget = QtWidgets.QLineEdit()
+                self.elaborado_label = QtWidgets.QLabel("Aplicado por:")
+                self.elaborado_widget = QtWidgets.QComboBox()
+
+                self.elaborado_widget.addItems(config.ADMINS)
 
                 self.pago_layout.addWidget(self.check_widget, 0, 0)
                 self.pago_layout.addWidget(self.check_label, 1, 0)
                 self.pago_layout.addWidget(self.referencia_widget, 1, 1)
+                self.pago_layout.addWidget(self.elaborado_label, 2, 0)
+                self.pago_layout.addWidget(self.elaborado_widget, 2, 1)
 
                 self.check_widget.setTristate(False)
                 self.referencia_widget.setText(self.cotizacion.getReferenciaPago())
@@ -1000,9 +1028,10 @@ class DescontarWindow(QtWidgets.QMainWindow):
                 else:
                     self.check_widget.setEnabled(False)
                     self.referencia_widget.setEnabled(False)
+                    self.elaborado_widget.setEnabled(False)
 
                 h = self.init_size[1]
-                h += 18*(len(self.cotizacion.getServicios()) + 2)
+                h += 18*(len(self.cotizacion.getServicios()) + 4)
                 self.setFixedHeight(h)
 
     def cleanWidgets(self):
@@ -1016,13 +1045,19 @@ class DescontarWindow(QtWidgets.QMainWindow):
             self.pago_layout.removeWidget(self.check_widget)
             self.pago_layout.removeWidget(self.check_label)
             self.pago_layout.removeWidget(self.referencia_widget)
+            self.pago_layout.removeWidget(self.elaborado_label)
+            self.pago_layout.removeWidget(self.elaborado_widget)
             self.check_widget.deleteLater()
             self.check_label.deleteLater()
             self.referencia_widget.deleteLater()
+            self.elaborado_label.deleteLater()
+            self.elaborado_widget.deleteLater()
 
             self.check_widget = None
             self.check_label = None
             self.referencia_widget = None
+            self.elaborado_label = None
+            self.elaborado_widget = None
 
         self.floats_labels = []
         self.floats_spins = []
@@ -1032,9 +1067,12 @@ class DescontarWindow(QtWidgets.QMainWindow):
     def checkHandler(self, state):
         if state:
             self.referencia_widget.setEnabled(True)
+            self.elaborado_widget.setEnabled(True)
         else:
             self.referencia_widget.setText("")
+            self.elaborado_widget.setCurrentIndex(0)
             self.referencia_widget.setEnabled(False)
+            self.elaborado_widget.setEnabled(False)
 
     def errorWindow(self, exception):
         error_text = str(exception)
@@ -1333,19 +1371,19 @@ class GestorWindow(QtWidgets.QMainWindow):
             if fileName:
                 cwd = os.getcwd()
                 if cwd[0] == "\\":
-                    pre = cwd.replace("\\\\", "").split("\\")[0]
-                    f = "/".join(fileName.split("/")[1:])
-                    fileName = "//" + pre + "/" + f
-                    # quit_msg = "No es posible grabar desde un computador en red."
-                    # QtWidgets.QMessageBox.warning(self, 'Error',
-                    #                  quit_msg, QtWidgets.QMessageBox.Ok)
-                print(fileName)
-                self.dialog = CorreoDialog((file_name, fileName), target = correo.sendGestorFactura)
-                self.dialog.start()
-                self.dialog.exec_()
-                if self.dialog.exception != None:
-                    raise(self.dialog.exception)
-                else: self.clean()
+                    # pre = cwd.replace("\\\\", "").split("\\")[0]
+                    # f = "/".join(fileName.split("/")[1:])
+                    # fileName = "//" + pre + "/" + f
+                    quit_msg = "No es posible leer desde un computador en red."
+                    QtWidgets.QMessageBox.warning(self, 'Error',
+                                     quit_msg, QtWidgets.QMessageBox.Ok)
+                else:
+                    self.dialog = CorreoDialog((file_name, fileName), target = correo.sendGestorFactura)
+                    self.dialog.start()
+                    self.dialog.exec_()
+                    if self.dialog.exception != None:
+                        raise(self.dialog.exception)
+                    else: self.clean()
         elif pago == "Recibo":
             self.dialog = CorreoDialog((file_name, ), target = correo.sendGestorRecibo)
             self.dialog.start()

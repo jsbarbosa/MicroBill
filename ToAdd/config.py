@@ -1,4 +1,6 @@
-﻿"""
+ADMINS = ["Humberto Ibarra", "Monica Lopez", "Juan Camilo Orozco", "Laura Cruz", "Juan Barbosa"]
+
+"""
     PDF
 """
 CODIGO_GESTION = "UA-FM-CM-001"

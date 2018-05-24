@@ -27,6 +27,9 @@ class Cotizacion(object):
         self.is_pago = False
         self.pdf_file_name = ""
         self.referencia_pago = ""
+        self.elaborado_por = ""
+        self.modificado_por = ""
+        self.aplicado_por = ""
         self.setServicios(servicios)
 
     def getUsuario(self):
@@ -77,6 +80,15 @@ class Cotizacion(object):
             total_cotizadas += servicio.getCantidad()
         return int(np.floor(100*usadas/total_cotizadas))
 
+    def getAplicado(self):
+        return self.aplicado_por
+
+    def getElaborado(self):
+        return self.elaborado_por
+
+    def getModificado(self):
+        return self.modificado_por
+
     def setNumero(self, numero):
         self.numero = numero
 
@@ -105,6 +117,18 @@ class Cotizacion(object):
 
     def setFileName(self, name):
         self.pdf_file_name = name
+
+    def setElaborado(self, name):
+        if name != "": self.elaborado_por = name
+        else: raise(Exception("No se especifica quién realiza la cotización."))
+
+    def setModificado(self, name):
+        if name != "": self.modificado_por = name
+        else: raise(Exception("No se especifica quién realiza la modificación."))
+
+    def setAplicado(self, name):
+        if name != "": self.aplicado_por = name
+        else: raise(Exception("No se especifica quién realiza la modificación."))
 
     def removeServicio(self, index):
         del self.servicios[index]
@@ -169,8 +193,8 @@ class Cotizacion(object):
         fields = [self.getNumero(), datetime.now().replace(microsecond = 0),
                     usuario.getNombre(), usuario.getCorreo(), usuario.getTelefono(),
                     usuario.getInstitucion(), usuario.getInterno(), usuario.getResponsable(),
-                    self.getMuestra(), self.getServicios()[0].equipo, "%d %%"%self.getEstado(),
-                    self.isPagoStr(), self.getReferenciaPago(), usuario.getPago(), "{:,}".format(self.getTotal())]
+                    self.getMuestra(), self.getServicios()[0].equipo, self.getElaborado(), self.getModificado(), "%d %%"%self.getEstado(),
+                    self.isPagoStr(), self.getReferenciaPago(), self.getAplicado(), usuario.getPago(), "{:,}".format(self.getTotal())]
 
         REGISTRO_DATAFRAME.loc[last] = fields
 
