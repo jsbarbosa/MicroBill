@@ -30,6 +30,8 @@ Tenga en cuenta las siguientes recomendaciones:
 - Para el día de la sesión es necesario contar con el comprobante de pago.
 
 Quedamos atentos a sus comentarios,
+
+Cordial saludo,
 """
 
 
@@ -45,6 +47,8 @@ Tenga en cuenta las siguientes recomendaciones:
 - Para el día de la sesión es necesario contar con la aprobación del director de departamento y con la evidencia de translado presupuestal, con referencia a la cotización enviada.
 
 Quedamos atentos a sus comentarios,
+
+Cordial saludo,
 """
 
 
@@ -62,6 +66,8 @@ A continuación hacemos envío del estado actual de la cotización, en este docu
 - Un resumen del número de usos, y la cantidad restante que aun puede utilizar.
 
 Quedamos atentos a sus comentarios,
+
+Cordial saludo,
 """
 
 
@@ -89,6 +95,8 @@ Si usted es usuario Uniandes y hace parte de un proyecto dentro de la Universida
 - Nombre/código del proyecto:
 
 Quedamos atentos a sus comentarios,
+
+Cordial saludo,
 """
 
 
@@ -96,11 +104,21 @@ Quedamos atentos a sus comentarios,
 GESTOR_RECIBO_CORREO = "js.barbosa10@uniandes.edu.co"
 GESTOR_FACTURA_CORREO = "js.barbosa10@uniandes.edu.co"
 
-GESTOR_RECIBO_SUBJECT = ""
-GESTOR_RECIBO_MENSAJE = ""
+GESTOR_RECIBO_SUBJECT = "Generación recibo de pago"
+GESTOR_RECIBO_MENSAJE = """Estimado Carlos Julio,
 
-GESTOR_FACTURA_SUBJECT = ""
-GESTOR_FACTURA_MENSAJE = ""
+Por este medio solicitamos la generación del recibo de pago correspondiente a la cotización adjunta.
+
+Cordial saludo,
+"""
+
+GESTOR_FACTURA_SUBJECT = "Generación factura"
+GESTOR_FACTURA_MENSAJE = """Estimada Mercedes,
+
+Por este medio solicitamos la generación de la factura correspondiente a la cotización y orden/aceptación de servicio adjuntas
+
+Cordial saludo,
+"""
 
 
 SERVER = "smtp-mail.outlook.com"
