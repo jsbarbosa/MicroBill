@@ -1,4 +1,4 @@
-"""
+﻿"""
     PDF
 """
 CODIGO_GESTION = "UA-FM-CM-001"
@@ -30,17 +30,66 @@ Tenga en cuenta las siguientes recomendaciones:
 Quedamos atentos a sus comentarios,
 """
 
+
+
+
+
 COTIZACION_SUBJECT_TRANSFERENCIA = COTIZACION_SUBJECT_RECIBO
-COTIZACION_MENSAJE_TRANSFERENCIA = "COTIZACION_MENSAJE_TRANSFERENCIA"
+COTIZACION_MENSAJE_TRANSFERENCIA = """Estimado usuario,
+
+A continuación hacemos envío de la cotización correspondiente a los servicios solicitados.
+
+Tenga en cuenta las siguientes recomendaciones:
+- Para el día de la sesión es necesario contar con la aprobación del director de departamento y con la evidencia de translado presupuestal, con referencia a la cotización enviada.
+
+Quedamos atentos a sus comentarios,
+"""
+
+
+
 
 COTIZACION_SUBJECT_FACTURA = COTIZACION_SUBJECT_RECIBO
 COTIZACION_MENSAJE_FACTURA = COTIZACION_MENSAJE_RECIBO
 
 REPORTE_SUBJECT = "Estado actual"
-REPORTE_MENSAJE = "REPORTE_MENSAJE"
+REPORTE_MENSAJE = """Estimado usuario,
 
-REQUEST_SUBJECT = "Solicitud de información para cotización"
-REQUEST_MENSAJE = "REQUEST_MENSAJE"
+A continuación hacemos envío del estado actual de la cotización, en este documento usted podrá encontrar:
+- Los servicios que fueron cotizados.
+- Las fechas en que estos servicios fueron usados.
+- Un resumen del número de usos, y la cantidad restante que aun puede utilizar.
+
+Quedamos atentos a sus comentarios,
+"""
+
+
+
+
+
+REQUEST_SUBJECT = "Solicitud de información"
+REQUEST_MENSAJE = """Estimado usuario,
+
+Para cotizar los ensayos solicitados, es necesario que nos proporcione la siguiente información, de tal manera que podamos asesorarlo de la mejor manera posible.
+
+1. Tamaño y cantidad de muestras:
+2. Objetivo del ensayo a realizar:
+3. Nombre de la persona de contacto:
+4. Institución:
+5. Documento (C.C o NIT) de la persona o empresa que realiza el pago:
+6. Teléfono:
+7. Dirección:
+8. Correo electrónico:
+
+Si usted es usuario Uniandes y hace parte de un proyecto dentro de la Universidad le solicitamos nos indique:
+
+- Facultad/departamento al que pertenece:
+- Nombre del profesor responsable:
+- Nombre/código del proyecto:
+
+Quedamos atentos a sus comentarios,
+"""
+
+
 
 GESTOR_RECIBO_CORREO = "js.barbosa10@uniandes.edu.co"
 GESTOR_FACTURA_CORREO = "js.barbosa10@uniandes.edu.co"
@@ -50,6 +99,7 @@ GESTOR_RECIBO_MENSAJE = ""
 
 GESTOR_FACTURA_SUBJECT = ""
 GESTOR_FACTURA_MENSAJE = ""
+
 
 SERVER = "smtp-mail.outlook.com"
 PORT = 587
