@@ -30,6 +30,8 @@ class Cotizacion(object):
         self.elaborado_por = ""
         self.modificado_por = ""
         self.aplicado_por = ""
+        self.observacion_correo = ""
+        self.observacion_pdf = ""
         self.setServicios(servicios)
 
     def getUsuario(self):

@@ -12,8 +12,10 @@ splash.show()
 app.processEvents()
 
 def threadedCorreo():
-    try: correo.initCorreo()
-    except Exception as e: print(e)
+    while True:
+        try: correo.initCorreo()
+        except Exception as e: print(e)
+        sleep(10*60)
 
 def testFiles():
     """

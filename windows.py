@@ -300,23 +300,27 @@ class CorreoDialog(QtWidgets.QDialog):
 
         self.thread = Thread(target = self.sendCorreo, args=(target,))
         self.thread.setDaemon(True)
-        self.timeout = Thread(target = self.timeout, args = (60,))
+        self.timeout = Thread(target = self.timeoutHandler, args = (30,))
         self.timeout.setDaemon(True)
 
         self.finished = False
         self.exception = None
 
-    def timeout(self, time):
+    def timeoutHandler(self, time):
         sleep(time)
         self.finished = True
         sleep(0.1)
-        self.exception = Exception("Timeout error.")
+
+        self.exception = Exception("Email error: Timeout error.")
         self.close()
 
     def closeEvent(self, event):
         if self.exception != None:
             correo.CORREO = None
         if self.finished:
+            sleep(1)
+            self.thread = None
+            self.timeout = None
             event.accept()
         else:
             event.ignore()
@@ -324,10 +328,8 @@ class CorreoDialog(QtWidgets.QDialog):
     def sendCorreo(self, func):
         try:
             func(*self.args)
-            # if self.is_cotizacion: correo.sendCotizacion(to, file_name)
-            # else: correo.sendRegistro(to, file_name)
         except Exception as e:
-            self.exception = e
+            self.exception = Exception("Email error: " + str(e))
         self.finished = True
         sleep(0.1)
         self.close()
@@ -610,6 +612,7 @@ class CotizacionWindow(QtWidgets.QMainWindow):
         self.setLastCotizacion()
         self.interno_widget.setCheckState(2)
         self.pago_widget.setCurrentIndex(0)
+        self.elaborado_widget.setCurrentIndex(0)
         self.notificar_widget.setChecked(True)
         self.cotizacion.setServicios([])
         self.total_widget.setText("")
@@ -712,7 +715,7 @@ class CotizacionWindow(QtWidgets.QMainWindow):
             old = [proc.pid for proc in psutil.process_iter()]
 
             p1 = Popen(path, shell = True)
-
+            sleep(1)
             if self.confirmGuardar():
                 self.closePDF(p1, old)
                 for i in range(10):
@@ -737,11 +740,11 @@ class CotizacionWindow(QtWidgets.QMainWindow):
                     except PermissionError:
                         sleep(0.1)
 
+            self.cotizacion.setUsuario(None)
+            self.cotizacion.setMuestra(None)
+
         except Exception as e:
             self.errorWindow(e)
-
-        self.cotizacion.setUsuario(None)
-        self.cotizacion.setMuestra(None)
 
     def setLastCotizacion(self):
         year = str(datetime.now().year)[-2:]
@@ -874,12 +877,12 @@ class DescontarWindow(QtWidgets.QMainWindow):
         valor_label = QtWidgets.QLabel("Valor:")
         self.valor_widget = QtWidgets.QLabel("")
 
-        self.form_layout.addRow(cotizacion_label, self.cotizacion_widget)
         self.form_layout.addRow(fecha_label, self.fecha_widget)
         self.form_layout.addRow(nombre_label, self.nombre_widget)
         self.form_layout.addRow(correo_label, self.correo_widget)
         self.form_layout.addRow(equipo_label, self.equipo_widget)
         self.form_layout.addRow(valor_label, self.valor_widget)
+        self.form_layout.addRow(cotizacion_label, self.cotizacion_widget)
 
         self.layout.addWidget(self.form)
 
