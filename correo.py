@@ -30,7 +30,7 @@ CORREO = None
 
 def initCorreo():
     global CORREO
-    CORREO = smtplib.SMTP(SERVER, PORT)
+    CORREO = smtplib.SMTP(SERVER, PORT, timeout = 30)
     CORREO.ehlo() # Hostname to send for this command defaults to the fully qualified domain name of the local host.
     CORREO.starttls() #Puts connection to SMTP server in TLS mode
     CORREO.ehlo()

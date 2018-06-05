@@ -300,29 +300,15 @@ class CorreoDialog(QtWidgets.QDialog):
 
         self.thread = Thread(target = self.sendCorreo, args=(target,))
         self.thread.setDaemon(True)
-        self.timeout = Thread(target = self.timeoutHandler, args = (30,))
-        self.timeout.setDaemon(True)
 
         self.finished = False
         self.exception = None
-
-    def timeoutHandler(self, time):
-        sleep(time)
-        self.finished = True
-        sleep(0.1)
-
-        self.exception = Exception("Email error: Timeout error.")
-        sleep(0.1)
-        self.close()
 
     def closeEvent(self, event):
         if self.exception != None:
             correo.CORREO = None
         if self.finished:
-            sleep(0.7)
             self.thread = None
-            self.timeout = None
-            sleep(0.7)
             event.accept()
         else:
             event.ignore()
@@ -333,12 +319,11 @@ class CorreoDialog(QtWidgets.QDialog):
         except Exception as e:
             self.exception = Exception("Email error: " + str(e))
         self.finished = True
-        sleep(0.1)
+        sleep(1.5)
         self.close()
 
     def start(self):
         self.thread.start()
-        self.timeout.start()
 
 class CodigosDialog(QtWidgets.QDialog):
     def __init__(self):
