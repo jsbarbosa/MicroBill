@@ -1374,15 +1374,10 @@ class GestorWindow(QtWidgets.QMainWindow):
         file_name = self.cotizacion_widget.text()
         pago = self.tipo_widget.text()
         if pago == "Factura":
-            # options = QtWidgets.QFileDialog.Options()
-            # options |= QtWidgets.QFileDialog.DontUseNativeDialog
             fileName, _ = QtWidgets.QFileDialog.getOpenFileName(self, "Orden de servicios", "", "Portable Document Format (*.pdf)")
             if fileName:
                 cwd = os.getcwd()
                 if cwd[0] == "\\":
-                    # pre = cwd.replace("\\\\", "").split("\\")[0]
-                    # f = "/".join(fileName.split("/")[1:])
-                    # fileName = "//" + pre + "/" + f
                     quit_msg = "No es posible leer desde un computador en red."
                     QtWidgets.QMessageBox.warning(self, 'Error',
                                      quit_msg, QtWidgets.QMessageBox.Ok)
@@ -1408,7 +1403,7 @@ class GestorWindow(QtWidgets.QMainWindow):
         for widgetT in self.WIDGETS:
             widget = eval("self.%s_widget"%widgetT)
             widget.setText("")
-        self.cotizacion_widget.blockSignals(True)
+        self.cotizacion_widget.blockSignals(False)
 
     def accept(self):
         tipo = self.tipo_widget.text()
@@ -1606,6 +1601,7 @@ class RequestWindow(QtWidgets.QMainWindow):
 
     def closeEvent(self, event):
         self.is_closed = True
+        self.correo_widget.setText("")
         event.accept()
 
 if __name__ == '__main__':
