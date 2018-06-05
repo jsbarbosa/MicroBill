@@ -312,15 +312,17 @@ class CorreoDialog(QtWidgets.QDialog):
         sleep(0.1)
 
         self.exception = Exception("Email error: Timeout error.")
+        sleep(0.1)
         self.close()
 
     def closeEvent(self, event):
         if self.exception != None:
             correo.CORREO = None
         if self.finished:
-            sleep(1)
+            sleep(0.7)
             self.thread = None
             self.timeout = None
+            sleep(0.7)
             event.accept()
         else:
             event.ignore()
@@ -387,6 +389,7 @@ class CotizacionWindow(QtWidgets.QMainWindow):
         self.form_frame = QtWidgets.QFrame()
         self.button_frame = QtWidgets.QFrame()
         self.total_frame = QtWidgets.QFrame()
+        self.observaciones_frame = QtWidgets.QGroupBox("Observaciones")
 
         self.cotizacion_frame_layout = QtWidgets.QHBoxLayout(self.cotizacion_frame)
         self.numero_cotizacion = QtWidgets.QPushButton()
@@ -511,6 +514,15 @@ class CotizacionWindow(QtWidgets.QMainWindow):
         self.verticalLayout.setAlignment(QtCore.Qt.AlignRight)
         self.elaborado_layout.setAlignment(QtCore.Qt.AlignRight)
 
+        self.observaciones_correo_widget = QtWidgets.QTextEdit()
+        self.observaciones_correo_widget.setMaximumHeight(30)
+        self.observaciones_pdf_widget = QtWidgets.QTextEdit()
+        self.observaciones_pdf_widget.setMaximumHeight(30)
+
+        self.observaciones_layout = QtWidgets.QFormLayout(self.observaciones_frame)
+        self.observaciones_layout.addRow(QtWidgets.QLabel("Correo:"), self.observaciones_correo_widget)
+        self.observaciones_layout.addRow(QtWidgets.QLabel("PDF:"), self.observaciones_pdf_widget)
+
         self.total_frame_layout.addWidget(total_label)
         self.total_frame_layout.addWidget(self.total_widget)
 
@@ -519,6 +531,7 @@ class CotizacionWindow(QtWidgets.QMainWindow):
         self.verticalLayout.addWidget(self.form_frame)
         self.verticalLayout.addWidget(self.table)
         self.verticalLayout.addWidget(self.total_frame)
+        self.verticalLayout.addWidget(self.observaciones_frame)
         self.verticalLayout.addWidget(self.elaborado_frame)
         self.verticalLayout.addWidget(self.button_frame)
 
@@ -527,10 +540,9 @@ class CotizacionWindow(QtWidgets.QMainWindow):
         self.interno_widget.setChecked(2)
 
         self.cotizacion = objects.Cotizacion()
-
         self.setLastCotizacion()
 
-        self.resize(700, 650)
+        self.resize(700, 700)
 
         self.interno_widget.stateChanged.connect(self.changeInterno)
         self.limpiar_button.clicked.connect(self.limpiar)
@@ -618,6 +630,8 @@ class CotizacionWindow(QtWidgets.QMainWindow):
         self.total_widget.setText("")
         self.elaborado_label.setText("Elaborado por:")
         self.autocompletar_widget.setChecked(True)
+        self.observaciones_pdf_widget.setText("")
+        self.observaciones_correo_widget.setText("")
 
     def verCodigos(self):
         df = eval("constants.%s"%self.getEquipo())
@@ -635,11 +649,11 @@ class CotizacionWindow(QtWidgets.QMainWindow):
             file_name = self.cotizacion.getNumero()
             pago = self.pago_widget.currentText()
             if pago == "Transferencia interna":
-                self.dialog = CorreoDialog((to, file_name), target = correo.sendCotizacionTransferencia)
+                self.dialog = CorreoDialog((to, file_name, self.observaciones_correo_widget.toPlainText()), target = correo.sendCotizacionTransferencia)
             elif pago == "Factura":
-                self.dialog = CorreoDialog((to, file_name), target = correo.sendCotizacionFactura)
+                self.dialog = CorreoDialog((to, file_name, self.observaciones_correo_widget.toPlainText()), target = correo.sendCotizacionFactura)
             elif pago == "Recibo":
-                self.dialog = CorreoDialog((to, file_name), target = correo.sendCotizacionRecibo)
+                self.dialog = CorreoDialog((to, file_name, self.observaciones_correo_widget.toPlainText()), target = correo.sendCotizacionRecibo)
             else: print("ERROR, not implemented")
             self.dialog.start()
             self.dialog.exec_()
@@ -705,6 +719,8 @@ class CotizacionWindow(QtWidgets.QMainWindow):
             usuario = objects.Usuario(**dic)
             self.cotizacion.setUsuario(usuario)
             self.cotizacion.setMuestra(self.muestra_widget.text())
+            self.cotizacion.setObservacionPDF(self.observaciones_pdf_widget.toPlainText())
+            self.cotizacion.setObservacionCorreo(self.observaciones_correo_widget.toPlainText())
             self.cotizacion.makePDFCotizacion()
 
             path = os.path.dirname(sys.executable)
@@ -742,6 +758,8 @@ class CotizacionWindow(QtWidgets.QMainWindow):
 
             self.cotizacion.setUsuario(None)
             self.cotizacion.setMuestra(None)
+            self.cotizacion.setObservacionPDF("")
+            self.cotizacion.setObservacionCorreo("")
 
         except Exception as e:
             self.errorWindow(e)
@@ -790,6 +808,9 @@ class CotizacionWindow(QtWidgets.QMainWindow):
             self.numero_cotizacion.setText(self.cotizacion.getNumero())
             self.elaborado_label.setText("Modificado por:")
             self.elaborado_widget.setCurrentIndex(0)
+
+            self.observaciones_pdf_widget.setText(self.cotizacion.getObservacionPDF())
+            self.observaciones_correo_widget.setText(self.cotizacion.getObservacionCorreo())
             self.setTotal()
             self.table.setFromCotizacion()
 

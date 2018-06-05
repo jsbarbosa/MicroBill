@@ -21,10 +21,12 @@ DEPENDENCIAS = [CENTRO.upper(),
     Correo
 """
 
-COTIZACION_SUBJECT_RECIBO = "Solicitud de cotización"
-COTIZACION_MENSAJE_RECIBO = """Estimado usuario,
+SALUDO = """Estimado usuario,
 
-A continuación hacemos envío de la cotización correspondiente a los servicios solicitados.
+"""
+
+COTIZACION_SUBJECT_RECIBO = "Solicitud de cotización"
+COTIZACION_MENSAJE_RECIBO = """A continuación hacemos envío de la cotización correspondiente a los servicios solicitados.
 
 Tenga en cuenta las siguientes recomendaciones:
 - Para el día de la sesión es necesario contar con el comprobante de pago.
@@ -39,9 +41,7 @@ Cordial saludo,
 
 
 COTIZACION_SUBJECT_TRANSFERENCIA = COTIZACION_SUBJECT_RECIBO
-COTIZACION_MENSAJE_TRANSFERENCIA = """Estimado usuario,
-
-A continuación hacemos envío de la cotización correspondiente a los servicios solicitados.
+COTIZACION_MENSAJE_TRANSFERENCIA = """A continuación hacemos envío de la cotización correspondiente a los servicios solicitados.
 
 Tenga en cuenta las siguientes recomendaciones:
 - Para el día de la sesión es necesario contar con la aprobación del director de departamento y con la evidencia de translado presupuestal, con referencia a la cotización enviada.
@@ -53,14 +53,11 @@ Cordial saludo,
 
 
 
-
 COTIZACION_SUBJECT_FACTURA = COTIZACION_SUBJECT_RECIBO
 COTIZACION_MENSAJE_FACTURA = COTIZACION_MENSAJE_RECIBO
 
 REPORTE_SUBJECT = "Estado actual"
-REPORTE_MENSAJE = """Estimado usuario,
-
-A continuación hacemos envío del estado actual de la cotización, en este documento usted podrá encontrar:
+REPORTE_MENSAJE = """A continuación hacemos envío del estado actual de la cotización, en este documento usted podrá encontrar:
 - Los servicios que fueron cotizados.
 - Las fechas en que estos servicios fueron usados.
 - Un resumen del número de usos, y la cantidad restante que aun puede utilizar.
@@ -75,9 +72,7 @@ Cordial saludo,
 
 
 REQUEST_SUBJECT = "Solicitud de información"
-REQUEST_MENSAJE = """Estimado usuario,
-
-Para cotizar los ensayos solicitados, es necesario que nos proporcione la siguiente información, de tal manera que podamos asesorarlo de la mejor manera posible.
+REQUEST_MENSAJE = """Para cotizar los ensayos solicitados, es necesario que nos proporcione la siguiente información, de tal manera que podamos asesorarlo de la mejor manera posible.
 
 1. Tamaño y cantidad de muestras:
 2. Objetivo del ensayo a realizar:

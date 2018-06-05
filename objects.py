@@ -59,6 +59,12 @@ class Cotizacion(object):
     def getMuestra(self):
         return self.muestra
 
+    def getObservacionPDF(self):
+        return self.observacion_pdf
+
+    def getObservacionCorreo(self):
+        return self.observacion_correo
+
     def isPago(self):
         return self.is_pago
 
@@ -131,6 +137,12 @@ class Cotizacion(object):
     def setAplicado(self, name):
         if name != "": self.aplicado_por = name
         else: raise(Exception("No se especifica quién realiza la modificación."))
+
+    def setObservacionPDF(self, text):
+        self.observacion_pdf = text
+
+    def setObservacionCorreo(self, text):
+        self.observacion_correo = text
 
     def removeServicio(self, index):
         del self.servicios[index]

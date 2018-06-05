@@ -207,8 +207,7 @@ class PDFCotizacion(PDFBase):
                 ("Proyecto", usuario.getProyecto()),
                 ("Código", usuario.getCodigo())]
 
-        ptext = ""
-
+        ptext = '<font size = 9>%s</font><br/>'%self.cotizacion.getObservacionPDF().replace("\n", "<br/>")
         if usuario.getInterno() == "Interno":
             for item in text:
                 ptext += '<font size = 9> <b>%s:</b> <u>%s</u></font> <br/>'%item

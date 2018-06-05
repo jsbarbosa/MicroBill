@@ -7,7 +7,7 @@ from config import SERVER, PORT, REPORTE_MENSAJE, REPORTE_SUBJECT, REQUEST_SUBJE
 from config import COTIZACION_MENSAJE_RECIBO, COTIZACION_MENSAJE_FACTURA, COTIZACION_MENSAJE_TRANSFERENCIA
 from config import COTIZACION_SUBJECT_RECIBO, COTIZACION_SUBJECT_FACTURA, COTIZACION_SUBJECT_TRANSFERENCIA
 from config import GESTOR_RECIBO_CORREO, GESTOR_RECIBO_SUBJECT, GESTOR_RECIBO_MENSAJE
-from config import GESTOR_FACTURA_CORREO, GESTOR_FACTURA_SUBJECT, GESTOR_FACTURA_MENSAJE
+from config import GESTOR_FACTURA_CORREO, GESTOR_FACTURA_SUBJECT, GESTOR_FACTURA_MENSAJE, SALUDO
 from login import *
 
 import constants
@@ -16,10 +16,10 @@ dependencias = ("\n" + "\n".join(DEPENDENCIAS)).title()
 
 dependencias = dependencias.replace("De", "de")
 
+SALUDO = SALUDO.replace("\n", "<br>")
+
 COTIZACION_MENSAJE_RECIBO = (COTIZACION_MENSAJE_RECIBO + dependencias).replace("\n", "<br>")
 COTIZACION_MENSAJE_FACTURA = (COTIZACION_MENSAJE_FACTURA + dependencias).replace("\n", "<br>")
-COTIZACION_MENSAJE_TRANSFERENCIA = (COTIZACION_MENSAJE_TRANSFERENCIA + dependencias).replace("\n", "<br>")
-
 COTIZACION_MENSAJE_TRANSFERENCIA = (COTIZACION_MENSAJE_TRANSFERENCIA + dependencias).replace("\n", "<br>")
 REQUEST_MENSAJE = (REQUEST_MENSAJE + dependencias).replace("\n", "<br>")
 
@@ -65,20 +65,23 @@ def sendEmail(to, subject, text, attachments = []):
         if CORREO != None:
             CORREO.sendmail(FROM, to, msg.as_string())
 
-def sendCotizacionRecibo(to, file_name):
-    sendEmail(to, COTIZACION_SUBJECT_RECIBO + " - %s"%file_name, COTIZACION_MENSAJE_RECIBO, [file_name])
+def sendCotizacionRecibo(to, file_name, observaciones = ""):
+    if observaciones != "": observaciones = observaciones.replace("\n", "<br>") + 2*"<br>"
+    sendEmail(to, COTIZACION_SUBJECT_RECIBO + " - %s"%file_name, SALUDO + observaciones + COTIZACION_MENSAJE_RECIBO, [file_name])
 
-def sendCotizacionTransferencia(to, file_name):
-    sendEmail(to, COTIZACION_SUBJECT_TRANSFERENCIA + " - %s"%file_name, COTIZACION_MENSAJE_TRANSFERENCIA, [file_name])
+def sendCotizacionTransferencia(to, file_name, observaciones = ""):
+    if observaciones != "": observaciones = observaciones.replace("\n", "<br>") + 2*"<br>"
+    sendEmail(to, COTIZACION_SUBJECT_TRANSFERENCIA + " - %s"%file_name,  SALUDO + observaciones + COTIZACION_MENSAJE_TRANSFERENCIA, [file_name])
 
-def sendCotizacionFactura(to, file_name):
-    sendEmail(to, COTIZACION_SUBJECT_FACTURA + " - %s"%file_name, COTIZACION_MENSAJE_FACTURA, [file_name])
+def sendCotizacionFactura(to, file_name, observaciones = ""):
+    if observaciones != "": observaciones = observaciones.replace("\n", "<br>") + 2*"<br>"
+    sendEmail(to, COTIZACION_SUBJECT_FACTURA + " - %s"%file_name, SALUDO + observaciones + COTIZACION_MENSAJE_FACTURA, [file_name])
 
 def sendRegistro(to, file_name):
-    sendEmail(to, REPORTE_SUBJECT + " - %s"%file_name, REPORTE_MENSAJE, [file_name + "_Reporte"])
+    sendEmail(to, REPORTE_SUBJECT + " - %s"%file_name, SALUDO + REPORTE_MENSAJE, [file_name + "_Reporte"])
 
 def sendRequest(to):
-    sendEmail(to, REQUEST_SUBJECT, REQUEST_MENSAJE)
+    sendEmail(to, REQUEST_SUBJECT, SALUDO + REQUEST_MENSAJE)
 
 def sendGestorRecibo(file_name):
     sendEmail(GESTOR_RECIBO_CORREO, GESTOR_RECIBO_SUBJECT + " - %s"%file_name, GESTOR_RECIBO_MENSAJE, [file_name])

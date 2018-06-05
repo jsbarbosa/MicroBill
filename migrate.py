@@ -17,14 +17,19 @@ def assignAtt(object, att, value):
             exec("object.%s = '%s'"%(att, value))
         else:
             exec("object.%s = %s"%(att, value))
+        return True
+    return False
 
-includes = {'elaborado_por': '', 'modificado_por': '', 'aprobado_por': '',
+includes = {'elaborado_por': '', 'modificado_por': '', 'aplicado_por': '',
             'observacion_correo': '', 'observacion_pdf': ''}
 
 for item in cot:
+    i = 0
     with open(item, "rb") as fileObject:
         C = pickle.load(fileObject)
         for key in includes.keys():
             assignAtt(C, key, includes[key])
-    with open(item, "wb") as fileObject:
-        pickle.dump(C,fileObject)
+            i += 1
+    if i != 0:
+        with open(item, "wb") as fileObject:
+            pickle.dump(C, fileObject)
