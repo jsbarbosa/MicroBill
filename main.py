@@ -1,4 +1,4 @@
-import sys
+﻿import sys
 from PyQt5 import QtCore, QtGui, QtWidgets
 
 app = QtWidgets.QApplication(sys.argv)
@@ -13,9 +13,11 @@ app.processEvents()
 
 def threadedCorreo():
     while True:
-        try: correo.initCorreo()
+        try: 
+            correo.initCorreo()
+            sleep(10*60)
         except Exception as e: print(e)
-        sleep(10*60)
+        
 
 def testFiles():
     """
