@@ -15,8 +15,10 @@ def threadedCorreo():
     while True:
         try: 
             correo.initCorreo()
-            sleep(10*60)
-        except Exception as e: print(e)
+            sleep(10 * 60)
+        except Exception as e:
+            sleep(1 * 60)
+            print(e)
         
 
 def testFiles():
