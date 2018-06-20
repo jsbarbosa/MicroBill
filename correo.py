@@ -21,6 +21,7 @@ SALUDO = SALUDO.replace("\n", "<br>")
 COTIZACION_MENSAJE_RECIBO = (COTIZACION_MENSAJE_RECIBO + dependencias).replace("\n", "<br>")
 COTIZACION_MENSAJE_FACTURA = (COTIZACION_MENSAJE_FACTURA + dependencias).replace("\n", "<br>")
 COTIZACION_MENSAJE_TRANSFERENCIA = (COTIZACION_MENSAJE_TRANSFERENCIA + dependencias).replace("\n", "<br>")
+REPORTE_MENSAJE = (REPORTE_MENSAJE + dependencias).replace("\n", "<br>")
 REQUEST_MENSAJE = (REQUEST_MENSAJE + dependencias).replace("\n", "<br>")
 
 GESTOR_RECIBO_MENSAJE = (GESTOR_RECIBO_MENSAJE + dependencias).replace("\n", "<br>")
