@@ -305,10 +305,11 @@ class CorreoDialog(QtWidgets.QDialog):
         self.exception = None
 
     def closeEvent(self, event):
-        if self.exception != None:
-            correo.CORREO = None
+        # if self.exception != None:
+        #     correo.CORREO = None
         if self.finished:
             self.thread = None
+            sleep(2.5)
             event.accept()
         else:
             event.ignore()
@@ -318,8 +319,8 @@ class CorreoDialog(QtWidgets.QDialog):
             func(*self.args)
         except Exception as e:
             self.exception = Exception("Email error: " + str(e))
+            print("Error:", self.exception)
         self.finished = True
-        sleep(1.5)
         self.close()
 
     def start(self):
