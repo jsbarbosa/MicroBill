@@ -1,4 +1,4 @@
-ADMINS = ["Humberto Ibarra", "Monica Lopez", "Juan Camilo Orozco", "Laura Cruz", "Juan Barbosa"]
+﻿ADMINS = ["Humberto Ibarra", "Monica Lopez", "Juan Camilo Orozco", "Laura Cruz", "Juan Barbosa"]
 
 """
     PDF
@@ -96,8 +96,8 @@ Cordial saludo,
 
 
 
-GESTOR_RECIBO_CORREO = "js.barbosa10@uniandes.edu.co"
-GESTOR_FACTURA_CORREO = "js.barbosa10@uniandes.edu.co"
+GESTOR_RECIBO_CORREO = "cjvergara@uniandes.edu.co"
+GESTOR_FACTURA_CORREO = "carrodri@uniandes.edu.co"
 
 GESTOR_RECIBO_SUBJECT = "Generación recibo de pago"
 GESTOR_RECIBO_MENSAJE = """Estimado Carlos Julio,

@@ -1,8 +1,8 @@
 # Install dependencies
 ```
   conda install pandas numpy pyqt xlrd openpyxl xlsxwriter unidecode pywin32
-  pip install reportlab pyinstaller
-```
+ pip install reportlab pyinstaller
+ psutil```
 
 # pyinstaller
 https://stackoverflow.com/questions/47318119/no-module-named-pandas-libs-tslibs-timedeltas-in-pyinstaller
