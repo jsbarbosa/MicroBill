@@ -1175,8 +1175,8 @@ class PandasModel(QtCore.QAbstractTableModel):
         return np.array([self._data[i, 0].isChecked() for i in range(self.rowCount())], dtype = bool)
 
 class BuscarWindow(QtWidgets.QMainWindow):
-    WIDGETS = ["equipo", "nombre", "institucion", "responsable"]
-    FIELDS = ["Equipo", "Nombre", "Institución", "Responsable"]
+    WIDGETS = ["equipo", "nombre", "correo", "institucion", "responsable"]
+    FIELDS = ["Equipo", "Nombre", "Correo", "Institución", "Responsable"]
     def __init__(self, parent = None):
         super(QtWidgets.QMainWindow, self).__init__(parent)
         self.setWindowTitle("Buscar")
@@ -1202,12 +1202,15 @@ class BuscarWindow(QtWidgets.QMainWindow):
         self.equipo_widget = AutoLineEdit('Equipo', self, False)
         self.nombre_widget = AutoLineEdit('Nombre', self, False)
         self.institucion_widget = AutoLineEdit("Institución", self, False)
+        self.correo_widget = AutoLineEdit("Correo", self, False)
         self.responsable_widget = AutoLineEdit("Responsable", self, False)
 
         self.form1_layout.addRow(QtWidgets.QLabel('Equipo'), self.equipo_widget)
         self.form1_layout.addRow(QtWidgets.QLabel('Nombre'), self.nombre_widget)
+        self.form1_layout.addRow(QtWidgets.QLabel('Responsable'), self.responsable_widget)
         self.form2_layout.addRow(QtWidgets.QLabel('Institución'), self.institucion_widget)
-        self.form2_layout.addRow(QtWidgets.QLabel('Responsable'), self.responsable_widget)
+        self.form2_layout.addRow(QtWidgets.QLabel('Correo'), self.correo_widget)
+        
 
         self.guardar_button = QtWidgets.QPushButton("Generar reportes")
         self.limpiar_button = QtWidgets.QPushButton("Limpiar")
@@ -1222,6 +1225,7 @@ class BuscarWindow(QtWidgets.QMainWindow):
         self.equipo_widget.textChanged.connect(lambda: self.getChanges('Equipo'))
         self.nombre_widget.textChanged.connect(lambda: self.getChanges('Nombre'))
         self.institucion_widget.textChanged.connect(lambda: self.getChanges('Institución'))
+        self.correo_widget.textChanged.connect(lambda: self.getChanges('Correo'))
         self.responsable_widget.textChanged.connect(lambda: self.getChanges('Responsable'))
 
         self.guardar_button.clicked.connect(self.guardar)
@@ -1236,12 +1240,13 @@ class BuscarWindow(QtWidgets.QMainWindow):
         model = PandasModel(objects.REGISTRO_DATAFRAME)
 
         self.table.setModel(model)
-        self.table.resizeRowsToContents()
-        self.table.resizeColumnsToContents()
 
         self.bools = np.ones(objects.REGISTRO_DATAFRAME.shape[0], dtype = bool)
 
         self.resize(800, 600)
+        
+        self.table.resizeRowsToContents()
+        self.table.resizeColumnsToContents()
 
     def getChanges(self, source):
         self.bools = np.ones(objects.REGISTRO_DATAFRAME.shape[0], dtype = bool)
@@ -1268,6 +1273,7 @@ class BuscarWindow(QtWidgets.QMainWindow):
         if not old.equals(df):
             model = PandasModel(df)
             self.table.setModel(model)
+            self.table.resizeRowsToContents()
 
     def limpiar(self):
         for widget in self.WIDGETS:
@@ -1516,6 +1522,7 @@ class MainWindow(QtWidgets.QMainWindow):
         self.buscar_window.setWindowState(self.buscar_window.windowState() & ~QtCore.Qt.WindowMinimized | QtCore.Qt.WindowActive)
         self.buscar_window.activateWindow()
         self.buscar_window.show()
+        self.buscar_window.table.resizeRowsToContents()
 
     def openHandler(self):
         path = os.path.dirname(sys.executable)
