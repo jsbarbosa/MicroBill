@@ -1273,7 +1273,7 @@ class BuscarWindow(QtWidgets.QMainWindow):
         if not old.equals(df):
             model = PandasModel(df)
             self.table.setModel(model)
-            self.table.resizeRowsToContents()
+            #self.table.resizeRowsToContents()
 
     def limpiar(self):
         for widget in self.WIDGETS:
@@ -1521,8 +1521,9 @@ class MainWindow(QtWidgets.QMainWindow):
         self.buscar_window.is_closed = False
         self.buscar_window.setWindowState(self.buscar_window.windowState() & ~QtCore.Qt.WindowMinimized | QtCore.Qt.WindowActive)
         self.buscar_window.activateWindow()
-        self.buscar_window.show()
         self.buscar_window.table.resizeRowsToContents()
+        self.buscar_window.show()
+        
 
     def openHandler(self):
         path = os.path.dirname(sys.executable)
