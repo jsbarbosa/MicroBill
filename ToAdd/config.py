@@ -36,10 +36,6 @@ Quedamos atentos a sus comentarios,
 Cordial saludo,
 """
 
-
-
-
-
 COTIZACION_SUBJECT_TRANSFERENCIA = COTIZACION_SUBJECT_RECIBO
 COTIZACION_MENSAJE_TRANSFERENCIA = """A continuación hacemos envío de la cotización correspondiente a los servicios solicitados.
 
@@ -51,10 +47,17 @@ Quedamos atentos a sus comentarios,
 Cordial saludo,
 """
 
-
-
 COTIZACION_SUBJECT_FACTURA = COTIZACION_SUBJECT_RECIBO
-COTIZACION_MENSAJE_FACTURA = COTIZACION_MENSAJE_RECIBO
+COTIZACION_MENSAJE_FACTURA = """A continuación hacemos envío de la cotización correspondiente a los servicios solicitados.
+
+Tenga en cuenta las siguientes recomendaciones:
+- Le solicitamos enviar la orden de servicios, para poder generar la factura.
+
+Quedamos atentos a sus comentarios,
+
+Cordial saludo,
+"""
+
 
 REPORTE_SUBJECT = "Estado actual"
 REPORTE_MENSAJE = """A continuación hacemos envío del estado actual de la cotización, en este documento usted podrá encontrar:
