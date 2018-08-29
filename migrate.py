@@ -20,15 +20,20 @@ def assignAtt(object, att, value):
         return True
     return False
 
-includes = {'elaborado_por': '', 'modificado_por': '', 'aplicado_por': '',
+includes_cot = {'elaborado_por': '', 'modificado_por': '', 'aplicado_por': '',
             'observacion_correo': '', 'observacion_pdf': ''}
+
+includes_ser = {'agregado_posteriormente': False}
 
 for item in cot:
     i = 0
     with open(item, "rb") as fileObject:
         C = pickle.load(fileObject)
-        for key in includes.keys():
-            assignAtt(C, key, includes[key])
+        for key in includes_cot.keys():
+            assignAtt(C, key, includes_cot[key])
+            for servicio in C.getServicios():
+                for key in includes_ser.keys():
+                    assignAtt(servicio, key, includes_ser[key])
             i += 1
     if i != 0:
         with open(item, "wb") as fileObject:
