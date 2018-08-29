@@ -97,6 +97,10 @@ class Cotizacion(object):
     def getModificado(self):
         return self.modificado_por
 
+    def getDineroUsado(self):
+        dinero = [servicio.getDineroUsado() for servicio in self.getServicios()]
+        return sum(dinero)
+
     def setNumero(self, numero):
         self.numero = numero
 
@@ -335,7 +339,7 @@ class Usuario(object):
         CLIENTES_DATAFRAME.to_excel(constants.CLIENTES_FILE, index = False, na_rep = '')
 
 class Servicio(object):
-    def __init__(self, equipo = None, codigo = None, interno = None, cantidad = None, usos = None):
+    def __init__(self, equipo = None, codigo = None, interno = None, cantidad = None, usos = None, agregado_posteriormente = False):
         self.equipo = equipo
         self.codigo = codigo
         self.cantidad = cantidad
@@ -343,6 +347,7 @@ class Servicio(object):
         else: self.usos = usos
 
         self.interno = interno
+        self.agregado_posteriormente = agregado_posteriormente
 
         self.valor_unitario = None
         self.valor_total = None
@@ -377,6 +382,20 @@ class Servicio(object):
 
     def getRestantes(self):
         return self.restantes
+
+    def getUsados(self):
+        return sum(self.usos.values())
+
+    def getDineroUsado(self):
+        total = self.getCantidad()
+        if total != 0:
+            usados = total - self.getRestantes()
+            return int(usados * self.getValorTotal() // total)
+        else:
+            return int(-self.getRestantes()*self.getValorUnitario())
+
+    def isAgregado(self):
+        return self.agregado_posteriormente
 
     def setEquipo(self, equipo):
         self.equipo = equipo
@@ -422,7 +441,7 @@ class Servicio(object):
             self.descripcion = valor
 
     def setRestantes(self):
-        self.restantes = self.cantidad - sum(self.usos.values())
+        self.restantes = self.cantidad - self.getUsados()
 
     def setInterno(self, interno):
         self.interno = interno
@@ -440,16 +459,16 @@ class Servicio(object):
             self.setValorTotal(old_total)
 
     def descontar(self, n):
-        if self.restantes >= n:
-            if n > 0:
-                today = datetime.strftime(datetime.now(), "%Y/%m/%d")
-                if today in self.usos.keys():
-                    self.usos[today] += n
-                else:
-                    self.usos[today] = n
-                self.restantes -= n
-        else:
-            raise(Exception("No es posible descontar tanto."))
+        # if self.restantes >= n:
+        if n > 0:
+            today = datetime.strftime(datetime.now(), "%Y/%m/%d")
+            if today in self.usos.keys():
+                self.usos[today] += n
+            else:
+                self.usos[today] = n
+            self.restantes -= n
+        # else:
+        #     raise(Exception("No es posible descontar tanto."))
 
     def makeCotizacionTable(self):
         return [self.getCodigo(), self.getDescripcion(), "%.1f"%self.getCantidad(),

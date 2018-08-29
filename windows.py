@@ -156,11 +156,12 @@ class Table(QtWidgets.QTableWidget):
         servicios = self.parent.getServicios()
         self.blockSignals(True)
         for (row, servicio) in enumerate(servicios):
-            self.item(row, 0).setText(servicio.getCodigo())
-            self.item(row, 1).setText(servicio.getDescripcion())
-            self.item(row, 2).setText("%.1f"%servicio.getCantidad())
-            self.item(row, 3).setText("{:,}".format(servicio.getValorUnitario()))
-            self.item(row, 4).setText("{:,}".format(servicio.getValorTotal()))
+            if not servicio.isAgregado():
+                self.item(row, 0).setText(servicio.getCodigo())
+                self.item(row, 1).setText(servicio.getDescripcion())
+                self.item(row, 2).setText("%.1f"%servicio.getCantidad())
+                self.item(row, 3).setText("{:,}".format(servicio.getValorUnitario()))
+                self.item(row, 4).setText("{:,}".format(servicio.getValorTotal()))
         self.blockSignals(False)
 
     def getCodigos(self):
@@ -919,8 +920,16 @@ class DescontarWindow(QtWidgets.QMainWindow):
         self.notificar_widget = QtWidgets.QCheckBox("Notificar")
         self.notificar_widget.setCheckState(2)
 
+        self.otros_widget = QtWidgets.QPushButton("Otros")
+        self.otros_widget.setEnabled(False)
+
+        self.otros_frame = QtWidgets.QFrame()
+        self.otros_layout = QtWidgets.QGridLayout(self.otros_frame)
+        self.layout.addWidget(self.otros_frame)
+
         self.buttons_layout.addWidget(self.notificar_widget)
         self.buttons_layout.addWidget(self.guardar_button)
+        self.buttons_layout.addWidget(self.otros_widget)
 
         self.layout.addWidget(self.buttons_frame)
 
@@ -930,12 +939,89 @@ class DescontarWindow(QtWidgets.QMainWindow):
 
         self.cotizacion_widget.textChanged.connect(self.cotizacionChanged)
         self.guardar_button.clicked.connect(self.guardarHandler)
+        self.otros_widget.clicked.connect(self.otrosHandler)
 
         self.floats_labels = []
         self.floats_spins = []
         self.cotizacion = objects.Cotizacion()
-        self.init_size = (400, 300)
+        self.init_size = (600, 450)
         self.setFixedSize(*self.init_size)
+
+    def removeOtros(self):
+        if self.otros_widget.text() != "Otros":
+            self.otros_widget.setText("Otros")
+            self.otros_layout.removeWidget(self.otros_equipo_label)
+            self.otros_layout.removeWidget(self.otros_codigo_label)
+            self.otros_layout.removeWidget(self.otros_cantidad_label)
+            self.otros_layout.removeWidget(self.otros_equipo_widget)
+            self.otros_layout.removeWidget(self.otros_codigo_widget)
+            self.otros_layout.removeWidget(self.otros_cantidad_widget)
+
+            self.otros_equipo_label.deleteLater()
+            self.otros_codigo_label.deleteLater()
+            self.otros_cantidad_label.deleteLater()
+            self.otros_equipo_widget.deleteLater()
+            self.otros_codigo_widget.deleteLater()
+            self.otros_cantidad_widget.deleteLater()
+
+    def otrosHandler(self):
+        if self.otros_widget.text() == "Otros":
+            self.otros_widget.setText("Agregar")
+            self.otros_equipo_label = QtWidgets.QLabel("Equipo:")
+            self.otros_codigo_label = QtWidgets.QLabel("Código:")
+            self.otros_cantidad_label = QtWidgets.QLabel("Cantidad:")
+
+            self.otros_equipo_widget = QtWidgets.QComboBox()
+            self.otros_codigo_widget = QtWidgets.QComboBox()
+            self.otros_cantidad_widget = QtWidgets.QDoubleSpinBox()
+
+            self.otros_equipo_widget.addItems(constants.EQUIPOS)
+
+            self.otros_cantidad_widget.setMinimum(0)
+            self.otros_cantidad_widget.setDecimals(1)
+            # self.otros_cantidad_widget.setMaximum(rest)
+            self.otros_cantidad_widget.setSingleStep(0.1)
+
+            self.otros_equipo_widget.currentIndexChanged.connect(self.equipoChanged)
+
+            self.otros_layout.addWidget(self.otros_equipo_label, 0, 0)
+            self.otros_layout.addWidget(self.otros_codigo_label, 0, 1)
+            self.otros_layout.addWidget(self.otros_cantidad_label, 0, 2)
+
+            self.otros_layout.addWidget(self.otros_equipo_widget, 1, 0)
+            self.otros_layout.addWidget(self.otros_codigo_widget, 1, 1)
+            self.otros_layout.addWidget(self.otros_cantidad_widget, 1, 2)
+
+            self.equipoChanged(0)
+        else:
+            equipo = self.otros_equipo_widget.currentText()
+            codigo = self.otros_codigo_widget.currentText().split("-")[0]
+            value = self.otros_cantidad_widget.value()
+
+            if value:
+                servicio = objects.Servicio(equipo, codigo, self.cotizacion.getInterno(),
+                            cantidad = 0, agregado_posteriormente = True)
+                try:
+                    self.cotizacion.addServicio(servicio)
+                except Exception as e:
+                    for cod in self.cotizacion.getCodigos():
+                        if cod == codigo:
+                            servicio = self.cotizacion.getServicio(cod)
+                servicio.descontar(value)
+            self.removeOtros()
+            self.guardarHandler()
+
+    def equipoChanged(self, equipo):
+        equipo = self.otros_equipo_widget.currentText()
+        self.otros_codigo_widget.clear()
+        if self.cotizacion != None:
+            interno = "Externo"
+            if self.cotizacion.getInterno():
+                interno = "Interno"
+
+            df = eval("constants.%s"%equipo)[["Código", "Descripción", interno]].values
+            values = ["%s-%s (%s)"%(c, d, p) for (c, d, p) in df]
+            self.otros_codigo_widget.addItems(values)
 
     def updateDataFrames(self):
         self.cotizacion_widget.update()
@@ -978,12 +1064,14 @@ class DescontarWindow(QtWidgets.QMainWindow):
 
     def cotizacionChanged(self, text):
         if text != "":
+            self.otros_widget.setEnabled(False)
+            self.removeOtros()
             registro = objects.REGISTRO_DATAFRAME[objects.REGISTRO_DATAFRAME["Cotización"] == text]
             if len(registro):
                 for (field, widgetT) in zip(self.FIELDS, self.WIDGETS):
                         val = str(registro[field].values[0])
-                        if val == "nan": val = ""
                         widget = eval("self.%s_widget"%widgetT)
+                        if val == "nan": val = ""
                         widget.setText(val)
             self.cleanWidgets()
             try:
@@ -993,13 +1081,18 @@ class DescontarWindow(QtWidgets.QMainWindow):
 
             i = -1
             for (i, servicio) in enumerate(self.cotizacion.getServicios()):
-                cod = QtWidgets.QLabel(servicio.getCodigo())
-                dec = QtWidgets.QLabel(servicio.getDescripcion())
+                self.otros_widget.setEnabled(True)
+                fmt = "%s"
+                if servicio.isAgregado():
+                    fmt = "<font color='red'>%s</font>"
+
+                cod = QtWidgets.QLabel(fmt % servicio.getCodigo())
+                dec = QtWidgets.QLabel(fmt % servicio.getDescripcion())
                 paid = servicio.getCantidad()
                 rest = servicio.getRestantes()
                 used = paid - rest
                 spin = QtWidgets.QDoubleSpinBox()
-                total = QtWidgets.QLabel("%.1f/%.1f"%(used, paid))
+                total = QtWidgets.QLabel(fmt % ("%.1f/%.1f"%(used, paid)))
                 spin.setMinimum(0)
                 spin.setDecimals(1)
                 spin.setMaximum(rest)
@@ -1014,6 +1107,10 @@ class DescontarWindow(QtWidgets.QMainWindow):
                 self.floats_labels.append(total)
 
             if i >= 0:
+                dinero = "{:,}".format(self.cotizacion.getDineroUsado())
+                total_d = "{:,}".format(self.cotizacion.getTotal())
+                self.valor_widget.setText("%s/%s"%(dinero, total_d))
+
                 self.check_widget = QtWidgets.QCheckBox("Aplicar pago")
                 self.check_label = QtWidgets.QLabel("Referencia:")
                 self.referencia_widget = QtWidgets.QLineEdit()
@@ -1210,7 +1307,7 @@ class BuscarWindow(QtWidgets.QMainWindow):
         self.form1_layout.addRow(QtWidgets.QLabel('Responsable'), self.responsable_widget)
         self.form2_layout.addRow(QtWidgets.QLabel('Institución'), self.institucion_widget)
         self.form2_layout.addRow(QtWidgets.QLabel('Correo'), self.correo_widget)
-        
+
 
         self.guardar_button = QtWidgets.QPushButton("Generar reportes")
         self.limpiar_button = QtWidgets.QPushButton("Limpiar")
@@ -1244,7 +1341,7 @@ class BuscarWindow(QtWidgets.QMainWindow):
         self.bools = np.ones(objects.REGISTRO_DATAFRAME.shape[0], dtype = bool)
 
         self.resize(800, 600)
-        
+
         self.table.resizeRowsToContents()
         self.table.resizeColumnsToContents()
 
@@ -1523,7 +1620,7 @@ class MainWindow(QtWidgets.QMainWindow):
         self.buscar_window.activateWindow()
         self.buscar_window.table.resizeRowsToContents()
         self.buscar_window.show()
-        
+
 
     def openHandler(self):
         path = os.path.dirname(sys.executable)
