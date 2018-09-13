@@ -65,6 +65,9 @@ class Cotizacion(object):
     def getObservacionCorreo(self):
         return self.observacion_correo
 
+    def getValorRestante(self):
+        return self.getTotal() - self.getDineroUsado()
+
     def isPago(self):
         return self.is_pago
 
@@ -483,9 +486,11 @@ class Servicio(object):
             fecha = fechas[i]
             usados = self.usos[fecha]
             restantes = cantidad - usados
-            table[i] = [fecha, self.getCodigo(), self.getDescripcion(), "%.1f"%self.getCantidad(), "%.1f"%usados, "%.1f"%restantes]
+            table[i] = [fecha, self.getCodigo(), self.getDescripcion(),
+                        "%.1f"%self.getCantidad(), "%.1f"%usados, "%.1f"%restantes]
             cantidad = restantes
         return table
 
     def makeResumenTable(self):
-        return [self.getDescripcion(), "%.1f"%self.getCantidad(), "%.1f"%self.getRestantes()]
+        return [self.getDescripcion(), "%.1f"%self.getCantidad(),
+                "%.1f"%self.getRestantes(), "{:,}".format(self.getDineroUsado())]

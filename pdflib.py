@@ -257,9 +257,12 @@ class PDFReporte(PDFBase):
         self.table = self.cotizacion.makeReporteTable()
         self.resumen = self.cotizacion.makeResumenTable()
 
-        self.resumen.insert(0, ["DESCRIPCIÓN", "COTIZADOS", "RESTANTES"])
+        self.resumen.insert(0, ["DESCRIPCIÓN", "COTIZADOS", "RESTANTES", "DINERO USADO"])
         self.table.insert(0, ["FECHA", "COD", "DESCRIPCIÓN", "COTIZADOS", "USADOS", "RESTANTES"])
 
+        self.resumen.append(["", "", "TOTAL USADO", "{:,}".format(self.cotizacion.getDineroUsado())])
+        self.resumen.append(["", "", "V. COTIZADO", "{:,}".format(self.cotizacion.getTotal())])
+        self.resumen.append(["", "", "RESTANTE", "{:,}".format(self.cotizacion.getValorRestante())])
         # Two Columns
         h = 3*cm
         self.frame1 = Frame(self.doc.leftMargin, self.doc.bottomMargin + self.doc.height - h, self.doc.width / 2 - 6, h, id='col1')
@@ -329,13 +332,15 @@ class PDFReporte(PDFBase):
         self.story.append(Paragraph(ptext, self.styles["Center"]))
         self.story.append(Spacer(1, 6))
 
-        t = Table(self.resumen, [200, 80, 80], 15, hAlign='CENTER')
+        t = Table(self.resumen, [200, 80, 80, 100], 15, hAlign='CENTER')
 
-        t.setStyle(TableStyle([('BOX', (0,0), (-1,-1), 0.25, colors.black),
+        t.setStyle(TableStyle([('BOX', (0,0), (-1,-4), 0.25, colors.black),
+                                ('BOX', (-1,-3), (-1,-1), 0.25, colors.black),
                                ('ALIGN', (0, 0), (-1, 0), "CENTER"),
                                ('ALIGN', (0, 1), (0, -1), "LEFT"),
                                ('ALIGN', (-2, 1), (-1, -1), "RIGHT"),
                                ('BACKGROUND', (0, 0), (-1, 0), colors.lightgrey),
+                               ('BACKGROUND', (-2, -3), (-2, -1), colors.lightgrey),
                                 ]))
 
         self.story.append(t)
