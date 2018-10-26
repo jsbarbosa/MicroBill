@@ -19,6 +19,24 @@ def readDataFrames():
 
 CLIENTES_DATAFRAME, REGISTRO_DATAFRAME = readDataFrames()
 
+def getNumeroCotizacion(equipo):
+    year = str(datetime.now().year)[-2:]
+
+    try:
+        cot = REGISTRO_DATAFRAME[REGISTRO_DATAFRAME["Equipo"] == equipo]["Cotización"].values[0]
+        cod, val = cot.split("-")
+    except:
+        cod = equipo[0] + year
+        val = "%04d"%0
+
+    if year != cod[-2:]:
+        cod = cod[:-2] + year
+        val = "%04d"%1
+    else: val = "%04d"%(int(val) + 1)
+
+    cod = "%s-%s"%(cod, val)
+    return cod
+
 class Cotizacion(object):
     def __init__(self, numero = None, usuario = None, servicios = [], muestra = None):
         self.numero = numero
@@ -228,6 +246,9 @@ class Cotizacion(object):
 
         REGISTRO_DATAFRAME.to_excel(writer, index = False)
 
+        writer.save()
+        writer.close()
+
     def load(self, file):
         file = os.path.join(constants.OLD_DIR, file + ".pkl")
         with open(file, "rb") as data:
@@ -341,6 +362,29 @@ class Usuario(object):
         CLIENTES_DATAFRAME = CLIENTES_DATAFRAME.sort_values("Nombre")
         CLIENTES_DATAFRAME.to_excel(constants.CLIENTES_FILE, index = False, na_rep = '')
 
+    def __repr__(self):
+        fields = ["Nombre", "Correo", "Institucion", "Documento", "Ciudad", "Telefono",
+                    "Responsable", "Proyecto", "Codigo", "Pago"]
+        data = []
+        for text in fields:
+            att = getattr(self, text.lower())
+            if type(att) is str:
+                text = text + ": " + att
+            else:
+                text = text + ": " + "None"
+            data.append(text)
+        return "\n".join(data)
+        # self.institucion = institucion
+        # self.documento = documento
+        # self.direccion = direccion
+        # self.ciudad = ciudad
+        # self.telefono = telefono
+        # self.interno = interno
+        # self.responsable = responsable
+        # self.proyecto = proyecto
+        # self.codigo = codigo
+        # self.pago = pago
+
 class Servicio(object):
     def __init__(self, equipo = None, codigo = None, interno = None, cantidad = None, usos = None, agregado_posteriormente = False):
         self.equipo = equipo
@@ -367,6 +411,9 @@ class Servicio(object):
 
     def getCodigo(self):
         return self.codigo
+
+    def getInterno(self):
+        return self.interno
 
     def getCantidad(self):
         return self.cantidad

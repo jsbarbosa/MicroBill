@@ -119,5 +119,30 @@ Cordial saludo,
 """
 
 
-SERVER = "smtp-mail.outlook.com"
-PORT = 587
+
+SEND_SERVER = "smtp-mail.outlook.com"
+SEND_PORT = 587
+
+READ_SERVER = "imap-mail.outlook.com"
+READ_PORT = 993
+
+READ_EVERY_S = 10
+
+READ_EMAIL_FOLDER = "INBOX"
+READ_REQUEST_DETAILS = "Request details"
+READ_FIELDS = "Fields"
+READ_LAST = "Please go to the link below to view this request.  "
+
+READ_FIELDS_DICT = {'nombre': "A new request was submitted by ",
+                "id":"Request id ",
+                "documento": "Nit/CC ",
+                "responsable": "from group ",
+                "direccion": "Address ",
+                "ciudad": "City ",
+                "telefono": "Telephone ",
+                "institucion": "Institution ",
+                "pago": "Paying method ",
+                "tipo": "Sample type "}
+
+READ_NUMERIC_FIELDS = ["Request id", "Id", "Telephone"]
+READ_SEARCH_FOR = 'FROM "lists@cirklo.org" SUBJECT "[Agendo] New request (2-Quote request"'

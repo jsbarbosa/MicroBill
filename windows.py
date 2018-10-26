@@ -752,22 +752,7 @@ class CotizacionWindow(QtWidgets.QMainWindow):
             self.errorWindow(e)
 
     def setLastCotizacion(self):
-        year = str(datetime.now().year)[-2:]
-
-        equipo = self.getEquipo()
-        try:
-            cot = objects.REGISTRO_DATAFRAME[objects.REGISTRO_DATAFRAME["Equipo"] == equipo]["Cotización"].values[0]
-            cod, val = cot.split("-")
-        except:
-            cod = equipo[0] + year
-            val = "%04d"%0
-
-        if year != cod[-2:]:
-            cod = cod[:-2] + year
-            val = "%04d"%1
-        else: val = "%04d"%(int(val) + 1)
-
-        cod = "%s-%s"%(cod, val)
+        cod = objects.getNumeroCotizacion(self.getEquipo())
 
         self.numero_cotizacion.setText(cod)
         self.cotizacion.setNumero(cod)

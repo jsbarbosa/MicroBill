@@ -9,13 +9,16 @@ REGISTERS_DIR = "Registers"
 CLIENTES_FILE = "Clientes.xlsx"
 REGISTRO_FILE = "Registro.xlsx"
 PRECIOS_FILE = "Precios.xlsx"
+PRECIOS_DAEMON_FILE = "Precios (daemon).xlsx"
 
 CLIENTES_FILE = os.path.join(REGISTERS_DIR, CLIENTES_FILE)
 REGISTRO_FILE = os.path.join(REGISTERS_DIR, REGISTRO_FILE)
 
 PRECIOS_FILE = os.path.join(REGISTERS_DIR, PRECIOS_FILE)
+PRECIOS_DAEMON_FILE = os.path.join(REGISTERS_DIR, PRECIOS_DAEMON_FILE)
 
 EQUIPOS_KEYS = ['Código', 'Descripción', 'Interno', 'Externo']
+# DAEMON_KEYS = []
 REGISTRO_KEYS = ['Cotización', 'Fecha', 'Nombre', 'Correo', 'Teléfono', 'Institución', 'Interno',
                   'Responsable', 'Muestra', 'Equipo', 'Elaboró', 'Modificó', 'Estado', 'Pago', 'Referencia', 'Aplicó', 'Tipo de Pago', 'Valor']
 CLIENTES_KEYS = ['Nombre', 'Correo', 'Teléfono', 'Institución', 'Documento',
@@ -29,3 +32,10 @@ EQUIPOS = list(df.keys())
 for item in EQUIPOS:
     data = df[item].astype(str)
     exec("%s = data"%item)
+
+DAEMON_DF = pd.read_excel(PRECIOS_DAEMON_FILE, sheet_name = None)
+DAEMON_SUBCLASSES = list(df.keys())
+
+# for item in DAEMON_SUBCLASSES:
+#     data = df[item].astype(str)
+#     exec("%s = data"%item)
