@@ -1,5 +1,8 @@
 ### Email reading
+import os
 import sys
+sys.path.append(os.path.dirname(sys.executable))
+
 import imaplib
 import pandas as pd
 from correo import *
@@ -210,10 +213,11 @@ class MainWindow(QMainWindow):
         self.main_layout.setSpacing(6)
 
         self.holder = QtWidgets.QPlainTextEdit()
-        self.holder.setEnabled(False)
+        self.holder.setReadOnly(True)
+        # self.holder.setEnabled(False)
         self.holder.setAutoFillBackground(True)
         self.format = '%s'
-        self.holder.setStyleSheet("background-color: rgb(0, 0, 0);")
+        self.holder.setStyleSheet("background-color: rgb(0, 0, 0);color: #FFFFFF;")
 
         self.main_layout.addWidget(self.holder)
         self.timer = QtCore.QTimer()

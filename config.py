@@ -128,7 +128,7 @@ READ_PORT = 993
 
 READ_EVERY_S = 10
 
-READ_EMAIL_FOLDER = "INBOX"
+READ_EMAIL_FOLDER = "INBOX/AGENDO"
 READ_REQUEST_DETAILS = "Request details"
 READ_FIELDS = "Fields"
 READ_LAST = "Please go to the link below to view this request.  "
