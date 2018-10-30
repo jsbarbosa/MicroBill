@@ -2,7 +2,7 @@
 
 block_cipher = None
 
-a = Analysis(['main.py'],
+a = Analysis(['daemon.py'],
              pathex=[],
              binaries=[],
              datas=[],
@@ -20,7 +20,7 @@ exe = EXE(pyz,
           a.binaries,
           a.zipfiles,
           a.datas,
-          name='MicroBill',
+          name='MicroBillDaemon',
           debug=False,
           strip=False,
           upx=True,
