@@ -109,8 +109,8 @@ class EmailReader(object):
         self.SERVER.select(READ_EMAIL_FOLDER)
 
     def getIds(self):
-        # ans, ids = self.SERVER.search(None, READ_SEARCH_FOR, '(UNSEEN)')
-        ans, ids = self.SERVER.search(None, READ_SEARCH_FOR)
+        ans, ids = self.SERVER.search(None, READ_SEARCH_FOR, '(UNSEEN)')
+        # ans, ids = self.SERVER.search(None, READ_SEARCH_FOR)
         ids = ids[0].split()
         return ids
 
