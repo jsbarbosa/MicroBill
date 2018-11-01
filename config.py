@@ -136,13 +136,16 @@ READ_LAST = "Please go to the link below to view this request.  "
 READ_FIELDS_DICT = {'nombre': "A new request was submitted by ",
                 "id":"Request id ",
                 "documento": "Nit/CC ",
-                "responsable": "from group ",
+                "responsable": "Person in charge ",
                 "direccion": "Address ",
                 "ciudad": "City ",
                 "telefono": "Telephone ",
                 "institucion": "Institution ",
                 "pago": "Paying method ",
-                "tipo": "Sample type "}
+                "tipo": "Sample type ",
+                "proyecto": "Project name ",
+                "codigo": "Project code ",
+                }
 
 READ_NUMERIC_FIELDS = ["Request id", "Id", "Telephone"]
 READ_SEARCH_FOR = 'FROM "lists@cirklo.org" SUBJECT "[Agendo] New request (2-Quote request"'

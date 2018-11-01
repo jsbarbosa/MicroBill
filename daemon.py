@@ -3,6 +3,8 @@ import os
 import sys
 sys.path.append(os.path.dirname(sys.executable))
 
+import re
+import codecs
 import imaplib
 import pandas as pd
 from correo import *
@@ -89,8 +91,17 @@ class EmailReader(object):
             data = data[0][1]
             txt = message_from_bytes(data)
             msg = self.getTextBlock(txt)
+            msg = self.toUTF8(msg)
             emails.append(msg)
         return emails
+
+    def toUTF8(self, text):
+        matches = re.findall(r"=\S\S=\S\S", text)
+        replaces = [codecs.decode(match.replace("=", ""), "hex").decode('utf-8')\
+                    for match in matches]
+        for (match, replace) in zip(matches, replaces):
+            text = text.replace(match, replace)
+        return text
 
     def signIn(self):
         self.SERVER = imaplib.IMAP4_SSL(READ_SERVER, READ_PORT)
@@ -98,7 +109,8 @@ class EmailReader(object):
         self.SERVER.select(READ_EMAIL_FOLDER)
 
     def getIds(self):
-        ans, ids = self.SERVER.search(None, READ_SEARCH_FOR, '(UNSEEN)')
+        # ans, ids = self.SERVER.search(None, READ_SEARCH_FOR, '(UNSEEN)')
+        ans, ids = self.SERVER.search(None, READ_SEARCH_FOR)
         ids = ids[0].split()
         return ids
 
@@ -120,19 +132,6 @@ class EmailReader(object):
             del temp['id']
         except KeyError: pass
 
-        # pago = temp['interno']
-        # if pago == "Universidad de los Andes":
-        #     temp['pago'] = "Transferencia interna"
-        # elif pago == "External Institution":
-        #     temp['pago'] = "Factura"
-        # elif pago == "Personal funds":
-        #     temp['pago'] = "Recibo"
-
-        # if temp['interno'] == "Universidad de los Andes":
-        #     temp['interno'] = "Interno"
-        # else:
-        #     temp['interno'] = "Externo"
-        # temp["institucion"] = "Universidad de los Andes"
         return Usuario(**temp)
 
     def makeServicios(self, dicc):
