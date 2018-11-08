@@ -206,14 +206,15 @@ class Cotizacion(object):
             table.append(row)
         return table
 
-    def save(self, to_cotizacion = True):
+    def save(self, to_cotizacion = True, to_pdf = True):
         file = os.path.join(constants.OLD_DIR, self.numero + ".pkl")
         with open(file, 'wb') as output:
             pickle.dump(self, output, pickle.HIGHEST_PROTOCOL)
         if to_cotizacion:
             self.usuario.save()
             self.toRegistro()
-            self.makePDFCotizacion()
+            if to_pdf:
+                self.makePDFCotizacion()
         else:
             self.makePDFReporte()
 
@@ -240,6 +241,8 @@ class Cotizacion(object):
         REGISTRO_DATAFRAME = REGISTRO_DATAFRAME.drop_duplicates("Cotización", "last")
         REGISTRO_DATAFRAME = REGISTRO_DATAFRAME.sort_values("Cotización", ascending = False)
         REGISTRO_DATAFRAME = REGISTRO_DATAFRAME.reset_index(drop = True)
+
+        print("Resgistro file:", constants.REGISTRO_FILE)
 
         writer = pd.ExcelWriter(constants.REGISTRO_FILE, engine='xlsxwriter',
                     datetime_format= "dd/mm/yy hh:mm:ss")

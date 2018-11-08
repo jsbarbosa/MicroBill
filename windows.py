@@ -657,12 +657,19 @@ class CotizacionWindow(QtWidgets.QMainWindow):
             return None
 
         new = [proc for proc in new if proc not in old]
+        current = psutil.Process(os.getpid()).name()
+        caller = p1.name()
+        print(current, caller)
         try:
             for proc in new:
                 p = psutil.Process(proc)
-                if p.parent().name() == "cmd.exe":
-                    if (p.parent().parent().name() == "MicroBill.exe") or (p.parent().parent().name() == "python.exe"):
-                        p.terminate()
+                parent = p.parent()
+                if (parent.parent().name() == current) or (parent.name() == current) or\
+                    (parent.parent().name() == caller) or (parent.name() == caller):
+
+                # if p.parent().name() == "cmd.exe":
+                #     if (p.parent().parent().name() == "MicroBill.exe") or (p.parent().parent().name() == "python.exe"):
+                    p.terminate()
             p1.kill()
         except:
             pass
@@ -721,12 +728,13 @@ class CotizacionWindow(QtWidgets.QMainWindow):
             sleep(1)
             if self.confirmGuardar():
                 self.closePDF(p1, old)
-                for i in range(10):
-                    try:
-                        self.cotizacion.save()
-                        break
-                    except PermissionError:
-                        sleep(0.1)
+                self.cotizacion.save(to_pdf = False)
+                # for i in range(10):
+                #     try:
+                #         self.cotizacion.save()
+                #         break
+                #     except PermissionError:
+                #         sleep(0.1)
 
                 self.updateAutoCompletar()
                 self.sendCorreo()
@@ -1565,16 +1573,19 @@ class MainWindow(QtWidgets.QMainWindow):
         self.update_timer.start()
 
     def updateDataFrames(self):
-        cli, reg = objects.readDataFrames()
-        if (not cli.equals(objects.CLIENTES_DATAFRAME)) | (not reg.equals(objects.REGISTRO_DATAFRAME)):
-            objects.CLIENTES_DATAFRAME = cli
-            objects.REGISTRO_DATAFRAME = reg
-            self.cotizacion_window.updateAutoCompletar()
-            self.cotizacion_window.setLastCotizacion()
-            self.descontar_window.updateDataFrames()
-            self.gestor_window.updateAutoCompletar()
-            self.buscar_window.updateAutoCompletar()
-            self.buscar_window.update()
+        try:
+            cli, reg = objects.readDataFrames()
+            if (not cli.equals(objects.CLIENTES_DATAFRAME)) | (not reg.equals(objects.REGISTRO_DATAFRAME)):
+                objects.CLIENTES_DATAFRAME = cli
+                objects.REGISTRO_DATAFRAME = reg
+                self.cotizacion_window.updateAutoCompletar()
+                self.cotizacion_window.setLastCotizacion()
+                self.descontar_window.updateDataFrames()
+                self.gestor_window.updateAutoCompletar()
+                self.buscar_window.updateAutoCompletar()
+                self.buscar_window.update()
+        except Exception as e:
+            print("On updateDataFrames:", e)
 
     def centerOnScreen(self):
         resolution = QtWidgets.QDesktopWidget().screenGeometry()
@@ -1605,7 +1616,6 @@ class MainWindow(QtWidgets.QMainWindow):
         self.buscar_window.activateWindow()
         self.buscar_window.table.resizeRowsToContents()
         self.buscar_window.show()
-
 
     def openHandler(self):
         path = os.path.dirname(sys.executable)
