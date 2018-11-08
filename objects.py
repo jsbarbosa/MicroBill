@@ -1,4 +1,6 @@
 import os
+import sys
+import time
 import pickle
 import numpy as np
 import pandas as pd
@@ -12,9 +14,21 @@ from unidecode import unidecode
 if os.path.isdir(constants.OLD_DIR): pass
 else: os.makedirs(constants.OLD_DIR)
 
+LAST_MODIFICATION_CLIENTES = 0
+LAST_MODIFICATION_REGISTRO = 0
+
 def readDataFrames():
-    c = pd.read_excel(constants.CLIENTES_FILE).fillna("").astype(str)
-    r = pd.read_excel(constants.REGISTRO_FILE).fillna("").astype(str)
+    global LAST_MODIFICATION_CLIENTES, LAST_MODIFICATION_REGISTRO
+    t1 = os.path.getmtime(constants.CLIENTES_FILE)
+    t2 = os.path.getmtime(constants.REGISTRO_FILE)
+    c = None
+    r = None
+    if t1 > LAST_MODIFICATION_CLIENTES:
+        c = pd.read_excel(constants.CLIENTES_FILE).fillna("").astype(str)
+        LAST_MODIFICATION_CLIENTES = t1
+    if t2 > LAST_MODIFICATION_REGISTRO:
+        r = pd.read_excel(constants.REGISTRO_FILE).fillna("").astype(str)
+        LAST_MODIFICATION_REGISTRO = t2
     return c, r
 
 CLIENTES_DATAFRAME, REGISTRO_DATAFRAME = readDataFrames()
@@ -242,15 +256,25 @@ class Cotizacion(object):
         REGISTRO_DATAFRAME = REGISTRO_DATAFRAME.sort_values("Cotización", ascending = False)
         REGISTRO_DATAFRAME = REGISTRO_DATAFRAME.reset_index(drop = True)
 
-        print("Resgistro file:", constants.REGISTRO_FILE)
+        #path = os.path.dirname(sys.executable)
+        #path = os.path.join(path, constants.REGISTRO_FILE)
+        #path = os.path.normpath(path)
+        #if ("Scripts" in path) or ("bin" in path):
+        path = constants.REGISTRO_FILE
+        
+        for i in range(10):
+            try:
+                writer = pd.ExcelWriter(path, engine='xlsxwriter',
+                                        datetime_format= "dd/mm/yy hh:mm:ss")
 
-        writer = pd.ExcelWriter(constants.REGISTRO_FILE, engine='xlsxwriter',
-                    datetime_format= "dd/mm/yy hh:mm:ss")
+                REGISTRO_DATAFRAME.to_excel(writer, index = False)
 
-        REGISTRO_DATAFRAME.to_excel(writer, index = False)
-
-        writer.save()
-        writer.close()
+                #writer.save()
+                #writer.close()
+                break
+            except Exception as e:
+                if i == 9:
+                    raise(e)
 
     def load(self, file):
         file = os.path.join(constants.OLD_DIR, file + ".pkl")

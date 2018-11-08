@@ -1,4 +1,4 @@
-﻿ADMINS = ["Humberto Ibarra", "Monica Lopez", "Juan Camilo Orozco", "Laura Cruz", "Juan Barbosa"]
+﻿ADMINS = ["Humberto Ibarra", "Monica Lopez", "Juan Camilo Orozco", "Laura Sotelo", "Juan Barbosa"]
 
 """
     PDF
@@ -117,7 +117,6 @@ Por este medio solicitamos la generación de la factura correspondiente a la cot
 
 Cordial saludo,
 """
-
 
 
 SEND_SERVER = "smtp-mail.outlook.com"
