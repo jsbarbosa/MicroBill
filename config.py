@@ -79,12 +79,13 @@ REQUEST_MENSAJE = """Para cotizar los ensayos solicitados, es necesario que nos 
 
 1. Tamaño y cantidad de muestras:
 2. Objetivo del ensayo a realizar:
-3. Nombre de la persona de contacto:
-4. Institución:
-5. Documento (C.C o NIT) de la persona o empresa que realiza el pago:
-6. Teléfono:
-7. Dirección:
-8. Correo electrónico:
+3. Tipo de muestra:
+4. Nombre de la persona de contacto:
+5. Institución:
+6. Documento (C.C o NIT) de la persona o empresa que realiza el pago:
+7. Teléfono:
+8. Dirección:
+9. Correo electrónico:
 
 Si usted es usuario Uniandes y hace parte de un proyecto dentro de la Universidad le solicitamos nos indique:
 
