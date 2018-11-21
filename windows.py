@@ -306,11 +306,9 @@ class CorreoDialog(QtWidgets.QDialog):
         self.exception = None
 
     def closeEvent(self, event):
-        # if self.exception != None:
-        #     correo.CORREO = None
         if self.finished:
             self.thread = None
-            sleep(2.5)
+            # sleep(2.5)
             event.accept()
         else:
             event.ignore()
@@ -635,12 +633,13 @@ class CotizacionWindow(QtWidgets.QMainWindow):
             to = self.cotizacion.getUsuario().getCorreo()
             file_name = self.cotizacion.getNumero()
             pago = self.pago_widget.currentText()
+            observaciones = self.observaciones_correo_widget.toPlainText()
             if pago == "Transferencia interna":
-                self.dialog = CorreoDialog((to, file_name, self.observaciones_correo_widget.toPlainText()), target = correo.sendCotizacionTransferencia)
+                self.dialog = CorreoDialog((to, file_name, observaciones), target = correo.sendCotizacionTransferencia)
             elif pago == "Factura":
-                self.dialog = CorreoDialog((to, file_name, self.observaciones_correo_widget.toPlainText()), target = correo.sendCotizacionFactura)
+                self.dialog = CorreoDialog((to, file_name, observaciones), target = correo.sendCotizacionFactura)
             elif pago == "Recibo":
-                self.dialog = CorreoDialog((to, file_name, self.observaciones_correo_widget.toPlainText()), target = correo.sendCotizacionRecibo)
+                self.dialog = CorreoDialog((to, file_name, observaciones), target = correo.sendCotizacionRecibo)
             else: print("ERROR, not implemented")
             self.dialog.start()
             self.dialog.exec_()
@@ -657,7 +656,7 @@ class CotizacionWindow(QtWidgets.QMainWindow):
             return None
 
         new = [proc for proc in new if proc not in old]
-        
+
         current = psutil.Process(os.getpid()).name()
         caller = p1.pid
         caller = psutil.Process(caller).name()

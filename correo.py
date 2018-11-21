@@ -30,7 +30,6 @@ CORREO = None
 
 def initCorreo():
     global CORREO
-    # try:
     CORREO = smtplib.SMTP(SEND_SERVER, SEND_PORT, timeout = 30)
     CORREO.ehlo() # Hostname to send for this command defaults to the fully qualified domain name of the local host.
     CORREO.starttls() #Puts connection to SMTP server in TLS mode
@@ -64,11 +63,11 @@ def sendEmail(to, subject, text, attachments = []):
 
     for i in range(5):
         try:
+            initCorreo()
             CORREO.sendmail(FROM, to, msg.as_string())
             break
-        except:
-            try: initCorreo()
-            except Exception as e: print(e)
+        except Exception as e:
+            print(e)
             if i == 4:
                 raise(Exception("Could not send email."))
 
