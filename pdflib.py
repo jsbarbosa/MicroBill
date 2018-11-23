@@ -82,10 +82,17 @@ class PDFBase():
 
         data = [[Paragraph("<b>Correo:</b>", self.styles["Normal"]),
             Paragraph(usuario.getCorreo(), self.styles["Border"]),
-            Paragraph("<b>Muestra:</b>", self.styles["Normal"]),
-            Paragraph(self.cotizacion.getMuestra(), self.styles["Border"]),
+            Paragraph("<b>Tipo:</b>", self.styles["Normal"]),
+            Paragraph(usuario.getInterno(), self.styles["Border"]),
             ]]
         t = Table(data, [c1, c2, c3, c4], hAlign='LEFT')
+        self.story.append(Spacer(1, h))
+        self.story.append(t)
+
+        data = [[Paragraph("<b>Muestra:</b>", self.styles["Normal"]),
+                Paragraph(self.cotizacion.getMuestra(), self.styles["Border"])
+                ]]
+        t = Table(data, [c1, c2 + c3 + c4], hAlign='LEFT')
         self.story.append(Spacer(1, h))
         self.story.append(t)
 

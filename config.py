@@ -10,6 +10,7 @@ TERMINOS_Y_CONDICIONES = ["Para usuarios internos favor realizar el traslado al 
 			             ]
 
 CONFIDENCIALIDAD = "El contratista se obliga a respetar el carácter confidencial de este documento y de la información, condiciones y documentos relacionados con el mismo, de conformidad con las normas constitucionales y legales aplicables. En consecuencia, el contratista se compromete a no publicar, difundir, comentar o analizar frente a terceros, copiar, reproducir o hacer uso diferente al acordado, de la información que el centro de microscopia le entregue en este documento, ya sea de forma impresa, electrónica, verbal o de cualquier otra manera, o de aquella que el contratista llegue a conocer, teniendo en cuenta que dicha información tiene como finalidad exclusiva, permitir y facilitar la debida prestación de los servicios solicitados."
+
 CENTRO = "Centro de Microscopía"
 
 DEPENDENCIAS = [CENTRO.upper(),

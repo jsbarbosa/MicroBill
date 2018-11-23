@@ -261,7 +261,7 @@ class Cotizacion(object):
         #path = os.path.normpath(path)
         #if ("Scripts" in path) or ("bin" in path):
         path = constants.REGISTRO_FILE
-        
+
         for i in range(10):
             try:
                 writer = pd.ExcelWriter(path, engine='xlsxwriter',

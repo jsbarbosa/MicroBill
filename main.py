@@ -1,6 +1,8 @@
 ﻿import sys
 from PyQt5 import QtCore, QtGui, QtWidgets
+from PyQt5.QtWebEngineWidgets import QWebEngineView
 
+sys.argv += ["--disable-web-security", "--web-security=no"]
 app = QtWidgets.QApplication(sys.argv)
 
 icon = QtGui.QIcon('icon.ico')
@@ -13,13 +15,12 @@ app.processEvents()
 
 def threadedCorreo():
     while True:
-        try: 
+        try:
             correo.initCorreo()
             sleep(10 * 60)
         except Exception as e:
             sleep(1 * 60)
             print(e)
-        
 
 def testFiles():
     """
@@ -55,7 +56,7 @@ try:
     from windows import MainWindow
     from objects import REGISTRO_DATAFRAME, CLIENTES_DATAFRAME
     import migrate
-    
+
     testFiles()
 
 except Exception as e:

@@ -17,7 +17,7 @@ REGISTRO_FILE = os.path.join(REGISTERS_DIR, REGISTRO_FILE)
 PRECIOS_FILE = os.path.join(REGISTERS_DIR, PRECIOS_FILE)
 PRECIOS_DAEMON_FILE = os.path.join(REGISTERS_DIR, PRECIOS_DAEMON_FILE)
 
-EQUIPOS_KEYS = ['Código', 'Descripción', 'Interno', 'Externo']
+EQUIPOS_KEYS = ['Código', 'Descripción', 'Interno', 'Campus', 'Académico', 'Industria']
 # DAEMON_KEYS = []
 REGISTRO_KEYS = ['Cotización', 'Fecha', 'Nombre', 'Correo', 'Teléfono', 'Institución', 'Interno',
                   'Responsable', 'Muestra', 'Equipo', 'Elaboró', 'Modificó', 'Estado', 'Pago', 'Referencia', 'Aplicó', 'Tipo de Pago', 'Valor']
@@ -36,6 +36,4 @@ for item in EQUIPOS:
 DAEMON_DF = pd.read_excel(PRECIOS_DAEMON_FILE, sheet_name = None)
 DAEMON_SUBCLASSES = list(df.keys())
 
-# for item in DAEMON_SUBCLASSES:
-#     data = df[item].astype(str)
-#     exec("%s = data"%item)
+PRICES_DIVISION = ['Interno', 'Campus', 'Académico', 'Industria']

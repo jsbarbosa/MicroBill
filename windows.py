@@ -1,6 +1,7 @@
 import os
 import sys
 import config
+import traceback
 import numpy as np
 from time import sleep
 from datetime import datetime
@@ -13,6 +14,11 @@ import correo
 import psutil
 from subprocess import Popen
 from threading import Thread
+
+# from PyQt5.QtWebEngine import QtWebEngine
+from PyQt5.QtWebEngineWidgets import QWebEngineView, QWebEngineSettings
+from PyQt5.QtCore import QUrl
+
 
 config.ADMINS = [""] + config.ADMINS
 
@@ -44,6 +50,11 @@ class Table(QtWidgets.QTableWidget):
             if not codigo in table_codigos: self.parent.removeServicio(i)
 
     def handler(self, row, col):
+        # if not self.parent.getInterno():
+        #     txt = ', '.join(constants.PRICES_DIVISION)
+        #     e = Exception('Se debe seleccionar el tipo de usuario (%s)'%txt)
+        #     self.parent.errorWindow(e)
+        # else:
         self.blockSignals(True)
         item = self.item(row, col)
         try:
@@ -78,7 +89,7 @@ class Table(QtWidgets.QTableWidget):
                     try:
                         servicio = objects.Servicio(equipo = equipo, codigo = cod, interno = interno, cantidad = n)
                         self.parent.addServicio(servicio)
-                    except:
+                    except Exception as e:
                         self.item(row, 0).setText("")
                         self.item(row, 1).setText("")
                         self.item(row, 2).setText("")
@@ -405,7 +416,10 @@ class CotizacionWindow(QtWidgets.QMainWindow):
         telefono_label = QtWidgets.QLabel("Teléfono:")
         self.telefono_widget = AutoLineEdit("Teléfono", self)
 
-        self.interno_widget = QtWidgets.QCheckBox("Interno")
+        interno_label = QtWidgets.QLabel("Interno:")
+        self.interno_widget = QtWidgets.QComboBox()
+        self.interno_widget.addItems(constants.PRICES_DIVISION)
+        # QCheckBox("Interno")
         responsable_label = QtWidgets.QLabel("Responsable:")
         self.responsable_widget = AutoLineEdit("Responsable", self)
 
@@ -445,6 +459,7 @@ class CotizacionWindow(QtWidgets.QMainWindow):
 
         self.form_frame_layout.addWidget(responsable_label, 4, 0)
         self.form_frame_layout.addWidget(self.responsable_widget, 4, 1)
+        self.form_frame_layout.addWidget(interno_label, 4, 2)
         self.form_frame_layout.addWidget(self.interno_widget, 4, 3)
 
         self.form_frame_layout.addWidget(proyecto_label, 5, 0)
@@ -522,19 +537,23 @@ class CotizacionWindow(QtWidgets.QMainWindow):
 
         self.setAutoCompletar()
 
-        self.interno_widget.setChecked(2)
+        # self.interno_widget.setChecked(2)
 
         self.cotizacion = objects.Cotizacion()
         self.setLastCotizacion()
 
         self.resize(700, 700)
 
-        self.interno_widget.stateChanged.connect(self.changeInterno)
+        self.interno_widget.currentIndexChanged.connect(self.changeInterno)
+        # self.interno_widget.stateChanged.connect(self.changeInterno)
         self.limpiar_button.clicked.connect(self.limpiar)
         self.guardar_button.clicked.connect(self.guardar)
         self.numero_cotizacion.clicked.connect(self.numeroCotizacion)
         self.equipo_widget.currentIndexChanged.connect(self.changeEquipo)
         self.view_button.clicked.connect(self.verCodigos)
+
+        self.urlview = QWebEngineView()
+        self.urlview.settings().setAttribute(QWebEngineSettings.PluginsEnabled, True)
 
     def setAutoCompletar(self):
         for item in self.AUTOCOMPLETE_WIDGETS:
@@ -549,6 +568,10 @@ class CotizacionWindow(QtWidgets.QMainWindow):
     def updateAutoCompletar(self):
         for item in self.AUTOCOMPLETE_WIDGETS:
             exec("self.%s_widget.update()"%item)
+
+    def setInternoWidget(self, value):
+        index = self.interno_widget.findText(value)
+        self.interno_widget.setCurrentIndex(index)
 
     def autoCompletar(self, text):
         if text != "":
@@ -568,28 +591,26 @@ class CotizacionWindow(QtWidgets.QMainWindow):
                             widget = eval("self.%s_widget"%widgetT)
 
                             if field == "Interno":
-                                if val == "Interno": widget.setCheckState(2)
-                                else: widget.setCheckState(0)
+                                self.setInternoWidget(val)
+                                # if val == "Interno": widget.setCheckState(2)
+                                # else: widget.setCheckState(0)
                             else:
                                 widget.blockSignals(True)
                                 widget.setText(val)
                                 widget.blockSignals(False)
 
-    def changeInterno(self, state):
-        state = bool(state)
+    def changeInterno(self, index):
+        state = False
+        division = self.getInterno()
+        if (division == 'Interno') or (division == 'Campus'): state = True
         self.responsable_widget.setEnabled(state)
         self.proyecto_widget.setEnabled(state)
         self.codigo_widget.setEnabled(state)
 
-        interno = "Externo"
-        if state: interno = "Interno"
-        try:
-            self.cotizacion.setInterno(interno)
-            self.table.updateInterno()
+        self.cotizacion.setInterno(division)
+        self.table.updateInterno()
 
-            self.setTotal()
-        except AttributeError:
-            pass
+        self.setTotal()
 
     def changeEquipo(self, i):
         text = self.equipo_widget.currentText()
@@ -607,7 +628,8 @@ class CotizacionWindow(QtWidgets.QMainWindow):
                 widget.setText("")
             widget.blockSignals(False)
         self.setLastCotizacion()
-        self.interno_widget.setCheckState(2)
+        self.setInternoWidget('Interno')
+        # self.interno_widget.setCheckState(2)
         self.pago_widget.setCurrentIndex(0)
         self.elaborado_widget.setCurrentIndex(0)
         self.notificar_widget.setChecked(True)
@@ -648,32 +670,8 @@ class CotizacionWindow(QtWidgets.QMainWindow):
         else:
             NoNotificacion().exec_()
 
-    def closePDF(self, p1, old):
-        new = [proc.pid for proc in psutil.process_iter()]
-        try:
-            new.remove(p1.pid)
-        except:
-            return None
-
-        new = [proc for proc in new if proc not in old]
-
-        current = psutil.Process(os.getpid()).name()
-        caller = p1.pid
-        caller = psutil.Process(caller).name()
-        try:
-            for proc in new:
-                p = psutil.Process(proc)
-                parent = p.parent()
-                if (parent != None):
-                    sparent = parent.parent()
-                    if (sparent != None):
-                        if (sparent.name() == current) or (sparent.name() == caller):
-                            p.terminate()
-                    if (parent.name() == current) or (parent.name() == caller):
-                        p.terminate()
-            p1.kill()
-        except Exception as e:
-            print("On closePDF:", e)
+    def closePDF(self):
+        self.urlview.close()
 
     def confirmGuardar(self):
         msg = QtWidgets.QMessageBox()
@@ -686,14 +684,23 @@ class CotizacionWindow(QtWidgets.QMainWindow):
             return True
         return False
 
+    def openPDF(self, file):
+        HTML = '<object data="%s" type="application/pdf" width="100%%" height="100%%"><p>Alternative text - include a link <a href="%s">to the PDF!</a></p></object>'%(file, file)
+
+        self.urlview.setHtml(HTML)
+        # url = QUrl('https://www.google.com')
+        # url = QUrl.fromUserInput(file)
+        # url = QUrl.fromLocalFile(file)
+        # self.urlview.setUrl(url)
+        # self.urlview.load(url)
+        self.urlview.show()
+
     def guardar(self):
         try:
             dic = {}
             for key in self.WIDGETS:
                 if key == "interno":
-                    value = self.interno_widget.isChecked()
-                    if value: value = "Interno"
-                    else: value = "Externo"
+                    value = self.getInterno()
                 else: value = eval("self.%s_widget.text()"%key)
                 if ((value == "") and not (key in self.IGNORE)):
                     if (key == "responsable") and not self.interno_widget.isChecked():
@@ -725,24 +732,21 @@ class CotizacionWindow(QtWidgets.QMainWindow):
 
             old = [proc.pid for proc in psutil.process_iter()]
 
-            p1 = Popen(path, shell = True)
+            # p1 = Popen(path, shell = True)
+            self.openPDF(path)
             sleep(1)
             if self.confirmGuardar():
-                self.closePDF(p1, old)
+                self.closePDF()
+                # self.closePDF(p1, old)
                 self.cotizacion.save(to_pdf = False)
-                # for i in range(10):
-                #     try:
-                #         self.cotizacion.save()
-                #         break
-                #     except PermissionError:
-                #         sleep(0.1)
 
                 self.updateAutoCompletar()
                 self.sendCorreo()
                 self.limpiar()
                 self.setLastCotizacion()
             else:
-                self.closePDF(p1, old)
+                self.closePDF()
+                # self.closePDF(p1, old)
                 self.cotizacion.setUsuario(None)
                 self.cotizacion.setMuestra(None)
                 for i in range(10):
@@ -782,8 +786,10 @@ class CotizacionWindow(QtWidgets.QMainWindow):
                         val = str(eval("user.get%s()"%text))
                         widget.setText(val)
                     except: pass
-            if user.getInterno() == "Interno": self.interno_widget.setCheckState(2)
-            else: self.interno_widget.setCheckState(0)
+            self.setInternoWidget(user.getInterno())
+            # if user.getInterno() == "Interno":
+            #     self.interno_widget.setCheckState(2)
+            # else: self.interno_widget.setCheckState(0)
             self.pago_widget.setCurrentText(user.getPago())
             self.muestra_widget.setText(self.cotizacion.getMuestra())
             self.numero_cotizacion.setText(self.cotizacion.getNumero())
@@ -819,7 +825,8 @@ class CotizacionWindow(QtWidgets.QMainWindow):
         return self.equipo_widget.currentText()
 
     def getInterno(self):
-        return self.interno_widget.checkState()
+        interno = self.interno_widget.currentText()
+        return interno
 
     def removeServicio(self, index):
         self.cotizacion.removeServicio(index)
@@ -830,6 +837,7 @@ class CotizacionWindow(QtWidgets.QMainWindow):
         self.total_widget.setText("{:,}".format(total))
 
     def errorWindow(self, exception):
+        traceback.print_tb(exception.__traceback__)
         error_text = str(exception)
         msg = QtWidgets.QMessageBox()
         msg.setIcon(QtWidgets.QMessageBox.Warning)
