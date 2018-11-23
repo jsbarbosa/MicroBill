@@ -673,8 +673,34 @@ class CotizacionWindow(QtWidgets.QMainWindow):
         else:
             NoNotificacion().exec_()
 
-    def closePDF(self):
-        self.urlview.close()
+    # def closePDF(self):
+    #     self.urlview.close()
+    def closePDF(self, p1, old):
+        new = [proc.pid for proc in psutil.process_iter()]
+        try:
+            new.remove(p1.pid)
+        except:
+            return None
+
+        new = [proc for proc in new if proc not in old]
+
+        current = psutil.Process(os.getpid()).name()
+        caller = p1.pid
+        caller = psutil.Process(caller).name()
+        try:
+            for proc in new:
+                p = psutil.Process(proc)
+                parent = p.parent()
+                if (parent != None):
+                    sparent = parent.parent()
+                    if (sparent != None):
+                        if (sparent.name() == current) or (sparent.name() == caller):
+                            p.terminate()
+                    if (parent.name() == current) or (parent.name() == caller):
+                        p.terminate()
+            p1.kill()
+        except Exception as e:
+            print("On closePDF:", e)
 
     def confirmGuardar(self):
         msg = QtWidgets.QMessageBox()
@@ -689,20 +715,12 @@ class CotizacionWindow(QtWidgets.QMainWindow):
 
     def openPDF(self, file):
         path = os.path.dirname(sys.executable)
-        temp = os.path.join(path, file)
-        if not os.path.exists(temp):
-            path = os.getcwd()
+        path = os.path.join(path, file)
+        if not os.path.exists(path):
+            path = os.path.join(os.getcwd(), file)
+        old = [proc.pid for proc in psutil.process_iter()]
 
-        pdf_viewer = "pdfjs-2.0.943-dist/web/viewer.html"
-        pdf_viewer = os.path.join(path, pdf_viewer)
-        file_ = os.path.join(path, file)
-        url = pdf_viewer
-        url = QUrl.fromUserInput(url)
-
-        self.urlview.load(url)
-        self.urlview.show()
-
-        return os.path.join(path, file)
+        return path, old
 
     def guardar(self):
         try:
@@ -734,31 +752,26 @@ class CotizacionWindow(QtWidgets.QMainWindow):
             self.cotizacion.setObservacionCorreo(self.observaciones_correo_widget.toPlainText())
             self.cotizacion.makePDFCotizacion()
 
-            old = [proc.pid for proc in psutil.process_iter()]
+            path, old = self.openPDF(self.cotizacion.getFileName())
+            p1 = Popen(path, shell = True)
+            if self.confirmGuardar():
+                self.closePDF(p1, old)
+                self.cotizacion.save(to_pdf = False)
 
-            # p1 = Popen(path, shell = True)
-            path = self.openPDF(self.cotizacion.getFileName())
-            sleep(1)
-            # if self.confirmGuardar():
-            #     self.closePDF()
-            #     # self.closePDF(p1, old)
-            #     self.cotizacion.save(to_pdf = False)
-            #
-            #     self.updateAutoCompletar()
-            #     self.sendCorreo()
-            #     self.limpiar()
-            #     self.setLastCotizacion()
-            # else:
-            #     self.closePDF()
-            #     # self.closePDF(p1, old)
-            #     self.cotizacion.setUsuario(None)
-            #     self.cotizacion.setMuestra(None)
-            #     for i in range(10):
-            #         try:
-            #             os.remove(path)
-            #             break
-            #         except PermissionError:
-            #             sleep(0.1)
+                self.updateAutoCompletar()
+                self.sendCorreo()
+                self.limpiar()
+                self.setLastCotizacion()
+            else:
+                self.closePDF(p1, old)
+                self.cotizacion.setUsuario(None)
+                self.cotizacion.setMuestra(None)
+                for i in range(10):
+                    try:
+                        os.remove(path)
+                        break
+                    except PermissionError:
+                        sleep(0.1)
 
             self.cotizacion.setUsuario(None)
             self.cotizacion.setMuestra(None)

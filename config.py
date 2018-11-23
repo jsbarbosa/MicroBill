@@ -146,6 +146,7 @@ READ_FIELDS_DICT = {'nombre': "A new request was submitted by ",
                 "tipo": "Sample type ",
                 "proyecto": "Project name ",
                 "codigo": "Project code ",
+                "externo": "External funds "
                 }
 
 READ_NUMERIC_FIELDS = ["Request id", "Id", "Telephone"]

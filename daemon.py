@@ -1,6 +1,7 @@
 ### Email reading
 import os
 import sys
+import traceback
 sys.path.append(os.path.dirname(sys.executable))
 
 import re
@@ -121,7 +122,6 @@ class EmailReader(object):
         self.signIn()
         ids = self.getIds()
         emails = self.getEmails(ids)
-
         return ids, [self.parseEmail(email) for email in emails]
 
     def makeUsuario(self, dicc):
@@ -130,9 +130,26 @@ class EmailReader(object):
             del temp["Table"]
             del temp['tipo']
             del temp['id']
+            del temp['externo']
         except KeyError: pass
-
+        interno = self.getInterno(dicc)
+        temp['interno'] = interno
         return Usuario(**temp)
+
+    def getInterno(self, dicc):
+        table = dicc['Table'][['Subclass', 'Item', 'Units', 'Unit price (COP)']]
+        row = table.loc[0]
+        sheet = row['Subclass']
+        df = constants.DAEMON_DF[sheet]
+        df = df[df['Item'] == row['Item']]
+        matches = [div for div in constants.PRICES_DIVISION if int(row['Unit price (COP)']) != int(df[div])]
+        interno = ''
+        if 'Interno' in matches:
+            if dicc['externo'] == '1': interno = 'Campus'
+            else: interno = 'Interno'
+        else:
+            interno = matches[0]
+        return interno
 
     def makeServicios(self, dicc):
         table = dicc['Table'][['Subclass', 'Item', 'Units', 'Unit price (COP)']]
@@ -140,6 +157,8 @@ class EmailReader(object):
         servicios = {}
         for servicio in constants.EQUIPOS:
             servicios[servicio] = []
+
+        interno = self.getInterno(dicc)
 
         for i in range(len(table)):
             row = table.loc[i]
@@ -150,9 +169,6 @@ class EmailReader(object):
                 codigo = df['Código'].values[0]
                 equipo = df['Equipo'].values[0]
                 cantidad = float(row['Units'])
-                interno = "Interno"
-                if int(row['Unit price (COP)']) != int(df['Interno']):
-                    interno = "Externo"
                 servicio = Servicio(equipo, str(codigo), interno, cantidad)
                 servicios[equipo].append(servicio)
         return servicios
@@ -193,7 +209,7 @@ def runDaemon():
                     cots = ", ".join(cots)
                     print("Email sent to: %s(%s) with quote(s): %s"%(usuario.getNombre(), usuario.getCorreo(), cots))
         except Exception as e:
-            print(e)
+            traceback.print_tb(e.__traceback__)
         sleep(READ_EVERY_S)
 
 class MainWindow(QMainWindow):
