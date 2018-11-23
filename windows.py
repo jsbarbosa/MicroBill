@@ -553,7 +553,10 @@ class CotizacionWindow(QtWidgets.QMainWindow):
         self.view_button.clicked.connect(self.verCodigos)
 
         self.urlview = QWebEngineView()
-        self.urlview.settings().setAttribute(QWebEngineSettings.PluginsEnabled, True)
+        plugs = [QWebEngineSettings.LocalContentCanAccessFileUrls, QWebEngineSettings.PluginsEnabled,
+                QWebEngineSettings.LinksIncludedInFocusChain]
+        for plug in plugs:
+            self.urlview.settings().setAttribute(plug, True)
 
     def setAutoCompletar(self):
         for item in self.AUTOCOMPLETE_WIDGETS:
@@ -685,15 +688,21 @@ class CotizacionWindow(QtWidgets.QMainWindow):
         return False
 
     def openPDF(self, file):
-        HTML = '<object data="%s" type="application/pdf" width="100%%" height="100%%"><p>Alternative text - include a link <a href="%s">to the PDF!</a></p></object>'%(file, file)
+        path = os.path.dirname(sys.executable)
+        temp = os.path.join(path, file)
+        if not os.path.exists(temp):
+            path = os.getcwd()
 
-        self.urlview.setHtml(HTML)
-        # url = QUrl('https://www.google.com')
-        # url = QUrl.fromUserInput(file)
-        # url = QUrl.fromLocalFile(file)
-        # self.urlview.setUrl(url)
-        # self.urlview.load(url)
+        pdf_viewer = "pdfjs-2.0.943-dist/web/viewer.html"
+        pdf_viewer = os.path.join(path, pdf_viewer)
+        file_ = os.path.join(path, file)
+        url = pdf_viewer
+        url = QUrl.fromUserInput(url)
+
+        self.urlview.load(url)
         self.urlview.show()
+
+        return os.path.join(path, file)
 
     def guardar(self):
         try:
@@ -725,36 +734,31 @@ class CotizacionWindow(QtWidgets.QMainWindow):
             self.cotizacion.setObservacionCorreo(self.observaciones_correo_widget.toPlainText())
             self.cotizacion.makePDFCotizacion()
 
-            path = os.path.dirname(sys.executable)
-            path = os.path.join(path, self.cotizacion.getFileName())
-            if not os.path.exists(path):
-                path = os.path.join(os.getcwd(), self.cotizacion.getFileName())
-
             old = [proc.pid for proc in psutil.process_iter()]
 
             # p1 = Popen(path, shell = True)
-            self.openPDF(path)
+            path = self.openPDF(self.cotizacion.getFileName())
             sleep(1)
-            if self.confirmGuardar():
-                self.closePDF()
-                # self.closePDF(p1, old)
-                self.cotizacion.save(to_pdf = False)
-
-                self.updateAutoCompletar()
-                self.sendCorreo()
-                self.limpiar()
-                self.setLastCotizacion()
-            else:
-                self.closePDF()
-                # self.closePDF(p1, old)
-                self.cotizacion.setUsuario(None)
-                self.cotizacion.setMuestra(None)
-                for i in range(10):
-                    try:
-                        os.remove(path)
-                        break
-                    except PermissionError:
-                        sleep(0.1)
+            # if self.confirmGuardar():
+            #     self.closePDF()
+            #     # self.closePDF(p1, old)
+            #     self.cotizacion.save(to_pdf = False)
+            #
+            #     self.updateAutoCompletar()
+            #     self.sendCorreo()
+            #     self.limpiar()
+            #     self.setLastCotizacion()
+            # else:
+            #     self.closePDF()
+            #     # self.closePDF(p1, old)
+            #     self.cotizacion.setUsuario(None)
+            #     self.cotizacion.setMuestra(None)
+            #     for i in range(10):
+            #         try:
+            #             os.remove(path)
+            #             break
+            #         except PermissionError:
+            #             sleep(0.1)
 
             self.cotizacion.setUsuario(None)
             self.cotizacion.setMuestra(None)

@@ -2,7 +2,7 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtWebEngineWidgets import QWebEngineView
 
-sys.argv += ["--disable-web-security", "--web-security=no"]
+sys.argv += ["--disable-web-security", "--web-security=no", "--allow-file-access-from-files"]
 app = QtWidgets.QApplication(sys.argv)
 
 icon = QtGui.QIcon('icon.ico')
