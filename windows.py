@@ -71,9 +71,6 @@ class Table(QtWidgets.QTableWidget):
                     equipo = self.parent.getEquipo()
                     equipo_df = eval("constants.%s"%equipo)
                     interno = self.parent.getInterno()
-                    if interno: interno = "Interno"
-                    else: interno = "Externo"
-
                     try:
                         n = round(float(self.item(row, 2).text()), 1)
                         total = 0
@@ -304,8 +301,9 @@ class CorreoDialog(QtWidgets.QDialog):
 
         self.layout = QtWidgets.QVBoxLayout()
         self.setLayout(self.layout)
+        label = "Enviando correo a: \t<b>%s</b>"%args[0]
 
-        self.layout.addWidget(QtWidgets.QLabel("Enviando correo... por favor espere..."))
+        self.layout.addWidget(QtWidgets.QLabel(label))
         self.resize(200, 100)
 
         self.setModal(True)
@@ -730,7 +728,7 @@ class CotizacionWindow(QtWidgets.QMainWindow):
                     value = self.getInterno()
                 else: value = eval("self.%s_widget.text()"%key)
                 if ((value == "") and not (key in self.IGNORE)):
-                    if (key == "responsable") and not self.interno_widget.isChecked():
+                    if (key == "responsable") and not (self.getInterno() in ['Interno', 'Campus']):
                         pass
                     else: raise(Exception("Existen campos sin llenar en la información del usuario."))
                 dic[key] = value
@@ -804,9 +802,6 @@ class CotizacionWindow(QtWidgets.QMainWindow):
                         widget.setText(val)
                     except: pass
             self.setInternoWidget(user.getInterno())
-            # if user.getInterno() == "Interno":
-            #     self.interno_widget.setCheckState(2)
-            # else: self.interno_widget.setCheckState(0)
             self.pago_widget.setCurrentText(user.getPago())
             self.muestra_widget.setText(self.cotizacion.getMuestra())
             self.numero_cotizacion.setText(self.cotizacion.getNumero())
@@ -1296,6 +1291,7 @@ class BuscarWindow(QtWidgets.QMainWindow):
     def __init__(self, parent = None):
         super(QtWidgets.QMainWindow, self).__init__(parent)
         self.setWindowTitle("Buscar")
+        self.parent = parent
 
         wid = QtWidgets.QWidget(self)
         self.setCentralWidget(wid)
@@ -1320,13 +1316,14 @@ class BuscarWindow(QtWidgets.QMainWindow):
         self.institucion_widget = AutoLineEdit("Institución", self, False)
         self.correo_widget = AutoLineEdit("Correo", self, False)
         self.responsable_widget = AutoLineEdit("Responsable", self, False)
+        # self.documento_widget = AutoLineEdit('Documento', self, False)
 
         self.form1_layout.addRow(QtWidgets.QLabel('Equipo'), self.equipo_widget)
         self.form1_layout.addRow(QtWidgets.QLabel('Nombre'), self.nombre_widget)
         self.form1_layout.addRow(QtWidgets.QLabel('Responsable'), self.responsable_widget)
+        # self.form1_layout.addRow(QtWidgets.QLabel('Documento'), self.documento_widget)
         self.form2_layout.addRow(QtWidgets.QLabel('Institución'), self.institucion_widget)
         self.form2_layout.addRow(QtWidgets.QLabel('Correo'), self.correo_widget)
-
 
         self.guardar_button = QtWidgets.QPushButton("Generar reportes")
         self.limpiar_button = QtWidgets.QPushButton("Limpiar")
@@ -1341,6 +1338,7 @@ class BuscarWindow(QtWidgets.QMainWindow):
         self.equipo_widget.textChanged.connect(lambda: self.getChanges('Equipo'))
         self.nombre_widget.textChanged.connect(lambda: self.getChanges('Nombre'))
         self.institucion_widget.textChanged.connect(lambda: self.getChanges('Institución'))
+        # self.documento_widget.textChanged.connect(lambda: self.getChanges('Documento'))
         self.correo_widget.textChanged.connect(lambda: self.getChanges('Correo'))
         self.responsable_widget.textChanged.connect(lambda: self.getChanges('Responsable'))
 
@@ -1348,6 +1346,7 @@ class BuscarWindow(QtWidgets.QMainWindow):
         self.limpiar_button.clicked.connect(self.limpiar)
 
         self.table = QtWidgets.QTableView()
+        self.table.doubleClicked.connect(self.doubleClick)
         self.layout.addWidget(form)
         self.layout.addWidget(self.table)
 
@@ -1363,6 +1362,12 @@ class BuscarWindow(QtWidgets.QMainWindow):
 
         self.table.resizeRowsToContents()
         self.table.resizeColumnsToContents()
+
+    def doubleClick(self, modelIndex):
+        row = modelIndex.row()
+        df = self.table.model().dataframe
+        cotizacion = df.iloc[row]['Cotización']
+        self.parent.modificarCotizacion(cotizacion)
 
     def getChanges(self, source):
         self.bools = np.ones(objects.REGISTRO_DATAFRAME.shape[0], dtype = bool)
@@ -1586,7 +1591,7 @@ class MainWindow(QtWidgets.QMainWindow):
         self.request_window = RequestWindow()
         self.cotizacion_window = CotizacionWindow()
         self.descontar_window = DescontarWindow()
-        self.buscar_window = BuscarWindow()
+        self.buscar_window = BuscarWindow(self)
         self.gestor_window = GestorWindow()
 
         self.centerOnScreen()
@@ -1658,6 +1663,10 @@ class MainWindow(QtWidgets.QMainWindow):
         self.gestor_window.activateWindow()
         self.gestor_window.show()
 
+    def modificarCotizacion(self, cot):
+        self.cotizacionHandler()
+        self.cotizacion_window.loadCotizacion(cot)
+
     def closeEvent(self, event):
         windows = [self.cotizacion_window, self.descontar_window, self.request_window, self.buscar_window, self.gestor_window]
         suma = sum([window.is_closed for window in windows])
@@ -1706,15 +1715,15 @@ class RequestWindow(QtWidgets.QMainWindow):
     def sendCorreo(self):
         text = self.correo_widget.text()
         try:
-            if ("@" in text) and ("." in text):
-                self.dialog = CorreoDialog((text,), correo.sendRequest)
-                self.dialog.start()
-                self.dialog.exec_()
-                if self.dialog.exception != None:
-                    raise(self.dialog.exception)
-                else:
-                    self.close()
-            else: raise(Exception("Correo no válido."))
+            if not "@" in text: text += '@uniandes.edu.co'
+            self.dialog = CorreoDialog((text,), correo.sendRequest)
+            self.dialog.start()
+            self.dialog.exec_()
+            if self.dialog.exception != None:
+                raise(self.dialog.exception)
+            else:
+                self.close()
+            # else: raise(Exception("Correo no válido."))
         except Exception as e:
             self.errorWindow(e)
 

@@ -262,15 +262,17 @@ class Cotizacion(object):
         #if ("Scripts" in path) or ("bin" in path):
         path = constants.REGISTRO_FILE
 
+        system = sys.platform
+
         for i in range(10):
             try:
                 writer = pd.ExcelWriter(path, engine='xlsxwriter',
                                         datetime_format= "dd/mm/yy hh:mm:ss")
 
                 REGISTRO_DATAFRAME.to_excel(writer, index = False)
-
-                #writer.save()
-                #writer.close()
+                if system == 'linux':
+                    writer.save()
+                    writer.close()
                 break
             except Exception as e:
                 if i == 9:
