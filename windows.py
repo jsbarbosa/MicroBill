@@ -603,15 +603,16 @@ class CotizacionWindow(QtWidgets.QMainWindow):
     def changeInterno(self, index):
         state = False
         division = self.getInterno()
-        if (division == 'Interno') or (division == 'Campus'): state = True
-        self.responsable_widget.setEnabled(state)
-        self.proyecto_widget.setEnabled(state)
-        self.codigo_widget.setEnabled(state)
+        if division:
+            if (division == 'Interno') or (division == 'Campus'): state = True
+            self.responsable_widget.setEnabled(state)
+            self.proyecto_widget.setEnabled(state)
+            self.codigo_widget.setEnabled(state)
 
-        self.cotizacion.setInterno(division)
-        self.table.updateInterno()
+            self.cotizacion.setInterno(division)
+            self.table.updateInterno()
 
-        self.setTotal()
+            self.setTotal()
 
     def changeEquipo(self, i):
         text = self.equipo_widget.currentText()
@@ -671,8 +672,6 @@ class CotizacionWindow(QtWidgets.QMainWindow):
         else:
             NoNotificacion().exec_()
 
-    # def closePDF(self):
-    #     self.urlview.close()
     def closePDF(self, p1, old):
         new = [proc.pid for proc in psutil.process_iter()]
         try:
@@ -726,6 +725,8 @@ class CotizacionWindow(QtWidgets.QMainWindow):
             for key in self.WIDGETS:
                 if key == "interno":
                     value = self.getInterno()
+                    if not value:
+                        raise(Exception('El tipo de usuario no es valido.'))
                 else: value = eval("self.%s_widget.text()"%key)
                 if ((value == "") and not (key in self.IGNORE)):
                     if (key == "responsable") and not (self.getInterno() in ['Interno', 'Campus']):
@@ -786,35 +787,36 @@ class CotizacionWindow(QtWidgets.QMainWindow):
         self.cotizacion.setNumero(cod)
 
     def loadCotizacion(self, number):
-        try:
-            cotizacion = self.cotizacion.load(number)
-            self.limpiar()
+        # try:
+        cotizacion = self.cotizacion.load(number)
+        self.limpiar()
 
-            self.cotizacion = cotizacion
-            user = self.cotizacion.getUsuario()
+        self.cotizacion = cotizacion
+        user = self.cotizacion.getUsuario()
 
-            for widgetT in self.WIDGETS:
-                if widgetT != "interno":
-                    text = widgetT.title()
-                    widget = eval("self.%s_widget"%widgetT)
-                    try:
-                        val = str(eval("user.get%s()"%text))
-                        widget.setText(val)
-                    except: pass
-            self.setInternoWidget(user.getInterno())
-            self.pago_widget.setCurrentText(user.getPago())
-            self.muestra_widget.setText(self.cotizacion.getMuestra())
-            self.numero_cotizacion.setText(self.cotizacion.getNumero())
-            self.elaborado_label.setText("Modificado por:")
-            self.elaborado_widget.setCurrentIndex(0)
+        for widgetT in self.WIDGETS:
+            if widgetT != "interno":
+                text = widgetT.title()
+                widget = eval("self.%s_widget"%widgetT)
+                try:
+                    val = str(eval("user.get%s()"%text))
+                    widget.setText(val)
+                except: pass
 
-            self.observaciones_pdf_widget.setText(self.cotizacion.getObservacionPDF())
-            self.observaciones_correo_widget.setText(self.cotizacion.getObservacionCorreo())
-            self.setTotal()
-            self.table.setFromCotizacion()
+        self.setInternoWidget(user.getInterno())
+        self.pago_widget.setCurrentText(user.getPago())
+        self.muestra_widget.setText(self.cotizacion.getMuestra())
+        self.numero_cotizacion.setText(self.cotizacion.getNumero())
+        self.elaborado_label.setText("Modificado por:")
+        self.elaborado_widget.setCurrentIndex(0)
 
-        except FileNotFoundError as e:
-            self.errorWindow(e)
+        self.observaciones_pdf_widget.setText(self.cotizacion.getObservacionPDF())
+        self.observaciones_correo_widget.setText(self.cotizacion.getObservacionCorreo())
+        self.setTotal()
+        self.table.setFromCotizacion()
+
+        # except FileNotFoundError as e:
+        #     self.errorWindow(e)
 
     def centerOnScreen(self):
         resolution = QtWidgets.QDesktopWidget().screenGeometry()
@@ -859,6 +861,7 @@ class CotizacionWindow(QtWidgets.QMainWindow):
         msg.exec_()
 
     def closeEvent(self, event):
+        self.limpiar()
         self.is_closed = True
         self.ver_dialog.close()
         event.accept()

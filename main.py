@@ -55,7 +55,6 @@ try:
     from threading import Thread
     from windows import MainWindow
     from objects import REGISTRO_DATAFRAME, CLIENTES_DATAFRAME
-    import migrate
 
     testFiles()
 
