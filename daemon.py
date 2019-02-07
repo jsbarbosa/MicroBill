@@ -1,4 +1,4 @@
-### Email reading
+﻿### Email reading
 import os
 import sys
 import traceback
@@ -142,6 +142,7 @@ class EmailReader(object):
         sheet = row['Subclass']
         df = constants.DAEMON_DF[sheet]
         df = df[df['Item'] == row['Item']]
+
         matches = [div for div in constants.PRICES_DIVISION if int(row['Unit price (COP)']) != int(df[div])]
         interno = ''
         if 'Interno' in matches:
