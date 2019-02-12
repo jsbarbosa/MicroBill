@@ -34,6 +34,7 @@ def readDataFrames():
 CLIENTES_DATAFRAME, REGISTRO_DATAFRAME = readDataFrames()
 
 def getNumeroCotizacion(equipo):
+    global REGISTRO_DATAFRAME
     year = str(datetime.now().year)[-2:]
 
     try:
@@ -220,17 +221,17 @@ class Cotizacion(object):
             table.append(row)
         return table
 
-    def save(self, to_cotizacion = True, to_pdf = True):
+    def save(self, to_cotizacion = True, to_reporte = False, to_pdf = True):
         file = os.path.join(constants.OLD_DIR, self.numero + ".pkl")
         with open(file, 'wb') as output:
             pickle.dump(self, output, pickle.HIGHEST_PROTOCOL)
         if to_cotizacion:
             self.usuario.save()
             self.toRegistro()
-            if to_pdf:
-                self.makePDFCotizacion()
-        else:
+        elif (to_pdf and to_reporte):
             self.makePDFReporte()
+        elif to_pdf:
+            self.makePDFCotizacion()
 
     def makePDFReporte(self):
         PDFReporte(self).doAll()
@@ -286,7 +287,7 @@ class Cotizacion(object):
 class Usuario(object):
     def __init__(self, nombre = None, correo = None, institucion = None, documento = None,
                  direccion = None, ciudad = None, telefono = None, interno = None, responsable = None,
-                 proyecto = None, codigo = None, pago = None):
+                 proyecto = None, codigo = None, pago = None, **kwargs):
         self.nombre = nombre
         self.correo = correo
         self.institucion = institucion
@@ -402,6 +403,7 @@ class Usuario(object):
             else:
                 text = text + ": " + "None"
             data.append(text)
+        data += ["Tipo: " + self.getInterno()]
         return "\n".join(data)
         # self.institucion = institucion
         # self.documento = documento

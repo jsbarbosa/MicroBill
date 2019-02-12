@@ -73,15 +73,21 @@ def sendEmail(to, subject, text, attachments = []):
 
 def sendCotizacionRecibo(to, file_name, observaciones = ""):
     if observaciones != "": observaciones = observaciones.replace("\n", "<br>") + 2*"<br>"
-    sendEmail(to, COTIZACION_SUBJECT_RECIBO + " - %s"%file_name, SALUDO + observaciones + COTIZACION_MENSAJE_RECIBO, [file_name])
+    subject = COTIZACION_SUBJECT_RECIBO + ' - '
+    subject += ' - '.join(file_name)
+    sendEmail(to, subject, SALUDO + observaciones + COTIZACION_MENSAJE_RECIBO, file_name)
 
 def sendCotizacionTransferencia(to, file_name, observaciones = ""):
     if observaciones != "": observaciones = observaciones.replace("\n", "<br>") + 2*"<br>"
-    sendEmail(to, COTIZACION_SUBJECT_TRANSFERENCIA + " - %s"%file_name,  SALUDO + observaciones + COTIZACION_MENSAJE_TRANSFERENCIA, [file_name])
+    subject = COTIZACION_SUBJECT_TRANSFERENCIA + ' - '
+    subject += ' - '.join(file_name)
+    sendEmail(to, subject,  SALUDO + observaciones + COTIZACION_MENSAJE_TRANSFERENCIA, file_name)
 
 def sendCotizacionFactura(to, file_name, observaciones = ""):
     if observaciones != "": observaciones = observaciones.replace("\n", "<br>") + 2*"<br>"
-    sendEmail(to, COTIZACION_SUBJECT_FACTURA + " - %s"%file_name, SALUDO + observaciones + COTIZACION_MENSAJE_FACTURA, [file_name])
+    subject = COTIZACION_SUBJECT_FACTURA + ' - '
+    subject += ' - '.join(file_name)
+    sendEmail(to, subject, SALUDO + observaciones + COTIZACION_MENSAJE_FACTURA, file_name)
 
 def sendRegistro(to, file_name):
     sendEmail(to, REPORTE_SUBJECT + " - %s"%file_name, SALUDO + REPORTE_MENSAJE, [file_name + "_Reporte"])
