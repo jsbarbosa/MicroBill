@@ -192,9 +192,9 @@ def crearServicios(tabla_agendo, interno):
         hoja_excel = fila['Subclass']
         precios_df = constants.DAEMON_DF[hoja_excel]
         iguales = precios_df[precios_df['Item'] == fila['Item']]
-        if len(precios_df):
-            codigo = precios_df['Código'].values[0]
-            equipo = precios_df['Equipo'].values[0]
+        if len(iguales):
+            codigo = iguales['Código'].values[0]
+            equipo = iguales['Equipo'].values[0]
             cantidad = float(fila['Units'])
             servicio = Servicio(equipo, str(codigo), interno, cantidad)
             servicios[equipo].append(servicio)
@@ -205,7 +205,6 @@ def solicitudMicrobill(correo_agendo):
     usuario = crearUsuario(correo_agendo)
     muestra = correo_agendo.darAtributo('muestra')
     servicios = crearServicios(correo_agendo.darAtributo('tabla'), usuario.getInterno())
-
     cotizaciones = []
     numeros = []
     for equipo in servicios.keys():
