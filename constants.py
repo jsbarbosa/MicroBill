@@ -2,6 +2,8 @@ import os
 import config
 import pandas as pd
 
+DEBUG = False
+
 OLD_DIR = "Old"
 PDF_DIR = "PDF"
 REGISTERS_DIR = "Registers"

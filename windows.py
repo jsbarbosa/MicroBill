@@ -659,11 +659,11 @@ class CotizacionWindow(QtWidgets.QMainWindow):
             pago = self.pago_widget.currentText()
             observaciones = self.observaciones_correo_widget.toPlainText()
             if pago == "Transferencia interna":
-                self.dialog = CorreoDialog((to, file_name, observaciones), target = correo.sendCotizacionTransferencia)
+                self.dialog = CorreoDialog((to, [file_name], observaciones), target = correo.sendCotizacionTransferencia)
             elif pago == "Factura":
-                self.dialog = CorreoDialog((to, file_name, observaciones), target = correo.sendCotizacionFactura)
+                self.dialog = CorreoDialog((to, [file_name], observaciones), target = correo.sendCotizacionFactura)
             elif pago == "Recibo":
-                self.dialog = CorreoDialog((to, file_name, observaciones), target = correo.sendCotizacionRecibo)
+                self.dialog = CorreoDialog((to, [file_name], observaciones), target = correo.sendCotizacionRecibo)
             else: print("ERROR, not implemented")
             self.dialog.start()
             self.dialog.exec_()
