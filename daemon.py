@@ -94,8 +94,9 @@ class LectorCorreos(object):
         return texto.replace('=\r\n', '')
 
     def darIdentificadores(self):
-        ans, ids = self.servidor.search(None, IDENTIFICADOR_CORREOS_COTIZACION, '(UNSEEN)')
-        self.identificadores += ids[0].split()
+        for identificador in IDENTIFICADOR_CORREOS_COTIZACION:
+            ans, ids = self.servidor.search(None, identificador, '(UNSEEN)')
+            self.identificadores += ids[0].split()
         self.identificadores = list(set(self.identificadores))
         return self.identificadores
 
@@ -116,6 +117,7 @@ class LectorCorreos(object):
 
 class CorreoAgendo(object):
     PATRON_CORREO = re.compile('\((.*?)\)')
+    PATRON_OBSERVACIONES = re.compile('(?s)The following comment was left by the requesting user  \n  \n(.*?)-----------------------------')
     REMPLAZOS_NORMALIZACION = ['*', "=\r\n", ":", "= "] #: caracteres innecesarios a remover en contenido_texto
     def __init__(self, identificador, contenido):
         self.identificador = identificador
@@ -126,6 +128,13 @@ class CorreoAgendo(object):
             self.darAtributo(atributo)
 
         self.correo = re.findall(self.PATRON_CORREO, self.contenido_texto)[0]
+        self.darAtributo('nombre')
+        self.nombre = self.nombre.replace(" (%s)"%self.correo, '')
+        try:
+            self.observaciones = re.findall(self.PATRON_OBSERVACIONES, self.contenido_texto)[0]
+            self.observaciones = self.observaciones.rstrip('\\').rstrip(' ').rstrip('\n')
+        except IndexError:
+            self.observaciones = ''
 
     def __darServicios__(self):
         if self.tabla is None:
@@ -147,8 +156,11 @@ class CorreoAgendo(object):
             buscar = CAMPOS_OBTENIDOS_LECTURA[atributo]
             p_inicial = self.contenido_texto.find(buscar)
             p_final = self.contenido_texto[p_inicial:].find('\n')
-            fragmento = self.contenido_texto[p_inicial + len(buscar): p_inicial + p_final]
-            fragmento = fragmento.rstrip(' ').rstrip('.').lstrip(' ')
+            if (p_inicial >= 0) | (p_final >= 0):
+                fragmento = self.contenido_texto[p_inicial + len(buscar): p_inicial + p_final]
+                fragmento = fragmento.rstrip(' ').rstrip('.').lstrip(' ')
+            else:
+                fragmento = ''
 
             setattr(self, atributo, fragmento)
             return fragmento
@@ -169,8 +181,12 @@ class CorreoAgendo(object):
         return txt
 
 def obtenerTipoUsuario(correo):
-    convenios = sum([1 for convenio in CORREOS_CONVENIOS if correo in convenio])
-    if convenios > 0: return 'Interno'
+    convenios = sum([1 for convenio in CORREOS_CONVENIOS if convenio in correo])
+    if convenios > 0:
+        suma = sum(constants.INDEPENDIENTES_DF['Correo'] == correo)
+        if suma:
+            return 'Independiente'
+        return 'Interno'
     elif '.edu.' in correo: return 'Académico'
     else: return 'Industria'
 
@@ -186,7 +202,6 @@ def crearServicios(tabla_agendo, interno):
     servicios = {}
     for servicio in constants.EQUIPOS:
         servicios[servicio] = []
-
     for i in range(len(campos)):
         fila = campos.loc[i]
         hoja_excel = fila['Subclass']
@@ -212,6 +227,7 @@ def solicitudMicrobill(correo_agendo):
         if len(objetos):
             numero = getNumeroCotizacion(equipo)
             cot = Cotizacion(numero, usuario, objetos, muestra)
+            cot.setObservacionPDF(correo_agendo.darAtributo('observaciones'))
             cotizaciones.append(cot)
             numeros.append(numero)
 

@@ -11,6 +11,7 @@ REGISTERS_DIR = "Registers"
 CLIENTES_FILE = "Clientes.xlsx"
 REGISTRO_FILE = "Registro.xlsx"
 PRECIOS_FILE = "Precios.xlsx"
+INDEPENDIENTES_FILE = "Independientes.xlsx"
 PRECIOS_DAEMON_FILE = "Precios (daemon).xlsx"
 
 CLIENTES_FILE = os.path.join(REGISTERS_DIR, CLIENTES_FILE)
@@ -18,6 +19,8 @@ REGISTRO_FILE = os.path.join(REGISTERS_DIR, REGISTRO_FILE)
 
 PRECIOS_FILE = os.path.join(REGISTERS_DIR, PRECIOS_FILE)
 PRECIOS_DAEMON_FILE = os.path.join(REGISTERS_DIR, PRECIOS_DAEMON_FILE)
+
+INDEPENDIENTES_FILE = os.path.join(REGISTERS_DIR, INDEPENDIENTES_FILE)
 
 EQUIPOS_KEYS = ['Código', 'Descripción', 'Interno', 'Campus', 'Académico', 'Industria']
 # DAEMON_KEYS = []
@@ -34,6 +37,8 @@ EQUIPOS = list(df.keys())
 for item in EQUIPOS:
     data = df[item].astype(str)
     exec("%s = data"%item)
+
+INDEPENDIENTES_DF = pd.read_excel(INDEPENDIENTES_FILE)
 
 DAEMON_DF = pd.read_excel(PRECIOS_DAEMON_FILE, sheet_name = None)
 DAEMON_SUBCLASSES = list(df.keys())
