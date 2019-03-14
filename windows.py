@@ -22,6 +22,25 @@ from PyQt5.QtCore import QUrl
 
 config.ADMINS = [""] + config.ADMINS
 
+class SubWindow(QtWidgets.QMdiSubWindow):
+    def __init__(self, parent = None):
+        super(SubWindow, self).__init__(parent)
+        self.parent = parent
+        self.is_closed = True
+        # self.setWindowIcon(constants.ICON)
+        self.setMinimumSize(400, 400)
+        # self.setWindowFlags(QtCore.Qt.WindowStaysOnTopHint)
+        self.setSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Expanding)
+
+    def closeEvent(self, evnt):
+        evnt.accept()
+        self.hide()
+        self.is_closed = True
+
+    def show(self):
+        self.is_closed = False
+        QtWidgets.QMdiSubWindow.show(self)
+
 class Table(QtWidgets.QTableWidget):
     HEADER = ['Código', 'Descripción', 'Cantidad', 'Valor Unitario', 'Valor Total']
     def __init__(self, parent, rows = 25, cols = 5):
@@ -43,6 +62,12 @@ class Table(QtWidgets.QTableWidget):
 
         self.cellChanged.connect(self.handler)
 
+    def agregarServicio(self, codigo):
+        for i in range(self.n_rows):
+            if self.item(i, 0).text() == "": break
+
+        self.item(i, 0).setText(codigo)
+
     def removeServicio(self):
         table_codigos = self.getCodigos()
         regis_codigos = self.parent.getCodigos()
@@ -50,11 +75,6 @@ class Table(QtWidgets.QTableWidget):
             if not codigo in table_codigos: self.parent.removeServicio(i)
 
     def handler(self, row, col):
-        # if not self.parent.getInterno():
-        #     txt = ', '.join(constants.PRICES_DIVISION)
-        #     e = Exception('Se debe seleccionar el tipo de usuario (%s)'%txt)
-        #     self.parent.errorWindow(e)
-        # else:
         self.blockSignals(True)
         item = self.item(row, col)
         try:
@@ -335,14 +355,23 @@ class CorreoDialog(QtWidgets.QDialog):
         self.thread.start()
 
 class CodigosDialog(QtWidgets.QDialog):
-    def __init__(self):
+    def __init__(self, parent):
         super(CodigosDialog, self).__init__()
+
+        self.parent = parent
         self.setWindowTitle("Ver códigos")
         self.layout = QtWidgets.QVBoxLayout()
         self.setLayout(self.layout)
 
         self.table = QtWidgets.QTableView()
+        self.table.doubleClicked.connect(self.doubleClick)
         self.layout.addWidget(self.table)
+
+    def doubleClick(self, modelIndex):
+        row = modelIndex.row()
+        df = self.table.model().dataframe
+        codigo = df.iloc[row]['Código']
+        self.parent.agregarDesdeCodigo(codigo)
 
     def setModel(self, df):
         self.table.setModel(PandasModel(df, checkbox = False))
@@ -358,7 +387,7 @@ class CodigosDialog(QtWidgets.QDialog):
 
         self.resize(self.table.sizeHint())
 
-class CotizacionWindow(QtWidgets.QMainWindow):
+class CotizacionWindow(SubWindow):
     IGNORE = ["proyecto", "codigo"]
     FIELDS = ["Nombre", "Correo", "Teléfono", "Institución", "Documento", "Dirección", "Ciudad", "Interno", "Responsable", "Proyecto", "Código", "Muestra"]
     WIDGETS = ["nombre", "correo", "telefono", "institucion", "documento", "direccion", "ciudad", "interno", "responsable", "proyecto", "codigo", "muestra"]
@@ -366,18 +395,17 @@ class CotizacionWindow(QtWidgets.QMainWindow):
     AUTOCOMPLETE_FIELDS = ["Nombre", "Correo", "Documento", "Teléfono"]
     AUTOCOMPLETE_WIDGETS = ["nombre", "correo", "documento", "telefono"]
     def __init__(self, parent = None):
-        super(QtWidgets.QMainWindow, self).__init__(parent)
+        super(CotizacionWindow, self).__init__(parent)
         self.setWindowTitle("Cotización")
 
         wid = QtWidgets.QWidget(self)
-        self.setCentralWidget(wid)
+        self.setWidget(wid)
 
-        self.is_closed = True
-        self.ver_dialog = CodigosDialog()
+        self.ver_dialog = CodigosDialog(self)
         self.verticalLayout = QtWidgets.QVBoxLayout(wid)
 
-        self.verticalLayout.setContentsMargins(11, 11, 11, 11)
-        self.verticalLayout.setSpacing(6)
+        self.verticalLayout.setContentsMargins(6, 0, 6, 0)
+        self.verticalLayout.setSpacing(4)
 
         self.cotizacion_frame = QtWidgets.QFrame()
         self.form_frame = QtWidgets.QFrame()
@@ -391,7 +419,7 @@ class CotizacionWindow(QtWidgets.QMainWindow):
 
         self.form_frame_layout = QtWidgets.QGridLayout(self.form_frame)
         self.form_frame_layout.setContentsMargins(0, 0, 0, 0)
-        self.form_frame_layout.setSpacing(6)
+        self.form_frame_layout.setSpacing(2)
 
         self.autocompletar_widget = QtWidgets.QCheckBox("Autocompletar")
         self.autocompletar_widget.setChecked(True)
@@ -540,7 +568,7 @@ class CotizacionWindow(QtWidgets.QMainWindow):
         self.cotizacion = objects.Cotizacion()
         self.setLastCotizacion()
 
-        self.resize(700, 700)
+        self.resize(600, 600)
 
         self.interno_widget.currentIndexChanged.connect(self.changeInterno)
         # self.interno_widget.stateChanged.connect(self.changeInterno)
@@ -555,6 +583,9 @@ class CotizacionWindow(QtWidgets.QMainWindow):
                 QWebEngineSettings.LinksIncludedInFocusChain]
         for plug in plugs:
             self.urlview.settings().setAttribute(plug, True)
+
+    def agregarDesdeCodigo(self, codigo):
+        self.table.agregarServicio(codigo)
 
     def setAutoCompletar(self):
         for item in self.AUTOCOMPLETE_WIDGETS:
@@ -860,12 +891,6 @@ class CotizacionWindow(QtWidgets.QMainWindow):
         msg.setStandardButtons(QtWidgets.QMessageBox.Ok)
         msg.exec_()
 
-    def closeEvent(self, event):
-        self.limpiar()
-        self.is_closed = True
-        self.ver_dialog.close()
-        event.accept()
-
 class NoNotificacion(QtWidgets.QMessageBox):
     def __init__(self):
         super(NoNotificacion, self).__init__()
@@ -874,17 +899,16 @@ class NoNotificacion(QtWidgets.QMessageBox):
         self.setWindowTitle("Warning")
         self.setStandardButtons(QtWidgets.QMessageBox.Ok)
 
-class DescontarWindow(QtWidgets.QMainWindow):
+class DescontarWindow(SubWindow):
     FIELDS = ["Cotización", "Fecha", "Nombre", "Correo", "Equipo", "Valor"]
     WIDGETS = ["cotizacion", "fecha", "nombre", "correo", "equipo", "valor"]
 
     def __init__(self, parent = None):
-        super(QtWidgets.QMainWindow, self).__init__(parent)
+        super(DescontarWindow, self).__init__(parent)
         self.setWindowTitle("Descontar servicios")
 
         wid = QtWidgets.QWidget(self)
-        self.setCentralWidget(wid)
-        self.is_closed = True
+        self.setWidget(wid)
 
         self.layout = QtWidgets.QVBoxLayout(wid)
         self.form = QtWidgets.QFrame()
@@ -1207,10 +1231,6 @@ class DescontarWindow(QtWidgets.QMainWindow):
         msg.setStandardButtons(QtWidgets.QMessageBox.Ok)
         msg.exec_()
 
-    def closeEvent(self, event):
-        self.is_closed = True
-        event.accept()
-
 class PandasModel(QtCore.QAbstractTableModel):
     def __init__(self, data, parent = None, checkbox = True):
         QtCore.QAbstractTableModel.__init__(self, parent)
@@ -1288,17 +1308,16 @@ class PandasModel(QtCore.QAbstractTableModel):
     def whereIsChecked(self):
         return np.array([self._data[i, 0].isChecked() for i in range(self.rowCount())], dtype = bool)
 
-class BuscarWindow(QtWidgets.QMainWindow):
+class BuscarWindow(SubWindow):
     WIDGETS = ["equipo", "nombre", "correo", "institucion", "responsable"]
     FIELDS = ["Equipo", "Nombre", "Correo", "Institución", "Responsable"]
     def __init__(self, parent = None):
-        super(QtWidgets.QMainWindow, self).__init__(parent)
+        super(BuscarWindow, self).__init__(parent)
         self.setWindowTitle("Buscar")
         self.parent = parent
 
         wid = QtWidgets.QWidget(self)
-        self.setCentralWidget(wid)
-        self.is_closed = True
+        self.setWidget(wid)
         self.layout = QtWidgets.QVBoxLayout(wid)
 
         form = QtWidgets.QFrame()
@@ -1428,20 +1447,15 @@ class BuscarWindow(QtWidgets.QMainWindow):
                     os.rename(old, new)
                 except Exception as e: pass
 
-    def closeEvent(self, event):
-        self.is_closed = True
-        event.accept()
-
-class GestorWindow(QtWidgets.QMainWindow):
+class GestorWindow(SubWindow):
     FIELDS = ["Cotización", "Fecha", "Nombre", "Correo", "Equipo", "Valor", "Tipo de Pago"]
     WIDGETS = ["cotizacion", "fecha", "nombre", "correo", "equipo", "valor", "tipo"]
     def __init__(self, parent = None):
-        super(QtWidgets.QMainWindow, self).__init__(parent)
+        super(GestorWindow, self).__init__(parent)
         self.setWindowTitle("Enviar correo a Gestor")
 
         wid = QtWidgets.QWidget(self)
-        self.setCentralWidget(wid)
-        self.is_closed = True
+        self.setWidget(wid)
         self.layout = QtWidgets.QVBoxLayout(wid)
 
         self.form = QtWidgets.QFrame()
@@ -1555,20 +1569,23 @@ class GestorWindow(QtWidgets.QMainWindow):
         msg.setStandardButtons(QtWidgets.QMessageBox.Ok)
         msg.exec_()
 
-    def closeEvent(self, event):
-        self.is_closed = True
-        self.clean()
-        event.accept()
-
 class MainWindow(QtWidgets.QMainWindow):
     def __init__(self, parent = None):
         super(QtWidgets.QMainWindow, self).__init__(parent)
         self.setWindowTitle(config.CENTRO)
 
-        wid = QtWidgets.QWidget(self)
-        self.setCentralWidget(wid)
+        central_widget = QtWidgets.QWidget(self)
+        self.setCentralWidget(central_widget)
 
-        self.layout = QtWidgets.QGridLayout(wid)
+        self.central_layout = QtWidgets.QHBoxLayout(central_widget)
+
+        buttons_widget = QtWidgets.QWidget(central_widget)
+        self.buttons_layout = QtWidgets.QVBoxLayout(buttons_widget)
+        self.buttons_layout.setSpacing(0)
+        self.buttons_layout.setContentsMargins(0,0,0,0)
+        buttons_widget.setSizePolicy(QtWidgets.QSizePolicy.Maximum, QtWidgets.QSizePolicy.Expanding)
+
+        self.central_layout.addWidget(buttons_widget)
 
         self.request_widget = QtWidgets.QPushButton("Solicitar información")
         self.cotizacion_widget = QtWidgets.QPushButton("Generar/Modificar Cotización")
@@ -1577,12 +1594,12 @@ class MainWindow(QtWidgets.QMainWindow):
         self.open_widget = QtWidgets.QPushButton("Abrir PDFs")
         self.gestor_widget = QtWidgets.QPushButton("A Gestor...")
 
-        self.layout.addWidget(self.cotizacion_widget, 0, 0)
-        self.layout.addWidget(self.descontar_widget, 0, 1)
-        self.layout.addWidget(self.request_widget, 2, 0)
-        self.layout.addWidget(self.buscar_widget, 2, 1)
-        self.layout.addWidget(self.open_widget, 3, 1)
-        self.layout.addWidget(self.gestor_widget, 4, 1)
+        self.buttons_layout.addWidget(self.cotizacion_widget)
+        self.buttons_layout.addWidget(self.descontar_widget)
+        self.buttons_layout.addWidget(self.request_widget)
+        self.buttons_layout.addWidget(self.buscar_widget)
+        self.buttons_layout.addWidget(self.open_widget)
+        self.buttons_layout.addWidget(self.gestor_widget)
 
         self.request_widget.clicked.connect(self.requestHandler)
         self.cotizacion_widget.clicked.connect(self.cotizacionHandler)
@@ -1591,15 +1608,33 @@ class MainWindow(QtWidgets.QMainWindow):
         self.open_widget.clicked.connect(self.openHandler)
         self.gestor_widget.clicked.connect(self.gestorHandler)
 
-        self.request_window = RequestWindow()
-        self.cotizacion_window = CotizacionWindow()
-        self.descontar_window = DescontarWindow()
+        self.request_window = RequestWindow(self)
+        self.cotizacion_window = CotizacionWindow(self)
+        self.descontar_window = DescontarWindow(self)
         self.buscar_window = BuscarWindow(self)
-        self.gestor_window = GestorWindow()
+        self.gestor_window = GestorWindow(self)
+
+        # self.cotizacion_window.setWindowFlags(QtCore.Qt.WindowMinimizeButtonHint)
+
+        self.request_window.setWindowFlags(QtCore.Qt.WindowMinimizeButtonHint)
 
         self.centerOnScreen()
 
-        self.setFixedSize(self.layout.sizeHint())
+        self.mdi = QtWidgets.QMdiArea()
+        self.mdi.setHorizontalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOff)
+        self.central_layout.addWidget(self.mdi)
+
+        self.mdi.addSubWindow(self.cotizacion_window)
+        self.mdi.addSubWindow(self.request_window)
+        self.mdi.addSubWindow(self.descontar_window)
+        self.mdi.addSubWindow(self.buscar_window)
+        self.mdi.addSubWindow(self.gestor_window)
+
+        self.cotizacion_window.hide()
+        self.request_window.hide()
+        self.descontar_window.hide()
+        self.buscar_window.hide()
+        self.gestor_window.hide()
 
         self.update_timer = QtCore.QTimer()
         self.update_timer.setInterval(1000)
@@ -1628,27 +1663,15 @@ class MainWindow(QtWidgets.QMainWindow):
                   (resolution.height() / 2) - (self.frameSize().height() / 2))
 
     def cotizacionHandler(self):
-        self.cotizacion_window.is_closed = False
-        self.cotizacion_window.setWindowState(self.cotizacion_window.windowState() & ~QtCore.Qt.WindowMinimized | QtCore.Qt.WindowActive)
-        self.cotizacion_window.activateWindow()
         self.cotizacion_window.show()
 
     def descontarHandler(self):
-        self.descontar_window.is_closed = False
-        self.descontar_window.setWindowState(self.descontar_window.windowState() & ~QtCore.Qt.WindowMinimized | QtCore.Qt.WindowActive)
-        self.descontar_window.activateWindow()
         self.descontar_window.show()
 
     def requestHandler(self):
-        self.request_window.is_closed = False
-        self.request_window.setWindowState(self.request_window.windowState() & ~QtCore.Qt.WindowMinimized | QtCore.Qt.WindowActive)
-        self.request_window.activateWindow()
         self.request_window.show()
 
     def buscarHandler(self):
-        self.buscar_window.is_closed = False
-        self.buscar_window.setWindowState(self.buscar_window.windowState() & ~QtCore.Qt.WindowMinimized | QtCore.Qt.WindowActive)
-        self.buscar_window.activateWindow()
         self.buscar_window.table.resizeRowsToContents()
         self.buscar_window.show()
 
@@ -1661,9 +1684,6 @@ class MainWindow(QtWidgets.QMainWindow):
             print(e)
 
     def gestorHandler(self):
-        self.gestor_window.is_closed = False
-        self.gestor_window.setWindowState(self.gestor_window.windowState() & ~QtCore.Qt.WindowMinimized | QtCore.Qt.WindowActive)
-        self.gestor_window.activateWindow()
         self.gestor_window.show()
 
     def modificarCotizacion(self, cot):
@@ -1686,14 +1706,13 @@ class MainWindow(QtWidgets.QMainWindow):
             else:
                 event.ignore()
 
-class RequestWindow(QtWidgets.QMainWindow):
+class RequestWindow(SubWindow):
     def __init__(self, parent = None):
-        super(QtWidgets.QMainWindow, self).__init__(parent)
+        super(RequestWindow, self).__init__(parent)
         self.setWindowTitle("Solicitar información")
 
         wid = QtWidgets.QWidget(self)
-        self.setCentralWidget(wid)
-        self.is_closed = True
+        self.setWidget(wid)
 
         self.layout = QtWidgets.QHBoxLayout(wid)
 
@@ -1713,7 +1732,7 @@ class RequestWindow(QtWidgets.QMainWindow):
         self.correo_widget.returnPressed.connect(self.sendCorreo)
         self.enviar_button.clicked.connect(self.sendCorreo)
 
-        self.setFixedSize(self.layout.sizeHint())
+        self.setFixedSize(400, 100)
 
     def sendCorreo(self):
         text = self.correo_widget.text()
@@ -1739,16 +1758,13 @@ class RequestWindow(QtWidgets.QMainWindow):
         msg.setStandardButtons(QtWidgets.QMessageBox.Ok)
         msg.exec_()
 
-    def closeEvent(self, event):
-        self.is_closed = True
-        self.correo_widget.setText("")
-        event.accept()
-
 if __name__ == '__main__':
     app = QtWidgets.QApplication(sys.argv)
     QtWidgets.QApplication.setStyle(QtWidgets.QStyleFactory.create('Fusion')) # <- Choose the style
 
     app.processEvents()
     main = MainWindow()
+
     main.show()
+
     app.exec_()
