@@ -147,14 +147,32 @@ class PDFCotizacion(PDFBase):
 
         self.story.append(logo)
         self.story.append(Spacer(0, 12))
-        data = [["CÓDIGO S.GESTIÓN"], [CODIGO_GESTION]]
-        t = Table(data, 90, 20)
-        t.setStyle(TableStyle([('INNERGRID', (0,0), (-1,-1), 0.25, colors.black),
-                               ('BOX', (0,0), (-1,-1), 0.25, colors.black),
-                               ('FONTSIZE', (0, 0), (-1, -1), 8),
-                               ]))
+        data = [["CÓDIGO S.GESTIÓN", CODIGO_GESTION]]
 
+        style = [('BOX', (0, 0), (1, 0), 0.25, colors.black),
+               ('FONTSIZE', (0, 0), (-1, -1), 8),
+               ('BACKGROUND', (0, 0), (0, 0), colors.lightgrey)]
+
+        t = Table(data, 90, 20)
+        t.setStyle(TableStyle(style))
         self.story.append(t)
+
+        if self.cotizacion.internoTreatment():
+            cod = self.cotizacion.getNumero()[:2]
+            year = str(datetime.now().year)[-2:]
+            data = [[CODIGO_PEP % (year, cod)]]
+            style = [('BOX', (0, 0), (0, 0), 3, colors.black),
+                    ('ALIGN', (0, 0), (0, 0), 'CENTER'),
+                    ('VALIGN', (0, 0), (0, 0), 'TOP'),
+                    ('FONTSIZE', (0, 0), (0, 0), 13),
+                    ('TEXTCOLOR', (0, 0), (0, 0), colors.red),
+                    ('BACKGROUND', (0, 0), (0, 0), colors.lightgrey)]
+
+            t = Table(data, 160, 20)
+            t.setStyle(TableStyle(style))
+            self.story.append(Spacer(1, 5))
+            self.story.append(t)
+
         self.story.append(FrameBreak())
 
         ptext = '<font size = 12><b>%s</b></font>' % "COTIZACIÓN DE SERVICIOS"
@@ -215,7 +233,7 @@ class PDFCotizacion(PDFBase):
                 ("Código", usuario.getCodigo())]
 
         ptext = '<font size = 9>%s</font><br/>'%self.cotizacion.getObservacionPDF().replace("\n", "<br/>")
-        if usuario.getInterno() == "Interno":
+        if self.cotizacion.internoTreatment():
             for item in text:
                 ptext += '<font size = 9> <b>%s:</b> <u>%s</u></font> <br/>'%item
 
@@ -231,12 +249,16 @@ class PDFCotizacion(PDFBase):
 
         ptext = ""
 
-        for i in range(len(TERMINOS_Y_CONDICIONES)):
+        starts = 1
+        if self.cotizacion.internoTreatment():
+            starts = 0
+
+        for i in range(starts, len(TERMINOS_Y_CONDICIONES)):
             text = TERMINOS_Y_CONDICIONES[i]
-            ptext += '<font size = 8>%d. %s</font><br/>'%(i + 1, text)
+            ptext += '<font size = 8>%d. %s</font><br/>'%(i + abs(starts - 1), text)
             # self.story.append(Paragraph(ptext, self.styles["Justify"]))
 
-        ptext += '<font size = 8>%d.</font> <font size = 6>%s</font>'%(i + 2, CONFIDENCIALIDAD)
+        ptext += '<font size = 8>%d.</font> <font size = 6>%s</font>'%(i + 1 + abs(starts - 1), CONFIDENCIALIDAD)
         self.story.append(Paragraph(ptext, self.styles["Border"]))
         self.story.append(Spacer(1, 24))
 

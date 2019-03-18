@@ -36,13 +36,15 @@ CLIENTES_DATAFRAME, REGISTRO_DATAFRAME = readDataFrames()
 def getNumeroCotizacion(equipo):
     global REGISTRO_DATAFRAME
     year = str(datetime.now().year)[-2:]
-
     try:
         cot = REGISTRO_DATAFRAME[REGISTRO_DATAFRAME["Equipo"] == equipo]["Cotización"].values[0]
         cod, val = cot.split("-")
-    except:
+    except IndexError:
         cod = equipo[0] + year
         val = "%04d"%0
+
+    if "_" in equipo:
+        cod = equipo.split('_')[1] + cod[-2:]
 
     if year != cod[-2:]:
         cod = cod[:-2] + year
@@ -72,6 +74,12 @@ class Cotizacion(object):
 
     def getInterno(self):
         return self.usuario.getInterno()
+
+    def internoTreatment(self):
+        interno = self.getInterno()
+        if interno == "Interno" or interno == "Independiente":
+            return True
+        return False
 
     def getCodigos(self):
         return [servicio.getCodigo() for servicio in self.servicios]
@@ -500,7 +508,8 @@ class Servicio(object):
 
     def setValorUnitario(self, valor = None):
         if valor == None:
-            equipo = eval("constants.%s"%self.equipo)
+            try: equipo = eval("constants.%s"%self.equipo)
+            except AttributeError: raise(Exception("Cotización incompatible con versión actual"))
             df = equipo[equipo["Código"] == self.codigo]
             if len(df) == 0: raise(Exception("Código inválido."))
             self.valor_unitario = int(df[self.interno].values[0])

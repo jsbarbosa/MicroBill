@@ -568,7 +568,7 @@ class CotizacionWindow(SubWindow):
         self.cotizacion = objects.Cotizacion()
         self.setLastCotizacion()
 
-        self.resize(600, 600)
+        self.resize(600, 640)
 
         self.interno_widget.currentIndexChanged.connect(self.changeInterno)
         # self.interno_widget.stateChanged.connect(self.changeInterno)
@@ -634,16 +634,19 @@ class CotizacionWindow(SubWindow):
     def changeInterno(self, index):
         state = False
         division = self.getInterno()
-        if division:
-            if (division == 'Interno') or (division == 'Campus'): state = True
-            self.responsable_widget.setEnabled(state)
-            self.proyecto_widget.setEnabled(state)
-            self.codigo_widget.setEnabled(state)
+        try:
+            if division:
+                if (division == 'Interno') or (division == 'Campus'): state = True
+                self.responsable_widget.setEnabled(state)
+                self.proyecto_widget.setEnabled(state)
+                self.codigo_widget.setEnabled(state)
 
-            self.cotizacion.setInterno(division)
-            self.table.updateInterno()
+                self.cotizacion.setInterno(division)
+                self.table.updateInterno()
 
-            self.setTotal()
+                self.setTotal()
+        except Exception as e:
+            self.errorWindow(e)
 
     def changeEquipo(self, i):
         text = self.equipo_widget.currentText()
@@ -1092,7 +1095,7 @@ class DescontarWindow(SubWindow):
                     val = self.floats_spins[i].value()
                     servicio = servicios[i]
                     servicio.descontar(val)
-                self.cotizacion.save(to_cotizacion = False)
+                self.cotizacion.save(to_cotizacion = False, to_reporte = True)
                 self.cotizacion.toRegistro()
                 self.sendCorreo()
             self.clean()
