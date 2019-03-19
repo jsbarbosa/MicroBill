@@ -54,6 +54,11 @@ def getNumeroCotizacion(equipo):
     cod = "%s-%s"%(cod, val)
     return cod
 
+def getEquipoName(codigo):
+    for name in constants.EQUIPOS:
+        if codigo in name: return name
+    return None
+
 class Cotizacion(object):
     def __init__(self, numero = None, usuario = None, servicios = [], muestra = None):
         self.numero = numero
@@ -67,6 +72,7 @@ class Cotizacion(object):
         self.aplicado_por = ""
         self.observacion_correo = ""
         self.observacion_pdf = ""
+        # self.servicios = []
         self.setServicios(servicios)
 
     def getUsuario(self):
@@ -84,6 +90,9 @@ class Cotizacion(object):
     def getCodigos(self):
         return [servicio.getCodigo() for servicio in self.servicios]
 
+    def getCodigosPrefix(self):
+        return [servicio.getCodigoPrefix() for servicio in self.servicios]
+
     def getNumero(self):
         return self.numero
 
@@ -91,7 +100,7 @@ class Cotizacion(object):
         return sum([servicio.getValorTotal() for servicio in self.servicios])
 
     def getServicio(self, cod):
-        i = self.getCodigos().index(cod)
+        i = self.getCodigosPrefix().index(cod)
         return self.servicios[i]
 
     def getServicios(self):
@@ -158,7 +167,7 @@ class Cotizacion(object):
             servicio.setInterno(interno)
 
     def setServicios(self, servicios):
-        codigos = [servicio.getCodigo() for servicio in servicios]
+        codigos = [(servicio.getEquipo() + servicio.getCodigo()) for servicio in servicios]
         if len(codigos) != len(set(codigos)):
             raise(Exception("Existe un código repetido."))
         else:
@@ -425,9 +434,16 @@ class Usuario(object):
         # self.pago = pago
 
 class Servicio(object):
-    def __init__(self, equipo = None, codigo = None, interno = None, cantidad = None, usos = None, agregado_posteriormente = False):
-        self.equipo = equipo
-        self.codigo = codigo
+    def __init__(self, codigo = None, interno = None, cantidad = None, usos = None, agregado_posteriormente = False):
+        if codigo != None:
+            self.codigo_prefix = codigo
+            self.codigo = codigo[2:]
+            self.equipo = codigo[:2]
+            self.equipo = getEquipoName(self.equipo)
+        else:
+            self.codigo = None
+            self.equipo = None
+            self.codigo_prefix = None
         self.cantidad = cantidad
         if usos == None: self.usos = {}
         else: self.usos = usos
@@ -450,6 +466,9 @@ class Servicio(object):
 
     def getCodigo(self):
         return self.codigo
+
+    def getCodigoPrefix(self):
+        return self.codigo_prefix
 
     def getInterno(self):
         return self.interno

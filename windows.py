@@ -70,7 +70,7 @@ class Table(QtWidgets.QTableWidget):
 
     def removeServicio(self):
         table_codigos = self.getCodigos()
-        regis_codigos = self.parent.getCodigos()
+        regis_codigos = self.parent.getCodigosPrefix()
         for (i, codigo) in enumerate(regis_codigos):
             if not codigo in table_codigos: self.parent.removeServicio(i)
 
@@ -88,8 +88,6 @@ class Table(QtWidgets.QTableWidget):
                     self.item(row, 4).setText("")
 
                 else:
-                    equipo = self.parent.getEquipo()
-                    equipo_df = eval("constants.%s"%equipo)
                     interno = self.parent.getInterno()
                     try:
                         n = round(float(self.item(row, 2).text()), 1)
@@ -104,7 +102,7 @@ class Table(QtWidgets.QTableWidget):
                             self.item(row, 2).setText("1.0")
 
                     try:
-                        servicio = objects.Servicio(equipo = equipo, codigo = cod, interno = interno, cantidad = n)
+                        servicio = objects.Servicio(codigo = cod, interno = interno, cantidad = n)
                         self.parent.addServicio(servicio)
                     except Exception as e:
                         self.item(row, 0).setText("")
@@ -360,32 +358,57 @@ class CodigosDialog(QtWidgets.QDialog):
 
         self.parent = parent
         self.setWindowTitle("Ver códigos")
-        self.layout = QtWidgets.QVBoxLayout()
-        self.setLayout(self.layout)
+        layout = QtWidgets.QVBoxLayout()
+        layout.setContentsMargins(6, 6, 6, 6)
+        layout.setSpacing(0)
+        self.setLayout(layout)
 
-        self.table = QtWidgets.QTableView()
-        self.table.doubleClicked.connect(self.doubleClick)
-        self.layout.addWidget(self.table)
+        self.tabs = QtWidgets.QTabWidget(self)
+        for equipo in constants.EQUIPOS:
+            tab = QtWidgets.QWidget()
+            lout = QtWidgets.QVBoxLayout(tab)
+            lout.setContentsMargins(0, 6, 0, 0)
+            lout.setSpacing(0)
+            table = QtWidgets.QTableView()
+            table.doubleClicked.connect(self.doubleClick)
+
+            lout.addWidget(table)
+
+            self.tabs.addTab(tab, equipo)
+            setattr(self, "tab_%s" % equipo, tab)
+            setattr(self, "table_%s" % equipo, table)
+
+            self.setModel(equipo)
+
+        layout.addWidget(self.tabs)
+        self.resize(600, 400)
 
     def doubleClick(self, modelIndex):
         row = modelIndex.row()
-        df = self.table.model().dataframe
+        tab = self.tabs.currentIndex()
+        equipo = constants.EQUIPOS[tab]
+        table = getattr(self, "table_%s" % equipo)
+
+        df = table.model().dataframe
         codigo = df.iloc[row]['Código']
+        codigo = equipo.split("_")[-1] + codigo
         self.parent.agregarDesdeCodigo(codigo)
 
-    def setModel(self, df):
-        self.table.setModel(PandasModel(df, checkbox = False))
+    def setModel(self, equipo):
+        table = getattr(self, "table_%s" % equipo)
+        df = getattr(constants, equipo)
+        table.setModel(PandasModel(df, checkbox = False))
 
-        self.table.setSizePolicy(QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Minimum)
+        table.setSizePolicy(QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Minimum)
 
-        self.table.setVerticalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOff)
-        self.table.setHorizontalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOff)
+        table.setVerticalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOff)
+        table.setHorizontalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOff)
 
-        self.table.resizeColumnsToContents()
-        self.table.setFixedSize(self.table.horizontalHeader().length() + self.table.verticalHeader().width(),
-                                self.table.verticalHeader().length() + self.table.horizontalHeader().height())
-
-        self.resize(self.table.sizeHint())
+        header = table.horizontalHeader()
+        header.setSectionResizeMode(0, QtWidgets.QHeaderView.ResizeToContents)
+        header.setSectionResizeMode(1, QtWidgets.QHeaderView.Stretch)
+        for i in range(2, len(df.keys())):
+            header.setSectionResizeMode(i, QtWidgets.QHeaderView.ResizeToContents)
 
 class CotizacionWindow(SubWindow):
     IGNORE = ["proyecto", "codigo"]
@@ -412,10 +435,6 @@ class CotizacionWindow(SubWindow):
         self.button_frame = QtWidgets.QFrame()
         self.total_frame = QtWidgets.QFrame()
         self.observaciones_frame = QtWidgets.QGroupBox("Observaciones")
-
-        self.cotizacion_frame_layout = QtWidgets.QHBoxLayout(self.cotizacion_frame)
-        self.numero_cotizacion = QtWidgets.QPushButton()
-        self.cotizacion_frame_layout.addWidget(self.numero_cotizacion)
 
         self.form_frame_layout = QtWidgets.QGridLayout(self.form_frame)
         self.form_frame_layout.setContentsMargins(0, 0, 0, 0)
@@ -457,9 +476,9 @@ class CotizacionWindow(SubWindow):
         muestra_label = QtWidgets.QLabel("Tipo de muestras:")
         self.muestra_widget = QtWidgets.QLineEdit()
 
-        equipo_label = QtWidgets.QLabel("Equipo:")
-        self.equipo_widget = QtWidgets.QComboBox()
-        self.equipo_widget.addItems(constants.EQUIPOS)
+        # equipo_label = QtWidgets.QLabel("Equipo:")
+        # self.equipo_widget = QtWidgets.QComboBox()
+        # self.equipo_widget.addItems(constants.EQUIPOS)
 
         end_label = QtWidgets.QLabel("Documento final")
         self.pago_widget = QtWidgets.QComboBox()
@@ -495,11 +514,11 @@ class CotizacionWindow(SubWindow):
 
         self.form_frame_layout.addWidget(muestra_label, 6, 0)
         self.form_frame_layout.addWidget(self.muestra_widget, 6, 1)
-        self.form_frame_layout.addWidget(equipo_label, 6, 2)
-        self.form_frame_layout.addWidget(self.equipo_widget, 6, 3)
+        # self.form_frame_layout.addWidget(equipo_label, 6, 2)
+        # self.form_frame_layout.addWidget(self.equipo_widget, 6, 3)
 
-        self.form_frame_layout.addWidget(end_label, 7, 2)
-        self.form_frame_layout.addWidget(self.pago_widget, 7, 3)
+        self.form_frame_layout.addWidget(end_label, 6, 2)
+        self.form_frame_layout.addWidget(self.pago_widget, 6, 3)
 
         self.table = Table(self)
 
@@ -534,7 +553,6 @@ class CotizacionWindow(SubWindow):
         self.button_frame.setSizePolicy(sizePolicy)
         self.elaborado_frame.setSizePolicy(sizePolicy)
 
-        self.cotizacion_frame_layout.setAlignment(QtCore.Qt.AlignRight)
         self.total_frame_layout.setAlignment(QtCore.Qt.AlignRight)
         self.button_frame_layout.setAlignment(QtCore.Qt.AlignRight)
         self.verticalLayout.setAlignment(QtCore.Qt.AlignRight)
@@ -571,11 +589,9 @@ class CotizacionWindow(SubWindow):
         self.resize(600, 640)
 
         self.interno_widget.currentIndexChanged.connect(self.changeInterno)
-        # self.interno_widget.stateChanged.connect(self.changeInterno)
         self.limpiar_button.clicked.connect(self.limpiar)
         self.guardar_button.clicked.connect(self.guardar)
-        self.numero_cotizacion.clicked.connect(self.numeroCotizacion)
-        self.equipo_widget.currentIndexChanged.connect(self.changeEquipo)
+        # self.equipo_widget.currentIndexChanged.connect(self.changeEquipo)
         self.view_button.clicked.connect(self.verCodigos)
 
         self.urlview = QWebEngineView()
@@ -649,11 +665,11 @@ class CotizacionWindow(SubWindow):
             self.errorWindow(e)
 
     def changeEquipo(self, i):
-        text = self.equipo_widget.currentText()
-        self.table.clean()
-        self.cotizacion.setServicios([])
-        self.setLastCotizacion()
-        self.ver_dialog.setModel(eval("constants.%s"%self.getEquipo()))
+        pass
+        # text = self.equipo_widget.currentText()
+        # self.table.clean()
+        # self.cotizacion.setServicios([])
+        # self.setLastCotizacion()
 
     def limpiar(self):
         self.table.clean()
@@ -677,14 +693,7 @@ class CotizacionWindow(SubWindow):
         self.observaciones_correo_widget.setText("")
 
     def verCodigos(self):
-        df = eval("constants.%s"%self.getEquipo())
-        self.ver_dialog.setModel(df)
         self.ver_dialog.show()
-
-    def numeroCotizacion(self):
-        self.dialog = ChangeCotizacion(self)
-        self.dialog.setModal(True)
-        self.dialog.show()
 
     def sendCorreo(self):
         if self.notificar_widget.isChecked():
@@ -779,6 +788,7 @@ class CotizacionWindow(SubWindow):
                 self.cotizacion.setElaborado(self.elaborado_widget.currentText())
 
             usuario = objects.Usuario(**dic)
+            
             self.cotizacion.setUsuario(usuario)
             self.cotizacion.setMuestra(self.muestra_widget.text())
             self.cotizacion.setObservacionPDF(self.observaciones_pdf_widget.toPlainText())
@@ -815,10 +825,9 @@ class CotizacionWindow(SubWindow):
             self.errorWindow(e)
 
     def setLastCotizacion(self):
-        cod = objects.getNumeroCotizacion(self.getEquipo())
-
-        self.numero_cotizacion.setText(cod)
-        self.cotizacion.setNumero(cod)
+        pass
+        # cod = objects.getNumeroCotizacion(self.getEquipo())
+        # self.cotizacion.setNumero(cod)
 
     def loadCotizacion(self, number):
         # try:
@@ -840,7 +849,6 @@ class CotizacionWindow(SubWindow):
         self.setInternoWidget(user.getInterno())
         self.pago_widget.setCurrentText(user.getPago())
         self.muestra_widget.setText(self.cotizacion.getMuestra())
-        self.numero_cotizacion.setText(self.cotizacion.getNumero())
         self.elaborado_label.setText("Modificado por:")
         self.elaborado_widget.setCurrentIndex(0)
 
@@ -863,14 +871,17 @@ class CotizacionWindow(SubWindow):
     def getCodigos(self):
         return self.cotizacion.getCodigos()
 
+    def getCodigosPrefix(self):
+        return self.cotizacion.getCodigosPrefix()
+
     def getServicio(self, cod):
         return self.cotizacion.getServicio(cod)
 
     def getServicios(self):
         return self.cotizacion.getServicios()
 
-    def getEquipo(self):
-        return self.equipo_widget.currentText()
+    # def getEquipo(self):
+    #     return self.equipo_widget.currentText()
 
     def getInterno(self):
         interno = self.interno_widget.currentText()
