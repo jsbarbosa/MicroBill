@@ -8,9 +8,10 @@ from time import sleep
 from datetime import datetime
 from PyQt5 import QtCore, QtWidgets, QtGui
 
+import correo
 import objects
 import constants
-import correo
+from exceptions import *
 
 import psutil
 from subprocess import Popen
@@ -184,7 +185,11 @@ class Table(QtWidgets.QTableWidget):
         self.blockSignals(True)
         for (row, servicio) in enumerate(servicios):
             if not servicio.isAgregado():
-                self.item(row, 0).setText(servicio.getCodigo())
+                try:
+                    self.item(row, 0).setText(servicio.getCodigosPrefix())
+                except IncompatibleError:
+                    self.item(row, 1).setText(servicio.getCodigos())
+                    raise(IncompatibleError)
                 self.item(row, 1).setText(servicio.getDescripcion())
                 self.item(row, 2).setText("%.1f"%servicio.getCantidad())
                 self.item(row, 3).setText("{:,}".format(servicio.getValorUnitario()))
@@ -789,6 +794,7 @@ class CotizacionWindow(SubWindow):
 
             usuario = objects.Usuario(**dic)
             self.cotizacion.setUsuario(usuario)
+            self.cotizacion.setTipoPago()
             servicios = objects.sortServicios(self.getServicios())
             self.cotizacion.setMuestra(self.muestra_widget.text())
             self.cotizacion.setObservacionPDF(self.observaciones_pdf_widget.toPlainText())
@@ -1668,7 +1674,7 @@ class MainWindow(QtWidgets.QMainWindow):
         self.update_timer.timeout.connect(self.updateDataFrames)
         self.update_timer.start()
 
-        self.resize(1100, 800)
+        self.resize(1000, 800)
 
     def updateDataFrames(self):
         cli, reg = objects.readDataFrames()

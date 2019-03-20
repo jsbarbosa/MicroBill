@@ -157,7 +157,7 @@ class PDFCotizacion(PDFBase):
         t.setStyle(TableStyle(style))
         self.story.append(t)
 
-        if self.cotizacion.internoTreatment():
+        if self.cotizacion.internoTreatment() and constants.DOCUMENTOS_FINALES[0]:
             cod = self.cotizacion.getNumero()[:2]
             year = str(datetime.now().year)[-2:]
             data = [[CODIGO_PEP % (year, cod)]]
@@ -165,8 +165,7 @@ class PDFCotizacion(PDFBase):
                     ('ALIGN', (0, 0), (0, 0), 'CENTER'),
                     ('VALIGN', (0, 0), (0, 0), 'TOP'),
                     ('FONTSIZE', (0, 0), (0, 0), 13),
-                    ('TEXTCOLOR', (0, 0), (0, 0), colors.red),
-                    ('BACKGROUND', (0, 0), (0, 0), colors.lightgrey)]
+                    ('TEXTCOLOR', (0, 0), (0, 0), colors.red),]
 
             t = Table(data, 160, 20)
             t.setStyle(TableStyle(style))

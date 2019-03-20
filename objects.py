@@ -7,6 +7,7 @@ import pandas as pd
 from datetime import datetime
 
 import constants
+from exceptions import *
 from pdflib import PDFCotizacion, PDFReporte
 
 from unidecode import unidecode
@@ -96,6 +97,9 @@ class Cotizacion(object):
         if interno == "Interno" or interno == "Independiente":
             return True
         return False
+
+    def getPago(self):
+        return self.usuario.getPago()
 
     def getCodigos(self):
         return [servicio.getCodigo() for servicio in self.servicios]
@@ -538,7 +542,7 @@ class Servicio(object):
     def setValorUnitario(self, valor = None):
         if valor == None:
             try: equipo = eval("constants.%s"%self.equipo)
-            except AttributeError: raise(Exception("Cotización incompatible con versión actual"))
+            except AttributeError: raise(IncompatibleError)
             df = equipo[equipo["Código"] == self.codigo]
             if len(df) == 0: raise(Exception("Código inválido."))
             self.valor_unitario = int(df[self.interno].values[0])
