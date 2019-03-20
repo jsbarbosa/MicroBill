@@ -3,6 +3,7 @@ import sys
 import config
 import traceback
 import numpy as np
+from copy import copy
 from time import sleep
 from datetime import datetime
 from PyQt5 import QtCore, QtWidgets, QtGui
@@ -586,7 +587,7 @@ class CotizacionWindow(SubWindow):
         self.cotizacion = objects.Cotizacion()
         self.setLastCotizacion()
 
-        self.resize(600, 640)
+        self.resize(600, 620)
 
         self.interno_widget.currentIndexChanged.connect(self.changeInterno)
         self.limpiar_button.clicked.connect(self.limpiar)
@@ -695,18 +696,17 @@ class CotizacionWindow(SubWindow):
     def verCodigos(self):
         self.ver_dialog.show()
 
-    def sendCorreo(self):
+    def sendCorreo(self, names):
         if self.notificar_widget.isChecked():
             to = self.cotizacion.getUsuario().getCorreo()
-            file_name = self.cotizacion.getNumero()
             pago = self.pago_widget.currentText()
             observaciones = self.observaciones_correo_widget.toPlainText()
             if pago == "Transferencia interna":
-                self.dialog = CorreoDialog((to, [file_name], observaciones), target = correo.sendCotizacionTransferencia)
+                self.dialog = CorreoDialog((to, names, observaciones), target = correo.sendCotizacionTransferencia)
             elif pago == "Factura":
-                self.dialog = CorreoDialog((to, [file_name], observaciones), target = correo.sendCotizacionFactura)
+                self.dialog = CorreoDialog((to, names, observaciones), target = correo.sendCotizacionFactura)
             elif pago == "Recibo":
-                self.dialog = CorreoDialog((to, [file_name], observaciones), target = correo.sendCotizacionRecibo)
+                self.dialog = CorreoDialog((to, names, observaciones), target = correo.sendCotizacionRecibo)
             else: print("ERROR, not implemented")
             self.dialog.start()
             self.dialog.exec_()
@@ -788,33 +788,46 @@ class CotizacionWindow(SubWindow):
                 self.cotizacion.setElaborado(self.elaborado_widget.currentText())
 
             usuario = objects.Usuario(**dic)
-            
             self.cotizacion.setUsuario(usuario)
+            servicios = objects.sortServicios(self.getServicios())
             self.cotizacion.setMuestra(self.muestra_widget.text())
             self.cotizacion.setObservacionPDF(self.observaciones_pdf_widget.toPlainText())
             self.cotizacion.setObservacionCorreo(self.observaciones_correo_widget.toPlainText())
-            self.cotizacion.makePDFCotizacion()
 
-            path, old = self.openPDF(self.cotizacion.getFileName())
-            p1 = Popen(path, shell = True)
+            numeros = []
+            cotizaciones = []
+            processes = []
+            paths = []
+            olds = []
+            for key in servicios:
+                cotizacion = copy(self.cotizacion)
+                n = objects.getNumeroCotizacion(key)
+                numeros.append(n)
+                cotizacion.setServicios(servicios[key])
+                cotizacion.setNumero(n)
+                cotizacion.makePDFCotizacion()
+                cotizaciones.append(cotizacion)
+
+                path, old = self.openPDF(cotizacion.getFileName())
+                paths.append(path)
+                olds.append(old)
+                p1 = Popen(path, shell = True)
+                processes.append(p1)
             if self.confirmGuardar():
-                self.closePDF(p1, old)
-                self.cotizacion.save(to_pdf = False)
-
+                for (i, cotizacion) in enumerate(cotizaciones):
+                    self.closePDF(processes[i], olds[i])
+                    cotizacion.save(to_pdf = False)
                 self.updateAutoCompletar()
-                self.sendCorreo()
+                self.sendCorreo(numeros)
                 self.limpiar()
                 self.setLastCotizacion()
             else:
-                self.closePDF(p1, old)
                 self.cotizacion.setUsuario(None)
                 self.cotizacion.setMuestra(None)
-                for i in range(10):
-                    try:
-                        os.remove(path)
-                        break
-                    except PermissionError:
-                        sleep(0.1)
+                for (i, cotizacion) in enumerate(cotizaciones):
+                    self.closePDF(processes[i], olds[i])
+                    try: os.remove(paths[i])
+                    except PermissionError: pass
 
             self.cotizacion.setUsuario(None)
             self.cotizacion.setMuestra(None)
@@ -1654,6 +1667,8 @@ class MainWindow(QtWidgets.QMainWindow):
         self.update_timer.setInterval(1000)
         self.update_timer.timeout.connect(self.updateDataFrames)
         self.update_timer.start()
+
+        self.resize(1100, 800)
 
     def updateDataFrames(self):
         cli, reg = objects.readDataFrames()

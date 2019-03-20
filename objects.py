@@ -59,6 +59,16 @@ def getEquipoName(codigo):
         if codigo in name: return name
     return None
 
+def sortServicios(servicios):
+    dic = {}
+    for servicio in servicios:
+        equipo = servicio.getEquipo()
+        if equipo in dic.keys():
+            dic[equipo].append(servicio)
+        else:
+            dic[equipo] = [servicio]
+    return dic
+
 class Cotizacion(object):
     def __init__(self, numero = None, usuario = None, servicios = [], muestra = None):
         self.numero = numero

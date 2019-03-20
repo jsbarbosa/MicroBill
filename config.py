@@ -25,7 +25,7 @@ SALUDO = """Estimado usuario,
 """
 
 COTIZACION_SUBJECT_RECIBO = "Solicitud de cotización"
-COTIZACION_MENSAJE_RECIBO = """A continuación hacemos envío de la cotización correspondiente a los servicios solicitados.
+COTIZACION_MENSAJE_RECIBO = """A continuación hacemos envío de la(s) cotización(es) correspondiente(s) a los servicios solicitados.
 
 Tenga en cuenta las siguientes recomendaciones:
 - Para el día de la sesión es necesario contar con el comprobante de pago.
@@ -36,7 +36,7 @@ Cordial saludo,
 """
 
 COTIZACION_SUBJECT_TRANSFERENCIA = COTIZACION_SUBJECT_RECIBO
-COTIZACION_MENSAJE_TRANSFERENCIA = """A continuación hacemos envío de la cotización correspondiente a los servicios solicitados.
+COTIZACION_MENSAJE_TRANSFERENCIA = """A continuación hacemos envío de la(s) cotización(es) correspondiente(s) a los servicios solicitados.
 
 Tenga en cuenta las siguientes recomendaciones:
 - Para el día de la sesión es necesario contar con la aprobación del director de departamento y con la evidencia de translado presupuestal, con referencia a la cotización enviada.
@@ -47,7 +47,7 @@ Cordial saludo,
 """
 
 COTIZACION_SUBJECT_FACTURA = COTIZACION_SUBJECT_RECIBO
-COTIZACION_MENSAJE_FACTURA = """A continuación hacemos envío de la cotización correspondiente a los servicios solicitados.
+COTIZACION_MENSAJE_FACTURA = """A continuación hacemos envío de la(s) cotización(es) correspondiente(s) a los servicios solicitados.
 
 Tenga en cuenta las siguientes recomendaciones:
 - Le solicitamos enviar la orden de servicios, para poder generar la factura.
