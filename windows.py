@@ -186,9 +186,9 @@ class Table(QtWidgets.QTableWidget):
         for (row, servicio) in enumerate(servicios):
             if not servicio.isAgregado():
                 try:
-                    self.item(row, 0).setText(servicio.getCodigosPrefix())
+                    self.item(row, 0).setText(servicio.getCodigoPrefix())
                 except (IncompatibleError, AttributeError):
-                    self.item(row, 1).setText(servicio.getCodigos())
+                    self.item(row, 1).setText(servicio.getCodigo())
                     raise(IncompatibleError)
                 self.item(row, 1).setText(servicio.getDescripcion())
                 self.item(row, 2).setText("%.1f"%servicio.getCantidad())
