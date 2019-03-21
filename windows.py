@@ -794,7 +794,6 @@ class CotizacionWindow(SubWindow):
 
             usuario = objects.Usuario(**dic)
             self.cotizacion.setUsuario(usuario)
-            self.cotizacion.setTipoPago()
             servicios = objects.sortServicios(self.getServicios())
             self.cotizacion.setMuestra(self.muestra_widget.text())
             self.cotizacion.setObservacionPDF(self.observaciones_pdf_widget.toPlainText())
