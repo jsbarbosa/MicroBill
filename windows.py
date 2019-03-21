@@ -188,7 +188,7 @@ class Table(QtWidgets.QTableWidget):
                 try:
                     self.item(row, 0).setText(servicio.getCodigoPrefix())
                 except (IncompatibleError, AttributeError):
-                    self.item(row, 1).setText(servicio.getCodigo())
+                    self.item(row, 0).setText(servicio.getCodigo())
                     raise(IncompatibleError)
                 self.item(row, 1).setText(servicio.getDescripcion())
                 self.item(row, 2).setText("%.1f"%servicio.getCantidad())
@@ -879,8 +879,6 @@ class CotizacionWindow(SubWindow):
             self.table.setFromCotizacion()
         except Exception as e:
             self.errorWindow(e)
-        # except FileNotFoundError as e:
-        #     self.errorWindow(e)
 
     def centerOnScreen(self):
         resolution = QtWidgets.QDesktopWidget().screenGeometry()
