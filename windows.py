@@ -187,7 +187,7 @@ class Table(QtWidgets.QTableWidget):
             if not servicio.isAgregado():
                 try:
                     self.item(row, 0).setText(servicio.getCodigosPrefix())
-                except IncompatibleError:
+                except (IncompatibleError, AttributeError):
                     self.item(row, 1).setText(servicio.getCodigos())
                     raise(IncompatibleError)
                 self.item(row, 1).setText(servicio.getDescripcion())
