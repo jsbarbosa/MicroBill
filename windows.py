@@ -874,8 +874,11 @@ class CotizacionWindow(SubWindow):
         self.observaciones_pdf_widget.setText(self.cotizacion.getObservacionPDF())
         self.observaciones_correo_widget.setText(self.cotizacion.getObservacionCorreo())
         self.setTotal()
-        self.table.setFromCotizacion()
 
+        try:
+            self.table.setFromCotizacion()
+        except Exception as e:
+            self.errorWindow(e)
         # except FileNotFoundError as e:
         #     self.errorWindow(e)
 
