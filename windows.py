@@ -1401,6 +1401,7 @@ class BuscarWindow(SubWindow):
         self.limpiar_button.clicked.connect(self.limpiar)
 
         self.table = QtWidgets.QTableView()
+        # self.table.setSortingEnabled(True)
         self.table.doubleClicked.connect(self.doubleClick)
         self.layout.addWidget(form)
         self.layout.addWidget(self.table)
@@ -1626,6 +1627,7 @@ class MainWindow(QtWidgets.QMainWindow):
         self.buscar_widget = QtWidgets.QPushButton("Buscar")
         self.open_widget = QtWidgets.QPushButton("Abrir PDFs")
         self.gestor_widget = QtWidgets.QPushButton("A Gestor...")
+        self.reporte_widget = QtWidgets.QPushButton("Reportes")
 
         self.buttons_layout.addWidget(self.cotizacion_widget)
         self.buttons_layout.addWidget(self.descontar_widget)
@@ -1633,6 +1635,7 @@ class MainWindow(QtWidgets.QMainWindow):
         self.buttons_layout.addWidget(self.buscar_widget)
         self.buttons_layout.addWidget(self.open_widget)
         self.buttons_layout.addWidget(self.gestor_widget)
+        self.buttons_layout.addWidget(self.reporte_widget)
 
         self.request_widget.clicked.connect(self.requestHandler)
         self.cotizacion_widget.clicked.connect(self.cotizacionHandler)
@@ -1650,8 +1653,6 @@ class MainWindow(QtWidgets.QMainWindow):
         # self.cotizacion_window.setWindowFlags(QtCore.Qt.WindowMinimizeButtonHint)
 
         self.request_window.setWindowFlags(QtCore.Qt.WindowMinimizeButtonHint)
-
-        self.centerOnScreen()
 
         self.mdi = QtWidgets.QMdiArea()
         self.mdi.setHorizontalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOff)
@@ -1675,6 +1676,7 @@ class MainWindow(QtWidgets.QMainWindow):
         self.update_timer.start()
 
         self.resize(1000, 800)
+        self.centerOnScreen()
 
     def updateDataFrames(self):
         cli, reg = objects.readDataFrames()
@@ -1740,6 +1742,10 @@ class MainWindow(QtWidgets.QMainWindow):
                 event.accept()
             else:
                 event.ignore()
+
+class ReporteWindow(SubWindow):
+    def __init__(self, parent = None):
+        super(ReporteWindow, self).__init__(parent)
 
 class RequestWindow(SubWindow):
     def __init__(self, parent = None):

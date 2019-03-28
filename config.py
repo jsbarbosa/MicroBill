@@ -4,7 +4,8 @@
     PDF
 """
 CODIGO_GESTION = "UA-FM-CM-001"
-CODIGO_PEP = "P%s.340121.0%s"
+# CODIGO_PEP = "P%s.340121.0%s"
+CODIGO_PEP = "340121001"
 
 TERMINOS_Y_CONDICIONES = ["Para usuarios internos favor realizar el traslado al PEP indicado en la parte superior en rojo", "La Universidad no cobra IVA por ser una Institución de educación superior sin ánimo de lucro (Art. 92 de la ley 30 de 1992).",]
 

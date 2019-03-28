@@ -160,7 +160,8 @@ class PDFCotizacion(PDFBase):
         if self.cotizacion.internoTreatment() and constants.DOCUMENTOS_FINALES[0]:
             cod = self.cotizacion.getNumero()[:2]
             year = str(datetime.now().year)[-2:]
-            data = [[CODIGO_PEP % (year, cod)]]
+            # data = [[CODIGO_PEP % (year, cod)]] # not ready
+            data = [[CODIGO_PEP]]
             style = [('BOX', (0, 0), (0, 0), 3, colors.black),
                     ('ALIGN', (0, 0), (0, 0), 'CENTER'),
                     ('VALIGN', (0, 0), (0, 0), 'TOP'),
