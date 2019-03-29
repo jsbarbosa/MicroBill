@@ -111,7 +111,13 @@ class Cotizacion(object):
         return self.numero
 
     def getTotal(self):
+        return sum([servicio.getTotal() for servicio in self.servicios])
+
+    def getSubtotal(self):
         return sum([servicio.getValorTotal() for servicio in self.servicios])
+
+    def getDescuentos(self):
+        return sum([servicio.getDescuentoTotal() for servicio in self.servicios])
 
     def getServicio(self, cod):
         i = self.getCodigosPrefix().index(cod)
@@ -229,8 +235,8 @@ class Cotizacion(object):
     def makeCotizacionTable(self):
         table = []
         for servicio in self.servicios:
-            row = servicio.makeCotizacionTable()
-            table.append(row)
+            table += servicio.makeCotizacionTable()
+            # table.append(row)
         return table
 
     def makeReporteTable(self):
@@ -288,10 +294,6 @@ class Cotizacion(object):
         REGISTRO_DATAFRAME = REGISTRO_DATAFRAME.sort_values("Cotización", ascending = False)
         REGISTRO_DATAFRAME = REGISTRO_DATAFRAME.reset_index(drop = True)
 
-        #path = os.path.dirname(sys.executable)
-        #path = os.path.join(path, constants.REGISTRO_FILE)
-        #path = os.path.normpath(path)
-        #if ("Scripts" in path) or ("bin" in path):
         path = constants.REGISTRO_FILE
 
         system = sys.platform
@@ -302,9 +304,9 @@ class Cotizacion(object):
                                         datetime_format= "dd/mm/yy hh:mm:ss")
 
                 REGISTRO_DATAFRAME.to_excel(writer, index = False)
-                if system == 'linux':
-                    writer.save()
-                    writer.close()
+                # if system == 'linux':
+                writer.save()
+                writer.close()
                 break
             except Exception as e:
                 if i == 9:
@@ -436,16 +438,6 @@ class Usuario(object):
             data.append(text)
         data += ["Tipo: " + self.getInterno()]
         return "\n".join(data)
-        # self.institucion = institucion
-        # self.documento = documento
-        # self.direccion = direccion
-        # self.ciudad = ciudad
-        # self.telefono = telefono
-        # self.interno = interno
-        # self.responsable = responsable
-        # self.proyecto = proyecto
-        # self.codigo = codigo
-        # self.pago = pago
 
 class Servicio(object):
     def __init__(self, codigo = None, interno = None, cantidad = None, usos = None, agregado_posteriormente = False):
@@ -470,9 +462,17 @@ class Servicio(object):
         self.descripcion = None
         self.restantes = None
 
+        self.descuento_unitario = None
+        self.descuento_total = None
+        self.descripcion = None
+        self.restantes = None
+
         self.setRestantes()
         self.setValorUnitario()
         self.setValorTotal()
+
+        self.setDescuentoUnitario()
+        self.setDescuentoTotal()
         self.setDescripcion()
 
     def getEquipo(self):
@@ -499,8 +499,17 @@ class Servicio(object):
     def getValorTotal(self):
         return self.valor_total
 
+    def getTotal(self):
+        return self.getValorTotal() - self.getDescuentoTotal()
+
     def getDescripcion(self):
         return self.descripcion
+
+    def getDescuentoUnitario(self):
+        return self.descuento_unitario
+
+    def getDescuentoTotal(self):
+        return self.descuento_total
 
     def getRestantes(self):
         return self.restantes
@@ -535,17 +544,18 @@ class Servicio(object):
         self.cantidad = cantidad
         self.setRestantes()
         self.setValorTotal()
+        self.setDescuentoTotal()
 
     def setUsos(self, usos):
         self.usos = usos
 
     def setValorUnitario(self, valor = None):
         if valor == None:
-            try: equipo = eval("constants.%s"%self.equipo)
+            try: equipo = eval("constants.%s" % self.equipo)
             except AttributeError: raise(IncompatibleError)
             df = equipo[equipo["Código"] == self.codigo]
             if len(df) == 0: raise(Exception("Código inválido."))
-            self.valor_unitario = int(df[self.interno].values[0])
+            self.valor_unitario = int(df["Industria"].values[0])
         else:
             self.valor_unitario = valor
 
@@ -555,9 +565,25 @@ class Servicio(object):
         else:
             self.valor_total = valor
 
+    def setDescuentoUnitario(self, valor = None):
+        if valor == None:
+            try: equipo = eval("constants.%s" % self.equipo)
+            except AttributeError: raise(IncompatibleError)
+            df = equipo[equipo["Código"] == self.codigo]
+            if len(df) == 0: raise(Exception("Código inválido."))
+            self.descuento_unitario = self.getValorUnitario() - int(df[self.interno].values[0])
+        else:
+            self.descuento_unitario = valor
+
+    def setDescuentoTotal(self, valor = None):
+        if valor == None:
+            self.descuento_total = int(self.getDescuentoUnitario() * self.getCantidad())
+        else:
+            self.descuento_total = valor
+
     def setDescripcion(self, valor = None):
         if valor == None:
-            equipo = eval("constants.%s"%self.equipo)
+            equipo = eval("constants.%s" % self.equipo)
             df = equipo[equipo["Código"] == self.codigo]
             self.descripcion = df["Descripción"].values[0]
         else:
@@ -568,18 +594,22 @@ class Servicio(object):
 
     def setInterno(self, interno):
         self.interno = interno
+        old_descuento = self.getDescuentoTotal()
         old_valor = self.getValorUnitario()
         old_total = self.getValorTotal()
         old_cantidad = self.getCantidad()
 
         self.setValorUnitario()
+        self.setDescuentoUnitario()
         if old_total == int(old_valor * old_cantidad):
             self.setValorTotal()
+            self.setDescuentoTotal()
         else:
             cantidad = old_total / self.getValorUnitario()
             cantidad = np.ceil(10 * cantidad) / 10
             self.setCantidad(cantidad)
             self.setValorTotal(old_total)
+            self.setDescuentoTotal(old_descuento)
 
     def descontar(self, n):
         # if self.restantes >= n:
@@ -590,12 +620,16 @@ class Servicio(object):
             else:
                 self.usos[today] = n
             self.restantes -= n
-        # else:
-        #     raise(Exception("No es posible descontar tanto."))
 
     def makeCotizacionTable(self):
-        return [self.getCodigo(), self.getDescripcion(), "%.1f"%self.getCantidad(),
-                "{:,}".format(self.getValorUnitario()), "{:,}".format(self.getValorTotal())]
+        completo = [self.getCodigo(), self.getDescripcion(), "%.1f" % self.getCantidad(),
+            "{:,}".format(self.getValorUnitario()), "{:,}".format(self.getValorTotal())]
+
+        if self.interno != "Industria":
+            descuento = ["", "Descuento por %s" % self.interno, "", "", "{:,}".format(-self.getDescuentoTotal())]
+            return completo, descuento
+        else:
+            return (completo, )
 
     def makeReporteTable(self):
         fechas = sorted(list(self.usos.keys()))

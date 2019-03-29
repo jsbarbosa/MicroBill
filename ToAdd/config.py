@@ -1,15 +1,15 @@
-﻿ADMINS = ["Humberto Ibarra", "Monica Lopez", "Juan Camilo Orozco", "Laura Cruz", "Juan Barbosa"]
+﻿ADMINS = ["Humberto Ibarra", "Monica Lopez", "Juan Camilo Orozco", "Laura Sotelo", "Juan Barbosa"]
 
 """
     PDF
 """
 CODIGO_GESTION = "UA-FM-CM-001"
+# CODIGO_PEP = "P%s.340121.0%s"
+CODIGO_PEP = "340121001"
 
-TERMINOS_Y_CONDICIONES = ["Para usuarios internos favor realizar el traslado al Centro de beneficios/costos: 340121001",
-                        "La Universidad no cobra IVA por ser una Institución de educación superior sin ánimo de lucro (Art. 92 de la ley 30 de 1992).",
-			             ]
+TERMINOS_Y_CONDICIONES = ["Para usuarios internos favor realizar el traslado al PEP indicado en la parte superior en rojo", "La Universidad no cobra IVA por ser una Institución de educación superior sin ánimo de lucro (Art. 92 de la ley 30 de 1992).",]
 
-CONFIDENCIALIDAD = "El contratista se obliga a respetar el carácter confidencial de este documento y de la información, condiciones y documentos relacionados con el mismo, de conformidad con las normas constitucionales y legales aplicables. En consecuencia, el contratista se compromete a no publicar, difundir, comentar o analizar frente a terceros, copiar, reproducir o hacer uso diferente al acordado, de la información que el centro de microscopia le entregue en este documento, ya sea de forma impresa, electrónica, verbal o de cualquier otra manera, o de aquella que el contratista llegue a conocer, teniendo en cuenta que dicha información tiene como finalidad exclusiva, permitir y facilitar la debida prestación de los servicios solicitados."
+CONFIDENCIALIDAD = "El contratista se obliga a respetar el carácter confidencial de este documento y de la información, condiciones y documentos relacionados con el mismo, de conformidad con las normas constitucionales y legales aplicables. En consecuencia, el contratista se compromete a no publicar, difundir, comentar o analizar frente a terceros, copiar, reproducir o hacer uso diferente al acordado, de la información que el Centro de Microscopía le entregue en este documento, ya sea de forma impresa, electrónica, verbal o de cualquier otra manera, o de aquella que el contratista llegue a conocer, teniendo en cuenta que dicha información tiene como finalidad exclusiva, permitir y facilitar la debida prestación de los servicios solicitados."
 CENTRO = "Centro de Microscopía"
 
 DEPENDENCIAS = [CENTRO.upper(),
@@ -26,7 +26,7 @@ SALUDO = """Estimado usuario,
 """
 
 COTIZACION_SUBJECT_RECIBO = "Solicitud de cotización"
-COTIZACION_MENSAJE_RECIBO = """A continuación hacemos envío de la cotización correspondiente a los servicios solicitados.
+COTIZACION_MENSAJE_RECIBO = """A continuación hacemos envío de la(s) cotización(es) correspondiente(s) a los servicios solicitados.
 
 Tenga en cuenta las siguientes recomendaciones:
 - Para el día de la sesión es necesario contar con el comprobante de pago.
@@ -37,7 +37,7 @@ Cordial saludo,
 """
 
 COTIZACION_SUBJECT_TRANSFERENCIA = COTIZACION_SUBJECT_RECIBO
-COTIZACION_MENSAJE_TRANSFERENCIA = """A continuación hacemos envío de la cotización correspondiente a los servicios solicitados.
+COTIZACION_MENSAJE_TRANSFERENCIA = """A continuación hacemos envío de la(s) cotización(es) correspondiente(s) a los servicios solicitados.
 
 Tenga en cuenta las siguientes recomendaciones:
 - Para el día de la sesión es necesario contar con la aprobación del director de departamento y con la evidencia de translado presupuestal, con referencia a la cotización enviada.
@@ -48,7 +48,7 @@ Cordial saludo,
 """
 
 COTIZACION_SUBJECT_FACTURA = COTIZACION_SUBJECT_RECIBO
-COTIZACION_MENSAJE_FACTURA = """A continuación hacemos envío de la cotización correspondiente a los servicios solicitados.
+COTIZACION_MENSAJE_FACTURA = """A continuación hacemos envío de la(s) cotización(es) correspondiente(s) a los servicios solicitados.
 
 Tenga en cuenta las siguientes recomendaciones:
 - Le solicitamos enviar la orden de servicios, para poder generar la factura.
@@ -79,12 +79,13 @@ REQUEST_MENSAJE = """Para cotizar los ensayos solicitados, es necesario que nos 
 
 1. Tamaño y cantidad de muestras:
 2. Objetivo del ensayo a realizar:
-3. Nombre de la persona de contacto:
-4. Institución:
-5. Documento (C.C o NIT) de la persona o empresa que realiza el pago:
-6. Teléfono:
-7. Dirección:
-8. Correo electrónico:
+3. Tipo de muestra:
+4. Nombre de la persona de contacto:
+5. Institución:
+6. Documento (C.C o NIT) de la persona o empresa que realiza el pago:
+7. Teléfono:
+8. Dirección:
+9. Correo electrónico:
 
 Si usted es usuario Uniandes y hace parte de un proyecto dentro de la Universidad le solicitamos nos indique:
 
@@ -119,5 +120,33 @@ Cordial saludo,
 """
 
 
-SERVER = "smtp-mail.outlook.com"
-PORT = 587
+SEND_SERVER = "smtp-mail.outlook.com"
+SEND_PORT = 587
+
+READ_SERVER = "imap-mail.outlook.com"
+READ_PORT = 993
+
+READ_EVERY_S = 10
+
+READ_EMAIL_FOLDER = "INBOX/AGENDO"
+READ_REQUEST_DETAILS = "Request details"
+READ_FIELDS = "Fields"
+READ_LAST = "Please go to the link below to view this request.  "
+
+READ_FIELDS_DICT = {'nombre': "A new request was submitted by ",
+                "id":"Request id ",
+                "documento": "Nit/CC ",
+                "responsable": "Person in charge ",
+                "direccion": "Address ",
+                "ciudad": "City ",
+                "telefono": "Telephone ",
+                "institucion": "Institution ",
+                "pago": "Paying method ",
+                "tipo": "Sample type ",
+                "proyecto": "Project name ",
+                "codigo": "Project code ",
+		"externo": "External funds ",
+                }
+
+READ_NUMERIC_FIELDS = ["Request id", "Id", "Telephone"]
+READ_SEARCH_FOR = 'FROM "lists@cirklo.org" SUBJECT "[Agendo] New request (2-Quote request"'

@@ -18,7 +18,7 @@ from subprocess import Popen
 from threading import Thread
 
 # from PyQt5.QtWebEngine import QtWebEngine
-from PyQt5.QtWebEngineWidgets import QWebEngineView, QWebEngineSettings
+# from PyQt5.QtWebEngineWidgets import QWebEngineView, QWebEngineSettings
 from PyQt5.QtCore import QUrl
 
 
@@ -549,7 +549,11 @@ class CotizacionWindow(SubWindow):
         self.button_frame_layout.addWidget(self.limpiar_button)
         self.button_frame_layout.addWidget(self.view_button)
 
-        self.total_frame_layout = QtWidgets.QHBoxLayout(self.total_frame)
+        self.total_frame_layout = QtWidgets.QFormLayout(self.total_frame)
+        subtotal_label = QtWidgets.QLabel("Subtotal:")
+        self.subtotal_widget = QtWidgets.QLabel()
+        descuento_label = QtWidgets.QLabel("Descuento:")
+        self.descuento_widget = QtWidgets.QLabel()
         total_label = QtWidgets.QLabel("Total:")
         self.total_widget = QtWidgets.QLabel()
 
@@ -573,8 +577,9 @@ class CotizacionWindow(SubWindow):
         self.observaciones_layout.addRow(QtWidgets.QLabel("Correo:"), self.observaciones_correo_widget)
         self.observaciones_layout.addRow(QtWidgets.QLabel("PDF:"), self.observaciones_pdf_widget)
 
-        self.total_frame_layout.addWidget(total_label)
-        self.total_frame_layout.addWidget(self.total_widget)
+        self.total_frame_layout.addRow(subtotal_label, self.subtotal_widget)
+        self.total_frame_layout.addRow(descuento_label, self.descuento_widget)
+        self.total_frame_layout.addRow(total_label, self.total_widget)
 
         self.verticalLayout.addWidget(self.cotizacion_frame)
         self.verticalLayout.addWidget(self.autocompletar_widget)
@@ -587,8 +592,6 @@ class CotizacionWindow(SubWindow):
 
         self.setAutoCompletar()
 
-        # self.interno_widget.setChecked(2)
-
         self.cotizacion = objects.Cotizacion()
         self.setLastCotizacion()
 
@@ -597,14 +600,7 @@ class CotizacionWindow(SubWindow):
         self.interno_widget.currentIndexChanged.connect(self.changeInterno)
         self.limpiar_button.clicked.connect(self.limpiar)
         self.guardar_button.clicked.connect(self.guardar)
-        # self.equipo_widget.currentIndexChanged.connect(self.changeEquipo)
         self.view_button.clicked.connect(self.verCodigos)
-
-        self.urlview = QWebEngineView()
-        plugs = [QWebEngineSettings.LocalContentCanAccessFileUrls, QWebEngineSettings.PluginsEnabled,
-                QWebEngineSettings.LinksIncludedInFocusChain]
-        for plug in plugs:
-            self.urlview.settings().setAttribute(plug, True)
 
     def agregarDesdeCodigo(self, codigo):
         self.table.agregarServicio(codigo)
@@ -614,7 +610,6 @@ class CotizacionWindow(SubWindow):
             widget = eval("self.%s_widget"%item)
             widget.textChanged.connect(self.autoCompletar)
             widget.returnPressed.connect(self.changeAutocompletar)
-            # widget.t
 
     def changeAutocompletar(self):
         self.autocompletar_widget.setChecked(False)
@@ -672,10 +667,6 @@ class CotizacionWindow(SubWindow):
 
     def changeEquipo(self, i):
         pass
-        # text = self.equipo_widget.currentText()
-        # self.table.clean()
-        # self.cotizacion.setServicios([])
-        # self.setLastCotizacion()
 
     def limpiar(self):
         self.table.clean()
@@ -692,6 +683,8 @@ class CotizacionWindow(SubWindow):
         self.elaborado_widget.setCurrentIndex(0)
         self.notificar_widget.setChecked(True)
         self.cotizacion.setServicios([])
+        self.subtotal_widget.setText("")
+        self.descuento_widget.setText("")
         self.total_widget.setText("")
         self.elaborado_label.setText("Elaborado por:")
         self.autocompletar_widget.setChecked(True)
@@ -872,11 +865,12 @@ class CotizacionWindow(SubWindow):
 
         self.observaciones_pdf_widget.setText(self.cotizacion.getObservacionPDF())
         self.observaciones_correo_widget.setText(self.cotizacion.getObservacionCorreo())
-        self.setTotal()
 
         try:
+            self.setTotal()
             self.table.setFromCotizacion()
-        except Exception as e:
+        except Exception:
+            e = Exception("Cotización incompatible")
             self.errorWindow(e)
 
     def centerOnScreen(self):
@@ -912,6 +906,10 @@ class CotizacionWindow(SubWindow):
     def setTotal(self, total = None):
         if total == None:
             total = self.cotizacion.getTotal()
+            subtotal = self.cotizacion.getSubtotal()
+            descuento = self.cotizacion.getDescuentos()
+        self.subtotal_widget.setText("{:,}".format(subtotal))
+        self.descuento_widget.setText("{:,}".format(-descuento))
         self.total_widget.setText("{:,}".format(total))
 
     def errorWindow(self, exception):
@@ -1622,7 +1620,7 @@ class MainWindow(QtWidgets.QMainWindow):
         self.central_layout.addWidget(buttons_widget)
 
         self.request_widget = QtWidgets.QPushButton("Solicitar información")
-        self.cotizacion_widget = QtWidgets.QPushButton("Generar/Modificar Cotización")
+        self.cotizacion_widget = QtWidgets.QPushButton("Generar Cotización")
         self.descontar_widget = QtWidgets.QPushButton("Descontar")
         self.buscar_widget = QtWidgets.QPushButton("Buscar")
         self.open_widget = QtWidgets.QPushButton("Abrir PDFs")

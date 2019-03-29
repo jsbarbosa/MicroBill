@@ -1,6 +1,6 @@
 ﻿import sys
 from PyQt5 import QtCore, QtGui, QtWidgets
-from PyQt5.QtWebEngineWidgets import QWebEngineView
+# from PyQt5.QtWebEngineWidgets import QWebEngineView
 
 sys.argv += ["--disable-web-security", "--web-security=no", "--allow-file-access-from-files"]
 app = QtWidgets.QApplication(sys.argv)

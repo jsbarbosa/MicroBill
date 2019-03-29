@@ -82,8 +82,8 @@ class PDFBase():
 
         data = [[Paragraph("<b>Correo:</b>", self.styles["Normal"]),
             Paragraph(usuario.getCorreo(), self.styles["Border"]),
-            Paragraph("<b>Tipo:</b>", self.styles["Normal"]),
-            Paragraph(usuario.getInterno(), self.styles["Border"]),
+            # Paragraph("<b>Tipo:</b>", self.styles["Normal"]),
+            # Paragraph(usuario.getInterno(), self.styles["Border"]),
             ]]
         t = Table(data, [c1, c2, c3, c4], hAlign='LEFT')
         self.story.append(Spacer(1, h))
@@ -202,9 +202,19 @@ class PDFCotizacion(PDFBase):
 
     def makeTable(self):
         table = self.cotizacion.makeCotizacionTable()
+        subtotal = self.cotizacion.getSubtotal()
+        descuentos = -self.cotizacion.getDescuentos()
         total = self.cotizacion.getTotal()
         table.insert(0, ["COD", "SERVICIO", "CANTIDAD", "PRECIO UNIDAD", "PRECIO TOTAL"])
-        table.append(["", "", "", "TOTAL", "{:,}".format(total)])
+
+        if self.cotizacion.getInterno() == "Industria":
+            o_row = -1
+            table.append(["", "", "", "TOTAL", "{:,}".format(total)])
+        else:
+            o_row = -3
+            table.append(["", "", "", "SUBTOTAL", "{:,}".format(subtotal)])
+            table.append(["", "", "", "D.TOTAL", "{:,}".format(descuentos)])
+            table.append(["", "", "", "TOTAL", "{:,}".format(total)])
 
         self.story.append(Spacer(1, 24))
 
@@ -215,7 +225,10 @@ class PDFCotizacion(PDFBase):
                                ('BACKGROUND', (0, 0), (-1, 0), colors.lightgrey),
                                ('ALIGN', (-3, 0), (-1, -1), "RIGHT"),
                                ('SPAN',(0, -1),(-3, -1)),
-                                ]))
+                               ('BOX', (-2, o_row), (-1, -1), 0.5, colors.black),
+                               ('BOX', (-2, -1), (-1, -1), 0.5, colors.red),
+                               ('BACKGROUND', (-2, o_row), (-2, -1), colors.lightgrey),
+                               ]))
         self.story.append(t)
         self.story.append(Spacer(1, 24))
 
