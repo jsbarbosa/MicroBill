@@ -149,4 +149,5 @@ READ_FIELDS_DICT = {'nombre': "A new request was submitted by ",
                 }
 
 READ_NUMERIC_FIELDS = ["Request id", "Id", "Telephone"]
-READ_SEARCH_FOR = 'FROM "lists@cirklo.org" SUBJECT "[Agendo] New request (2-Quote request"'
+READ_SEARCH_FOR = ['FROM "lists@cirklo.org" SUBJECT "[Agendo] New request (2-Quote request"']
+CORREOS_CONVENIOS = ['uniandes', 'urosario', 'ujaveriana']

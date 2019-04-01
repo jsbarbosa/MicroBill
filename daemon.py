@@ -21,11 +21,11 @@ import constants
 import objects
 from objects import Cotizacion, Usuario, Servicio, getNumeroCotizacion
 
-from config import SERVIDOR_LECTURA, PUERTO_LECTURA, CORREOS_CONVENIOS, \
-                CARPETA_LECTURA, \
-                CAMPOS_OBTENIDOS_LECTURA, \
-                IDENTIFICADOR_CORREOS_COTIZACION, \
-                LEER_CORREOS_CADA # READ_LAST, READ_REQUEST_DETAILS, READ_FIELDS_DICT
+from config import READ_SERVER, READ_PORT, CORREOS_CONVENIOS, \
+                READ_EMAIL_FOLDER, \
+                READ_FIELDS_DICT, \
+                READ_SEARCH_FOR, \
+                READ_EVERY_S # READ_LAST, READ_REQUEST_DETAILS, READ_FIELDS_DICT
 
 from PyQt5.QtWidgets import QLabel, QWidget, QMainWindow, QHBoxLayout,\
         QGroupBox, QFormLayout, QSystemTrayIcon, QApplication, QMenu, \
@@ -53,9 +53,9 @@ class LectorCorreos(object):
     def registrarse(self):
         while True:
             try:
-                self.servidor = imaplib.IMAP4_SSL(SERVIDOR_LECTURA, PUERTO_LECTURA)
+                self.servidor = imaplib.IMAP4_SSL(READ_SERVER, READ_PORT)
                 self.servidor.login(FROM, PASSWORD)
-                self.servidor.select(CARPETA_LECTURA)
+                self.servidor.select(READ_EMAIL_FOLDER)
                 break
             except self.IMAP_EXCEPTIONS as e:
                 imprimirExcepcion(e)
@@ -94,7 +94,7 @@ class LectorCorreos(object):
         return texto.replace('=\r\n', '')
 
     def darIdentificadores(self):
-        for identificador in IDENTIFICADOR_CORREOS_COTIZACION:
+        for identificador in READ_SEARCH_FOR:
             ans, ids = self.servidor.search(None, identificador, '(UNSEEN)')
             self.identificadores += ids[0].split()
         self.identificadores = list(set(self.identificadores))
@@ -123,7 +123,7 @@ class CorreoAgendo(object):
         self.identificador = identificador
         self.contenido_completo = contenido
         self.contenido_texto = self.normalizar(contenido)
-        for atributo in CAMPOS_OBTENIDOS_LECTURA.keys():
+        for atributo in READ_FIELDS_DICT.keys():
             setattr(self, atributo, None)
             self.darAtributo(atributo)
 
@@ -153,7 +153,7 @@ class CorreoAgendo(object):
             if variable != None:
                 return variable
 
-            buscar = CAMPOS_OBTENIDOS_LECTURA[atributo]
+            buscar = READ_FIELDS_DICT[atributo]
             p_inicial = self.contenido_texto.find(buscar)
             p_final = self.contenido_texto[p_inicial:].find('\n')
             if (p_inicial >= 0) | (p_final >= 0):
@@ -175,7 +175,7 @@ class CorreoAgendo(object):
 
     def __repr__(self):
         txt = ['Correo: %s (%d)'%(self.correo, int(self.identificador))]
-        for atributo in CAMPOS_OBTENIDOS_LECTURA.keys():
+        for atributo in READ_FIELDS_DICT.keys():
             txt += ['\t%s: %s'%(atributo, str(getattr(self, atributo)))]
         txt = '\n'.join(txt)
         return txt
@@ -360,7 +360,7 @@ def runDaemon():
             except Exception as e:
                 imprimirExcepcion(e)
         i += 1
-        sleep(LEER_CORREOS_CADA / 10)
+        sleep(READ_EVERY_S / 10)
 
 if __name__ == '__main__':
     thread = Thread(target = runDaemon)
