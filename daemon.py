@@ -120,6 +120,7 @@ class CorreoAgendo(object):
     PATRON_OBSERVACIONES = re.compile('(?s)The following comment was left by the requesting user  \n  \n(.*?)-----------------------------')
     REMPLAZOS_NORMALIZACION = ['*', "=\r\n", ":", "= "] #: caracteres innecesarios a remover en contenido_texto
     def __init__(self, identificador, contenido):
+        self.tabla = None
         self.identificador = identificador
         self.contenido_completo = contenido
         self.contenido_texto = self.normalizar(contenido)
@@ -208,17 +209,18 @@ def crearServicios(tabla_agendo, interno):
         precios_df = constants.DAEMON_DF[hoja_excel]
         iguales = precios_df[precios_df['Item'] == fila['Item']]
         if len(iguales):
-            codigo = iguales['Código'].values[0]
+            codigo = str(iguales['Código'].values[0])
             equipo = iguales['Equipo'].values[0]
             cantidad = float(fila['Units'])
-            servicio = Servicio(equipo, str(codigo), interno, cantidad)
+            servicio = Servicio(equipo.split("_")[1] + codigo, interno, cantidad)
             servicios[equipo].append(servicio)
     return servicios
 
 def solicitudMicrobill(correo_agendo):
     global LECTOR_DE_CORREOS
     usuario = crearUsuario(correo_agendo)
-    muestra = correo_agendo.darAtributo('muestra')
+    try: muestra = correo_agendo.darAtributo('muestra')
+    except AttributeError: muestra = ""
     servicios = crearServicios(correo_agendo.darAtributo('tabla'), usuario.getInterno())
     cotizaciones = []
     numeros = []
