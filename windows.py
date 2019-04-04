@@ -3,6 +3,7 @@ import sys
 import config
 import traceback
 import numpy as np
+import pandas as pd
 from copy import copy
 from time import sleep
 from datetime import datetime
@@ -20,7 +21,6 @@ from threading import Thread
 # from PyQt5.QtWebEngine import QtWebEngine
 # from PyQt5.QtWebEngineWidgets import QWebEngineView, QWebEngineSettings
 from PyQt5.QtCore import QUrl
-
 
 config.ADMINS = [""] + config.ADMINS
 
@@ -842,35 +842,39 @@ class CotizacionWindow(SubWindow):
 
     def loadCotizacion(self, number):
         # try:
-        cotizacion = self.cotizacion.load(number)
-        self.limpiar()
-
-        self.cotizacion = cotizacion
-        user = self.cotizacion.getUsuario()
-
-        for widgetT in self.WIDGETS:
-            if widgetT != "interno":
-                text = widgetT.title()
-                widget = eval("self.%s_widget"%widgetT)
-                try:
-                    val = str(eval("user.get%s()"%text))
-                    widget.setText(val)
-                except: pass
-
-        self.setInternoWidget(user.getInterno())
-        self.pago_widget.setCurrentText(user.getPago())
-        self.muestra_widget.setText(self.cotizacion.getMuestra())
-        self.elaborado_label.setText("Modificado por:")
-        self.elaborado_widget.setCurrentIndex(0)
-
-        self.observaciones_pdf_widget.setText(self.cotizacion.getObservacionPDF())
-        self.observaciones_correo_widget.setText(self.cotizacion.getObservacionCorreo())
-
         try:
-            self.setTotal()
-            self.table.setFromCotizacion()
-        except Exception:
-            e = Exception("Cotización incompatible")
+            cotizacion = self.cotizacion.load(number)
+            self.limpiar()
+
+            self.cotizacion = cotizacion
+            user = self.cotizacion.getUsuario()
+
+            for widgetT in self.WIDGETS:
+                if widgetT != "interno":
+                    text = widgetT.title()
+                    widget = eval("self.%s_widget"%widgetT)
+                    try:
+                        val = str(eval("user.get%s()"%text))
+                        widget.setText(val)
+                    except: pass
+
+            self.setInternoWidget(user.getInterno())
+            self.pago_widget.setCurrentText(user.getPago())
+            self.muestra_widget.setText(self.cotizacion.getMuestra())
+            self.elaborado_label.setText("Modificado por:")
+            self.elaborado_widget.setCurrentIndex(0)
+
+            self.observaciones_pdf_widget.setText(self.cotizacion.getObservacionPDF())
+            self.observaciones_correo_widget.setText(self.cotizacion.getObservacionCorreo())
+            try:
+                self.setTotal()
+                self.table.setFromCotizacion()
+            except Exception:
+                e = Exception("Cotización incompatible")
+                self.errorWindow(e)
+
+        except FileNotFoundError:
+            e = Exception("La cotización no se encuentra grabada.")
             self.errorWindow(e)
 
     def centerOnScreen(self):
@@ -1400,7 +1404,8 @@ class BuscarWindow(SubWindow):
 
         self.table = QtWidgets.QTableView()
         # self.table.setSortingEnabled(True)
-        self.table.doubleClicked.connect(self.doubleClick)
+        # self.table.doubleClicked.connect(self.doubleClick)
+        self.table.viewport().installEventFilter(self)
         self.layout.addWidget(form)
         self.layout.addWidget(self.table)
 
@@ -1417,11 +1422,25 @@ class BuscarWindow(SubWindow):
         self.table.resizeRowsToContents()
         self.table.resizeColumnsToContents()
 
-    def doubleClick(self, modelIndex):
-        row = modelIndex.row()
+    def eventFilter(self, source, event):
+        if (event.type() == QtCore.QEvent.MouseButtonDblClick and
+            source is self.table.viewport()):
+            item = self.table.indexAt(event.pos())
+            row = item.row()
+            if(event.buttons() == QtCore.Qt.RightButton):
+                self.doubleClick(row, False)
+            else:
+                self.doubleClick(row, True)
+            return True
+        return False
+
+    def doubleClick(self, row, left):
         df = self.table.model().dataframe
         cotizacion = df.iloc[row]['Cotización']
-        self.parent.modificarCotizacion(cotizacion)
+        if left:
+            self.parent.modificarCotizacion(cotizacion)
+        else:
+            self.parent.abrirPDFCotizacion(cotizacion)
 
     def getChanges(self, source):
         self.bools = np.ones(objects.REGISTRO_DATAFRAME.shape[0], dtype = bool)
@@ -1641,12 +1660,14 @@ class MainWindow(QtWidgets.QMainWindow):
         self.buscar_widget.clicked.connect(self.buscarHandler)
         self.open_widget.clicked.connect(self.openHandler)
         self.gestor_widget.clicked.connect(self.gestorHandler)
+        self.reporte_widget.clicked.connect(self.reporteHandler)
 
         self.request_window = RequestWindow(self)
         self.cotizacion_window = CotizacionWindow(self)
         self.descontar_window = DescontarWindow(self)
         self.buscar_window = BuscarWindow(self)
         self.gestor_window = GestorWindow(self)
+        self.reporte_window = ReporteWindow(self)
 
         # self.cotizacion_window.setWindowFlags(QtCore.Qt.WindowMinimizeButtonHint)
 
@@ -1661,12 +1682,14 @@ class MainWindow(QtWidgets.QMainWindow):
         self.mdi.addSubWindow(self.descontar_window)
         self.mdi.addSubWindow(self.buscar_window)
         self.mdi.addSubWindow(self.gestor_window)
+        self.mdi.addSubWindow(self.reporte_window)
 
         self.cotizacion_window.hide()
         self.request_window.hide()
         self.descontar_window.hide()
         self.buscar_window.hide()
         self.gestor_window.hide()
+        self.reporte_window.hide()
 
         self.update_timer = QtCore.QTimer()
         self.update_timer.setInterval(1000)
@@ -1721,9 +1744,17 @@ class MainWindow(QtWidgets.QMainWindow):
     def gestorHandler(self):
         self.gestor_window.show()
 
+    def reporteHandler(self):
+        self.reporte_window.show()
+
     def modificarCotizacion(self, cot):
         self.cotizacionHandler()
         self.cotizacion_window.loadCotizacion(cot)
+
+    def abrirPDFCotizacion(self, cot):
+        file = os.path.join(constants.PDF_DIR, cot + ".pdf")
+        path, old = self.cotizacion_window.openPDF(file)
+        Popen(path, shell = True)
 
     def closeEvent(self, event):
         windows = [self.cotizacion_window, self.descontar_window, self.request_window, self.buscar_window, self.gestor_window]
@@ -1741,9 +1772,103 @@ class MainWindow(QtWidgets.QMainWindow):
             else:
                 event.ignore()
 
+class CalendarWidget(QtWidgets.QDateTimeEdit):
+    def __init__(self, parent = None):
+        now = datetime.now()
+        super(CalendarWidget, self).__init__(now)
+        self.setDisplayFormat("dd/MM/yyyy")
+        self.setCalendarPopup(True)
+
+        self.setMaximumDate(now)
+
 class ReporteWindow(SubWindow):
     def __init__(self, parent = None):
         super(ReporteWindow, self).__init__(parent)
+
+        self.setWindowTitle("Reporte Interno")
+
+        self.parent = parent
+        wid = QtWidgets.QWidget(self)
+        self.setWidget(wid)
+
+        self.layout = QtWidgets.QGridLayout(wid)
+
+        self.layout.setSpacing(3)
+        self.layout.setContentsMargins(6, 6, 6, 6)
+        wid.setSizePolicy(QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Minimum)
+
+        from_ = QtWidgets.QLabel("From:")
+        to_ = QtWidgets.QLabel("To:")
+        send_to = QtWidgets.QLabel("Send to:")
+        include = QtWidgets.QLabel("Include:")
+
+        self.from_widget = CalendarWidget()
+        self.from_widget.setDate(self.from_widget.date().addDays(-7))
+        self.to_widget = CalendarWidget()
+
+        self.send_to = QtWidgets.QLineEdit()
+        self.send_widget = QtWidgets.QPushButton("Send")
+        self.text_widget = QtWidgets.QLabel("0")
+
+        self.layout.addWidget(from_, 0, 0)
+        self.layout.addWidget(self.from_widget, 0, 1)
+        self.layout.addWidget(to_, 1, 0)
+        self.layout.addWidget(self.to_widget, 1, 1)
+        self.layout.addWidget(send_to, 2, 0)
+        self.layout.addWidget(self.send_to, 2, 1)
+        self.layout.addWidget(self.text_widget, 3, 1)
+        self.layout.addWidget(self.send_widget, 4, 1)
+
+        self.send_widget.clicked.connect(self.send)
+        self.from_widget.dateChanged.connect(self.changeDate)
+        self.to_widget.dateChanged.connect(self.changeDate)
+
+        self.excel = None
+        self.changeDate()
+
+        self.setFixedSize(400, 250)
+
+    def changeDate(self):
+        start_date = self.from_widget.date().toPyDate()
+        end_date =  self.to_widget.date().toPyDate()
+
+        start_date = datetime.combine(start_date, datetime.min.time())
+        end_date = datetime.combine(end_date, datetime.max.time())
+
+        dates = pd.to_datetime(objects.REGISTRO_DATAFRAME["Fecha"])
+        mask = (dates > start_date) & (dates <= end_date)
+
+        self.excel = objects.REGISTRO_DATAFRAME[mask]
+        self.setText()
+
+    def setText(self):
+        n = len(self.excel)
+        total = len(objects.REGISTRO_DATAFRAME)
+        self.text_widget.setText("Cotizaciones seleccionadas: %d/%d" % (n, total))
+
+    def send(self):
+        e_to = self.send_to.text()
+        try:
+            if e_to != "":
+                if not "@" in e_to: e_to += '@uniandes.edu.co'
+                excel = self.getExcel()
+                if type(excel) != type(None):
+                    excel.to_excel(config.REPORTE_INTERNO, index = False)
+                    self.dialog = CorreoDialog([e_to], correo.sendReporteExcel)
+                    self.dialog.start()
+                    self.dialog.exec_()
+                else:
+                    raise(Exception("No existen cotizaciones realizadas en esas fechas."))
+            else:
+                raise(Exception("El correo no es válido."))
+        except Exception as e:
+            error_text = str(e)
+            msg = QtWidgets.QMessageBox()
+            msg.setIcon(QtWidgets.QMessageBox.Warning)
+            msg.setText(error_text)
+            msg.setWindowTitle("Error")
+            msg.setStandardButtons(QtWidgets.QMessageBox.Ok)
+            msg.exec_()
 
 class RequestWindow(SubWindow):
     def __init__(self, parent = None):
@@ -1754,6 +1879,7 @@ class RequestWindow(SubWindow):
         self.setWidget(wid)
 
         self.layout = QtWidgets.QHBoxLayout(wid)
+
 
         form1 = QtWidgets.QFrame()
         hlayout1 = QtWidgets.QHBoxLayout(form1)

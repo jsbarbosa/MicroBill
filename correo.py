@@ -7,7 +7,7 @@ from config import SEND_SERVER, SEND_PORT, REPORTE_MENSAJE, REPORTE_SUBJECT, REQ
 from config import COTIZACION_MENSAJE_RECIBO, COTIZACION_MENSAJE_FACTURA, COTIZACION_MENSAJE_TRANSFERENCIA
 from config import COTIZACION_SUBJECT_RECIBO, COTIZACION_SUBJECT_FACTURA, COTIZACION_SUBJECT_TRANSFERENCIA
 from config import GESTOR_RECIBO_CORREO, GESTOR_RECIBO_SUBJECT, GESTOR_RECIBO_MENSAJE
-from config import GESTOR_FACTURA_CORREO, GESTOR_FACTURA_SUBJECT, GESTOR_FACTURA_MENSAJE, SALUDO
+from config import GESTOR_FACTURA_CORREO, GESTOR_FACTURA_SUBJECT, GESTOR_FACTURA_MENSAJE, SALUDO, REPORTE_INTERNO
 from login import *
 import constants
 
@@ -52,8 +52,10 @@ def sendEmail(to, subject, text, attachments = []):
     msg.attach(body)
 
     for item in attachments:
-        name = os.path.join(constants.PDF_DIR, item + ".pdf")
-        item = os.path.basename(item + ".pdf")
+        if item != REPORTE_INTERNO:
+            name = os.path.join(constants.PDF_DIR, item + ".pdf")
+            item = os.path.basename(item + ".pdf")
+        else: name = item
         with open(name, "rb") as file:
             app = MIMEApplication(file.read())
             app.add_header('Content-Disposition', 'attachment', filename = item)
@@ -103,3 +105,6 @@ def sendGestorFactura(file_name, orden_name):
     if type(orden_name) is list:
         orden_name = ".".join(orden_name)
     sendEmail(GESTOR_FACTURA_CORREO, GESTOR_FACTURA_SUBJECT + " - %s"%file_name, GESTOR_FACTURA_MENSAJE, [file_name, orden_name])
+
+def sendReporteExcel(to):
+    sendEmail(to, "Reporte semanal", "Microbill envia el reporte de cotizaciones", [REPORTE_INTERNO])

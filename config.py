@@ -119,6 +119,7 @@ Por este medio solicitamos la generación de la factura correspondiente a la cot
 Cordial saludo,
 """
 
+REPORTE_INTERNO = "ReporteInterno.xlsx"
 
 SEND_SERVER = "smtp-mail.outlook.com"
 SEND_PORT = 587
