@@ -1851,9 +1851,8 @@ class ReporteWindow(SubWindow):
         try:
             if e_to != "":
                 if not "@" in e_to: e_to += '@uniandes.edu.co'
-                excel = self.getExcel()
-                if type(excel) != type(None):
-                    excel.to_excel(config.REPORTE_INTERNO, index = False)
+                if len(self.excel):
+                    self.excel.to_excel(config.REPORTE_INTERNO, index = False)
                     self.dialog = CorreoDialog([e_to], correo.sendReporteExcel)
                     self.dialog.start()
                     self.dialog.exec_()
