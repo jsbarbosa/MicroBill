@@ -827,10 +827,12 @@ class CotizacionWindow(SubWindow):
                     try: os.remove(paths[i])
                     except PermissionError: pass
 
-            self.cotizacion.setUsuario(None)
-            self.cotizacion.setMuestra(None)
-            self.cotizacion.setObservacionPDF("")
-            self.cotizacion.setObservacionCorreo("")
+            self.cotizacion = objects.Cotizacion()
+            # print(self.cotizacion.getModificado(), self.cotizacion.getElaborado())
+            # self.cotizacion.setUsuario(None)
+            # self.cotizacion.setMuestra(None)
+            # self.cotizacion.setObservacionPDF("")
+            # self.cotizacion.setObservacionCorreo("")
 
         except Exception as e:
             self.errorWindow(e)
@@ -1714,6 +1716,7 @@ class MainWindow(QtWidgets.QMainWindow):
             self.gestor_window.updateAutoCompletar()
             self.buscar_window.updateAutoCompletar()
             self.buscar_window.update()
+            self.buscar_window.limpiar()
 
     def centerOnScreen(self):
         resolution = QtWidgets.QDesktopWidget().screenGeometry()

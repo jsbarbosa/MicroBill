@@ -312,6 +312,9 @@ class Cotizacion(object):
                 if i == 9:
                     raise(e)
 
+    def limpiar(self):
+        self = Cotizacion()
+
     def load(self, file):
         file = os.path.join(constants.OLD_DIR, file + ".pkl")
         with open(file, "rb") as data:
