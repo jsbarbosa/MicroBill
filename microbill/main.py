@@ -1,5 +1,7 @@
-﻿import sys
+import os
+import sys
 from PyQt5 import QtCore, QtGui, QtWidgets
+from .constants import BASE_DIR
 # from PyQt5.QtWebEngineWidgets import QWebEngineView
 
 def threadedCorreo():
@@ -15,6 +17,7 @@ def testFiles():
     """
         Registro y clientes
     """
+    global REGISTRO_DATAFRAME, CLIENTES_DATAFRAME
     if (list(REGISTRO_DATAFRAME.keys()) != constants.REGISTRO_KEYS):
         fields = ", ".join(constants.REGISTRO_KEYS)
         txt = "Registro no está bien configurado, las columnas deben ser: %s."%fields
@@ -36,23 +39,23 @@ def testFiles():
             raise(Exception(txt))
 
 def run():
+    global correo, config, constants, sleep, Thread, MainWindow, REGISTRO_DATAFRAME, CLIENTES_DATAFRAME
     sys.argv += ["--disable-web-security", "--web-security=no", "--allow-file-access-from-files"]
     app = QtWidgets.QApplication(sys.argv)
 
-    icon = QtGui.QIcon('icon.ico')
+    icon = QtGui.QIcon(os.path.join(BASE_DIR, 'icon.ico'))
     app.setWindowIcon(icon)
 
-    splash_pix = QtGui.QPixmap('logo.png').scaledToWidth(600)
+    splash_pix = QtGui.QPixmap(os.path.join(BASE_DIR, 'logo.png')).scaledToWidth(600)
     splash = QtWidgets.QSplashScreen(splash_pix, QtCore.Qt.WindowStaysOnTopHint)
     splash.show()
     app.processEvents()
 
     try:
-        import os
         from . import correo, config, constants
         from time import sleep
         from threading import Thread
-        from windows import MainWindow
+        from .windows import MainWindow
         from .objects import REGISTRO_DATAFRAME, CLIENTES_DATAFRAME
 
         testFiles()

@@ -181,16 +181,6 @@ class CorreoAgendo(object):
         txt = '\n'.join(txt)
         return txt
 
-def obtenerTipoUsuario(correo):
-    convenios = sum([1 for convenio in CORREOS_CONVENIOS if convenio in correo])
-    if convenios > 0:
-        suma = sum(constants.INDEPENDIENTES_DF['Correo'] == correo)
-        if suma:
-            return 'Independiente'
-        return 'Interno'
-    elif '.edu.' in correo: return 'Académico'
-    else: return 'Industria'
-
 def crearUsuario(correo_agendo):
     dict = correo_agendo.darDiccionario()
     remitente = correo_agendo.darAtributo('correo')

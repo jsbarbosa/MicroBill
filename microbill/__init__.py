@@ -1,3 +1,3 @@
 from .objects import *
-from .correo import *
+from . import correo
 from .main import run

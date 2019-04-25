@@ -22,6 +22,8 @@ setup(
     data_files=[('microbill/Registers', ['microbill/Registers/Clientes.xlsx',
                             'microbill/Registers/Independientes.xlsx',
                             'microbill/Registers/Precios.xlsx',
-                            'microbill/Registers/Registro.xlsx'])
+                            'microbill/Registers/Precios (daemon).xlsx',
+                            'microbill/Registers/Registro.xlsx']),
+                ('microbill', ['microbill/icon.ico', 'microbill/logo.png'])
                             ]
 )

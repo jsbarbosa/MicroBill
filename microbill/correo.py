@@ -108,3 +108,17 @@ def sendGestorFactura(file_name, orden_name):
 
 def sendReporteExcel(to):
     sendEmail(to, "Reporte semanal", "Microbill envia el reporte de cotizaciones", [REPORTE_INTERNO])
+
+def correoTargetArgs(cotizaciones, observaciones):
+    to = cotizaciones[0].getUsuario().getCorreo()
+    tipo_pago = cotizaciones[0].getUsuario().getPago()
+    pdfs = [cot.getFileName() for cot in cotizaciones]
+    args = (to, pdfs, observaciones)
+    if tipo_pago == "Transferencia interna":
+        target = sendCotizacionTransferencia
+    elif tipo_pago == "Factura":
+        target = sendCotizacionFactura
+    elif tipo_pago == "Recibo":
+        target = sendCotizacionRecibo
+
+    return target, args

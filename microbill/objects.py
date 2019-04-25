@@ -4,11 +4,13 @@ import time
 import pickle
 import numpy as np
 import pandas as pd
+from copy import copy
 from datetime import datetime
 
 from . import constants
 from .exceptions import *
 from .pdflib import PDFCotizacion, PDFReporte
+from .config import CORREOS_CONVENIOS
 
 from unidecode import unidecode
 
@@ -70,6 +72,42 @@ def sortServicios(servicios):
             dic[equipo] = [servicio]
     return dic
 
+def obtenerTipoUsuario(correo):
+    convenios = sum([1 for convenio in CORREOS_CONVENIOS if convenio in correo])
+    if convenios > 0:
+        suma = sum(constants.INDEPENDIENTES_DF['Correo'] == correo)
+        if suma:
+            return 'Independiente'
+        return 'Interno'
+    elif '.edu.' in correo: return 'Académico'
+    else: return 'Industria'
+
+def crearCotizaciones(usuario, servicios, muestra, observaciones_pdf = "", observaciones_correo = "", descuento = ''):
+    cotizacion = Cotizacion()
+    cotizacion.setUsuario(usuario)
+    servicios = sortServicios(servicios)
+    cotizacion.setMuestra(muestra)
+    cotizacion.setObservacionPDF(observaciones_pdf)
+    cotizacion.setObservacionCorreo(observaciones_correo)
+
+    cotizaciones = []
+    for key in servicios:
+        cot = copy(cotizacion)
+        cot.setDescuentoText(descuento)
+        cot.setServicios(servicios[key])
+        cot.setNumero(getNumeroCotizacion(key))
+        cotizaciones.append(cot)
+
+    return cotizaciones
+
+def generarPDFs(cotizaciones):
+    for cot in cotizaciones:
+        cot.makePDFCotizacion()
+
+def guardarCotizaciones(cotizaciones):
+    for cot in cotizaciones:
+        cot.save(to_pdf = False)
+
 class Cotizacion(object):
     def __init__(self, numero = None, usuario = None, servicios = [], muestra = None):
         self.numero = numero
@@ -77,6 +115,7 @@ class Cotizacion(object):
         self.muestra = muestra
         self.is_pago = False
         self.pdf_file_name = ""
+        self.pdf_path = ""
         self.referencia_pago = ""
         self.elaborado_por = ""
         self.modificado_por = ""
@@ -154,6 +193,9 @@ class Cotizacion(object):
     def getFileName(self):
         return self.pdf_file_name
 
+    def getFilePath(self):
+        return self.pdf_path
+
     def getEstado(self):
         total_cotizadas = 0
         usadas = 0
@@ -206,6 +248,10 @@ class Cotizacion(object):
 
     def setFileName(self, name):
         self.pdf_file_name = name
+
+    def setPath(self, name):
+        self.pdf_path = name
+        self.pdf_file_name = os.path.splitext(os.path.basename(self.pdf_path))[0]
 
     def setElaborado(self, name):
         if name != "": self.elaborado_por = name
@@ -367,6 +413,8 @@ class Usuario(object):
         return self.telefono
 
     def getInterno(self):
+        if self.interno == None:
+            self.interno = obtenerTipoUsuario(self.correo)
         return self.interno
 
     def getResponsable(self):
@@ -447,7 +495,7 @@ class Usuario(object):
             else:
                 text = text + ": " + "None"
             data.append(text)
-        data += ["Tipo: " + self.getInterno()]
+        # data += ["Tipo: " + self.getInterno()]
         return "\n".join(data)
 
 class Servicio(object):

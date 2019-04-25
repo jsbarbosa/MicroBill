@@ -814,7 +814,7 @@ class CotizacionWindow(SubWindow):
                 cotizacion.makePDFCotizacion()
                 cotizaciones.append(cotizacion)
 
-                path, old = self.openPDF(cotizacion.getFileName())
+                path, old = self.openPDF(cotizacion.getPath())
                 paths.append(path)
                 olds.append(old)
                 p1 = Popen(path, shell = True)
@@ -838,19 +838,12 @@ class CotizacionWindow(SubWindow):
             old_servicios = self.getServicios()
             self.cotizacion = objects.Cotizacion()
             self.cotizacion.setServicios(old_servicios)
-            # print(self.cotizacion.getModificado(), self.cotizacion.getElaborado())
-            # self.cotizacion.setUsuario(None)
-            # self.cotizacion.setMuestra(None)
-            # self.cotizacion.setObservacionPDF("")
-            # self.cotizacion.setObservacionCorreo("")
 
         except Exception as e:
             self.errorWindow(e)
 
     def setLastCotizacion(self):
         pass
-        # cod = objects.getNumeroCotizacion(self.getEquipo())
-        # self.cotizacion.setNumero(cod)
 
     def loadCotizacion(self, number):
         # try:
@@ -1767,7 +1760,7 @@ class MainWindow(QtWidgets.QMainWindow):
     def abrirPDFCotizacion(self, cot):
         file = os.path.join(constants.PDF_DIR, cot + ".pdf")
         path, old = self.cotizacion_window.openPDF(file)
-        Popen(path, shell = True)
+        Popen('"%s"' % path, shell = True)
 
     def closeEvent(self, event):
         windows = [self.cotizacion_window, self.descontar_window, self.request_window, self.buscar_window, self.gestor_window]

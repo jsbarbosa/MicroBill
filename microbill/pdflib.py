@@ -7,6 +7,7 @@ from reportlab.lib.pagesizes import letter
 from reportlab.lib.enums import TA_JUSTIFY, TA_CENTER
 from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
 
+from .constants import BASE_DIR
 from . import constants
 from .config import *
 
@@ -22,7 +23,7 @@ class PDFBase():
             self.file_name = self.cotizacion.getNumero() + ".pdf"
         self.file_name = os.path.join(constants.PDF_DIR, self.file_name)
 
-        self.cotizacion.setFileName(self.file_name)
+        self.cotizacion.setPath(self.file_name)
 
         self.doc =  SimpleDocTemplate(self.file_name, pagesize = letter,
                                 rightMargin = cm, leftMargin = cm,
@@ -143,7 +144,7 @@ class PDFCotizacion(PDFBase):
     def makeTop(self):
         height = 1.5
 
-        logo = Image("logo.png", height*3.33*cm, height*cm, hAlign = "CENTER")
+        logo = Image(os.path.join(BASE_DIR, "logo.png"), height * 3.33 * cm, height * cm, hAlign = "CENTER")
 
         self.story.append(logo)
         self.story.append(Spacer(0, 12))
