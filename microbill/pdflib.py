@@ -144,7 +144,7 @@ class PDFCotizacion(PDFBase):
     def makeTop(self):
         height = 1.5
 
-        logo = Image(os.path.join(BASE_DIR, "logo.png"), height * 3.33 * cm, height * cm, hAlign = "CENTER")
+        logo = Image(os.path.join(BASE_DIR, "logo.png"), height * 5.72 * cm, height * cm, hAlign = "CENTER")
 
         self.story.append(logo)
         self.story.append(Spacer(0, 12))
@@ -324,7 +324,7 @@ class PDFReporte(PDFBase):
 
     def makeTop(self):
         height = 1.5
-        logo = Image("logo.png", height*3.33*cm, height*cm, hAlign = "CENTER")
+        logo = Image("logo.png", height * 5.72 * cm, height*cm, hAlign = "CENTER")
 
         self.story.append(logo)
         self.story.append(FrameBreak())

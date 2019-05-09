@@ -814,7 +814,7 @@ class CotizacionWindow(SubWindow):
                 cotizacion.makePDFCotizacion()
                 cotizaciones.append(cotizacion)
 
-                path, old = self.openPDF(cotizacion.getPath())
+                path, old = self.openPDF(cotizacion.getFilePath())
                 paths.append(path)
                 olds.append(old)
                 p1 = Popen(path, shell = True)
@@ -881,6 +881,8 @@ class CotizacionWindow(SubWindow):
         except FileNotFoundError:
             e = Exception("La cotización no se encuentra grabada.")
             self.errorWindow(e)
+        except ModuleNotFoundError as e:
+            print(e)
 
     def centerOnScreen(self):
         resolution = QtWidgets.QDesktopWidget().screenGeometry()

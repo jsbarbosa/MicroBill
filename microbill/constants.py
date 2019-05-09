@@ -15,7 +15,9 @@ INDEPENDIENTES_FILE = "Independientes.xlsx"
 PRECIOS_DAEMON_FILE = "Precios (daemon).xlsx"
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-BASE_DIR = os.path.join(BASE_DIR, 'microbill')
+
+if os.path.exists(os.path.join(BASE_DIR, 'microbill')):
+    BASE_DIR = os.path.join(BASE_DIR, 'microbill')
 
 OLD_DIR = os.path.join(BASE_DIR, OLD_DIR)
 PDF_DIR = os.path.join(BASE_DIR, PDF_DIR)

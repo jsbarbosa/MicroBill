@@ -372,7 +372,13 @@ class Cotizacion(object):
     def load(self, file):
         file = os.path.join(constants.OLD_DIR, file + ".pkl")
         with open(file, "rb") as data:
-            return pickle.load(data)
+            load = None
+            try:
+                load = pickle.load(data)
+            except ModuleNotFoundError:
+                sys.modules['objects'] = sys.modules[__name__]
+                load = pickle.load(data)
+            return load
 
 class Usuario(object):
     def __init__(self, nombre = None, correo = None, institucion = None, documento = None,
