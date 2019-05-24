@@ -10,7 +10,6 @@ from datetime import datetime
 from . import constants
 from .exceptions import *
 from .pdflib import PDFCotizacion, PDFReporte
-from .config import CORREOS_CONVENIOS
 
 from unidecode import unidecode
 
@@ -73,6 +72,7 @@ def sortServicios(servicios):
     return dic
 
 def obtenerTipoUsuario(correo):
+    from .config import CORREOS_CONVENIOS
     convenios = sum([1 for convenio in CORREOS_CONVENIOS if convenio in correo])
     if convenios > 0:
         suma = sum(constants.INDEPENDIENTES_DF['Correo'] == correo)

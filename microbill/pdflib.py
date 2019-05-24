@@ -14,6 +14,8 @@ from .config import *
 if os.path.isdir(constants.PDF_DIR): pass
 else: os.makedirs(constants.PDF_DIR)
 
+CENTRO = 'Centro de Microscopía'
+
 class PDFBase():
     def __init__(self, cotizacion = None, is_reporte = False):
         self.cotizacion = cotizacion

@@ -1,4 +1,4 @@
-import os
++++-import os
 import sys
 from . import config
 import traceback
@@ -9,18 +9,9 @@ from time import sleep
 from datetime import datetime
 from PyQt5 import QtCore, QtWidgets, QtGui
 
-from . import correo, objects, constants
-from .exceptions import *
+from PyQt5.QtWidgets import QLabel
 
-import psutil
-from subprocess import Popen
-from threading import Thread
-
-# from PyQt5.QtWebEngine import QtWebEngine
-# from PyQt5.QtWebEngineWidgets import QWebEngineView, QWebEngineSettings
-from PyQt5.QtCore import QUrl
-
-config.ADMINS = [""] + config.ADMINS
+# config.ADMINS = [""] + config.ADMINS
 
 class SubWindow(QtWidgets.QMdiSubWindow):
     def __init__(self, parent = None):
@@ -468,7 +459,6 @@ class CotizacionWindow(SubWindow):
         interno_label = QtWidgets.QLabel("Interno:")
         self.interno_widget = QtWidgets.QComboBox()
         self.interno_widget.addItems(constants.PRICES_DIVISION)
-        # QCheckBox("Interno")
         responsable_label = QtWidgets.QLabel("Responsable:")
         self.responsable_widget = AutoLineEdit("Responsable", self)
 
@@ -479,10 +469,6 @@ class CotizacionWindow(SubWindow):
 
         muestra_label = QtWidgets.QLabel("Tipo de muestras:")
         self.muestra_widget = QtWidgets.QLineEdit()
-
-        # equipo_label = QtWidgets.QLabel("Equipo:")
-        # self.equipo_widget = QtWidgets.QComboBox()
-        # self.equipo_widget.addItems(constants.EQUIPOS)
 
         end_label = QtWidgets.QLabel("Documento final")
         self.pago_widget = QtWidgets.QComboBox()
@@ -518,8 +504,6 @@ class CotizacionWindow(SubWindow):
 
         self.form_frame_layout.addWidget(muestra_label, 6, 0)
         self.form_frame_layout.addWidget(self.muestra_widget, 6, 1)
-        # self.form_frame_layout.addWidget(equipo_label, 6, 2)
-        # self.form_frame_layout.addWidget(self.equipo_widget, 6, 3)
 
         self.form_frame_layout.addWidget(end_label, 6, 2)
         self.form_frame_layout.addWidget(self.pago_widget, 6, 3)
@@ -531,7 +515,7 @@ class CotizacionWindow(SubWindow):
 
         self.elaborado_label = QtWidgets.QLabel("Elaborado por:")
         self.elaborado_widget = QtWidgets.QComboBox()
-        self.elaborado_widget.addItems(config.ADMINS)
+        self.elaborado_widget.addItems([""] + config.ADMINS)
         self.elaborado_layout.addWidget(self.elaborado_label)
         self.elaborado_layout.addWidget(self.elaborado_widget)
 
@@ -1630,7 +1614,7 @@ class GestorWindow(SubWindow):
 class MainWindow(QtWidgets.QMainWindow):
     def __init__(self, parent = None):
         super(QtWidgets.QMainWindow, self).__init__(parent)
-        self.setWindowTitle(config.CENTRO)
+        self.setWindowTitle("Microbill")
 
         central_widget = QtWidgets.QWidget(self)
         self.setCentralWidget(central_widget)
@@ -1650,8 +1634,9 @@ class MainWindow(QtWidgets.QMainWindow):
         self.descontar_widget = QtWidgets.QPushButton("Descontar")
         self.buscar_widget = QtWidgets.QPushButton("Buscar")
         self.open_widget = QtWidgets.QPushButton("Abrir PDFs")
-        self.gestor_widget = QtWidgets.QPushButton("A Gestor...")
+        self.gestor_widget = QtWidgets.QPushButton("A Gestor")
         self.reporte_widget = QtWidgets.QPushButton("Reportes")
+        self.propiedades_widget = QtWidgets.QPushButton("Propiedades")
 
         self.buttons_layout.addWidget(self.cotizacion_widget)
         self.buttons_layout.addWidget(self.descontar_widget)
@@ -1660,6 +1645,7 @@ class MainWindow(QtWidgets.QMainWindow):
         self.buttons_layout.addWidget(self.open_widget)
         self.buttons_layout.addWidget(self.gestor_widget)
         self.buttons_layout.addWidget(self.reporte_widget)
+        self.buttons_layout.addWidget(self.propiedades_widget)
 
         self.request_widget.clicked.connect(self.requestHandler)
         self.cotizacion_widget.clicked.connect(self.cotizacionHandler)
@@ -1668,6 +1654,7 @@ class MainWindow(QtWidgets.QMainWindow):
         self.open_widget.clicked.connect(self.openHandler)
         self.gestor_widget.clicked.connect(self.gestorHandler)
         self.reporte_widget.clicked.connect(self.reporteHandler)
+        self.propiedades_widget.clicked.connect(self.propiedadesHandler)
 
         self.request_window = RequestWindow(self)
         self.cotizacion_window = CotizacionWindow(self)
@@ -1675,6 +1662,7 @@ class MainWindow(QtWidgets.QMainWindow):
         self.buscar_window = BuscarWindow(self)
         self.gestor_window = GestorWindow(self)
         self.reporte_window = ReporteWindow(self)
+        self.propiedades_window = PropiedadesWindow(self)
 
         # self.cotizacion_window.setWindowFlags(QtCore.Qt.WindowMinimizeButtonHint)
 
@@ -1690,6 +1678,7 @@ class MainWindow(QtWidgets.QMainWindow):
         self.mdi.addSubWindow(self.buscar_window)
         self.mdi.addSubWindow(self.gestor_window)
         self.mdi.addSubWindow(self.reporte_window)
+        self.mdi.addSubWindow(self.propiedades_window)
 
         self.cotizacion_window.hide()
         self.request_window.hide()
@@ -1697,6 +1686,7 @@ class MainWindow(QtWidgets.QMainWindow):
         self.buscar_window.hide()
         self.gestor_window.hide()
         self.reporte_window.hide()
+        self.propiedades_window.hide()
 
         self.update_timer = QtCore.QTimer()
         self.update_timer.setInterval(1000)
@@ -1755,6 +1745,10 @@ class MainWindow(QtWidgets.QMainWindow):
     def reporteHandler(self):
         self.reporte_window.show()
 
+    def propiedadesHandler(self):
+        self.propiedades_window.show()
+        # self.propiedades_window.showMaximized()
+
     def modificarCotizacion(self, cot):
         self.cotizacionHandler()
         self.cotizacion_window.loadCotizacion(cot)
@@ -1779,6 +1773,9 @@ class MainWindow(QtWidgets.QMainWindow):
                 event.accept()
             else:
                 event.ignore()
+
+    def reboot(self):
+        QtWidgets.qApp.exit( constants.EXIT_CODE_REBOOT )
 
 class CalendarWidget(QtWidgets.QDateTimeEdit):
     def __init__(self, parent = None):
@@ -1860,7 +1857,7 @@ class ReporteWindow(SubWindow):
             if e_to != "":
                 if not "@" in e_to: e_to += '@uniandes.edu.co'
                 if len(self.excel):
-                    self.excel.to_excel(config.REPORTE_INTERNO, index = False)
+                    self.excel.to_excel(constants.REPORTE_INTERNO, index = False)
                     self.dialog = CorreoDialog([e_to], correo.sendReporteExcel)
                     self.dialog.start()
                     self.dialog.exec_()
@@ -1886,7 +1883,6 @@ class RequestWindow(SubWindow):
         self.setWidget(wid)
 
         self.layout = QtWidgets.QHBoxLayout(wid)
-
 
         form1 = QtWidgets.QFrame()
         hlayout1 = QtWidgets.QHBoxLayout(form1)
@@ -1930,13 +1926,263 @@ class RequestWindow(SubWindow):
         msg.setStandardButtons(QtWidgets.QMessageBox.Ok)
         msg.exec_()
 
-if __name__ == '__main__':
-    app = QtWidgets.QApplication(sys.argv)
-    QtWidgets.QApplication.setStyle(QtWidgets.QStyleFactory.create('Fusion')) # <- Choose the style
+class PropiedadesWindow(SubWindow):
+    KEY = '1234567890123456'
+    WIDGETS = ["codigo_gestion", "codigo_pep", 'terminos', 'confidencialidad', 'dependencias',
+            'admins',
+            'saludo',
+            'subject_cotizaciones', 'mensaje_recibo', 'mensaje_transferencia', 'mensaje_factura',
+            'subject_solicitud', 'mensaje_solicitud',
+            'subject_reportes', 'mensaje_reportes',
+            'correo_grecibo', 'subject_grecibo', 'mensaje_grecibo',
+            'correo_gfactura', 'subject_gfactura', 'mensaje_gfactura',
+            'send_server', 'send_port',
+            'user', 'password']
+    CONSTANTS = ['CODIGO_GESTION', 'CODIGO_PEP', 'TERMINOS_Y_CONDICIONES', 'CONFIDENCIALIDAD', 'DEPENDENCIAS',
+                'ADMINS',
+                'SALUDO',
+                'COTIZACION_SUBJECT_RECIBO', 'COTIZACION_MENSAJE_RECIBO', 'COTIZACION_MENSAJE_TRANSFERENCIA', 'COTIZACION_MENSAJE_FACTURA',
+                'REQUEST_SUBJECT', 'REQUEST_MENSAJE',
+                'REPORTE_SUBJECT', 'REPORTE_MENSAJE',
+                'GESTOR_RECIBO_CORREO', 'GESTOR_RECIBO_SUBJECT', 'GESTOR_RECIBO_MENSAJE',
+                'GESTOR_FACTURA_CORREO', 'GESTOR_FACTURA_SUBJECT', 'GESTOR_FACTURA_MENSAJE',
+                'SEND_SERVER', 'SEND_PORT',
+                'FROM', 'PASSWORD']
+    def __init__(self, parent = None):
+        super(PropiedadesWindow, self).__init__(parent)
+        self.setWindowTitle("Propiedades MicroBill")
 
-    app.processEvents()
-    main = MainWindow()
+        wid = QtWidgets.QWidget(self)
+        self.setWidget(wid)
 
-    main.show()
+        self.layout = QtWidgets.QVBoxLayout(wid)
 
-    app.exec_()
+        self.tabs = QtWidgets.QTabWidget()
+        self.correo_tab = QtWidgets.QWidget()
+        self.pdf_tab = QtWidgets.QWidget()
+        self.varios_tab = QtWidgets.QWidget()
+
+        self.buttons_frame = QtWidgets.QFrame()
+
+        self.guardar_button = QtWidgets.QPushButton("Guardar")
+        self.leer_button = QtWidgets.QPushButton("Cargar valores por defecto")
+
+        self.tabs.addTab(self.correo_tab, "Correo")
+        self.tabs.addTab(self.pdf_tab, "PDFs")
+        self.tabs.addTab(self.varios_tab, "Varios")
+
+        self.layout.addWidget(self.tabs)
+
+        correo_layout = QtWidgets.QVBoxLayout()
+        self.correo_tab.setLayout(correo_layout)
+
+        self.scroll_area = QtWidgets.QScrollArea()
+        self.scroll_area.setVerticalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOn)
+        self.scroll_widget = QtWidgets.QWidget()
+        correo_layout.addWidget(self.scroll_area)
+        self.scroll_area.setWidget(self.scroll_widget)
+        self.scroll_area.setWidgetResizable(True)
+
+        self.correo_layout = QtWidgets.QVBoxLayout(self.scroll_area)
+        self.pdf_layout = QtWidgets.QFormLayout()
+        self.varios_layout = QtWidgets.QFormLayout()
+
+        self.pdf_tab.setLayout(self.pdf_layout)
+        self.varios_tab.setLayout(self.varios_layout)
+        self.scroll_widget.setLayout(self.correo_layout)
+
+        frame = QtWidgets.QFrame()
+        frame.setSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Expanding)
+
+        self.buttons_layout = QtWidgets.QHBoxLayout(self.buttons_frame)
+        self.buttons_layout.addWidget(frame)
+        self.buttons_layout.addWidget(self.guardar_button, 0, QtCore.Qt.AlignRight)
+        self.buttons_layout.addWidget(self.leer_button, 0, QtCore.Qt.AlignRight)
+
+        self.layout.addWidget(self.buttons_frame)
+
+        self.populatePDFTab()
+        self.populateVariosTab()
+        self.populateCorreoTab()
+
+        self.readValues()
+        # self.setWindowFlag(QtCore.Qt.WindowMaximizeButtonHint, False)
+
+        self.guardar_button.clicked.connect(self.guardar)
+        self.leer_button.clicked.connect(self.leer)
+
+    def populatePDFTab(self):
+        self.codigo_gestion_widget = QtWidgets.QLineEdit()
+        self.codigo_pep_widget = QtWidgets.QLineEdit()
+        self.terminos_widget = QtWidgets.QTextEdit()
+        self.confidencialidad_widget  = QtWidgets.QTextEdit()
+        self.dependencias_widget = QtWidgets.QTextEdit()
+
+        self.pdf_layout.addRow(QLabel("Código de gestion:"), self.codigo_gestion_widget)
+        self.pdf_layout.addRow(QLabel("Código PEP:"), self.codigo_pep_widget)
+        self.pdf_layout.addRow(QLabel("Términos y condiciones:"), self.terminos_widget)
+        self.pdf_layout.addRow(QLabel("Confidencialidad:"), self.confidencialidad_widget)
+        self.pdf_layout.addRow(QLabel("Dependencias:"), self.dependencias_widget)
+
+    def populateVariosTab(self):
+        self.admins_widget = QtWidgets.QTextEdit()
+        self.varios_layout.addRow(QLabel("Administradores:"), self.admins_widget)
+
+    def populateCorreoTab(self):
+        self.cotizaciones_groupBox = QtWidgets.QGroupBox("Cotizaciones")
+        cotizaciones_layout = QtWidgets.QFormLayout()
+        self.saludo_widget = QtWidgets.QTextEdit()
+        self.subject_cotizaciones_widget = QtWidgets.QLineEdit()
+        self.mensaje_recibo_widget = QtWidgets.QTextEdit()
+        self.mensaje_transferencia_widget = QtWidgets.QTextEdit()
+        self.mensaje_factura_widget = QtWidgets.QTextEdit()
+
+        self.solicitud_groupBox = QtWidgets.QGroupBox("Solicitud de datos")
+        solicitud_layout = QtWidgets.QFormLayout()
+        self.subject_solicitud_widget = QtWidgets.QLineEdit()
+        self.mensaje_solicitud_widget = QtWidgets.QTextEdit()
+
+        self.reportes_groupBox = QtWidgets.QGroupBox("Reportes")
+        reportes_layout = QtWidgets.QFormLayout()
+        self.subject_reportes_widget = QtWidgets.QLineEdit()
+        self.mensaje_reportes_widget = QtWidgets.QTextEdit()
+
+        self.gestor_recibo_groupBox = QtWidgets.QGroupBox("Gestor recibo")
+        gestor_recibo_layout = QtWidgets.QFormLayout()
+        self.correo_grecibo_widget = QtWidgets.QLineEdit()
+        self.subject_grecibo_widget = QtWidgets.QLineEdit()
+        self.mensaje_grecibo_widget = QtWidgets.QTextEdit()
+
+        self.gestor_factura_groupBox = QtWidgets.QGroupBox("Gestor factura")
+        gestor_factura_layout = QtWidgets.QFormLayout()
+        self.correo_gfactura_widget = QtWidgets.QLineEdit()
+        self.subject_gfactura_widget = QtWidgets.QLineEdit()
+        self.mensaje_gfactura_widget = QtWidgets.QTextEdit()
+
+        self.servidores_groupBox = QtWidgets.QGroupBox("Servidores")
+        servidores_layout = QtWidgets.QFormLayout()
+        self.send_server_widget = QtWidgets.QLineEdit()
+        self.send_port_widget = QtWidgets.QLineEdit()
+
+        self.login_groupBox = QtWidgets.QGroupBox("Login")
+        login_layout = QtWidgets.QFormLayout()
+        self.user_widget = QtWidgets.QLineEdit()
+        self.password_widget = QtWidgets.QLineEdit()
+        self.password_widget.setEchoMode(QtWidgets.QLineEdit.Password)
+
+        self.correo_layout.addWidget(self.cotizaciones_groupBox)
+        self.correo_layout.addWidget(self.solicitud_groupBox)
+        self.correo_layout.addWidget(self.reportes_groupBox)
+        self.correo_layout.addWidget(self.gestor_recibo_groupBox)
+        self.correo_layout.addWidget(self.gestor_factura_groupBox)
+        self.correo_layout.addWidget(self.servidores_groupBox)
+        self.correo_layout.addWidget(self.login_groupBox)
+
+        self.cotizaciones_groupBox.setLayout(cotizaciones_layout)
+        self.solicitud_groupBox.setLayout(solicitud_layout)
+        self.reportes_groupBox.setLayout(reportes_layout)
+        self.gestor_recibo_groupBox.setLayout(gestor_recibo_layout)
+        self.gestor_factura_groupBox.setLayout(gestor_factura_layout)
+        self.servidores_groupBox.setLayout(servidores_layout)
+        self.login_groupBox.setLayout(login_layout)
+
+        cotizaciones_layout.addRow(QLabel('Saludo:'), self.saludo_widget)
+        cotizaciones_layout.addRow(QLabel('Asunto:'), self.subject_cotizaciones_widget)
+        cotizaciones_layout.addRow(QLabel('Mensaje recibo:'), self.mensaje_recibo_widget)
+        cotizaciones_layout.addRow(QLabel('Mensaje transferencia:'), self.mensaje_transferencia_widget)
+        cotizaciones_layout.addRow(QLabel('Mensaje factura:'), self.mensaje_factura_widget)
+
+        solicitud_layout.addRow(QLabel('Asunto:'), self.subject_solicitud_widget)
+        solicitud_layout.addRow(QLabel('Mensaje:'), self.mensaje_solicitud_widget)
+
+        reportes_layout.addRow(QLabel('Asunto:'), self.subject_reportes_widget)
+        reportes_layout.addRow(QLabel('Mensaje:'), self.mensaje_reportes_widget)
+
+        gestor_recibo_layout.addRow(QLabel('Correo:'), self.correo_grecibo_widget)
+        gestor_recibo_layout.addRow(QLabel('Asunto:'), self.subject_grecibo_widget)
+        gestor_recibo_layout.addRow(QLabel('Mensaje:'), self.mensaje_grecibo_widget)
+
+        gestor_factura_layout.addRow(QLabel('Correo:'), self.correo_gfactura_widget)
+        gestor_factura_layout.addRow(QLabel('Asunto:'), self.subject_gfactura_widget)
+        gestor_factura_layout.addRow(QLabel('Mensaje:'), self.mensaje_gfactura_widget)
+
+        servidores_layout.addRow(QLabel('Server:'), self.send_server_widget)
+        servidores_layout.addRow(QLabel('Port:'), self.send_port_widget)
+
+        login_layout.addRow(QLabel('Username:'), self.user_widget)
+        login_layout.addRow(QLabel('Password:'), self.password_widget)
+
+        policy = self.mensaje_recibo_widget.sizePolicy()
+        policy.setVerticalStretch(1)
+
+        widgets = [self.mensaje_recibo_widget, self.mensaje_transferencia_widget, self.mensaje_factura_widget,
+                    self.mensaje_reportes_widget, self.mensaje_solicitud_widget]
+        for widget in widgets: widget.setSizePolicy(policy)
+
+        self.cotizaciones_groupBox.setMinimumHeight(900)
+        self.solicitud_groupBox.setMinimumHeight(300)
+        self.reportes_groupBox.setMinimumHeight(300)
+
+    def saveValues(self):
+        txt = ""
+        lists = ['dependencias', 'terminos', 'admins']
+        for (i, name) in enumerate(self.WIDGETS):
+            widget = getattr(self, "%s_widget" % name)
+            try: value = widget.text()
+            except AttributeError: value = widget.toPlainText()
+            if name != 'password':
+                if name in lists:
+                    temp = ['"%s"'%line for line in value.split('\n')]
+                    temp = ', '.join(temp)
+                    txt += '%s = [%s]\n' % (self.CONSTANTS[i], temp)
+                elif type(widget) == QtWidgets.QTextEdit:
+                    txt += '%s = """%s"""\n' % (self.CONSTANTS[i], value)
+                else:
+                    txt += '%s = "%s"\n' % (self.CONSTANTS[i], value)
+            else:
+                encoded = encode(self.KEY, value)
+                txt += '%s = "%s"\n' % (self.CONSTANTS[i], encoded)
+
+        if os.path.exists('microbill'): file = os.path.join('microbill', 'config.py')
+        else: file = 'config.py'
+        with open(file, 'w', encoding = "utf8") as file: file.write(txt)
+
+    def readValues(self, default = False):
+        for constant, widget_name in zip(self.CONSTANTS, self.WIDGETS):
+            if default: value = getattr(constants, constant)
+            else: value = getattr(config, constant)
+            widget = getattr(self, "%s_widget" % widget_name)
+            try:
+                if type(value) == list: value = "\n".join(value)
+                elif type(value) == int: value = str(value)
+                widget.setText(value)
+            except AttributeError as e:
+                print(e)
+
+    def guardar(self):
+        if self.confirmation():
+            self.saveValues()
+            self.parent.reboot()
+
+    def leer(self):
+        if self.confirmation():
+            if os.path.exists('microbill'): file = os.path.join('microbill', 'config.py')
+            else: file = 'config.py'
+            with open(file, 'w', encoding = "utf8") as file: file.write(constants.DEFAULT_CONFIG)
+            print(constants.DEFAULT_CONFIG)
+            self.parent.reboot()
+
+    def confirmation(self):
+        quit_msg = "Está seguro que desea guardar las nuevas propiedades?\nEl sistema se reiniciará automáticamente."
+        reply = QtWidgets.QMessageBox.question(self, 'Guardar propiedades',
+                         quit_msg, QtWidgets.QMessageBox.Yes, QtWidgets.QMessageBox.No)
+        if reply == QtWidgets.QMessageBox.Yes: return True
+        return False
+
+def encode(key, clear):
+    enc = []
+    for i in range(len(clear)):
+        key_c = key[i % len(key)]
+        enc_c = chr((ord(clear[i]) + ord(key_c)) % 256)
+        enc.append(enc_c)
+    return base64.urlsafe_b64encode("".join(enc).encode()).decode()

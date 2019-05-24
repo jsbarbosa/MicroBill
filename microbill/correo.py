@@ -5,10 +5,10 @@ from email.mime.multipart import MIMEMultipart
 from email.mime.application import MIMEApplication
 from .config import SEND_SERVER, SEND_PORT, REPORTE_MENSAJE, REPORTE_SUBJECT, REQUEST_SUBJECT, REQUEST_MENSAJE, DEPENDENCIAS
 from .config import COTIZACION_MENSAJE_RECIBO, COTIZACION_MENSAJE_FACTURA, COTIZACION_MENSAJE_TRANSFERENCIA
-from .config import COTIZACION_SUBJECT_RECIBO, COTIZACION_SUBJECT_FACTURA, COTIZACION_SUBJECT_TRANSFERENCIA
+from .config import COTIZACION_SUBJECT_RECIBO
 from .config import GESTOR_RECIBO_CORREO, GESTOR_RECIBO_SUBJECT, GESTOR_RECIBO_MENSAJE
-from .config import GESTOR_FACTURA_CORREO, GESTOR_FACTURA_SUBJECT, GESTOR_FACTURA_MENSAJE, SALUDO, REPORTE_INTERNO
-from .login import *
+from .config import GESTOR_FACTURA_CORREO, GESTOR_FACTURA_SUBJECT, GESTOR_FACTURA_MENSAJE, SALUDO
+from .config import FROM, PASSWORD
 from . import constants
 
 dependencias = ("\n" + "\n".join(DEPENDENCIAS)).title()
@@ -17,14 +17,14 @@ dependencias = dependencias.replace("De", "de")
 
 SALUDO = SALUDO.replace("\n", "<br>")
 
-COTIZACION_MENSAJE_RECIBO = (COTIZACION_MENSAJE_RECIBO + dependencias).replace("\n", "<br>")
-COTIZACION_MENSAJE_FACTURA = (COTIZACION_MENSAJE_FACTURA + dependencias).replace("\n", "<br>")
-COTIZACION_MENSAJE_TRANSFERENCIA = (COTIZACION_MENSAJE_TRANSFERENCIA + dependencias).replace("\n", "<br>")
-REPORTE_MENSAJE = (REPORTE_MENSAJE + dependencias).replace("\n", "<br>")
-REQUEST_MENSAJE = (REQUEST_MENSAJE + dependencias).replace("\n", "<br>")
+COTIZACION_MENSAJE_RECIBO = COTIZACION_MENSAJE_RECIBO.replace("\n", "<br>")
+COTIZACION_MENSAJE_FACTURA = COTIZACION_MENSAJE_FACTURA.replace("\n", "<br>")
+COTIZACION_MENSAJE_TRANSFERENCIA = COTIZACION_MENSAJE_TRANSFERENCIA.replace("\n", "<br>")
+REPORTE_MENSAJE = REPORTE_MENSAJE.replace("\n", "<br>")
+REQUEST_MENSAJE = REQUEST_MENSAJE.replace("\n", "<br>")
 
-GESTOR_RECIBO_MENSAJE = (GESTOR_RECIBO_MENSAJE + dependencias).replace("\n", "<br>")
-GESTOR_FACTURA_MENSAJE = (GESTOR_FACTURA_MENSAJE + dependencias).replace("\n", "<br>")
+GESTOR_RECIBO_MENSAJE = GESTOR_RECIBO_MENSAJE.replace("\n", "<br>")
+GESTOR_FACTURA_MENSAJE = GESTOR_FACTURA_MENSAJE.replace("\n", "<br>")
 
 CORREO = None
 
@@ -52,7 +52,7 @@ def sendEmail(to, subject, text, attachments = []):
     msg.attach(body)
 
     for item in attachments:
-        if item != REPORTE_INTERNO:
+        if item != constants.REPORTE_INTERNO:
             name = os.path.join(constants.PDF_DIR, item + ".pdf")
             item = os.path.basename(item + ".pdf")
         else: name = item
@@ -81,13 +81,13 @@ def sendCotizacionRecibo(to, file_name, observaciones = ""):
 
 def sendCotizacionTransferencia(to, file_name, observaciones = ""):
     if observaciones != "": observaciones = observaciones.replace("\n", "<br>") + 2*"<br>"
-    subject = COTIZACION_SUBJECT_TRANSFERENCIA + ' - '
+    subject = COTIZACION_SUBJECT_RECIBO + ' - '
     subject += ' - '.join(file_name)
     sendEmail(to, subject,  SALUDO + observaciones + COTIZACION_MENSAJE_TRANSFERENCIA, file_name)
 
 def sendCotizacionFactura(to, file_name, observaciones = ""):
     if observaciones != "": observaciones = observaciones.replace("\n", "<br>") + 2*"<br>"
-    subject = COTIZACION_SUBJECT_FACTURA + ' - '
+    subject = COTIZACION_SUBJECT_RECIBO + ' - '
     subject += ' - '.join(file_name)
     sendEmail(to, subject, SALUDO + observaciones + COTIZACION_MENSAJE_FACTURA, file_name)
 
@@ -107,7 +107,7 @@ def sendGestorFactura(file_name, orden_name):
     sendEmail(GESTOR_FACTURA_CORREO, GESTOR_FACTURA_SUBJECT + " - %s"%file_name, GESTOR_FACTURA_MENSAJE, [file_name, orden_name])
 
 def sendReporteExcel(to):
-    sendEmail(to, "Reporte semanal", "Microbill envia el reporte de cotizaciones", [REPORTE_INTERNO])
+    sendEmail(to, "Reporte semanal", "Microbill envia el reporte de cotizaciones", [constants.REPORTE_INTERNO])
 
 def correoTargetArgs(cotizaciones, observaciones):
     to = cotizaciones[0].getUsuario().getCorreo()

@@ -1,7 +1,7 @@
 import os
 import sys
 from PyQt5 import QtCore, QtGui, QtWidgets
-from .constants import BASE_DIR
+from .constants import BASE_DIR, EXIT_CODE_REBOOT
 # from PyQt5.QtWebEngineWidgets import QWebEngineView
 
 def threadedCorreo():
@@ -81,7 +81,6 @@ def run():
     splash.close()
     main.show()
 
-    sys.exit(app.exec_())
-
-if __name__ == '__main__':
-    run()
+    e = app.exec_()
+    app = None
+    return e
