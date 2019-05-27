@@ -1,4 +1,4 @@
-+++-import os
+import os
 import sys
 from . import config
 import traceback
@@ -11,6 +11,14 @@ from PyQt5 import QtCore, QtWidgets, QtGui
 
 from PyQt5.QtWidgets import QLabel
 
+from . import correo, objects, constants
+from .exceptions import *
+
+import psutil
+from subprocess import Popen
+from threading import Thread
+
+import base64
 # config.ADMINS = [""] + config.ADMINS
 
 class SubWindow(QtWidgets.QMdiSubWindow):
@@ -1992,9 +2000,14 @@ class PropiedadesWindow(SubWindow):
         self.scroll_widget.setLayout(self.correo_layout)
 
         frame = QtWidgets.QFrame()
-        frame.setSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Expanding)
+        frame.setSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
+        self.buttons_frame.setSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
+        self.buttons_frame.setMaximumHeight(30)
 
         self.buttons_layout = QtWidgets.QHBoxLayout(self.buttons_frame)
+        self.buttons_layout.setSpacing(6)
+        self.buttons_layout.setContentsMargins(0,0,0,0)
+
         self.buttons_layout.addWidget(frame)
         self.buttons_layout.addWidget(self.guardar_button, 0, QtCore.Qt.AlignRight)
         self.buttons_layout.addWidget(self.leer_button, 0, QtCore.Qt.AlignRight)
@@ -2169,7 +2182,6 @@ class PropiedadesWindow(SubWindow):
             if os.path.exists('microbill'): file = os.path.join('microbill', 'config.py')
             else: file = 'config.py'
             with open(file, 'w', encoding = "utf8") as file: file.write(constants.DEFAULT_CONFIG)
-            print(constants.DEFAULT_CONFIG)
             self.parent.reboot()
 
     def confirmation(self):

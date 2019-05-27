@@ -8,8 +8,7 @@ from .config import COTIZACION_MENSAJE_RECIBO, COTIZACION_MENSAJE_FACTURA, COTIZ
 from .config import COTIZACION_SUBJECT_RECIBO
 from .config import GESTOR_RECIBO_CORREO, GESTOR_RECIBO_SUBJECT, GESTOR_RECIBO_MENSAJE
 from .config import GESTOR_FACTURA_CORREO, GESTOR_FACTURA_SUBJECT, GESTOR_FACTURA_MENSAJE, SALUDO
-from .config import FROM, PASSWORD
-from . import constants
+from . import constants, config
 
 dependencias = ("\n" + "\n".join(DEPENDENCIAS)).title()
 
@@ -34,19 +33,16 @@ def initCorreo():
     CORREO.ehlo() # Hostname to send for this command defaults to the fully qualified domain name of the local host.
     CORREO.starttls() #Puts connection to SMTP server in TLS mode
     CORREO.ehlo()
-    CORREO.login(FROM, PASSWORD)
-    # except Exception as e:
-    #     CORREO = None
-    #     raise(e)
+    CORREO.login(config.FROM, config.PASSWORD)
 
 def sendEmail(to, subject, text, attachments = []):
     global CORREO
     msg = MIMEMultipart()
     msg['Subject'] = subject
-    msg['From'] = FROM
+    msg['From'] = config.FROM
 
     msg['To'] = to
-    msg['Cc'] = FROM
+    msg['Cc'] = config.FROM
 
     body = MIMEText(text, 'html')
     msg.attach(body)
@@ -61,12 +57,12 @@ def sendEmail(to, subject, text, attachments = []):
             app.add_header('Content-Disposition', 'attachment', filename = item)
             msg.attach(app)
 
-    to = [to, FROM]
+    to = [to, config.FROM]
 
     for i in range(5):
         try:
             initCorreo()
-            CORREO.sendmail(FROM, to, msg.as_string())
+            CORREO.sendmail(config.FROM, to, msg.as_string())
             break
         except Exception as e:
             print(e)
