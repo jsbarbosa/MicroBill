@@ -8,13 +8,11 @@ from reportlab.lib.enums import TA_JUSTIFY, TA_CENTER
 from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
 
 from .constants import BASE_DIR
-from . import constants
-from .config import *
+from . import constants, config
+# from .config import *
 
 if os.path.isdir(constants.PDF_DIR): pass
 else: os.makedirs(constants.PDF_DIR)
-
-CENTRO = 'Centro de Microscopía'
 
 class PDFBase():
     def __init__(self, cotizacion = None, is_reporte = False):
@@ -46,7 +44,7 @@ class PDFBase():
 
     def makeInfo(self):
         usuario = self.cotizacion.getUsuario()
-        ptext = '<font size = 12><b>%s</b></font>' % "%s - UNIVERSIDAD DE LOS ANDES"%CENTRO.upper()
+        ptext = '<font size = 12><b>%s</b></font>' % "%s - UNIVERSIDAD DE LOS ANDES" % config.CENTRO.upper()
         self.story.append(Paragraph(ptext, self.styles["Center"]))
 
         self.story.append(Spacer(1, 12))
@@ -100,8 +98,8 @@ class PDFBase():
         self.story.append(t)
 
     def makeEnd(self):
-        for i in range(len(DEPENDENCIAS)):
-            text = DEPENDENCIAS[i]
+        for i in range(len(config.DEPENDENCIAS)):
+            text = config.DEPENDENCIAS[i]
             if i < 2:
                 ptext = '<font size = 10> <b> %s </b></font>'%text
             else:
@@ -109,7 +107,7 @@ class PDFBase():
             self.story.append(Paragraph(ptext, self.styles["Center"]))
 
     def drawPage(self, canvas, doc):
-        canvas.setTitle(CENTRO)
+        canvas.setTitle(config.CENTRO)
         canvas.setSubject("Cotización")
         canvas.setAuthor("Juan Barbosa")
         canvas.setCreator("MicroBill")
@@ -150,7 +148,7 @@ class PDFCotizacion(PDFBase):
 
         self.story.append(logo)
         self.story.append(Spacer(0, 12))
-        data = [["CÓDIGO S.GESTIÓN", CODIGO_GESTION]]
+        data = [["CÓDIGO S.GESTIÓN", config.CODIGO_GESTION]]
 
         style = [('BOX', (0, 0), (1, 0), 0.25, colors.black),
                ('FONTSIZE', (0, 0), (-1, -1), 8),
@@ -164,7 +162,7 @@ class PDFCotizacion(PDFBase):
             cod = self.cotizacion.getNumero()[:2]
             year = str(datetime.now().year)[-2:]
             # data = [[CODIGO_PEP % (year, cod)]] # not ready
-            data = [[CODIGO_PEP]]
+            data = [[config.CODIGO_PEP]]
             style = [('BOX', (0, 0), (0, 0), 3, colors.black),
                     ('ALIGN', (0, 0), (0, 0), 'CENTER'),
                     ('VALIGN', (0, 0), (0, 0), 'TOP'),
@@ -269,12 +267,12 @@ class PDFCotizacion(PDFBase):
         if self.cotizacion.internoTreatment():
             starts = 0
 
-        for i in range(starts, len(TERMINOS_Y_CONDICIONES)):
-            text = TERMINOS_Y_CONDICIONES[i]
+        for i in range(starts, len(config.TERMINOS_Y_CONDICIONES)):
+            text = config.TERMINOS_Y_CONDICIONES[i]
             ptext += '<font size = 8>%d. %s</font><br/>'%(i + abs(starts - 1), text)
             # self.story.append(Paragraph(ptext, self.styles["Justify"]))
 
-        ptext += '<font size = 8>%d.</font> <font size = 6>%s</font>'%(i + 1 + abs(starts - 1), CONFIDENCIALIDAD)
+        ptext += '<font size = 8>%d.</font> <font size = 6>%s</font>'%(i + 1 + abs(starts - 1), config.CONFIDENCIALIDAD)
         self.story.append(Paragraph(ptext, self.styles["Border"]))
         self.story.append(Spacer(1, 24))
 

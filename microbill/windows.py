@@ -1938,6 +1938,7 @@ class PropiedadesWindow(SubWindow):
     KEY = '1234567890123456'
     WIDGETS = ["codigo_gestion", "codigo_pep", 'terminos', 'confidencialidad', 'dependencias',
             'admins',
+            'centro',
             'saludo',
             'subject_cotizaciones', 'mensaje_recibo', 'mensaje_transferencia', 'mensaje_factura',
             'subject_solicitud', 'mensaje_solicitud',
@@ -1948,6 +1949,7 @@ class PropiedadesWindow(SubWindow):
             'user', 'password']
     CONSTANTS = ['CODIGO_GESTION', 'CODIGO_PEP', 'TERMINOS_Y_CONDICIONES', 'CONFIDENCIALIDAD', 'DEPENDENCIAS',
                 'ADMINS',
+                'CENTRO',
                 'SALUDO',
                 'COTIZACION_SUBJECT_RECIBO', 'COTIZACION_MENSAJE_RECIBO', 'COTIZACION_MENSAJE_TRANSFERENCIA', 'COTIZACION_MENSAJE_FACTURA',
                 'REQUEST_SUBJECT', 'REQUEST_MENSAJE',
@@ -2039,6 +2041,9 @@ class PropiedadesWindow(SubWindow):
 
     def populateVariosTab(self):
         self.admins_widget = QtWidgets.QTextEdit()
+        self.centro_widget = QtWidgets.QLineEdit()
+
+        self.varios_layout.addRow(QLabel("Nombre del centro:"), self.centro_widget)
         self.varios_layout.addRow(QLabel("Administradores:"), self.admins_widget)
 
     def populateCorreoTab(self):

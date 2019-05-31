@@ -5,3 +5,4 @@ login*
 
 Old/*
 microbill/Old/*.pkl
+microbill/__pycache__/*
