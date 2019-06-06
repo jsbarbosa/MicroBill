@@ -8,14 +8,11 @@ from reportlab.lib.enums import TA_JUSTIFY, TA_CENTER
 from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
 
 from .constants import BASE_DIR
-<<<<<<< HEAD
 from . import constants
 from . import config
 from .config import *
-=======
 from . import constants, config
 # from .config import *
->>>>>>> 5a9d6d12270b09dcbd0289d5f202c9ab1bab520e
 
 
 if os.path.isdir(constants.PDF_DIR): pass
@@ -51,11 +48,7 @@ class PDFBase():
 
     def makeInfo(self):
         usuario = self.cotizacion.getUsuario()
-<<<<<<< HEAD
-        ptext = '<font size = 12><b>%s</b></font>' % "%s - UNIVERSIDAD DE LOS ANDES"%config.CENTRO.upper()
-=======
         ptext = '<font size = 12><b>%s</b></font>' % "%s - UNIVERSIDAD DE LOS ANDES" % config.CENTRO.upper()
->>>>>>> 5a9d6d12270b09dcbd0289d5f202c9ab1bab520e
         self.story.append(Paragraph(ptext, self.styles["Center"]))
 
         self.story.append(Spacer(1, 12))

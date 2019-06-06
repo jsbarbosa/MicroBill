@@ -1950,11 +1950,8 @@ class PropiedadesWindow(SubWindow):
     WIDGETS = ["codigo_gestion", "codigo_pep", 'terminos', 'confidencialidad', 'dependencias',
             'alto_logo', 'ancho_logo', 'logo_path',
             'admins',
-<<<<<<< HEAD
             'splash_logo_path',
-=======
             'centro',
->>>>>>> 5a9d6d12270b09dcbd0289d5f202c9ab1bab520e
             'saludo',
             'subject_cotizaciones', 'mensaje_recibo', 'mensaje_transferencia', 'mensaje_factura',
             'subject_solicitud', 'mensaje_solicitud',
@@ -1966,11 +1963,8 @@ class PropiedadesWindow(SubWindow):
     CONSTANTS = ['CODIGO_GESTION', 'CODIGO_PEP', 'TERMINOS_Y_CONDICIONES', 'CONFIDENCIALIDAD', 'DEPENDENCIAS',
                 'ALTO_LOGO', 'ANCHO_LOGO', 'LOGO_PATH',
                 'ADMINS',
-<<<<<<< HEAD
                 'SPLASH_LOGO_PATH',
-=======
                 'CENTRO',
->>>>>>> 5a9d6d12270b09dcbd0289d5f202c9ab1bab520e
                 'SALUDO',
                 'COTIZACION_SUBJECT_RECIBO', 'COTIZACION_MENSAJE_RECIBO', 'COTIZACION_MENSAJE_TRANSFERENCIA', 'COTIZACION_MENSAJE_FACTURA',
                 'REQUEST_SUBJECT', 'REQUEST_MENSAJE',
@@ -2068,13 +2062,10 @@ class PropiedadesWindow(SubWindow):
 
     def populateVariosTab(self):
         self.admins_widget = QtWidgets.QTextEdit()
-<<<<<<< HEAD
         self.splash_logo_path_widget = QtWidgets.QLineEdit()
-=======
         self.centro_widget = QtWidgets.QLineEdit()
 
         self.varios_layout.addRow(QLabel("Nombre del centro:"), self.centro_widget)
->>>>>>> 5a9d6d12270b09dcbd0289d5f202c9ab1bab520e
         self.varios_layout.addRow(QLabel("Administradores:"), self.admins_widget)
         self.varios_layout.addRow(QLabel("Nombre logo inicial:"), self.splash_logo_path_widget)
 
