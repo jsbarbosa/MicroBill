@@ -55,7 +55,7 @@ PRICES_DIVISION = ['Interno', 'Académico', 'Industria', 'Independiente']
 
 REPORTE_INTERNO = "ReporteInterno.xlsx"
 
-DEFAULT_CONFIG = '''﻿ADMINS = ["Humberto Ibarra", "Monica Lopez", "Juan Camilo Orozco", "Laura Sotelo", "Juan Barbosa"]
+DEFAULT_CONFIG = '''﻿ADMINS = ["Humberto Ibarra", "Monica Lopez", "Juan Camilo Orozco", "Laura Sotelo"]
 
 
 """
