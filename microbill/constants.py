@@ -65,6 +65,12 @@ CODIGO_GESTION = "UA-FM-CM-001"
 # CODIGO_PEP = "P%s.340121.0%s"
 CODIGO_PEP = "340121001"
 
+ANCHO_LOGO = 8.58
+ALTO_LOGO = 1.5
+
+LOGO_PATH = "logo.png"
+SPLASH_LOGO_PATH = "logo.png"
+
 TERMINOS_Y_CONDICIONES = ["Para usuarios internos favor realizar el traslado al PEP indicado en la parte superior en rojo", "La Universidad no cobra IVA por ser una Institución de educación superior sin ánimo de lucro (Art. 92 de la ley 30 de 1992).",]
 
 CONFIDENCIALIDAD = "El contratista se obliga a respetar el carácter confidencial de este documento y de la información, condiciones y documentos relacionados con el mismo, de conformidad con las normas constitucionales y legales aplicables. En consecuencia, el contratista se compromete a no publicar, difundir, comentar o analizar frente a terceros, copiar, reproducir o hacer uso diferente al acordado, de la información que el Centro de Microscopía le entregue en este documento, ya sea de forma impresa, electrónica, verbal o de cualquier otra manera, o de aquella que el contratista llegue a conocer, teniendo en cuenta que dicha información tiene como finalidad exclusiva, permitir y facilitar la debida prestación de los servicios solicitados."

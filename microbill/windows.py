@@ -1642,6 +1642,7 @@ class MainWindow(QtWidgets.QMainWindow):
         self.descontar_widget = QtWidgets.QPushButton("Descontar")
         self.buscar_widget = QtWidgets.QPushButton("Buscar")
         self.open_widget = QtWidgets.QPushButton("Abrir PDFs")
+        self.registros_widget = QtWidgets.QPushButton("Abrir Registros")
         self.gestor_widget = QtWidgets.QPushButton("A Gestor")
         self.reporte_widget = QtWidgets.QPushButton("Reportes")
         self.propiedades_widget = QtWidgets.QPushButton("Propiedades")
@@ -1651,6 +1652,7 @@ class MainWindow(QtWidgets.QMainWindow):
         self.buttons_layout.addWidget(self.request_widget)
         self.buttons_layout.addWidget(self.buscar_widget)
         self.buttons_layout.addWidget(self.open_widget)
+        self.buttons_layout.addWidget(self.registros_widget)
         self.buttons_layout.addWidget(self.gestor_widget)
         self.buttons_layout.addWidget(self.reporte_widget)
         self.buttons_layout.addWidget(self.propiedades_widget)
@@ -1660,6 +1662,7 @@ class MainWindow(QtWidgets.QMainWindow):
         self.descontar_widget.clicked.connect(self.descontarHandler)
         self.buscar_widget.clicked.connect(self.buscarHandler)
         self.open_widget.clicked.connect(self.openHandler)
+        self.registros_widget.clicked.connect(self.registrosHandler)
         self.gestor_widget.clicked.connect(self.gestorHandler)
         self.reporte_widget.clicked.connect(self.reporteHandler)
         self.propiedades_widget.clicked.connect(self.propiedadesHandler)
@@ -1742,6 +1745,14 @@ class MainWindow(QtWidgets.QMainWindow):
     def openHandler(self):
         path = os.path.dirname(sys.executable)
         path = os.path.join(path, constants.PDF_DIR)
+        try:
+            os.startfile(path)
+        except FileNotFoundError as e:
+            print(e)
+
+    def registrosHandler(self):
+        path = os.path.dirname(sys.executable)
+        path = os.path.join(path, constants.REGISTERS_DIR)
         try:
             os.startfile(path)
         except FileNotFoundError as e:
@@ -1937,7 +1948,9 @@ class RequestWindow(SubWindow):
 class PropiedadesWindow(SubWindow):
     KEY = '1234567890123456'
     WIDGETS = ["codigo_gestion", "codigo_pep", 'terminos', 'confidencialidad', 'dependencias',
+            'alto_logo', 'ancho_logo', 'logo_path',
             'admins',
+            'splash_logo_path',
             'saludo',
             'subject_cotizaciones', 'mensaje_recibo', 'mensaje_transferencia', 'mensaje_factura',
             'subject_solicitud', 'mensaje_solicitud',
@@ -1947,7 +1960,9 @@ class PropiedadesWindow(SubWindow):
             'send_server', 'send_port',
             'user', 'password']
     CONSTANTS = ['CODIGO_GESTION', 'CODIGO_PEP', 'TERMINOS_Y_CONDICIONES', 'CONFIDENCIALIDAD', 'DEPENDENCIAS',
+                'ALTO_LOGO', 'ANCHO_LOGO', 'LOGO_PATH',
                 'ADMINS',
+                'SPLASH_LOGO_PATH',
                 'SALUDO',
                 'COTIZACION_SUBJECT_RECIBO', 'COTIZACION_MENSAJE_RECIBO', 'COTIZACION_MENSAJE_TRANSFERENCIA', 'COTIZACION_MENSAJE_FACTURA',
                 'REQUEST_SUBJECT', 'REQUEST_MENSAJE',
@@ -2030,16 +2045,24 @@ class PropiedadesWindow(SubWindow):
         self.terminos_widget = QtWidgets.QTextEdit()
         self.confidencialidad_widget  = QtWidgets.QTextEdit()
         self.dependencias_widget = QtWidgets.QTextEdit()
+        self.ancho_logo_widget = QtWidgets.QLineEdit()
+        self.alto_logo_widget = QtWidgets.QLineEdit()
+        self.logo_path_widget = QtWidgets.QLineEdit()
 
         self.pdf_layout.addRow(QLabel("Código de gestion:"), self.codigo_gestion_widget)
         self.pdf_layout.addRow(QLabel("Código PEP:"), self.codigo_pep_widget)
         self.pdf_layout.addRow(QLabel("Términos y condiciones:"), self.terminos_widget)
         self.pdf_layout.addRow(QLabel("Confidencialidad:"), self.confidencialidad_widget)
         self.pdf_layout.addRow(QLabel("Dependencias:"), self.dependencias_widget)
+        self.pdf_layout.addRow(QLabel("Alto logo (cm):"), self.ancho_logo_widget)
+        self.pdf_layout.addRow(QLabel("Ancho logo (cm):"), self.alto_logo_widget)
+        self.pdf_layout.addRow(QLabel("Nombre del logo:"), self.logo_path_widget)
 
     def populateVariosTab(self):
         self.admins_widget = QtWidgets.QTextEdit()
+        self.splash_logo_path_widget = QtWidgets.QLineEdit()
         self.varios_layout.addRow(QLabel("Administradores:"), self.admins_widget)
+        self.varios_layout.addRow(QLabel("Nombre logo inicial:"), self.splash_logo_path_widget)
 
     def populateCorreoTab(self):
         self.cotizaciones_groupBox = QtWidgets.QGroupBox("Cotizaciones")
@@ -2139,6 +2162,7 @@ class PropiedadesWindow(SubWindow):
     def saveValues(self):
         txt = ""
         lists = ['dependencias', 'terminos', 'admins']
+        floats = ['ancho_logo', 'alto_logo']
         for (i, name) in enumerate(self.WIDGETS):
             widget = getattr(self, "%s_widget" % name)
             try: value = widget.text()
@@ -2148,6 +2172,8 @@ class PropiedadesWindow(SubWindow):
                     temp = ['"%s"'%line for line in value.split('\n')]
                     temp = ', '.join(temp)
                     txt += '%s = [%s]\n' % (self.CONSTANTS[i], temp)
+                elif name in floats:
+                    txt += '%s = %s\n' % (self.CONSTANTS[i], value)
                 elif type(widget) == QtWidgets.QTextEdit:
                     txt += '%s = """%s"""\n' % (self.CONSTANTS[i], value)
                 else:
@@ -2168,6 +2194,7 @@ class PropiedadesWindow(SubWindow):
             try:
                 if type(value) == list: value = "\n".join(value)
                 elif type(value) == int: value = str(value)
+                elif type(value) == float: value = "%.2f" % value
                 widget.setText(value)
             except AttributeError as e:
                 print(e)

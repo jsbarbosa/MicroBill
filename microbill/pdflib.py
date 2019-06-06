@@ -9,12 +9,12 @@ from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
 
 from .constants import BASE_DIR
 from . import constants
+from . import config
 from .config import *
+
 
 if os.path.isdir(constants.PDF_DIR): pass
 else: os.makedirs(constants.PDF_DIR)
-
-CENTRO = 'Centro de Microscopía'
 
 class PDFBase():
     def __init__(self, cotizacion = None, is_reporte = False):
@@ -46,7 +46,7 @@ class PDFBase():
 
     def makeInfo(self):
         usuario = self.cotizacion.getUsuario()
-        ptext = '<font size = 12><b>%s</b></font>' % "%s - UNIVERSIDAD DE LOS ANDES"%CENTRO.upper()
+        ptext = '<font size = 12><b>%s</b></font>' % "%s - UNIVERSIDAD DE LOS ANDES"%config.CENTRO.upper()
         self.story.append(Paragraph(ptext, self.styles["Center"]))
 
         self.story.append(Spacer(1, 12))
@@ -109,7 +109,7 @@ class PDFBase():
             self.story.append(Paragraph(ptext, self.styles["Center"]))
 
     def drawPage(self, canvas, doc):
-        canvas.setTitle(CENTRO)
+        canvas.setTitle(config.CENTRO)
         canvas.setSubject("Cotización")
         canvas.setAuthor("Juan Barbosa")
         canvas.setCreator("MicroBill")
@@ -146,7 +146,7 @@ class PDFCotizacion(PDFBase):
     def makeTop(self):
         height = 1.5
 
-        logo = Image(os.path.join(BASE_DIR, "logo.png"), height * 5.72 * cm, height * cm, hAlign = "CENTER")
+        logo = Image(os.path.join(BASE_DIR, config.LOGO_PATH), config.ANCHO_LOGO * cm, config.ALTO_LOGO * cm, hAlign = "CENTER")
 
         self.story.append(logo)
         self.story.append(Spacer(0, 12))

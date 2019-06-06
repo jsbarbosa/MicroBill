@@ -39,6 +39,7 @@ def testFiles():
             raise(Exception(txt))
 
 def run():
+    from . import config
     global correo, config, constants, sleep, Thread, MainWindow, REGISTRO_DATAFRAME, CLIENTES_DATAFRAME
     sys.argv += ["--disable-web-security", "--web-security=no", "--allow-file-access-from-files"]
     app = QtWidgets.QApplication(sys.argv)
@@ -46,7 +47,7 @@ def run():
     icon = QtGui.QIcon(os.path.join(BASE_DIR, 'icon.ico'))
     app.setWindowIcon(icon)
 
-    splash_pix = QtGui.QPixmap(os.path.join(BASE_DIR, 'logo.png')).scaledToWidth(600)
+    splash_pix = QtGui.QPixmap(os.path.join(BASE_DIR, config.SPLASH_LOGO_PATH)).scaledToWidth(600)
     splash = QtWidgets.QSplashScreen(splash_pix, QtCore.Qt.WindowStaysOnTopHint)
     splash.show()
     app.processEvents()
