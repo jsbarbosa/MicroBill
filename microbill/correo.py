@@ -10,32 +10,67 @@ from .config import GESTOR_RECIBO_CORREO, GESTOR_RECIBO_SUBJECT, GESTOR_RECIBO_M
 from .config import GESTOR_FACTURA_CORREO, GESTOR_FACTURA_SUBJECT, GESTOR_FACTURA_MENSAJE, SALUDO
 from . import constants, config
 
-dependencias = ("\n" + "\n".join(DEPENDENCIAS)).title()
+dependencias: str = ("\n" + "\n".join(DEPENDENCIAS)).title()
 
+#: almacena la variable DEPENDENCIAS de la config como un string con formato de saltos de l[inea (enter)
 dependencias = dependencias.replace("De", "de")
 
+#: almacena la constante SALUDO de la config remplazando los saltos de línea por <br>
 SALUDO = SALUDO.replace("\n", "<br>")
 
+#: almacena la constante COTIZACION_MENSAJE_RECIBO de config con saltos de línea dados por <br>
 COTIZACION_MENSAJE_RECIBO = COTIZACION_MENSAJE_RECIBO.replace("\n", "<br>")
+
+#: almacena la constante COTIZACION_MENSAJE_FACTURA de config con saltos de línea dados por <br>
 COTIZACION_MENSAJE_FACTURA = COTIZACION_MENSAJE_FACTURA.replace("\n", "<br>")
+
+#: almacena la constante COTIZACION_MENSAJE_TRANSFERENCIA de config con saltos de línea dados por <br>
 COTIZACION_MENSAJE_TRANSFERENCIA = COTIZACION_MENSAJE_TRANSFERENCIA.replace("\n", "<br>")
+
+#: almacena la constante REPORTE_MENSAJE de config con saltos de línea dados por <br>
 REPORTE_MENSAJE = REPORTE_MENSAJE.replace("\n", "<br>")
+
+#: almacena la constante REQUEST_MENSAJE de config con saltos de línea dados por <br>
 REQUEST_MENSAJE = REQUEST_MENSAJE.replace("\n", "<br>")
 
+#: almacena la constante GESTOR_RECIBO_MENSAJE de config con saltos de línea dados por <br>
 GESTOR_RECIBO_MENSAJE = GESTOR_RECIBO_MENSAJE.replace("\n", "<br>")
+
+#: almacena la constante GESTOR_FACTURA_MENSAJE de config con saltos de línea dados por <br>
 GESTOR_FACTURA_MENSAJE = GESTOR_FACTURA_MENSAJE.replace("\n", "<br>")
 
-CORREO = None
+CORREO = smtplib.SMTP(SEND_SERVER, SEND_PORT, timeout=30)  #: instancia de SMTP
 
 def initCorreo():
+    """ Inicializa la comunicación con el servidor SMTP, y autentica a el usuario
+    """
+
     global CORREO
-    CORREO = smtplib.SMTP(SEND_SERVER, SEND_PORT, timeout = 30)
     CORREO.ehlo() # Hostname to send for this command defaults to the fully qualified domain name of the local host.
-    CORREO.starttls() #Puts connection to SMTP server in TLS mode
+    CORREO.starttls() # Puts connection to SMTP server in TLS mode
     CORREO.ehlo()
     CORREO.login(config.FROM, config.PASSWORD)
 
-def sendEmail(to, subject, text, attachments = []):
+def sendEmail(to: str, subject: str, text: str, attachments: (list, tuple) = []):
+    """ Función encargada de constuir un correo electrónico y enviarlo
+
+    Parameters
+    ----------
+    to : str
+        dirección de correo electrónico del destinatario
+    subject : str
+        asunto del correo electrónico
+    text : str
+        contenido escrito del correo electrónico
+    attachments : list, tuple
+        nombres de los archivos a adjuntar
+
+    Raises
+    ------
+    Exception
+        en caso que luego de 5 intentos, no se pueda enviar el correo electrónico
+    """
+
     global CORREO
     msg = MIMEMultipart()
     msg['Subject'] = subject
@@ -69,19 +104,70 @@ def sendEmail(to, subject, text, attachments = []):
             if i == 4:
                 raise(Exception("Could not send email."))
 
-def sendCotizacionRecibo(to, file_name, observaciones = ""):
+def sendCotizacionRecibo(to: str, file_name: str, observaciones: str = ""):
+    """ Función que envía por correo electrónico una cotización con forma de pago de recibo
+
+    Parameters
+    ----------
+    to: str
+        dirección de correo electrónico del destinatario
+    file_name: str
+        nombre del archivo PDF de la cotización a enviar
+    observaciones: str
+        observaciones al correo electrónico
+
+    Raises
+    -------
+    Exception
+        en caso que luego de 5 intentos, no se pueda enviar el correo electrónico
+    """
+
     if observaciones != "": observaciones = observaciones.replace("\n", "<br>") + 2*"<br>"
     subject = COTIZACION_SUBJECT_RECIBO + ' - '
     subject += ' - '.join(file_name)
     sendEmail(to, subject, SALUDO + observaciones + COTIZACION_MENSAJE_RECIBO, file_name)
 
-def sendCotizacionTransferencia(to, file_name, observaciones = ""):
+def sendCotizacionTransferencia(to: str, file_name: str, observaciones: str = ""):
+    """ Función que envía por correo electrónico una cotización con forma de pago de transferencia interna
+
+    Parameters
+    ----------
+    to: str
+        dirección de correo electrónico del destinatario
+    file_name: str
+        nombre del archivo PDF de la cotización a enviar
+    observaciones: str
+        observaciones al correo electrónico
+
+    Raises
+    -------
+    Exception
+        en caso que luego de 5 intentos, no se pueda enviar el correo electrónico
+    """
+
     if observaciones != "": observaciones = observaciones.replace("\n", "<br>") + 2*"<br>"
     subject = COTIZACION_SUBJECT_RECIBO + ' - '
     subject += ' - '.join(file_name)
     sendEmail(to, subject,  SALUDO + observaciones + COTIZACION_MENSAJE_TRANSFERENCIA, file_name)
 
-def sendCotizacionFactura(to, file_name, observaciones = ""):
+def sendCotizacionFactura(to: str, file_name: str, observaciones: str = ""):
+    """ Función que envía por correo electrónico una cotización con forma de pago de factura
+
+    Parameters
+    ----------
+    to: str
+        dirección de correo electrónico del destinatario
+    file_name: str
+        nombre del archivo PDF de la cotización a enviar
+    observaciones: str
+        observaciones al correo electrónico
+
+    Raises
+    -------
+    Exception
+        en caso que luego de 5 intentos, no se pueda enviar el correo electrónico
+    """
+
     if observaciones != "": observaciones = observaciones.replace("\n", "<br>") + 2*"<br>"
     subject = COTIZACION_SUBJECT_RECIBO + ' - '
     subject += ' - '.join(file_name)

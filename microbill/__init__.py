@@ -1,7 +1,7 @@
-try:
+try: # intenta importar el modulo config
     from .objects import *
     from . import config
-except ImportError:
+except ImportError: # si el modulo no se puede importar, lo crea usando la informacion de DEFAULT_CONFIG
     import os
     import sys
     from .constants import DEFAULT_CONFIG
@@ -18,9 +18,22 @@ from . import correo
 from .main import run
 import importlib
 
-importlib.reload(config)
+importlib.reload(config) # en caso que el programa se reinicie, el modulo config se vuelve a importar completamente
 
-def decode(enc):
+
+def decode(enc: str) -> str:
+    """ Descifra la informacion de la variable enc
+
+    Parameters
+    ----------
+    enc : str
+        El parametro a descifrar
+
+    Returns
+    -------
+    str
+        parametro enc descifrado
+    """
     import base64
     dec = []
     key = '1234567890123456'
@@ -31,4 +44,5 @@ def decode(enc):
         dec.append(dec_c)
     return "".join(dec)
 
-config.PASSWORD = decode(config.PASSWORD)
+
+config.PASSWORD = decode(config.PASSWORD) #: almacena la contraseña del correo desencriptada

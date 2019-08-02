@@ -1,70 +1,4 @@
-import os
-import pandas as pd
-
-DEBUG: bool = False
-
-OLD_DIR: str = "Old" #: carpeta donde se guardan las cotizaciones realizadas
-PDF_DIR: str = "PDF" #: carpeta donde se guardan los PDFs asociados a cotizaciones realizadas
-
-#: carpeta donde se encuentran los archivos de registro de Microbill (Excel de los que se alimenta)
-REGISTERS_DIR: str = "Registers"
-
-CLIENTES_FILE: str = "Clientes.xlsx" #: archivo en el que se guarda el registro de clientes
-REGISTRO_FILE: str = "Registro.xlsx" #: archivo en el que se guarda el resumen de la información de las cotizaciones
-PRECIOS_FILE: str = "Precios.xlsx" #: archivo que contiene los precios de los servicios a usar
-INDEPENDIENTES_FILE: str = "Independientes.xlsx"
-PRECIOS_DAEMON_FILE: str = "Precios (daemon).xlsx"
-
-#: directorio base desde el cual se está ejecutando el intérprete de Python
-BASE_DIR: str = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-
-if os.path.exists(os.path.join(BASE_DIR, 'microbill')):
-    BASE_DIR = os.path.join(BASE_DIR, 'microbill')
-
-OLD_DIR = os.path.join(BASE_DIR, OLD_DIR)
-PDF_DIR = os.path.join(BASE_DIR, PDF_DIR)
-REGISTERS_DIR = os.path.join(BASE_DIR, REGISTERS_DIR)
-
-CLIENTES_FILE = os.path.join(REGISTERS_DIR, CLIENTES_FILE)
-REGISTRO_FILE = os.path.join(REGISTERS_DIR, REGISTRO_FILE)
-PRECIOS_FILE = os.path.join(REGISTERS_DIR, PRECIOS_FILE)
-
-PRECIOS_DAEMON_FILE = os.path.join(REGISTERS_DIR, PRECIOS_DAEMON_FILE)
-INDEPENDIENTES_FILE = os.path.join(REGISTERS_DIR, INDEPENDIENTES_FILE)
-
-#: columnas que deben tener el archivo de precios
-EQUIPOS_KEYS: list = ['Código', 'Descripción', 'Interno', 'Académico', 'Industria', 'Independiente']
-
-#: columnas que debe tener el archivo de registro
-REGISTRO_KEYS: list = ['Cotización', 'Fecha', 'Nombre', 'Correo', 'Teléfono', 'Institución', 'Interno',
-                  'Responsable', 'Muestra', 'Equipo', 'Elaboró', 'Modificó', 'Estado', 'Pago', 'Referencia', 'Aplicó', 'Tipo de Pago', 'Valor']
-
-#: columnas que debe tener el archivo de clientes
-CLIENTES_KEYS: list = ['Nombre', 'Correo', 'Teléfono', 'Institución', 'Documento',
-                 'Dirección', 'Ciudad', 'Interno', 'Responsable', 'Proyecto', 'Código', 'Tipo de Pago']
-
-#: posibles formas de pago de una cotizacion
-DOCUMENTOS_FINALES: list = ["Transferencia interna", "Factura", "Recibo"]
-
-df = pd.read_excel(PRECIOS_FILE, sheet_name = None)
-EQUIPOS: list = list(df.keys()) #: almacena el nombre de las hojas del archivo de precios
-
-for item in EQUIPOS:
-    data = df[item].astype(str)
-    exec("%s = data"%item)
-
-INDEPENDIENTES_DF = pd.read_excel(INDEPENDIENTES_FILE)
-
-DAEMON_DF = pd.read_excel(PRECIOS_DAEMON_FILE, sheet_name = None)
-DAEMON_SUBCLASSES = list(df.keys())
-
-#: categorias que dividen los precios de los servicios
-PRICES_DIVISION: list = ['Interno', 'Académico', 'Industria', 'Independiente']
-
-REPORTE_INTERNO: str = "ReporteInterno.xlsx" #: nombre del archivo en donde se almacenan los reportes internos
-
-#: configuracion por defecto
-DEFAULT_CONFIG: str = '''﻿ADMINS = ["Humberto Ibarra", "Monica Lopez", "Juan Camilo Orozco", "Laura Sotelo"]
+﻿ADMINS = ["Humberto Ibarra", "Monica Lopez", "Juan Camilo Orozco", "Laura Sotelo"] #: Almacena las personas que pueden hacer y modificar una cotización
 
 
 """
@@ -230,6 +164,3 @@ SEND_PORT = 587
 
 FROM = "cmicroscopia@uniandes.edu.co"
 PASSWORD = "fmPClsKmZcKpwppowqlhZQ=="
-'''
-
-EXIT_CODE_REBOOT: int = -14 #: código usado para señalizar que el programa busca reiniciar automaticamente
