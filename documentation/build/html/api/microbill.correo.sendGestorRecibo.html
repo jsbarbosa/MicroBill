@@ -50,8 +50,23 @@
 <h1>sendGestorRecibo<a class="headerlink" href="#sendgestorrecibo" title="Enlazar permanentemente con este título">¶</a></h1>
 <dl class="function">
 <dt id="microbill.correo.sendGestorRecibo">
-<code class="sig-prename descclassname">microbill.correo.</code><code class="sig-name descname">sendGestorRecibo</code><span class="sig-paren">(</span><em class="sig-param">file_name</em><span class="sig-paren">)</span><a class="headerlink" href="#microbill.correo.sendGestorRecibo" title="Enlazar permanentemente con esta definición">¶</a></dt>
-<dd></dd></dl>
+<code class="sig-prename descclassname">microbill.correo.</code><code class="sig-name descname">sendGestorRecibo</code><span class="sig-paren">(</span><em class="sig-param">file_name:str</em><span class="sig-paren">)</span><a class="headerlink" href="#microbill.correo.sendGestorRecibo" title="Enlazar permanentemente con esta definición">¶</a></dt>
+<dd><p>Función que envía al Gestor de Recibos una solicitud para realizar un recibo</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>file_name</strong><span class="classifier">str</span></dt><dd><p>nombre del archivo PDF de la cotización asociada a la solicitud de factura</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><dl class="simple">
+<dt>Exception</dt><dd><p>en caso que luego de 5 intentos, no se pueda enviar el correo electrónico</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
 
 </div>
 

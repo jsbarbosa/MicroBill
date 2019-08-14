@@ -12,6 +12,7 @@ Bienvenidos a la documentación de Microbill!
 
    constants
    correo
+   exceptions
 
 Microbill
 =====================

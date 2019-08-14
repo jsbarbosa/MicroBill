@@ -50,14 +50,14 @@
 <h1>sendCotizacionTransferencia<a class="headerlink" href="#sendcotizaciontransferencia" title="Enlazar permanentemente con este título">¶</a></h1>
 <dl class="function">
 <dt id="microbill.correo.sendCotizacionTransferencia">
-<code class="sig-prename descclassname">microbill.correo.</code><code class="sig-name descname">sendCotizacionTransferencia</code><span class="sig-paren">(</span><em class="sig-param">to:str</em>, <em class="sig-param">file_name:str</em>, <em class="sig-param">observaciones:str=''</em><span class="sig-paren">)</span><a class="headerlink" href="#microbill.correo.sendCotizacionTransferencia" title="Enlazar permanentemente con esta definición">¶</a></dt>
+<code class="sig-prename descclassname">microbill.correo.</code><code class="sig-name descname">sendCotizacionTransferencia</code><span class="sig-paren">(</span><em class="sig-param">to:str</em>, <em class="sig-param">file_name:(&lt;class 'str'&gt;</em>, <em class="sig-param">typing.Iterable)</em>, <em class="sig-param">observaciones:str=''</em><span class="sig-paren">)</span><a class="headerlink" href="#microbill.correo.sendCotizacionTransferencia" title="Enlazar permanentemente con esta definición">¶</a></dt>
 <dd><p>Función que envía por correo electrónico una cotización con forma de pago de transferencia interna</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><dl class="simple">
 <dt><strong>to: str</strong></dt><dd><p>dirección de correo electrónico del destinatario</p>
 </dd>
-<dt><strong>file_name: str</strong></dt><dd><p>nombre del archivo PDF de la cotización a enviar</p>
+<dt><strong>file_name: str, Iterable</strong></dt><dd><p>nombre del archivo PDF de la cotización a enviar o nombres de los archivos PDF de las cotizaciones a enviar</p>
 </dd>
 <dt><strong>observaciones: str</strong></dt><dd><p>observaciones al correo electrónico</p>
 </dd>

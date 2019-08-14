@@ -50,8 +50,27 @@
 <h1>correoTargetArgs<a class="headerlink" href="#correotargetargs" title="Enlazar permanentemente con este título">¶</a></h1>
 <dl class="function">
 <dt id="microbill.correo.correoTargetArgs">
-<code class="sig-prename descclassname">microbill.correo.</code><code class="sig-name descname">correoTargetArgs</code><span class="sig-paren">(</span><em class="sig-param">cotizaciones</em>, <em class="sig-param">observaciones</em><span class="sig-paren">)</span><a class="headerlink" href="#microbill.correo.correoTargetArgs" title="Enlazar permanentemente con esta definición">¶</a></dt>
-<dd></dd></dl>
+<code class="sig-prename descclassname">microbill.correo.</code><code class="sig-name descname">correoTargetArgs</code><span class="sig-paren">(</span><em class="sig-param">cotizaciones:Iterable</em>, <em class="sig-param">observaciones:str) -&gt; (typing.Callable</em>, <em class="sig-param">&lt;class 'int'&gt;</em><span class="sig-paren">)</span><a class="headerlink" href="#microbill.correo.correoTargetArgs" title="Enlazar permanentemente con esta definición">¶</a></dt>
+<dd><p>Función que se encarga de generar los parámetros para las funciones sendCotizacionTransferencia,
+sendCotizacionFactura, sendCotizacioinRecibo dependiendo de la información contenida en la forma de pago de las
+cotizaciones</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>cotizaciones</strong><span class="classifier">Cotizacion</span></dt><dd><p>parámetro que contiene las cotizaciones a enviar</p>
+</dd>
+<dt><strong>observaciones</strong><span class="classifier">str</span></dt><dd><p>observaciones a las cotizaciones</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt>Callable: función de envío de correo electrónico</dt><dd><p>tuple: parámetros para la función retornada en la primera posición</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
 
 </div>
 

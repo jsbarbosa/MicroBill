@@ -31,6 +31,7 @@ extensions = ['sphinx.ext.autodoc',
               'sphinx.ext.coverage',
               'numpydoc',
               'sphinx_automodapi.automodapi',
+              'sphinx.ext.graphviz',
 ]
 
 # Add any paths that contain templates here, relative to this directory.

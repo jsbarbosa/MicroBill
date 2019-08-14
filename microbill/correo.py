@@ -9,10 +9,12 @@ from .config import COTIZACION_SUBJECT_RECIBO
 from .config import GESTOR_RECIBO_CORREO, GESTOR_RECIBO_SUBJECT, GESTOR_RECIBO_MENSAJE
 from .config import GESTOR_FACTURA_CORREO, GESTOR_FACTURA_SUBJECT, GESTOR_FACTURA_MENSAJE, SALUDO
 from . import constants, config
+from .objects import Cotizacion
+from typing import Callable, Iterable
 
 dependencias: str = ("\n" + "\n".join(DEPENDENCIAS)).title()
 
-#: almacena la variable DEPENDENCIAS de la config como un string con formato de saltos de l[inea (enter)
+#: almacena la variable DEPENDENCIAS de la config como un string con formato de saltos de línea (enter)
 dependencias = dependencias.replace("De", "de")
 
 #: almacena la constante SALUDO de la config remplazando los saltos de línea por <br>
@@ -51,7 +53,8 @@ def initCorreo():
     CORREO.ehlo()
     CORREO.login(config.FROM, config.PASSWORD)
 
-def sendEmail(to: str, subject: str, text: str, attachments: (list, tuple) = []):
+
+def sendEmail(to: str, subject: str, text: str, attachments: Iterable = []):
     """ Función encargada de constuir un correo electrónico y enviarlo
 
     Parameters
@@ -62,7 +65,7 @@ def sendEmail(to: str, subject: str, text: str, attachments: (list, tuple) = [])
         asunto del correo electrónico
     text : str
         contenido escrito del correo electrónico
-    attachments : list, tuple
+    attachments : Iterable
         nombres de los archivos a adjuntar
 
     Raises
@@ -104,15 +107,16 @@ def sendEmail(to: str, subject: str, text: str, attachments: (list, tuple) = [])
             if i == 4:
                 raise(Exception("Could not send email."))
 
-def sendCotizacionRecibo(to: str, file_name: str, observaciones: str = ""):
+
+def sendCotizacionRecibo(to: str, file_name: (str, Iterable), observaciones: str = ""):
     """ Función que envía por correo electrónico una cotización con forma de pago de recibo
 
     Parameters
     ----------
     to: str
         dirección de correo electrónico del destinatario
-    file_name: str
-        nombre del archivo PDF de la cotización a enviar
+    file_name: str, Iterable
+        nombre del archivo PDF de la cotización a enviar o nombres de los archivos PDF de las cotizaciones a enviar
     observaciones: str
         observaciones al correo electrónico
 
@@ -127,15 +131,16 @@ def sendCotizacionRecibo(to: str, file_name: str, observaciones: str = ""):
     subject += ' - '.join(file_name)
     sendEmail(to, subject, SALUDO + observaciones + COTIZACION_MENSAJE_RECIBO, file_name)
 
-def sendCotizacionTransferencia(to: str, file_name: str, observaciones: str = ""):
+
+def sendCotizacionTransferencia(to: str, file_name: (str, Iterable), observaciones: str = ""):
     """ Función que envía por correo electrónico una cotización con forma de pago de transferencia interna
 
     Parameters
     ----------
     to: str
         dirección de correo electrónico del destinatario
-    file_name: str
-        nombre del archivo PDF de la cotización a enviar
+    file_name: str, Iterable
+        nombre del archivo PDF de la cotización a enviar o nombres de los archivos PDF de las cotizaciones a enviar
     observaciones: str
         observaciones al correo electrónico
 
@@ -150,15 +155,16 @@ def sendCotizacionTransferencia(to: str, file_name: str, observaciones: str = ""
     subject += ' - '.join(file_name)
     sendEmail(to, subject,  SALUDO + observaciones + COTIZACION_MENSAJE_TRANSFERENCIA, file_name)
 
-def sendCotizacionFactura(to: str, file_name: str, observaciones: str = ""):
+
+def sendCotizacionFactura(to: str, file_name: (str, Iterable), observaciones: str = ""):
     """ Función que envía por correo electrónico una cotización con forma de pago de factura
 
     Parameters
     ----------
     to: str
         dirección de correo electrónico del destinatario
-    file_name: str
-        nombre del archivo PDF de la cotización a enviar
+    file_name: str, Iterable
+        nombre del archivo PDF de la cotización a enviar o nombres de los archivos PDF de las cotizaciones a enviar
     observaciones: str
         observaciones al correo electrónico
 
@@ -173,25 +179,117 @@ def sendCotizacionFactura(to: str, file_name: str, observaciones: str = ""):
     subject += ' - '.join(file_name)
     sendEmail(to, subject, SALUDO + observaciones + COTIZACION_MENSAJE_FACTURA, file_name)
 
-def sendRegistro(to, file_name):
+
+def sendRegistro(to: str, file_name: str):
+    """ Función que envía un correo electrónico con un reporte de los servicios usados hasta el momento
+
+    Parameters
+    ----------
+    to : str
+         dirección de correo electrónico del destinatario
+    file_name : str
+         nombre del archivo PDF del registro a enviar
+
+    Raises
+    -------
+    Exception
+        en caso que luego de 5 intentos, no se pueda enviar el correo electrónico
+    """
+
     sendEmail(to, REPORTE_SUBJECT + " - %s"%file_name, SALUDO + REPORTE_MENSAJE, [file_name + "_Reporte"])
 
-def sendRequest(to):
+
+def sendRequest(to: str):
+    """ Función que envía un correo electrónico de solicitud de información
+
+    Parameters
+    ----------
+    to : str
+         dirección de correo electrónico del destinatario
+
+    Raises
+    -------
+    Exception
+        en caso que luego de 5 intentos, no se pueda enviar el correo electrónico
+    """
+
     sendEmail(to, REQUEST_SUBJECT, SALUDO + REQUEST_MENSAJE)
 
-def sendGestorRecibo(file_name):
-    sendEmail(GESTOR_RECIBO_CORREO, GESTOR_RECIBO_SUBJECT + " - %s"%file_name, GESTOR_RECIBO_MENSAJE, [file_name])
 
-def sendGestorFactura(file_name, orden_name):
+def sendGestorRecibo(file_name: str):
+    """ Función que envía al Gestor de Recibos una solicitud para realizar un recibo
+
+    Parameters
+    ----------
+    file_name : str
+        nombre del archivo PDF de la cotización asociada a la solicitud de factura
+
+    Raises
+    -------
+    Exception
+        en caso que luego de 5 intentos, no se pueda enviar el correo electrónico
+    """
+
+    sendEmail(GESTOR_RECIBO_CORREO, GESTOR_RECIBO_SUBJECT + " - %s" % file_name, GESTOR_RECIBO_MENSAJE, [file_name])
+
+
+def sendGestorFactura(file_name: str, orden_name: str):
+    """ Función que envía al Gestor de Facturas una solicitud para realizar una factura
+
+    Parameters
+    ----------
+    file_name : str
+        nombre del archivo PDF de la cotización asociada a la solicitud de factura
+    orden_name : str
+        nombre del archivo PDF de la orden de servicios con la que se solicita la factura
+
+    Raises
+    -------
+    Exception
+        en caso que luego de 5 intentos, no se pueda enviar el correo electrónico
+    """
+
     orden_name = orden_name.split(".")[:-1]
     if type(orden_name) is list:
         orden_name = ".".join(orden_name)
-    sendEmail(GESTOR_FACTURA_CORREO, GESTOR_FACTURA_SUBJECT + " - %s"%file_name, GESTOR_FACTURA_MENSAJE, [file_name, orden_name])
+    sendEmail(GESTOR_FACTURA_CORREO, GESTOR_FACTURA_SUBJECT + " - %s" % file_name, GESTOR_FACTURA_MENSAJE, [file_name, orden_name])
 
-def sendReporteExcel(to):
+
+def sendReporteExcel(to: str):
+    """ Función encargada de enviar al destinatario el archivo de Excel asociado a un reporte
+
+    Parameters
+    ----------
+    to : str
+        dirección de correo electrónico del destinatario
+
+    Raises
+    -------
+    Exception
+        en caso que luego de 5 intentos, no se pueda enviar el correo electrónico
+    """
+
     sendEmail(to, "Reporte semanal", "Microbill envia el reporte de cotizaciones", [constants.REPORTE_INTERNO])
 
-def correoTargetArgs(cotizaciones, observaciones):
+
+def correoTargetArgs(cotizaciones: Iterable, observaciones: str) -> (Callable, int):
+    """ Función que se encarga de generar los parámetros para las funciones sendCotizacionTransferencia,
+    sendCotizacionFactura, sendCotizacioinRecibo dependiendo de la información contenida en la forma de pago de las
+    cotizaciones
+
+    Parameters
+    ----------
+    cotizaciones : Cotizacion
+        parámetro que contiene las cotizaciones a enviar
+    observaciones : str
+        observaciones a las cotizaciones
+
+    Returns
+    -------
+        Callable: función de envío de correo electrónico
+        tuple: parámetros para la función retornada en la primera posición
+    """
+
     to = cotizaciones[0].getUsuario().getCorreo()
     tipo_pago = cotizaciones[0].getUsuario().getPago()
     pdfs = [cot.getFileName() for cot in cotizaciones]

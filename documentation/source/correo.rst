@@ -4,3 +4,4 @@
    contain the root `toctree` directive.
 
 .. automodapi:: microbill.correo
+   :include-all-objects:

@@ -50,8 +50,25 @@
 <h1>sendRegistro<a class="headerlink" href="#sendregistro" title="Enlazar permanentemente con este título">¶</a></h1>
 <dl class="function">
 <dt id="microbill.correo.sendRegistro">
-<code class="sig-prename descclassname">microbill.correo.</code><code class="sig-name descname">sendRegistro</code><span class="sig-paren">(</span><em class="sig-param">to</em>, <em class="sig-param">file_name</em><span class="sig-paren">)</span><a class="headerlink" href="#microbill.correo.sendRegistro" title="Enlazar permanentemente con esta definición">¶</a></dt>
-<dd></dd></dl>
+<code class="sig-prename descclassname">microbill.correo.</code><code class="sig-name descname">sendRegistro</code><span class="sig-paren">(</span><em class="sig-param">to:str</em>, <em class="sig-param">file_name:str</em><span class="sig-paren">)</span><a class="headerlink" href="#microbill.correo.sendRegistro" title="Enlazar permanentemente con esta definición">¶</a></dt>
+<dd><p>Función que envía un correo electrónico con un reporte de los servicios usados hasta el momento</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>to</strong><span class="classifier">str</span></dt><dd><p>dirección de correo electrónico del destinatario</p>
+</dd>
+<dt><strong>file_name</strong><span class="classifier">str</span></dt><dd><p>nombre del archivo PDF del registro a enviar</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><dl class="simple">
+<dt>Exception</dt><dd><p>en caso que luego de 5 intentos, no se pueda enviar el correo electrónico</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
 
 </div>
 

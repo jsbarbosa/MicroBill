@@ -4,7 +4,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="es">
   <head>
     <meta charset="utf-8" />
-    <title>constants &#8212; documentación de Microbill - </title>
+    <title>microbill.constants Module &#8212; documentación de Microbill - </title>
     <link rel="stylesheet" href="_static/classic.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="stylesheet" type="text/css" href="_static/graphviz.css" />
@@ -18,7 +18,7 @@
     
     <link rel="index" title="Índice" href="genindex.html" />
     <link rel="search" title="Búsqueda" href="search.html" />
-    <link rel="next" title="microbill.correo Module" href="correo.html" />
+    <link rel="next" title="AFM_04" href="api/microbill.constants.AFM_04.html" />
     <link rel="prev" title="Bienvenidos a la documentación de Microbill!" href="index.html" /> 
   </head><body>
     <div class="related" role="navigation" aria-label="related navigation">
@@ -31,7 +31,7 @@
           <a href="py-modindex.html" title="Índice de Módulos Python"
              >módulos</a> |</li>
         <li class="right" >
-          <a href="correo.html" title="microbill.correo Module"
+          <a href="api/microbill.constants.AFM_04.html" title="AFM_04"
              accesskey="N">siguiente</a> |</li>
         <li class="right" >
           <a href="index.html" title="Bienvenidos a la documentación de Microbill!"
@@ -46,103 +46,117 @@
           <div class="body" role="main">
             
   <div class="section" id="module-microbill.constants">
-<span id="constants"></span><h1>constants<a class="headerlink" href="#module-microbill.constants" title="Enlazar permanentemente con este título">¶</a></h1>
-<dl class="data">
-<dt id="microbill.constants.BASE_DIR">
-<code class="sig-prename descclassname">microbill.constants.</code><code class="sig-name descname">BASE_DIR</code><em class="property"> = '/home/juan/Documents/Microbill/microbill'</em><a class="headerlink" href="#microbill.constants.BASE_DIR" title="Enlazar permanentemente con esta definición">¶</a></dt>
-<dd><p>directorio base desde el cual se está ejecutando el intérprete de Python</p>
-</dd></dl>
-
-<dl class="data">
-<dt id="microbill.constants.CLIENTES_FILE">
-<code class="sig-prename descclassname">microbill.constants.</code><code class="sig-name descname">CLIENTES_FILE</code><em class="property"> = '/home/juan/Documents/Microbill/microbill/Registers/Clientes.xlsx'</em><a class="headerlink" href="#microbill.constants.CLIENTES_FILE" title="Enlazar permanentemente con esta definición">¶</a></dt>
-<dd><p>archivo en el que se guarda el registro de clientes</p>
-</dd></dl>
-
-<dl class="data">
-<dt id="microbill.constants.CLIENTES_KEYS">
-<code class="sig-prename descclassname">microbill.constants.</code><code class="sig-name descname">CLIENTES_KEYS</code><em class="property"> = ['Nombre', 'Correo', 'Teléfono', 'Institución', 'Documento', 'Dirección', 'Ciudad', 'Interno', 'Responsable', 'Proyecto', 'Código', 'Tipo de Pago']</em><a class="headerlink" href="#microbill.constants.CLIENTES_KEYS" title="Enlazar permanentemente con esta definición">¶</a></dt>
-<dd><p>columnas que debe tener el archivo de clientes</p>
-</dd></dl>
-
-<dl class="data">
-<dt id="microbill.constants.DEFAULT_CONFIG">
-<code class="sig-prename descclassname">microbill.constants.</code><code class="sig-name descname">DEFAULT_CONFIG</code><em class="property"> = '\ufeffADMINS = [&quot;Humberto Ibarra&quot;, &quot;Monica Lopez&quot;, &quot;Juan Camilo Orozco&quot;, &quot;Laura Sotelo&quot;]\n\n\n&quot;&quot;&quot;\n    PDF\n&quot;&quot;&quot;\nCODIGO_GESTION = &quot;UA-FM-CM-001&quot;\n# CODIGO_PEP = &quot;P%s.340121.0%s&quot;\nCODIGO_PEP = &quot;340121001&quot;\n\nANCHO_LOGO = 8.58\nALTO_LOGO = 1.5\n\nLOGO_PATH = &quot;logo.png&quot;\nSPLASH_LOGO_PATH = &quot;logo.png&quot;\n\nTERMINOS_Y_CONDICIONES = [&quot;Para usuarios internos favor realizar el traslado al PEP indicado en la parte superior en rojo&quot;, &quot;La Universidad no cobra IVA por ser una Institución de educación superior sin ánimo de lucro (Art. 92 de la ley 30 de 1992).&quot;,]\n\nCONFIDENCIALIDAD = &quot;El contratista se obliga a respetar el carácter confidencial de este documento y de la información, condiciones y documentos relacionados con el mismo, de conformidad con las normas constitucionales y legales aplicables. En consecuencia, el contratista se compromete a no publicar, difundir, comentar o analizar frente a terceros, copiar, reproducir o hacer uso diferente al acordado, de la información que el Centro de Microscopía le entregue en este documento, ya sea de forma impresa, electrónica, verbal o de cualquier otra manera, o de aquella que el contratista llegue a conocer, teniendo en cuenta que dicha información tiene como finalidad exclusiva, permitir y facilitar la debida prestación de los servicios solicitados.&quot;\nCENTRO = &quot;Centro de Microscopía&quot;\n\nDEPENDENCIAS = [CENTRO.upper(),\n        &quot;VICERRECTORÍA DE INVESTIGACIONES&quot;,\n        &quot;Carrera 1 N° 18A-10, Edificio B, Laboratorio 101.&quot;,\n         &quot;Tel: (57-1) 339 4949 Ext. 1444&quot;]\n\n&quot;&quot;&quot;\n    Correo\n&quot;&quot;&quot;\n\nSALUDO = &quot;&quot;&quot;Estimado usuario,\n\n&quot;&quot;&quot;\n\nCOTIZACION_SUBJECT_RECIBO = &quot;Solicitud de cotización&quot;\nCOTIZACION_MENSAJE_RECIBO = &quot;&quot;&quot;A continuación hacemos envío de la(s) cotización(es) correspondiente(s) a los servicios solicitados.\n\nTenga en cuenta las siguientes recomendaciones:\n- Para el día de la sesión es necesario contar con el comprobante de pago.\n\nQuedamos atentos a sus comentarios,\n\nCordial saludo,\n\nCENTRO DE MICROSCOPÍA\nVICERRECTORÍA DE INVESTIGACIONES\nCarrera 1 N° 18A-10, Edificio B, Laboratorio 101.\nTel: (57-1) 339 4949 Ext. 1444\n&quot;&quot;&quot;\n\nCOTIZACION_MENSAJE_TRANSFERENCIA = &quot;&quot;&quot;A continuación hacemos envío de la(s) cotización(es) correspondiente(s) a los servicios solicitados.\n\nTenga en cuenta las siguientes recomendaciones:\n- Para el día de la sesión es necesario contar con la aprobación del director de departamento y con la evidencia de translado presupuestal, con referencia a la cotización enviada.\n\nQuedamos atentos a sus comentarios,\n\nCordial saludo,\n\nCENTRO DE MICROSCOPÍA\nVICERRECTORÍA DE INVESTIGACIONES\nCarrera 1 N° 18A-10, Edificio B, Laboratorio 101.\nTel: (57-1) 339 4949 Ext. 1444\n&quot;&quot;&quot;\n\nCOTIZACION_MENSAJE_FACTURA = &quot;&quot;&quot;A continuación hacemos envío de la(s) cotización(es) correspondiente(s) a los servicios solicitados.\n\nTenga en cuenta las siguientes recomendaciones:\n- Le solicitamos enviar la orden de servicios, para poder generar la factura.\n\nQuedamos atentos a sus comentarios,\n\nCordial saludo,\n\nCENTRO DE MICROSCOPÍA\nVICERRECTORÍA DE INVESTIGACIONES\nCarrera 1 N° 18A-10, Edificio B, Laboratorio 101.\nTel: (57-1) 339 4949 Ext. 1444\n&quot;&quot;&quot;\n\n\nREPORTE_SUBJECT = &quot;Estado actual&quot;\nREPORTE_MENSAJE = &quot;&quot;&quot;A continuación hacemos envío del estado actual de la cotización, en este documento usted podrá encontrar:\n- Los servicios que fueron cotizados.\n- Las fechas en que estos servicios fueron usados.\n- Un resumen del número de usos, y la cantidad restante que aun puede utilizar.\n\nQuedamos atentos a sus comentarios,\n\nCordial saludo,\n\nCENTRO DE MICROSCOPÍA\nVICERRECTORÍA DE INVESTIGACIONES\nCarrera 1 N° 18A-10, Edificio B, Laboratorio 101.\nTel: (57-1) 339 4949 Ext. 1444\n&quot;&quot;&quot;\n\n\n\n\n\nREQUEST_SUBJECT = &quot;Solicitud de información&quot;\nREQUEST_MENSAJE = &quot;&quot;&quot;Para cotizar los ensayos solicitados, es necesario que nos proporcione la siguiente información, de tal manera que podamos asesorarlo de la mejor manera posible.\n\n1. Tamaño y cantidad de muestras:\n2. Objetivo del ensayo a realizar:\n3. Tipo de muestra:\n4. Nombre de la persona de contacto:\n5. Institución:\n6. Documento (C.C o NIT) de la persona o empresa que realiza el pago:\n7. Teléfono:\n8. Dirección:\n9. Correo electrónico:\n\nSi usted es usuario Uniandes y hace parte de un proyecto dentro de la Universidad le solicitamos nos indique:\n\n- Facultad/departamento al que pertenece:\n- Nombre del profesor responsable:\n- Nombre/código del proyecto:\n\nQuedamos atentos a sus comentarios,\n\nCordial saludo,\n\nCENTRO DE MICROSCOPÍA\nVICERRECTORÍA DE INVESTIGACIONES\nCarrera 1 N° 18A-10, Edificio B, Laboratorio 101.\nTel: (57-1) 339 4949 Ext. 1444\n&quot;&quot;&quot;\n\n\n\nGESTOR_RECIBO_CORREO = &quot;cjvergara&#64;uniandes.edu.co&quot;\nGESTOR_FACTURA_CORREO = &quot;carrodri&#64;uniandes.edu.co&quot;\n\nGESTOR_RECIBO_SUBJECT = &quot;Generación recibo de pago&quot;\nGESTOR_RECIBO_MENSAJE = &quot;&quot;&quot;Estimado Carlos Julio,\n\nPor este medio solicitamos la generación del recibo de pago correspondiente a la cotización adjunta.\n\nCordial saludo,\n\nCENTRO DE MICROSCOPÍA\nVICERRECTORÍA DE INVESTIGACIONES\nCarrera 1 N° 18A-10, Edificio B, Laboratorio 101.\nTel: (57-1) 339 4949 Ext. 1444\n&quot;&quot;&quot;\n\nGESTOR_FACTURA_SUBJECT = &quot;Generación factura&quot;\nGESTOR_FACTURA_MENSAJE = &quot;&quot;&quot;Estimada Mercedes,\n\nPor este medio solicitamos la generación de la factura correspondiente a la cotización y orden/aceptación de servicio adjuntas\n\nCordial saludo,\n\nCENTRO DE MICROSCOPÍA\nVICERRECTORÍA DE INVESTIGACIONES\nCarrera 1 N° 18A-10, Edificio B, Laboratorio 101.\nTel: (57-1) 339 4949 Ext. 1444\n&quot;&quot;&quot;\n\nSEND_SERVER = &quot;smtp-mail.outlook.com&quot;\nSEND_PORT = 587\n\nFROM = &quot;cmicroscopia&#64;uniandes.edu.co&quot;\nPASSWORD = &quot;fmPClsKmZcKpwppowqlhZQ==&quot;\n'</em><a class="headerlink" href="#microbill.constants.DEFAULT_CONFIG" title="Enlazar permanentemente con esta definición">¶</a></dt>
-<dd><p>configuracion por defecto</p>
-</dd></dl>
-
-<dl class="data">
-<dt id="microbill.constants.DOCUMENTOS_FINALES">
-<code class="sig-prename descclassname">microbill.constants.</code><code class="sig-name descname">DOCUMENTOS_FINALES</code><em class="property"> = ['Transferencia interna', 'Factura', 'Recibo']</em><a class="headerlink" href="#microbill.constants.DOCUMENTOS_FINALES" title="Enlazar permanentemente con esta definición">¶</a></dt>
-<dd><p>posibles formas de pago de una cotizacion</p>
-</dd></dl>
-
-<dl class="data">
-<dt id="microbill.constants.EQUIPOS">
-<code class="sig-prename descclassname">microbill.constants.</code><code class="sig-name descname">EQUIPOS</code><em class="property"> = ['Administrativo_01', 'Muestras_02', 'SEM_03', 'AFM_04', 'Confocal_05', 'FIB_06', 'Fluorescencia_07', 'LUKER_08']</em><a class="headerlink" href="#microbill.constants.EQUIPOS" title="Enlazar permanentemente con esta definición">¶</a></dt>
-<dd><p>almacena el nombre de las hojas del archivo de precios</p>
-</dd></dl>
-
-<dl class="data">
-<dt id="microbill.constants.EQUIPOS_KEYS">
-<code class="sig-prename descclassname">microbill.constants.</code><code class="sig-name descname">EQUIPOS_KEYS</code><em class="property"> = ['Código', 'Descripción', 'Interno', 'Académico', 'Industria', 'Independiente']</em><a class="headerlink" href="#microbill.constants.EQUIPOS_KEYS" title="Enlazar permanentemente con esta definición">¶</a></dt>
-<dd><p>columnas que deben tener el archivo de precios</p>
-</dd></dl>
-
-<dl class="data">
-<dt id="microbill.constants.EXIT_CODE_REBOOT">
-<code class="sig-prename descclassname">microbill.constants.</code><code class="sig-name descname">EXIT_CODE_REBOOT</code><em class="property"> = -14</em><a class="headerlink" href="#microbill.constants.EXIT_CODE_REBOOT" title="Enlazar permanentemente con esta definición">¶</a></dt>
-<dd><p>código usado para señalizar que el programa busca reiniciar automaticamente</p>
-</dd></dl>
-
-<dl class="data">
-<dt id="microbill.constants.OLD_DIR">
-<code class="sig-prename descclassname">microbill.constants.</code><code class="sig-name descname">OLD_DIR</code><em class="property"> = '/home/juan/Documents/Microbill/microbill/Old'</em><a class="headerlink" href="#microbill.constants.OLD_DIR" title="Enlazar permanentemente con esta definición">¶</a></dt>
-<dd><p>carpeta donde se guardan las cotizaciones realizadas</p>
-</dd></dl>
-
-<dl class="data">
-<dt id="microbill.constants.PDF_DIR">
-<code class="sig-prename descclassname">microbill.constants.</code><code class="sig-name descname">PDF_DIR</code><em class="property"> = '/home/juan/Documents/Microbill/microbill/PDF'</em><a class="headerlink" href="#microbill.constants.PDF_DIR" title="Enlazar permanentemente con esta definición">¶</a></dt>
-<dd><p>carpeta donde se guardan los PDFs asociados a cotizaciones realizadas</p>
-</dd></dl>
-
-<dl class="data">
-<dt id="microbill.constants.PRECIOS_FILE">
-<code class="sig-prename descclassname">microbill.constants.</code><code class="sig-name descname">PRECIOS_FILE</code><em class="property"> = '/home/juan/Documents/Microbill/microbill/Registers/Precios.xlsx'</em><a class="headerlink" href="#microbill.constants.PRECIOS_FILE" title="Enlazar permanentemente con esta definición">¶</a></dt>
-<dd><p>archivo que contiene los precios de los servicios a usar</p>
-</dd></dl>
-
-<dl class="data">
-<dt id="microbill.constants.PRICES_DIVISION">
-<code class="sig-prename descclassname">microbill.constants.</code><code class="sig-name descname">PRICES_DIVISION</code><em class="property"> = ['Interno', 'Académico', 'Industria', 'Independiente']</em><a class="headerlink" href="#microbill.constants.PRICES_DIVISION" title="Enlazar permanentemente con esta definición">¶</a></dt>
-<dd><p>categorias que dividen los precios de los servicios</p>
-</dd></dl>
-
-<dl class="data">
-<dt id="microbill.constants.REGISTERS_DIR">
-<code class="sig-prename descclassname">microbill.constants.</code><code class="sig-name descname">REGISTERS_DIR</code><em class="property"> = '/home/juan/Documents/Microbill/microbill/Registers'</em><a class="headerlink" href="#microbill.constants.REGISTERS_DIR" title="Enlazar permanentemente con esta definición">¶</a></dt>
-<dd><p>carpeta donde se encuentran los archivos de registro de Microbill (Excel de los que se alimenta)</p>
-</dd></dl>
-
-<dl class="data">
-<dt id="microbill.constants.REGISTRO_FILE">
-<code class="sig-prename descclassname">microbill.constants.</code><code class="sig-name descname">REGISTRO_FILE</code><em class="property"> = '/home/juan/Documents/Microbill/microbill/Registers/Registro.xlsx'</em><a class="headerlink" href="#microbill.constants.REGISTRO_FILE" title="Enlazar permanentemente con esta definición">¶</a></dt>
-<dd><p>archivo en el que se guarda el resumen de la información de las cotizaciones</p>
-</dd></dl>
-
-<dl class="data">
-<dt id="microbill.constants.REGISTRO_KEYS">
-<code class="sig-prename descclassname">microbill.constants.</code><code class="sig-name descname">REGISTRO_KEYS</code><em class="property"> = ['Cotización', 'Fecha', 'Nombre', 'Correo', 'Teléfono', 'Institución', 'Interno', 'Responsable', 'Muestra', 'Equipo', 'Elaboró', 'Modificó', 'Estado', 'Pago', 'Referencia', 'Aplicó', 'Tipo de Pago', 'Valor']</em><a class="headerlink" href="#microbill.constants.REGISTRO_KEYS" title="Enlazar permanentemente con esta definición">¶</a></dt>
-<dd><p>columnas que debe tener el archivo de registro</p>
-</dd></dl>
-
-<dl class="data">
-<dt id="microbill.constants.REPORTE_INTERNO">
-<code class="sig-prename descclassname">microbill.constants.</code><code class="sig-name descname">REPORTE_INTERNO</code><em class="property"> = 'ReporteInterno.xlsx'</em><a class="headerlink" href="#microbill.constants.REPORTE_INTERNO" title="Enlazar permanentemente con esta definición">¶</a></dt>
-<dd><p>nombre del archivo en donde se almacenan los reportes internos</p>
-</dd></dl>
-
+<span id="microbill-constants-module"></span><h1>microbill.constants Module<a class="headerlink" href="#module-microbill.constants" title="Enlazar permanentemente con este título">¶</a></h1>
+<div class="section" id="variables">
+<h2>Variables<a class="headerlink" href="#variables" title="Enlazar permanentemente con este título">¶</a></h2>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="api/microbill.constants.AFM_04.html#microbill.constants.AFM_04" title="microbill.constants.AFM_04"><code class="xref py py-obj docutils literal notranslate"><span class="pre">AFM_04</span></code></a></p></td>
+<td><p>Two-dimensional size-mutable, potentially heterogeneous tabular data structure with labeled axes (rows and columns).</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="api/microbill.constants.Administrativo_01.html#microbill.constants.Administrativo_01" title="microbill.constants.Administrativo_01"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Administrativo_01</span></code></a></p></td>
+<td><p>Two-dimensional size-mutable, potentially heterogeneous tabular data structure with labeled axes (rows and columns).</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="api/microbill.constants.BASE_DIR.html#microbill.constants.BASE_DIR" title="microbill.constants.BASE_DIR"><code class="xref py py-obj docutils literal notranslate"><span class="pre">BASE_DIR</span></code></a></p></td>
+<td><p>directorio base desde el cual se está ejecutando el intérprete de Python</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="api/microbill.constants.CLIENTES_FILE.html#microbill.constants.CLIENTES_FILE" title="microbill.constants.CLIENTES_FILE"><code class="xref py py-obj docutils literal notranslate"><span class="pre">CLIENTES_FILE</span></code></a></p></td>
+<td><p>archivo en el que se guarda el registro de clientes</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="api/microbill.constants.CLIENTES_KEYS.html#microbill.constants.CLIENTES_KEYS" title="microbill.constants.CLIENTES_KEYS"><code class="xref py py-obj docutils literal notranslate"><span class="pre">CLIENTES_KEYS</span></code></a></p></td>
+<td><p>columnas que debe tener el archivo de clientes</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="api/microbill.constants.Confocal_05.html#microbill.constants.Confocal_05" title="microbill.constants.Confocal_05"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Confocal_05</span></code></a></p></td>
+<td><p>Two-dimensional size-mutable, potentially heterogeneous tabular data structure with labeled axes (rows and columns).</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="api/microbill.constants.DAEMON_DF.html#microbill.constants.DAEMON_DF" title="microbill.constants.DAEMON_DF"><code class="xref py py-obj docutils literal notranslate"><span class="pre">DAEMON_DF</span></code></a></p></td>
+<td><p>Dictionary that remembers insertion order</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="api/microbill.constants.DAEMON_SUBCLASSES.html#microbill.constants.DAEMON_SUBCLASSES" title="microbill.constants.DAEMON_SUBCLASSES"><code class="xref py py-obj docutils literal notranslate"><span class="pre">DAEMON_SUBCLASSES</span></code></a></p></td>
+<td><p>list() -&gt; new empty list list(iterable) -&gt; new list initialized from iterable’s items</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="api/microbill.constants.DEBUG.html#microbill.constants.DEBUG" title="microbill.constants.DEBUG"><code class="xref py py-obj docutils literal notranslate"><span class="pre">DEBUG</span></code></a></p></td>
+<td><p>bool(x) -&gt; bool</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="api/microbill.constants.DEFAULT_CONFIG.html#microbill.constants.DEFAULT_CONFIG" title="microbill.constants.DEFAULT_CONFIG"><code class="xref py py-obj docutils literal notranslate"><span class="pre">DEFAULT_CONFIG</span></code></a></p></td>
+<td><p>configuracion por defecto</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="api/microbill.constants.DOCUMENTOS_FINALES.html#microbill.constants.DOCUMENTOS_FINALES" title="microbill.constants.DOCUMENTOS_FINALES"><code class="xref py py-obj docutils literal notranslate"><span class="pre">DOCUMENTOS_FINALES</span></code></a></p></td>
+<td><p>posibles formas de pago de una cotizacion</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="api/microbill.constants.EQUIPOS.html#microbill.constants.EQUIPOS" title="microbill.constants.EQUIPOS"><code class="xref py py-obj docutils literal notranslate"><span class="pre">EQUIPOS</span></code></a></p></td>
+<td><p>almacena el nombre de las hojas del archivo de precios</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="api/microbill.constants.EQUIPOS_KEYS.html#microbill.constants.EQUIPOS_KEYS" title="microbill.constants.EQUIPOS_KEYS"><code class="xref py py-obj docutils literal notranslate"><span class="pre">EQUIPOS_KEYS</span></code></a></p></td>
+<td><p>columnas que deben tener el archivo de precios</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="api/microbill.constants.EXIT_CODE_REBOOT.html#microbill.constants.EXIT_CODE_REBOOT" title="microbill.constants.EXIT_CODE_REBOOT"><code class="xref py py-obj docutils literal notranslate"><span class="pre">EXIT_CODE_REBOOT</span></code></a></p></td>
+<td><p>código usado para señalizar que el programa busca reiniciar automaticamente</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="api/microbill.constants.FIB_06.html#microbill.constants.FIB_06" title="microbill.constants.FIB_06"><code class="xref py py-obj docutils literal notranslate"><span class="pre">FIB_06</span></code></a></p></td>
+<td><p>Two-dimensional size-mutable, potentially heterogeneous tabular data structure with labeled axes (rows and columns).</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="api/microbill.constants.Fluorescencia_07.html#microbill.constants.Fluorescencia_07" title="microbill.constants.Fluorescencia_07"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Fluorescencia_07</span></code></a></p></td>
+<td><p>Two-dimensional size-mutable, potentially heterogeneous tabular data structure with labeled axes (rows and columns).</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="api/microbill.constants.INDEPENDIENTES_DF.html#microbill.constants.INDEPENDIENTES_DF" title="microbill.constants.INDEPENDIENTES_DF"><code class="xref py py-obj docutils literal notranslate"><span class="pre">INDEPENDIENTES_DF</span></code></a></p></td>
+<td><p>Two-dimensional size-mutable, potentially heterogeneous tabular data structure with labeled axes (rows and columns).</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="api/microbill.constants.INDEPENDIENTES_FILE.html#microbill.constants.INDEPENDIENTES_FILE" title="microbill.constants.INDEPENDIENTES_FILE"><code class="xref py py-obj docutils literal notranslate"><span class="pre">INDEPENDIENTES_FILE</span></code></a></p></td>
+<td><p>str(object=””) -&gt; str str(bytes_or_buffer[, encoding[, errors]]) -&gt; str</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="api/microbill.constants.LUKER_08.html#microbill.constants.LUKER_08" title="microbill.constants.LUKER_08"><code class="xref py py-obj docutils literal notranslate"><span class="pre">LUKER_08</span></code></a></p></td>
+<td><p>Two-dimensional size-mutable, potentially heterogeneous tabular data structure with labeled axes (rows and columns).</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="api/microbill.constants.Muestras_02.html#microbill.constants.Muestras_02" title="microbill.constants.Muestras_02"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Muestras_02</span></code></a></p></td>
+<td><p>Two-dimensional size-mutable, potentially heterogeneous tabular data structure with labeled axes (rows and columns).</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="api/microbill.constants.OLD_DIR.html#microbill.constants.OLD_DIR" title="microbill.constants.OLD_DIR"><code class="xref py py-obj docutils literal notranslate"><span class="pre">OLD_DIR</span></code></a></p></td>
+<td><p>carpeta donde se guardan las cotizaciones realizadas</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="api/microbill.constants.PDF_DIR.html#microbill.constants.PDF_DIR" title="microbill.constants.PDF_DIR"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PDF_DIR</span></code></a></p></td>
+<td><p>carpeta donde se guardan los PDFs asociados a cotizaciones realizadas</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="api/microbill.constants.PRECIOS_DAEMON_FILE.html#microbill.constants.PRECIOS_DAEMON_FILE" title="microbill.constants.PRECIOS_DAEMON_FILE"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PRECIOS_DAEMON_FILE</span></code></a></p></td>
+<td><p>str(object=””) -&gt; str str(bytes_or_buffer[, encoding[, errors]]) -&gt; str</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="api/microbill.constants.PRECIOS_FILE.html#microbill.constants.PRECIOS_FILE" title="microbill.constants.PRECIOS_FILE"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PRECIOS_FILE</span></code></a></p></td>
+<td><p>archivo que contiene los precios de los servicios a usar</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="api/microbill.constants.PRICES_DIVISION.html#microbill.constants.PRICES_DIVISION" title="microbill.constants.PRICES_DIVISION"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PRICES_DIVISION</span></code></a></p></td>
+<td><p>categorias que dividen los precios de los servicios</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="api/microbill.constants.REGISTERS_DIR.html#microbill.constants.REGISTERS_DIR" title="microbill.constants.REGISTERS_DIR"><code class="xref py py-obj docutils literal notranslate"><span class="pre">REGISTERS_DIR</span></code></a></p></td>
+<td><p>carpeta donde se encuentran los archivos de registro de Microbill (Excel de los que se alimenta)</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="api/microbill.constants.REGISTRO_FILE.html#microbill.constants.REGISTRO_FILE" title="microbill.constants.REGISTRO_FILE"><code class="xref py py-obj docutils literal notranslate"><span class="pre">REGISTRO_FILE</span></code></a></p></td>
+<td><p>archivo en el que se guarda el resumen de la información de las cotizaciones</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="api/microbill.constants.REGISTRO_KEYS.html#microbill.constants.REGISTRO_KEYS" title="microbill.constants.REGISTRO_KEYS"><code class="xref py py-obj docutils literal notranslate"><span class="pre">REGISTRO_KEYS</span></code></a></p></td>
+<td><p>columnas que debe tener el archivo de registro</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="api/microbill.constants.REPORTE_INTERNO.html#microbill.constants.REPORTE_INTERNO" title="microbill.constants.REPORTE_INTERNO"><code class="xref py py-obj docutils literal notranslate"><span class="pre">REPORTE_INTERNO</span></code></a></p></td>
+<td><p>nombre del archivo en donde se almacenan los reportes internos</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="api/microbill.constants.SEM_03.html#microbill.constants.SEM_03" title="microbill.constants.SEM_03"><code class="xref py py-obj docutils literal notranslate"><span class="pre">SEM_03</span></code></a></p></td>
+<td><p>Two-dimensional size-mutable, potentially heterogeneous tabular data structure with labeled axes (rows and columns).</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="api/microbill.constants.data.html#microbill.constants.data" title="microbill.constants.data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">data</span></code></a></p></td>
+<td><p>Two-dimensional size-mutable, potentially heterogeneous tabular data structure with labeled axes (rows and columns).</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="api/microbill.constants.df.html#microbill.constants.df" title="microbill.constants.df"><code class="xref py py-obj docutils literal notranslate"><span class="pre">df</span></code></a></p></td>
+<td><p>Dictionary that remembers insertion order</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="api/microbill.constants.item.html#microbill.constants.item" title="microbill.constants.item"><code class="xref py py-obj docutils literal notranslate"><span class="pre">item</span></code></a></p></td>
+<td><p>str(object=””) -&gt; str str(bytes_or_buffer[, encoding[, errors]]) -&gt; str</p></td>
+</tr>
+</tbody>
+</table>
+</div>
 </div>
 
 
@@ -151,12 +165,20 @@
       </div>
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
         <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Tabla de contenido</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">microbill.constants Module</a><ul>
+<li><a class="reference internal" href="#variables">Variables</a></li>
+</ul>
+</li>
+</ul>
+
   <h4>Tema anterior</h4>
   <p class="topless"><a href="index.html"
                         title="capítulo anterior">Bienvenidos a la documentación de Microbill!</a></p>
   <h4>Próximo tema</h4>
-  <p class="topless"><a href="correo.html"
-                        title="próximo capítulo">microbill.correo Module</a></p>
+  <p class="topless"><a href="api/microbill.constants.AFM_04.html"
+                        title="próximo capítulo">AFM_04</a></p>
   <div role="note" aria-label="source link">
     <h3>Esta página</h3>
     <ul class="this-page-menu">
@@ -188,7 +210,7 @@
           <a href="py-modindex.html" title="Índice de Módulos Python"
              >módulos</a> |</li>
         <li class="right" >
-          <a href="correo.html" title="microbill.correo Module"
+          <a href="api/microbill.constants.AFM_04.html" title="AFM_04"
              >siguiente</a> |</li>
         <li class="right" >
           <a href="index.html" title="Bienvenidos a la documentación de Microbill!"
