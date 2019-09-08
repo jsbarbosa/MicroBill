@@ -1,0 +1,155 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml" lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <title>ReporteWindow &#8212; documentación de Microbill - </title>
+    <link rel="stylesheet" href="../_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/graphviz.css" />
+    
+    <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/language_data.js"></script>
+    <script type="text/javascript" src="../_static/translations.js"></script>
+    
+    <link rel="index" title="Índice" href="../genindex.html" />
+    <link rel="search" title="Búsqueda" href="../search.html" />
+    <link rel="next" title="RequestWindow" href="microbill.windows.RequestWindow.html" />
+    <link rel="prev" title="CalendarWidget" href="microbill.windows.CalendarWidget.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navegación</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="Índice General"
+             accesskey="I">índice</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Índice de Módulos Python"
+             >módulos</a> |</li>
+        <li class="right" >
+          <a href="microbill.windows.RequestWindow.html" title="RequestWindow"
+             accesskey="N">siguiente</a> |</li>
+        <li class="right" >
+          <a href="microbill.windows.CalendarWidget.html" title="CalendarWidget"
+             accesskey="P">anterior</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">documentación de Microbill - </a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../windows.html" accesskey="U">microbill.windows Module</a> &#187;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="reportewindow">
+<h1>ReporteWindow<a class="headerlink" href="#reportewindow" title="Enlazar permanentemente con este título">¶</a></h1>
+<dl class="class">
+<dt id="microbill.windows.ReporteWindow">
+<em class="property">class </em><code class="sig-prename descclassname">microbill.windows.</code><code class="sig-name descname">ReporteWindow</code><span class="sig-paren">(</span><em class="sig-param">parent=None</em><span class="sig-paren">)</span><a class="headerlink" href="#microbill.windows.ReporteWindow" title="Enlazar permanentemente con esta definición">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="microbill.windows.SubWindow.html#microbill.windows.SubWindow" title="microbill.windows.SubWindow"><code class="xref py py-class docutils literal notranslate"><span class="pre">microbill.windows.SubWindow</span></code></a></p>
+<p>Clase que visualiza la ventana de generación interna de reportes</p>
+<p class="rubric">Methods Summary</p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#microbill.windows.ReporteWindow.changeDate" title="microbill.windows.ReporteWindow.changeDate"><code class="xref py py-obj docutils literal notranslate"><span class="pre">changeDate</span></code></a>(self)</p></td>
+<td><p>Método que gestiona los cambios de fecha que se da en los campos desde y hasta</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#microbill.windows.ReporteWindow.send" title="microbill.windows.ReporteWindow.send"><code class="xref py py-obj docutils literal notranslate"><span class="pre">send</span></code></a>(self)</p></td>
+<td><p>Método que envía por correo electrónico el reporte de las cotizaciones realizadas entre el rango de fechas.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#microbill.windows.ReporteWindow.setText" title="microbill.windows.ReporteWindow.setText"><code class="xref py py-obj docutils literal notranslate"><span class="pre">setText</span></code></a>(self)</p></td>
+<td><p>Método que actualiza el número de cotizaciones seleccionadas</p></td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Methods Documentation</p>
+<dl class="method">
+<dt id="microbill.windows.ReporteWindow.changeDate">
+<code class="sig-name descname">changeDate</code><span class="sig-paren">(</span><em class="sig-param">self</em><span class="sig-paren">)</span><a class="headerlink" href="#microbill.windows.ReporteWindow.changeDate" title="Enlazar permanentemente con esta definición">¶</a></dt>
+<dd><p>Método que gestiona los cambios de fecha que se da en los campos desde y hasta</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="microbill.windows.ReporteWindow.send">
+<code class="sig-name descname">send</code><span class="sig-paren">(</span><em class="sig-param">self</em><span class="sig-paren">)</span><a class="headerlink" href="#microbill.windows.ReporteWindow.send" title="Enlazar permanentemente con esta definición">¶</a></dt>
+<dd><p>Método que envía por correo electrónico el reporte de las cotizaciones realizadas entre el rango de fechas.
+En caso de que ocurra un error al momento de enviar el correo, muestra un dialogo con el error</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="microbill.windows.ReporteWindow.setText">
+<code class="sig-name descname">setText</code><span class="sig-paren">(</span><em class="sig-param">self</em><span class="sig-paren">)</span><a class="headerlink" href="#microbill.windows.ReporteWindow.setText" title="Enlazar permanentemente con esta definición">¶</a></dt>
+<dd><p>Método que actualiza el número de cotizaciones seleccionadas</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h4>Tema anterior</h4>
+  <p class="topless"><a href="microbill.windows.CalendarWidget.html"
+                        title="capítulo anterior">CalendarWidget</a></p>
+  <h4>Próximo tema</h4>
+  <p class="topless"><a href="microbill.windows.RequestWindow.html"
+                        title="próximo capítulo">RequestWindow</a></p>
+  <div role="note" aria-label="source link">
+    <h3>Esta página</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/api/microbill.windows.ReporteWindow.rst.txt"
+            rel="nofollow">Mostrar el código</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Búsqueda rápida</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Ir a" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navegación</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="Índice General"
+             >índice</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Índice de Módulos Python"
+             >módulos</a> |</li>
+        <li class="right" >
+          <a href="microbill.windows.RequestWindow.html" title="RequestWindow"
+             >siguiente</a> |</li>
+        <li class="right" >
+          <a href="microbill.windows.CalendarWidget.html" title="CalendarWidget"
+             >anterior</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">documentación de Microbill - </a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../windows.html" >microbill.windows Module</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Derechos de autor 2019, Juan Barbosa.
+      Creado con <a href="http://sphinx-doc.org/">Sphinx</a> 2.1.2.
+    </div>
+  </body>
+</html>

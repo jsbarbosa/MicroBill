@@ -1,0 +1,19 @@
+RequestWindow
+=============
+
+.. currentmodule:: microbill.windows
+
+.. autoclass:: RequestWindow
+   :show-inheritance:
+
+   .. rubric:: Methods Summary
+
+   .. autosummary::
+
+      ~RequestWindow.errorWindow
+      ~RequestWindow.sendCorreo
+
+   .. rubric:: Methods Documentation
+
+   .. automethod:: errorWindow
+   .. automethod:: sendCorreo

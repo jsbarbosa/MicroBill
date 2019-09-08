@@ -1,0 +1,36 @@
+<map id="inheritancec5c420ccb3" name="inheritancec5c420ccb3">
+<area shape="rect" id="node1" href="api/microbill.windows.AutoLineEdit.html#microbill.windows.AutoLineEdit" target="_top" title="Clase base para los LineEdit que presentan la posibilidad de autocompletar" alt="" coords="413,25,461,37"/>
+<area shape="rect" id="node2" title="QLineEdit(parent: QWidget = None)" alt="" coords="322,48,362,60"/>
+<area shape="rect" id="node3" href="api/microbill.windows.BuscarWindow.html#microbill.windows.BuscarWindow" target="_top" title="Clase que representa la ventana en donde se puede buscar en el registro de cotizaciones viejas" alt="" coords="503,209,558,221"/>
+<area shape="rect" id="node4" href="api/microbill.windows.SubWindow.html#microbill.windows.SubWindow" target="_top" title="Clase que representa la clase base para todas las subventanas que se abren al interior" alt="" coords="414,267,460,278"/>
+<area shape="rect" id="node11" href="api/microbill.windows.CotizacionWindow.html#microbill.windows.CotizacionWindow" target="_top" title="Clase que representa la ventana Cotización" alt="" coords="497,232,564,244"/>
+<area shape="rect" id="node12" href="api/microbill.windows.DescontarWindow.html#microbill.windows.DescontarWindow" target="_top" title="Clase que representa la ventana en donde se pueden descontar los usos asociados a una cotización" alt="" coords="498,255,563,267"/>
+<area shape="rect" id="node13" href="api/microbill.windows.GestorWindow.html#microbill.windows.GestorWindow" target="_top" title="Clase que visualiza la ventana de Enviar correo a Gestor" alt="" coords="503,278,558,290"/>
+<area shape="rect" id="node20" href="api/microbill.windows.PropiedadesWindow.html#microbill.windows.PropiedadesWindow" target="_top" title="PropiedadesWindow" alt="" coords="495,301,567,313"/>
+<area shape="rect" id="node34" href="api/microbill.windows.ReporteWindow.html#microbill.windows.ReporteWindow" target="_top" title="Clase que visualiza la ventana de generación interna de reportes" alt="" coords="502,324,560,336"/>
+<area shape="rect" id="node35" href="api/microbill.windows.RequestWindow.html#microbill.windows.RequestWindow" target="_top" title="Clase que visualiza la ventana de solicitud de información" alt="" coords="501,347,560,359"/>
+<area shape="rect" id="node5" href="api/microbill.windows.CalendarWidget.html#microbill.windows.CalendarWidget" target="_top" title="Clase que genera una vista para un Calendario con formato dd/MM/yyyy" alt="" coords="501,186,560,198"/>
+<area shape="rect" id="node6" title="QDateTimeEdit(parent: QWidget = None)" alt="" coords="409,186,465,198"/>
+<area shape="rect" id="node7" href="api/microbill.windows.ChangeCotizacion.html#microbill.windows.ChangeCotizacion" target="_top" title="Clase que representa el dialogo que se muestra cuando se desea cargar una cotización vieja" alt="" coords="405,48,469,60"/>
+<area shape="rect" id="node8" title="QDialog(parent: QWidget = None, flags: Union[Qt.WindowFlags, Qt.WindowType] = Qt.WindowFlags())" alt="" coords="325,94,359,106"/>
+<area shape="rect" id="node9" href="api/microbill.windows.CodigosDialog.html#microbill.windows.CodigosDialog" target="_top" title="Clase que representa la vista en donde se muestran todos los servicios disponibles por el Centro" alt="" coords="410,71,464,83"/>
+<area shape="rect" id="node10" href="api/microbill.windows.CorreoDialog.html#microbill.windows.CorreoDialog" target="_top" title="Clase que representa el dialogo de envio de correos" alt="" coords="412,94,462,106"/>
+<area shape="rect" id="node17" title="QMessageBox(parent: QWidget = None)" alt="" coords="410,117,464,129"/>
+<area shape="rect" id="node14" href="api/microbill.windows.MainWindow.html#microbill.windows.MainWindow" target="_top" title="Clase que representa la ventana principal en donde se encuentran todas las demás ventanas de Microbill" alt="" coords="412,140,461,152"/>
+<area shape="rect" id="node15" title="QMainWindow(parent: QWidget = None, flags: Union[Qt.WindowFlags, Qt.WindowType] = Qt.WindowFlags())" alt="" coords="315,140,369,152"/>
+<area shape="rect" id="node16" href="api/microbill.windows.NoNotificacion.html#microbill.windows.NoNotificacion" target="_top" title="Clase que muestra un díalogo en donde se alerta que el usuario no será notificado (no se enviará un correo)" alt="" coords="503,117,558,129"/>
+<area shape="rect" id="node18" href="api/microbill.windows.PandasModel.html#microbill.windows.PandasModel" target="_top" title="Clase que representa un Pandas DataFrame como un QAbstractTableModel" alt="" coords="412,2,462,14"/>
+<area shape="rect" id="node19" title="QAbstractTableModel(parent: QObject = None)" alt="" coords="305,14,379,26"/>
+<area shape="rect" id="node21" title="QAbstractItemModel(parent: QObject = None)" alt="" coords="211,83,283,94"/>
+<area shape="rect" id="node22" title="QObject(parent: QObject = None)" alt="" coords="145,117,180,129"/>
+<area shape="rect" id="node27" title="QWidget(parent: QWidget = None, flags: Union[Qt.WindowFlags, Qt.WindowType] = Qt.WindowFlags())" alt="" coords="228,140,265,152"/>
+<area shape="rect" id="node23" title="QAbstractItemView(parent: QWidget = None)" alt="" coords="496,163,565,175"/>
+<area shape="rect" id="node32" title="QTableView(parent: QWidget = None)" alt="" coords="589,163,635,175"/>
+<area shape="rect" id="node24" title="QAbstractScrollArea(parent: QWidget = None)" alt="" coords="401,163,472,175"/>
+<area shape="rect" id="node25" title="QFrame(parent: QWidget = None, flags: Union[Qt.WindowFlags, Qt.WindowType] = Qt.WindowFlags())" alt="" coords="325,163,359,175"/>
+<area shape="rect" id="node26" title="QAbstractSpinBox(parent: QWidget = None)" alt="" coords="310,186,374,198"/>
+<area shape="rect" id="node28" title="QMdiSubWindow(parent: QWidget = None, flags: Union[Qt.WindowFlags, Qt.WindowType] = Qt.WindowFlags())" alt="" coords="312,238,373,250"/>
+<area shape="rect" id="node30" title="QPaintDevice()" alt="" coords="137,140,188,152"/>
+<area shape="rect" id="node33" title="QTableWidget(parent: QWidget = None)" alt="" coords="657,163,710,175"/>
+<area shape="rect" id="node36" href="api/microbill.windows.Table.html#microbill.windows.Table" target="_top" title="Clase usada para representar la tabla en donde se ingresan los servicios y su cantidad en CotizacionWindow" alt="" coords="732,163,766,175"/>
+</map>

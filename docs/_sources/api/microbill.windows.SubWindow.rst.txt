@@ -1,0 +1,19 @@
+SubWindow
+=========
+
+.. currentmodule:: microbill.windows
+
+.. autoclass:: SubWindow
+   :show-inheritance:
+
+   .. rubric:: Methods Summary
+
+   .. autosummary::
+
+      ~SubWindow.closeEvent
+      ~SubWindow.show
+
+   .. rubric:: Methods Documentation
+
+   .. automethod:: closeEvent
+   .. automethod:: show

@@ -1,0 +1,31 @@
+ChangeCotizacion
+================
+
+.. currentmodule:: microbill.windows
+
+.. autoclass:: ChangeCotizacion
+   :show-inheritance:
+
+   .. rubric:: Attributes Summary
+
+   .. autosummary::
+
+      ~ChangeCotizacion.FIELDS
+      ~ChangeCotizacion.WIDGETS
+
+   .. rubric:: Methods Summary
+
+   .. autosummary::
+
+      ~ChangeCotizacion.accept2
+      ~ChangeCotizacion.autoCompletar
+
+   .. rubric:: Attributes Documentation
+
+   .. autoattribute:: FIELDS
+   .. autoattribute:: WIDGETS
+
+   .. rubric:: Methods Documentation
+
+   .. automethod:: accept2
+   .. automethod:: autoCompletar

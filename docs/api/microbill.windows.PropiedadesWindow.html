@@ -1,0 +1,242 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml" lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <title>PropiedadesWindow &#8212; documentación de Microbill - </title>
+    <link rel="stylesheet" href="../_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/graphviz.css" />
+    
+    <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/language_data.js"></script>
+    <script type="text/javascript" src="../_static/translations.js"></script>
+    
+    <link rel="index" title="Índice" href="../genindex.html" />
+    <link rel="search" title="Búsqueda" href="../search.html" />
+    <link rel="prev" title="RequestWindow" href="microbill.windows.RequestWindow.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navegación</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="Índice General"
+             accesskey="I">índice</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Índice de Módulos Python"
+             >módulos</a> |</li>
+        <li class="right" >
+          <a href="microbill.windows.RequestWindow.html" title="RequestWindow"
+             accesskey="P">anterior</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">documentación de Microbill - </a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../windows.html" accesskey="U">microbill.windows Module</a> &#187;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="propiedadeswindow">
+<h1>PropiedadesWindow<a class="headerlink" href="#propiedadeswindow" title="Enlazar permanentemente con este título">¶</a></h1>
+<dl class="class">
+<dt id="microbill.windows.PropiedadesWindow">
+<em class="property">class </em><code class="sig-prename descclassname">microbill.windows.</code><code class="sig-name descname">PropiedadesWindow</code><span class="sig-paren">(</span><em class="sig-param">parent=None</em><span class="sig-paren">)</span><a class="headerlink" href="#microbill.windows.PropiedadesWindow" title="Enlazar permanentemente con esta definición">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="microbill.windows.SubWindow.html#microbill.windows.SubWindow" title="microbill.windows.SubWindow"><code class="xref py py-class docutils literal notranslate"><span class="pre">microbill.windows.SubWindow</span></code></a></p>
+<p>Clase que visualiza la ventana de configuración de Microbill</p>
+<p class="rubric">Attributes Summary</p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#microbill.windows.PropiedadesWindow.CONSTANTS" title="microbill.windows.PropiedadesWindow.CONSTANTS"><code class="xref py py-obj docutils literal notranslate"><span class="pre">CONSTANTS</span></code></a></p></td>
+<td><p>nombre de las constantes asociadas a los campos que contiene esta ventana</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#microbill.windows.PropiedadesWindow.KEY" title="microbill.windows.PropiedadesWindow.KEY"><code class="xref py py-obj docutils literal notranslate"><span class="pre">KEY</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#microbill.windows.PropiedadesWindow.WIDGETS" title="microbill.windows.PropiedadesWindow.WIDGETS"><code class="xref py py-obj docutils literal notranslate"><span class="pre">WIDGETS</span></code></a></p></td>
+<td><p>nombre de los campos que contiene esta ventana computerfriendly</p></td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Methods Summary</p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#microbill.windows.PropiedadesWindow.confirmation" title="microbill.windows.PropiedadesWindow.confirmation"><code class="xref py py-obj docutils literal notranslate"><span class="pre">confirmation</span></code></a>(self)</p></td>
+<td><p>Método que realiza la confirmación de la acción guardar nuevas propiedades</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#microbill.windows.PropiedadesWindow.guardar" title="microbill.windows.PropiedadesWindow.guardar"><code class="xref py py-obj docutils literal notranslate"><span class="pre">guardar</span></code></a>(self)</p></td>
+<td><p>Método que guarda la configuración actual a disco duro.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#microbill.windows.PropiedadesWindow.leer" title="microbill.windows.PropiedadesWindow.leer"><code class="xref py py-obj docutils literal notranslate"><span class="pre">leer</span></code></a>(self)</p></td>
+<td><p>Método que lee el archivo de configuración por defecto, para realizar esto es necesario escribirlo y reiniciar la aplicación</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#microbill.windows.PropiedadesWindow.populateCorreoTab" title="microbill.windows.PropiedadesWindow.populateCorreoTab"><code class="xref py py-obj docutils literal notranslate"><span class="pre">populateCorreoTab</span></code></a>(self)</p></td>
+<td><p>Método que puebla la pestaña asociada a la configuración del correo</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#microbill.windows.PropiedadesWindow.populatePDFTab" title="microbill.windows.PropiedadesWindow.populatePDFTab"><code class="xref py py-obj docutils literal notranslate"><span class="pre">populatePDFTab</span></code></a>(self)</p></td>
+<td><p>Método que puebla la pestaña asociada a la configuración de PDFs</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#microbill.windows.PropiedadesWindow.populateVariosTab" title="microbill.windows.PropiedadesWindow.populateVariosTab"><code class="xref py py-obj docutils literal notranslate"><span class="pre">populateVariosTab</span></code></a>(self)</p></td>
+<td><p>Método que puebla la pestaña asociada a varios</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#microbill.windows.PropiedadesWindow.readValues" title="microbill.windows.PropiedadesWindow.readValues"><code class="xref py py-obj docutils literal notranslate"><span class="pre">readValues</span></code></a>(self, default)</p></td>
+<td><p>Método que lee la información del módulo config y la visualiza en la interfaz</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#microbill.windows.PropiedadesWindow.saveValues" title="microbill.windows.PropiedadesWindow.saveValues"><code class="xref py py-obj docutils literal notranslate"><span class="pre">saveValues</span></code></a>(self)</p></td>
+<td><p>Método que genera el archivo de configuración config.py</p></td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Attributes Documentation</p>
+<dl class="attribute">
+<dt id="microbill.windows.PropiedadesWindow.CONSTANTS">
+<code class="sig-name descname">CONSTANTS</code><em class="property"> = ['CODIGO_GESTION', 'CODIGO_PEP', 'TERMINOS_Y_CONDICIONES', 'CONFIDENCIALIDAD', 'DEPENDENCIAS', 'ALTO_LOGO', 'ANCHO_LOGO', 'LOGO_PATH', 'ADMINS', 'SPLASH_LOGO_PATH', 'CENTRO', 'SALUDO', 'COTIZACION_SUBJECT_RECIBO', 'COTIZACION_MENSAJE_RECIBO', 'COTIZACION_MENSAJE_TRANSFERENCIA', 'COTIZACION_MENSAJE_FACTURA', 'REQUEST_SUBJECT', 'REQUEST_MENSAJE', 'REPORTE_SUBJECT', 'REPORTE_MENSAJE', 'GESTOR_RECIBO_CORREO', 'GESTOR_RECIBO_SUBJECT', 'GESTOR_RECIBO_MENSAJE', 'GESTOR_FACTURA_CORREO', 'GESTOR_FACTURA_SUBJECT', 'GESTOR_FACTURA_MENSAJE', 'SEND_SERVER', 'SEND_PORT', 'FROM', 'PASSWORD']</em><a class="headerlink" href="#microbill.windows.PropiedadesWindow.CONSTANTS" title="Enlazar permanentemente con esta definición">¶</a></dt>
+<dd><p>nombre de las constantes asociadas a los campos que contiene esta ventana</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="microbill.windows.PropiedadesWindow.KEY">
+<code class="sig-name descname">KEY</code><em class="property"> = '1234567890123456'</em><a class="headerlink" href="#microbill.windows.PropiedadesWindow.KEY" title="Enlazar permanentemente con esta definición">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="microbill.windows.PropiedadesWindow.WIDGETS">
+<code class="sig-name descname">WIDGETS</code><em class="property"> = ['codigo_gestion', 'codigo_pep', 'terminos', 'confidencialidad', 'dependencias', 'alto_logo', 'ancho_logo', 'logo_path', 'admins', 'splash_logo_path', 'centro', 'saludo', 'subject_cotizaciones', 'mensaje_recibo', 'mensaje_transferencia', 'mensaje_factura', 'subject_solicitud', 'mensaje_solicitud', 'subject_reportes', 'mensaje_reportes', 'correo_grecibo', 'subject_grecibo', 'mensaje_grecibo', 'correo_gfactura', 'subject_gfactura', 'mensaje_gfactura', 'send_server', 'send_port', 'user', 'password']</em><a class="headerlink" href="#microbill.windows.PropiedadesWindow.WIDGETS" title="Enlazar permanentemente con esta definición">¶</a></dt>
+<dd><p>nombre de los campos que contiene esta ventana computerfriendly</p>
+</dd></dl>
+
+<p class="rubric">Methods Documentation</p>
+<dl class="method">
+<dt id="microbill.windows.PropiedadesWindow.confirmation">
+<code class="sig-name descname">confirmation</code><span class="sig-paren">(</span><em class="sig-param">self</em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#microbill.windows.PropiedadesWindow.confirmation" title="Enlazar permanentemente con esta definición">¶</a></dt>
+<dd><p>Método que realiza la confirmación de la acción guardar nuevas propiedades</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><dl class="simple">
+<dt>bool: True si el usuario acepta, False de lo contrario</dt><dd></dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="microbill.windows.PropiedadesWindow.guardar">
+<code class="sig-name descname">guardar</code><span class="sig-paren">(</span><em class="sig-param">self</em><span class="sig-paren">)</span><a class="headerlink" href="#microbill.windows.PropiedadesWindow.guardar" title="Enlazar permanentemente con esta definición">¶</a></dt>
+<dd><p>Método que guarda la configuración actual a disco duro. Antes de realizar el procedimiento pide verificación
+del usuario</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="microbill.windows.PropiedadesWindow.leer">
+<code class="sig-name descname">leer</code><span class="sig-paren">(</span><em class="sig-param">self</em><span class="sig-paren">)</span><a class="headerlink" href="#microbill.windows.PropiedadesWindow.leer" title="Enlazar permanentemente con esta definición">¶</a></dt>
+<dd><p>Método que lee el archivo de configuración por defecto, para realizar esto es necesario escribirlo y
+reiniciar la aplicación</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="microbill.windows.PropiedadesWindow.populateCorreoTab">
+<code class="sig-name descname">populateCorreoTab</code><span class="sig-paren">(</span><em class="sig-param">self</em><span class="sig-paren">)</span><a class="headerlink" href="#microbill.windows.PropiedadesWindow.populateCorreoTab" title="Enlazar permanentemente con esta definición">¶</a></dt>
+<dd><p>Método que puebla la pestaña asociada a la configuración del correo</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="microbill.windows.PropiedadesWindow.populatePDFTab">
+<code class="sig-name descname">populatePDFTab</code><span class="sig-paren">(</span><em class="sig-param">self</em><span class="sig-paren">)</span><a class="headerlink" href="#microbill.windows.PropiedadesWindow.populatePDFTab" title="Enlazar permanentemente con esta definición">¶</a></dt>
+<dd><p>Método que puebla la pestaña asociada a la configuración de PDFs</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="microbill.windows.PropiedadesWindow.populateVariosTab">
+<code class="sig-name descname">populateVariosTab</code><span class="sig-paren">(</span><em class="sig-param">self</em><span class="sig-paren">)</span><a class="headerlink" href="#microbill.windows.PropiedadesWindow.populateVariosTab" title="Enlazar permanentemente con esta definición">¶</a></dt>
+<dd><p>Método que puebla la pestaña asociada a varios</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="microbill.windows.PropiedadesWindow.readValues">
+<code class="sig-name descname">readValues</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">default:bool=False</em><span class="sig-paren">)</span><a class="headerlink" href="#microbill.windows.PropiedadesWindow.readValues" title="Enlazar permanentemente con esta definición">¶</a></dt>
+<dd><p>Método que lee la información del módulo config y la visualiza en la interfaz</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>default: bool</strong></dt><dd><p>True si se quieren leer los valores por defecto. False en caso contrario</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="microbill.windows.PropiedadesWindow.saveValues">
+<code class="sig-name descname">saveValues</code><span class="sig-paren">(</span><em class="sig-param">self</em><span class="sig-paren">)</span><a class="headerlink" href="#microbill.windows.PropiedadesWindow.saveValues" title="Enlazar permanentemente con esta definición">¶</a></dt>
+<dd><p>Método que genera el archivo de configuración config.py</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h4>Tema anterior</h4>
+  <p class="topless"><a href="microbill.windows.RequestWindow.html"
+                        title="capítulo anterior">RequestWindow</a></p>
+  <div role="note" aria-label="source link">
+    <h3>Esta página</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/api/microbill.windows.PropiedadesWindow.rst.txt"
+            rel="nofollow">Mostrar el código</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Búsqueda rápida</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Ir a" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navegación</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="Índice General"
+             >índice</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Índice de Módulos Python"
+             >módulos</a> |</li>
+        <li class="right" >
+          <a href="microbill.windows.RequestWindow.html" title="RequestWindow"
+             >anterior</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">documentación de Microbill - </a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../windows.html" >microbill.windows Module</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Derechos de autor 2019, Juan Barbosa.
+      Creado con <a href="http://sphinx-doc.org/">Sphinx</a> 2.1.2.
+    </div>
+  </body>
+</html>

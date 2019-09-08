@@ -1,0 +1,7 @@
+NoNotificacion
+==============
+
+.. currentmodule:: microbill.windows
+
+.. autoclass:: NoNotificacion
+   :show-inheritance:

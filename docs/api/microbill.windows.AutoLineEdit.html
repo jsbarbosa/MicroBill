@@ -1,0 +1,177 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml" lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <title>AutoLineEdit &#8212; documentación de Microbill - </title>
+    <link rel="stylesheet" href="../_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/graphviz.css" />
+    
+    <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/language_data.js"></script>
+    <script type="text/javascript" src="../_static/translations.js"></script>
+    
+    <link rel="index" title="Índice" href="../genindex.html" />
+    <link rel="search" title="Búsqueda" href="../search.html" />
+    <link rel="next" title="ChangeCotizacion" href="microbill.windows.ChangeCotizacion.html" />
+    <link rel="prev" title="Table" href="microbill.windows.Table.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navegación</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="Índice General"
+             accesskey="I">índice</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Índice de Módulos Python"
+             >módulos</a> |</li>
+        <li class="right" >
+          <a href="microbill.windows.ChangeCotizacion.html" title="ChangeCotizacion"
+             accesskey="N">siguiente</a> |</li>
+        <li class="right" >
+          <a href="microbill.windows.Table.html" title="Table"
+             accesskey="P">anterior</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">documentación de Microbill - </a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../windows.html" accesskey="U">microbill.windows Module</a> &#187;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="autolineedit">
+<h1>AutoLineEdit<a class="headerlink" href="#autolineedit" title="Enlazar permanentemente con este título">¶</a></h1>
+<dl class="class">
+<dt id="microbill.windows.AutoLineEdit">
+<em class="property">class </em><code class="sig-prename descclassname">microbill.windows.</code><code class="sig-name descname">AutoLineEdit</code><span class="sig-paren">(</span><em class="sig-param">target: str</em>, <em class="sig-param">parent</em><span class="sig-paren">)</span><a class="headerlink" href="#microbill.windows.AutoLineEdit" title="Enlazar permanentemente con esta definición">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyQt5.QtWidgets.QLineEdit</span></code></p>
+<p>Clase base para los LineEdit que presentan la posibilidad de autocompletar</p>
+<p class="rubric">Attributes Summary</p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#microbill.windows.AutoLineEdit.AUTOCOMPLETE" title="microbill.windows.AutoLineEdit.AUTOCOMPLETE"><code class="xref py py-obj docutils literal notranslate"><span class="pre">AUTOCOMPLETE</span></code></a></p></td>
+<td><p>Campos que pueden ser autocompletados</p></td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Methods Summary</p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#microbill.windows.AutoLineEdit.event" title="microbill.windows.AutoLineEdit.event"><code class="xref py py-obj docutils literal notranslate"><span class="pre">event</span></code></a>(self, event)</p></td>
+<td><p>Método que se encarga de modificar el comportamiento del widget, dependiendo de si la funcionalidad de autocompletar se encuentra o no activada desde la ventana padre</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#microbill.windows.AutoLineEdit.update" title="microbill.windows.AutoLineEdit.update"><code class="xref py py-obj docutils literal notranslate"><span class="pre">update</span></code></a>(self)</p></td>
+<td><p>Método que modifica el contenido del atributo model, en caso que la base de clientes o registro cambie</p></td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Attributes Documentation</p>
+<dl class="attribute">
+<dt id="microbill.windows.AutoLineEdit.AUTOCOMPLETE">
+<code class="sig-name descname">AUTOCOMPLETE</code><em class="property"> = ['Nombre', 'Correo', 'Documento', 'Teléfono', 'Cotización']</em><a class="headerlink" href="#microbill.windows.AutoLineEdit.AUTOCOMPLETE" title="Enlazar permanentemente con esta definición">¶</a></dt>
+<dd><p>Campos que pueden ser autocompletados</p>
+</dd></dl>
+
+<p class="rubric">Methods Documentation</p>
+<dl class="method">
+<dt id="microbill.windows.AutoLineEdit.event">
+<code class="sig-name descname">event</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">event</em><span class="sig-paren">)</span><a class="headerlink" href="#microbill.windows.AutoLineEdit.event" title="Enlazar permanentemente con esta definición">¶</a></dt>
+<dd><p>Método que se encarga de modificar el comportamiento del widget, dependiendo de si la funcionalidad de
+autocompletar se encuentra o no activada desde la ventana padre</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>event: pyqt event</strong></dt><dd></dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt>bool</dt><dd></dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="microbill.windows.AutoLineEdit.update">
+<code class="sig-name descname">update</code><span class="sig-paren">(</span><em class="sig-param">self</em><span class="sig-paren">)</span><a class="headerlink" href="#microbill.windows.AutoLineEdit.update" title="Enlazar permanentemente con esta definición">¶</a></dt>
+<dd><p>Método que modifica el contenido del atributo model, en caso que la base de clientes o registro cambie</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h4>Tema anterior</h4>
+  <p class="topless"><a href="microbill.windows.Table.html"
+                        title="capítulo anterior">Table</a></p>
+  <h4>Próximo tema</h4>
+  <p class="topless"><a href="microbill.windows.ChangeCotizacion.html"
+                        title="próximo capítulo">ChangeCotizacion</a></p>
+  <div role="note" aria-label="source link">
+    <h3>Esta página</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/api/microbill.windows.AutoLineEdit.rst.txt"
+            rel="nofollow">Mostrar el código</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Búsqueda rápida</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Ir a" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navegación</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="Índice General"
+             >índice</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Índice de Módulos Python"
+             >módulos</a> |</li>
+        <li class="right" >
+          <a href="microbill.windows.ChangeCotizacion.html" title="ChangeCotizacion"
+             >siguiente</a> |</li>
+        <li class="right" >
+          <a href="microbill.windows.Table.html" title="Table"
+             >anterior</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">documentación de Microbill - </a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../windows.html" >microbill.windows Module</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Derechos de autor 2019, Juan Barbosa.
+      Creado con <a href="http://sphinx-doc.org/">Sphinx</a> 2.1.2.
+    </div>
+  </body>
+</html>

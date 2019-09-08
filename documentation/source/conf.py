@@ -31,7 +31,7 @@ extensions = ['sphinx.ext.autodoc',
               'sphinx.ext.coverage',
               'numpydoc',
               'sphinx_automodapi.automodapi',
-              'sphinx_automodapi.smart_resolver',
+              #'sphinx_automodapi.smart_resolver',
               'sphinx.ext.graphviz',
 ]
 

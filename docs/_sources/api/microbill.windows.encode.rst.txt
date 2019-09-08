@@ -1,0 +1,6 @@
+encode
+======
+
+.. currentmodule:: microbill.windows
+
+.. autofunction:: encode

@@ -1,0 +1,287 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml" lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <title>MainWindow &#8212; documentación de Microbill - </title>
+    <link rel="stylesheet" href="../_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/graphviz.css" />
+    
+    <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/language_data.js"></script>
+    <script type="text/javascript" src="../_static/translations.js"></script>
+    
+    <link rel="index" title="Índice" href="../genindex.html" />
+    <link rel="search" title="Búsqueda" href="../search.html" />
+    <link rel="next" title="CalendarWidget" href="microbill.windows.CalendarWidget.html" />
+    <link rel="prev" title="GestorWindow" href="microbill.windows.GestorWindow.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navegación</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="Índice General"
+             accesskey="I">índice</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Índice de Módulos Python"
+             >módulos</a> |</li>
+        <li class="right" >
+          <a href="microbill.windows.CalendarWidget.html" title="CalendarWidget"
+             accesskey="N">siguiente</a> |</li>
+        <li class="right" >
+          <a href="microbill.windows.GestorWindow.html" title="GestorWindow"
+             accesskey="P">anterior</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">documentación de Microbill - </a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../windows.html" accesskey="U">microbill.windows Module</a> &#187;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="mainwindow">
+<h1>MainWindow<a class="headerlink" href="#mainwindow" title="Enlazar permanentemente con este título">¶</a></h1>
+<dl class="class">
+<dt id="microbill.windows.MainWindow">
+<em class="property">class </em><code class="sig-prename descclassname">microbill.windows.</code><code class="sig-name descname">MainWindow</code><span class="sig-paren">(</span><em class="sig-param">parent=None</em><span class="sig-paren">)</span><a class="headerlink" href="#microbill.windows.MainWindow" title="Enlazar permanentemente con esta definición">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyQt5.QtWidgets.QMainWindow</span></code></p>
+<p>Clase que representa la ventana principal en donde se encuentran todas las demás ventanas de Microbill</p>
+<p class="rubric">Methods Summary</p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#microbill.windows.MainWindow.abrirPDFCotizacion" title="microbill.windows.MainWindow.abrirPDFCotizacion"><code class="xref py py-obj docutils literal notranslate"><span class="pre">abrirPDFCotizacion</span></code></a>(self, cot)</p></td>
+<td><p>Método que trata de abrir el PDF de una cotización cuyo número entra por parámetro</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#microbill.windows.MainWindow.buscarHandler" title="microbill.windows.MainWindow.buscarHandler"><code class="xref py py-obj docutils literal notranslate"><span class="pre">buscarHandler</span></code></a>(self)</p></td>
+<td><p>Método que muestra la ventana de búsqueda</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#microbill.windows.MainWindow.centerOnScreen" title="microbill.windows.MainWindow.centerOnScreen"><code class="xref py py-obj docutils literal notranslate"><span class="pre">centerOnScreen</span></code></a>(self)</p></td>
+<td><p>Método que se encarga de centrar la ventana en la pantalla</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#microbill.windows.MainWindow.closeEvent" title="microbill.windows.MainWindow.closeEvent"><code class="xref py py-obj docutils literal notranslate"><span class="pre">closeEvent</span></code></a>(self, event)</p></td>
+<td><p>Método que sobreescribe el método closeEvent para realizar una verificación previa de que todas las subventanas estén cerradas antes de proceder a cerrar la aplicación</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#microbill.windows.MainWindow.cotizacionHandler" title="microbill.windows.MainWindow.cotizacionHandler"><code class="xref py py-obj docutils literal notranslate"><span class="pre">cotizacionHandler</span></code></a>(self)</p></td>
+<td><p>Método encargado de mostrar la ventana de cotización</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#microbill.windows.MainWindow.descontarHandler" title="microbill.windows.MainWindow.descontarHandler"><code class="xref py py-obj docutils literal notranslate"><span class="pre">descontarHandler</span></code></a>(self)</p></td>
+<td><p>Método que muestra la ventana de descontar</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#microbill.windows.MainWindow.gestorHandler" title="microbill.windows.MainWindow.gestorHandler"><code class="xref py py-obj docutils literal notranslate"><span class="pre">gestorHandler</span></code></a>(self)</p></td>
+<td><p>Método que muestra la ventana de envío a gestor</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#microbill.windows.MainWindow.modificarCotizacion" title="microbill.windows.MainWindow.modificarCotizacion"><code class="xref py py-obj docutils literal notranslate"><span class="pre">modificarCotizacion</span></code></a>(self, cot)</p></td>
+<td><p>Método que carga la cotización que entra por parámetro y la visualiza en la ventana de cotizaciones</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#microbill.windows.MainWindow.openHandler" title="microbill.windows.MainWindow.openHandler"><code class="xref py py-obj docutils literal notranslate"><span class="pre">openHandler</span></code></a>(self)</p></td>
+<td><p>Método que abre el directorio de PDFs</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#microbill.windows.MainWindow.propiedadesHandler" title="microbill.windows.MainWindow.propiedadesHandler"><code class="xref py py-obj docutils literal notranslate"><span class="pre">propiedadesHandler</span></code></a>(self)</p></td>
+<td><p>Método que muestra la ventana de propiedades</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#microbill.windows.MainWindow.reboot" title="microbill.windows.MainWindow.reboot"><code class="xref py py-obj docutils literal notranslate"><span class="pre">reboot</span></code></a>(self)</p></td>
+<td><p>Método que reinicia la aplicación</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#microbill.windows.MainWindow.registrosHandler" title="microbill.windows.MainWindow.registrosHandler"><code class="xref py py-obj docutils literal notranslate"><span class="pre">registrosHandler</span></code></a>(self)</p></td>
+<td><p>Método que abre el directorio de registros</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#microbill.windows.MainWindow.reporteHandler" title="microbill.windows.MainWindow.reporteHandler"><code class="xref py py-obj docutils literal notranslate"><span class="pre">reporteHandler</span></code></a>(self)</p></td>
+<td><p>Método que muestra la ventana de reporte</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#microbill.windows.MainWindow.requestHandler" title="microbill.windows.MainWindow.requestHandler"><code class="xref py py-obj docutils literal notranslate"><span class="pre">requestHandler</span></code></a>(self)</p></td>
+<td><p>Método que muestra la ventana de solicitar datos</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#microbill.windows.MainWindow.updateDataFrames" title="microbill.windows.MainWindow.updateDataFrames"><code class="xref py py-obj docutils literal notranslate"><span class="pre">updateDataFrames</span></code></a>(self)</p></td>
+<td><p>Método que se encarga de revisar periódicamente que los dataframes de clientes y registro que se encuentran en RAM sean los mismos que se encuentran en disco duro</p></td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Methods Documentation</p>
+<dl class="method">
+<dt id="microbill.windows.MainWindow.abrirPDFCotizacion">
+<code class="sig-name descname">abrirPDFCotizacion</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">cot:str</em><span class="sig-paren">)</span><a class="headerlink" href="#microbill.windows.MainWindow.abrirPDFCotizacion" title="Enlazar permanentemente con esta definición">¶</a></dt>
+<dd><p>Método que trata de abrir el PDF de una cotización cuyo número entra por parámetro</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>cot: str</strong></dt><dd><p>número de la cotización</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="microbill.windows.MainWindow.buscarHandler">
+<code class="sig-name descname">buscarHandler</code><span class="sig-paren">(</span><em class="sig-param">self</em><span class="sig-paren">)</span><a class="headerlink" href="#microbill.windows.MainWindow.buscarHandler" title="Enlazar permanentemente con esta definición">¶</a></dt>
+<dd><p>Método que muestra la ventana de búsqueda</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="microbill.windows.MainWindow.centerOnScreen">
+<code class="sig-name descname">centerOnScreen</code><span class="sig-paren">(</span><em class="sig-param">self</em><span class="sig-paren">)</span><a class="headerlink" href="#microbill.windows.MainWindow.centerOnScreen" title="Enlazar permanentemente con esta definición">¶</a></dt>
+<dd><p>Método que se encarga de centrar la ventana en la pantalla</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="microbill.windows.MainWindow.closeEvent">
+<code class="sig-name descname">closeEvent</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">event</em><span class="sig-paren">)</span><a class="headerlink" href="#microbill.windows.MainWindow.closeEvent" title="Enlazar permanentemente con esta definición">¶</a></dt>
+<dd><p>Método que sobreescribe el método closeEvent para realizar una verificación previa de que todas las
+subventanas estén cerradas antes de proceder a cerrar la aplicación</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>event: pyqt event</strong></dt><dd></dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="microbill.windows.MainWindow.cotizacionHandler">
+<code class="sig-name descname">cotizacionHandler</code><span class="sig-paren">(</span><em class="sig-param">self</em><span class="sig-paren">)</span><a class="headerlink" href="#microbill.windows.MainWindow.cotizacionHandler" title="Enlazar permanentemente con esta definición">¶</a></dt>
+<dd><p>Método encargado de mostrar la ventana de cotización</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="microbill.windows.MainWindow.descontarHandler">
+<code class="sig-name descname">descontarHandler</code><span class="sig-paren">(</span><em class="sig-param">self</em><span class="sig-paren">)</span><a class="headerlink" href="#microbill.windows.MainWindow.descontarHandler" title="Enlazar permanentemente con esta definición">¶</a></dt>
+<dd><p>Método que muestra la ventana de descontar</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="microbill.windows.MainWindow.gestorHandler">
+<code class="sig-name descname">gestorHandler</code><span class="sig-paren">(</span><em class="sig-param">self</em><span class="sig-paren">)</span><a class="headerlink" href="#microbill.windows.MainWindow.gestorHandler" title="Enlazar permanentemente con esta definición">¶</a></dt>
+<dd><p>Método que muestra la ventana de envío a gestor</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="microbill.windows.MainWindow.modificarCotizacion">
+<code class="sig-name descname">modificarCotizacion</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">cot:str</em><span class="sig-paren">)</span><a class="headerlink" href="#microbill.windows.MainWindow.modificarCotizacion" title="Enlazar permanentemente con esta definición">¶</a></dt>
+<dd><p>Método que carga la cotización que entra por parámetro y la visualiza en la ventana de cotizaciones</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>cot: str</strong></dt><dd><p>número de la cotización a cargar</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="microbill.windows.MainWindow.openHandler">
+<code class="sig-name descname">openHandler</code><span class="sig-paren">(</span><em class="sig-param">self</em><span class="sig-paren">)</span><a class="headerlink" href="#microbill.windows.MainWindow.openHandler" title="Enlazar permanentemente con esta definición">¶</a></dt>
+<dd><p>Método que abre el directorio de PDFs</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="microbill.windows.MainWindow.propiedadesHandler">
+<code class="sig-name descname">propiedadesHandler</code><span class="sig-paren">(</span><em class="sig-param">self</em><span class="sig-paren">)</span><a class="headerlink" href="#microbill.windows.MainWindow.propiedadesHandler" title="Enlazar permanentemente con esta definición">¶</a></dt>
+<dd><p>Método que muestra la ventana de propiedades</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="microbill.windows.MainWindow.reboot">
+<code class="sig-name descname">reboot</code><span class="sig-paren">(</span><em class="sig-param">self</em><span class="sig-paren">)</span><a class="headerlink" href="#microbill.windows.MainWindow.reboot" title="Enlazar permanentemente con esta definición">¶</a></dt>
+<dd><p>Método que reinicia la aplicación</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="microbill.windows.MainWindow.registrosHandler">
+<code class="sig-name descname">registrosHandler</code><span class="sig-paren">(</span><em class="sig-param">self</em><span class="sig-paren">)</span><a class="headerlink" href="#microbill.windows.MainWindow.registrosHandler" title="Enlazar permanentemente con esta definición">¶</a></dt>
+<dd><p>Método que abre el directorio de registros</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="microbill.windows.MainWindow.reporteHandler">
+<code class="sig-name descname">reporteHandler</code><span class="sig-paren">(</span><em class="sig-param">self</em><span class="sig-paren">)</span><a class="headerlink" href="#microbill.windows.MainWindow.reporteHandler" title="Enlazar permanentemente con esta definición">¶</a></dt>
+<dd><p>Método que muestra la ventana de reporte</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="microbill.windows.MainWindow.requestHandler">
+<code class="sig-name descname">requestHandler</code><span class="sig-paren">(</span><em class="sig-param">self</em><span class="sig-paren">)</span><a class="headerlink" href="#microbill.windows.MainWindow.requestHandler" title="Enlazar permanentemente con esta definición">¶</a></dt>
+<dd><p>Método que muestra la ventana de solicitar datos</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="microbill.windows.MainWindow.updateDataFrames">
+<code class="sig-name descname">updateDataFrames</code><span class="sig-paren">(</span><em class="sig-param">self</em><span class="sig-paren">)</span><a class="headerlink" href="#microbill.windows.MainWindow.updateDataFrames" title="Enlazar permanentemente con esta definición">¶</a></dt>
+<dd><p>Método que se encarga de revisar periódicamente que los dataframes de clientes y registro que se encuentran
+en RAM sean los mismos que se encuentran en disco duro</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h4>Tema anterior</h4>
+  <p class="topless"><a href="microbill.windows.GestorWindow.html"
+                        title="capítulo anterior">GestorWindow</a></p>
+  <h4>Próximo tema</h4>
+  <p class="topless"><a href="microbill.windows.CalendarWidget.html"
+                        title="próximo capítulo">CalendarWidget</a></p>
+  <div role="note" aria-label="source link">
+    <h3>Esta página</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/api/microbill.windows.MainWindow.rst.txt"
+            rel="nofollow">Mostrar el código</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Búsqueda rápida</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Ir a" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navegación</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="Índice General"
+             >índice</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Índice de Módulos Python"
+             >módulos</a> |</li>
+        <li class="right" >
+          <a href="microbill.windows.CalendarWidget.html" title="CalendarWidget"
+             >siguiente</a> |</li>
+        <li class="right" >
+          <a href="microbill.windows.GestorWindow.html" title="GestorWindow"
+             >anterior</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">documentación de Microbill - </a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../windows.html" >microbill.windows Module</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Derechos de autor 2019, Juan Barbosa.
+      Creado con <a href="http://sphinx-doc.org/">Sphinx</a> 2.1.2.
+    </div>
+  </body>
+</html>

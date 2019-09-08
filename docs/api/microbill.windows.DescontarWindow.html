@@ -1,0 +1,283 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml" lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <title>DescontarWindow &#8212; documentación de Microbill - </title>
+    <link rel="stylesheet" href="../_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/graphviz.css" />
+    
+    <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/language_data.js"></script>
+    <script type="text/javascript" src="../_static/translations.js"></script>
+    
+    <link rel="index" title="Índice" href="../genindex.html" />
+    <link rel="search" title="Búsqueda" href="../search.html" />
+    <link rel="next" title="PandasModel" href="microbill.windows.PandasModel.html" />
+    <link rel="prev" title="NoNotificacion" href="microbill.windows.NoNotificacion.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navegación</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="Índice General"
+             accesskey="I">índice</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Índice de Módulos Python"
+             >módulos</a> |</li>
+        <li class="right" >
+          <a href="microbill.windows.PandasModel.html" title="PandasModel"
+             accesskey="N">siguiente</a> |</li>
+        <li class="right" >
+          <a href="microbill.windows.NoNotificacion.html" title="NoNotificacion"
+             accesskey="P">anterior</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">documentación de Microbill - </a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../windows.html" accesskey="U">microbill.windows Module</a> &#187;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="descontarwindow">
+<h1>DescontarWindow<a class="headerlink" href="#descontarwindow" title="Enlazar permanentemente con este título">¶</a></h1>
+<dl class="class">
+<dt id="microbill.windows.DescontarWindow">
+<em class="property">class </em><code class="sig-prename descclassname">microbill.windows.</code><code class="sig-name descname">DescontarWindow</code><span class="sig-paren">(</span><em class="sig-param">parent=None</em><span class="sig-paren">)</span><a class="headerlink" href="#microbill.windows.DescontarWindow" title="Enlazar permanentemente con esta definición">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="microbill.windows.SubWindow.html#microbill.windows.SubWindow" title="microbill.windows.SubWindow"><code class="xref py py-class docutils literal notranslate"><span class="pre">microbill.windows.SubWindow</span></code></a></p>
+<p>Clase que representa la ventana en donde se pueden descontar los usos asociados a una cotización</p>
+<p class="rubric">Attributes Summary</p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#microbill.windows.DescontarWindow.FIELDS" title="microbill.windows.DescontarWindow.FIELDS"><code class="xref py py-obj docutils literal notranslate"><span class="pre">FIELDS</span></code></a></p></td>
+<td><p>nombre de los campos que contiene esta ventana</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#microbill.windows.DescontarWindow.WIDGETS" title="microbill.windows.DescontarWindow.WIDGETS"><code class="xref py py-obj docutils literal notranslate"><span class="pre">WIDGETS</span></code></a></p></td>
+<td><p>nombre de los campos que contiene esta ventana computerfriendly</p></td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Methods Summary</p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#microbill.windows.DescontarWindow.checkHandler" title="microbill.windows.DescontarWindow.checkHandler"><code class="xref py py-obj docutils literal notranslate"><span class="pre">checkHandler</span></code></a>(self, state)</p></td>
+<td><p>Método que agrupa el comportamiento de los campos: referencia, y elaborado para su activación o desactivación en función del valor que entra por parámetro</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#microbill.windows.DescontarWindow.clean" title="microbill.windows.DescontarWindow.clean"><code class="xref py py-obj docutils literal notranslate"><span class="pre">clean</span></code></a>(self)</p></td>
+<td><p>Método que se encarga de limpiar la vista actual</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#microbill.windows.DescontarWindow.cleanWidgets" title="microbill.windows.DescontarWindow.cleanWidgets"><code class="xref py py-obj docutils literal notranslate"><span class="pre">cleanWidgets</span></code></a>(self)</p></td>
+<td><p>Método que se encarga de limpiar la información de los campos de la vista</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#microbill.windows.DescontarWindow.cotizacionChanged" title="microbill.windows.DescontarWindow.cotizacionChanged"><code class="xref py py-obj docutils literal notranslate"><span class="pre">cotizacionChanged</span></code></a>(self, text)</p></td>
+<td><p>Método que carga la cotización cuyo código entra por parámetro y la visualiza en los campos disponibles en esta ventana</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#microbill.windows.DescontarWindow.equipoChanged" title="microbill.windows.DescontarWindow.equipoChanged"><code class="xref py py-obj docutils literal notranslate"><span class="pre">equipoChanged</span></code></a>(self, index)</p></td>
+<td><p>Método que se encarga de modificar los widgets dado un cambio en el equipo</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#microbill.windows.DescontarWindow.errorWindow" title="microbill.windows.DescontarWindow.errorWindow"><code class="xref py py-obj docutils literal notranslate"><span class="pre">errorWindow</span></code></a>(self, exception)</p></td>
+<td><p>Método que se encarga de mostrar un diálogo de alerta para todas las excepciones que se puedan generan en esta ventana</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#microbill.windows.DescontarWindow.guardarHandler" title="microbill.windows.DescontarWindow.guardarHandler"><code class="xref py py-obj docutils literal notranslate"><span class="pre">guardarHandler</span></code></a>(self)</p></td>
+<td><p>Método que se encarga de guardar las modificaciones a una cotización luego de realizar la disminución de las cantidad o el aplicado por</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#microbill.windows.DescontarWindow.otrosHandler" title="microbill.windows.DescontarWindow.otrosHandler"><code class="xref py py-obj docutils literal notranslate"><span class="pre">otrosHandler</span></code></a>(self)</p></td>
+<td><p>Método que se encarga de crear o borrar los servicios agregados posteriormente de la ventana</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#microbill.windows.DescontarWindow.removeOtros" title="microbill.windows.DescontarWindow.removeOtros"><code class="xref py py-obj docutils literal notranslate"><span class="pre">removeOtros</span></code></a>(self)</p></td>
+<td><p>Método que remueve los widgets asociados a los servicios que fueron agregados posteriormente</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#microbill.windows.DescontarWindow.sendCorreo" title="microbill.windows.DescontarWindow.sendCorreo"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sendCorreo</span></code></a>(self)</p></td>
+<td><p>Método que se encarga de enviar un correo electrónico con el estado de la cotización actual, siempre que la opción de notificación se encuentre activa</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#microbill.windows.DescontarWindow.updateDataFrames" title="microbill.windows.DescontarWindow.updateDataFrames"><code class="xref py py-obj docutils literal notranslate"><span class="pre">updateDataFrames</span></code></a>(self)</p></td>
+<td><p>Método que se encarga de actualizar el AutoLineEdit de cotizaciones con las cotizaciones disponibles</p></td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Attributes Documentation</p>
+<dl class="attribute">
+<dt id="microbill.windows.DescontarWindow.FIELDS">
+<code class="sig-name descname">FIELDS</code><em class="property"> = ['Cotización', 'Fecha', 'Nombre', 'Correo', 'Equipo', 'Valor']</em><a class="headerlink" href="#microbill.windows.DescontarWindow.FIELDS" title="Enlazar permanentemente con esta definición">¶</a></dt>
+<dd><p>nombre de los campos que contiene esta ventana</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="microbill.windows.DescontarWindow.WIDGETS">
+<code class="sig-name descname">WIDGETS</code><em class="property"> = ['cotizacion', 'fecha', 'nombre', 'correo', 'equipo', 'valor']</em><a class="headerlink" href="#microbill.windows.DescontarWindow.WIDGETS" title="Enlazar permanentemente con esta definición">¶</a></dt>
+<dd><p>nombre de los campos que contiene esta ventana computerfriendly</p>
+</dd></dl>
+
+<p class="rubric">Methods Documentation</p>
+<dl class="method">
+<dt id="microbill.windows.DescontarWindow.checkHandler">
+<code class="sig-name descname">checkHandler</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">state:bool</em><span class="sig-paren">)</span><a class="headerlink" href="#microbill.windows.DescontarWindow.checkHandler" title="Enlazar permanentemente con esta definición">¶</a></dt>
+<dd><p>Método que agrupa el comportamiento de los campos: referencia, y elaborado para su activación o
+desactivación en función del valor que entra por parámetro</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="microbill.windows.DescontarWindow.clean">
+<code class="sig-name descname">clean</code><span class="sig-paren">(</span><em class="sig-param">self</em><span class="sig-paren">)</span><a class="headerlink" href="#microbill.windows.DescontarWindow.clean" title="Enlazar permanentemente con esta definición">¶</a></dt>
+<dd><p>Método que se encarga de limpiar la vista actual</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="microbill.windows.DescontarWindow.cleanWidgets">
+<code class="sig-name descname">cleanWidgets</code><span class="sig-paren">(</span><em class="sig-param">self</em><span class="sig-paren">)</span><a class="headerlink" href="#microbill.windows.DescontarWindow.cleanWidgets" title="Enlazar permanentemente con esta definición">¶</a></dt>
+<dd><p>Método que se encarga de limpiar la información de los campos de la vista</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="microbill.windows.DescontarWindow.cotizacionChanged">
+<code class="sig-name descname">cotizacionChanged</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">text:str</em><span class="sig-paren">)</span><a class="headerlink" href="#microbill.windows.DescontarWindow.cotizacionChanged" title="Enlazar permanentemente con esta definición">¶</a></dt>
+<dd><p>Método que carga la cotización cuyo código entra por parámetro y la visualiza en los campos disponibles
+en esta ventana</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>text: str</strong></dt><dd><p>código de la cotización a cargar</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="microbill.windows.DescontarWindow.equipoChanged">
+<code class="sig-name descname">equipoChanged</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">index:int</em><span class="sig-paren">)</span><a class="headerlink" href="#microbill.windows.DescontarWindow.equipoChanged" title="Enlazar permanentemente con esta definición">¶</a></dt>
+<dd><p>Método que se encarga de modificar los widgets dado un cambio en el equipo</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>index: int</strong></dt><dd><p>índice de la selección del equipo</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="microbill.windows.DescontarWindow.errorWindow">
+<code class="sig-name descname">errorWindow</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">exception:Exception</em><span class="sig-paren">)</span><a class="headerlink" href="#microbill.windows.DescontarWindow.errorWindow" title="Enlazar permanentemente con esta definición">¶</a></dt>
+<dd><p>Método que se encarga de mostrar un diálogo de alerta para todas las excepciones que se puedan generan en
+esta ventana</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>exception: Exception</strong></dt><dd><p>la excepción que será mostrada</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="microbill.windows.DescontarWindow.guardarHandler">
+<code class="sig-name descname">guardarHandler</code><span class="sig-paren">(</span><em class="sig-param">self</em><span class="sig-paren">)</span><a class="headerlink" href="#microbill.windows.DescontarWindow.guardarHandler" title="Enlazar permanentemente con esta definición">¶</a></dt>
+<dd><p>Método que se encarga de guardar las modificaciones a una cotización luego de realizar la disminución
+de las cantidad o el aplicado por</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="microbill.windows.DescontarWindow.otrosHandler">
+<code class="sig-name descname">otrosHandler</code><span class="sig-paren">(</span><em class="sig-param">self</em><span class="sig-paren">)</span><a class="headerlink" href="#microbill.windows.DescontarWindow.otrosHandler" title="Enlazar permanentemente con esta definición">¶</a></dt>
+<dd><p>Método que se encarga de crear o borrar los servicios agregados posteriormente de la ventana</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="microbill.windows.DescontarWindow.removeOtros">
+<code class="sig-name descname">removeOtros</code><span class="sig-paren">(</span><em class="sig-param">self</em><span class="sig-paren">)</span><a class="headerlink" href="#microbill.windows.DescontarWindow.removeOtros" title="Enlazar permanentemente con esta definición">¶</a></dt>
+<dd><p>Método que remueve los widgets asociados a los servicios que fueron agregados posteriormente</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="microbill.windows.DescontarWindow.sendCorreo">
+<code class="sig-name descname">sendCorreo</code><span class="sig-paren">(</span><em class="sig-param">self</em><span class="sig-paren">)</span><a class="headerlink" href="#microbill.windows.DescontarWindow.sendCorreo" title="Enlazar permanentemente con esta definición">¶</a></dt>
+<dd><p>Método que se encarga de enviar un correo electrónico con el estado de la cotización actual, siempre que
+la opción de notificación se encuentre activa</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="microbill.windows.DescontarWindow.updateDataFrames">
+<code class="sig-name descname">updateDataFrames</code><span class="sig-paren">(</span><em class="sig-param">self</em><span class="sig-paren">)</span><a class="headerlink" href="#microbill.windows.DescontarWindow.updateDataFrames" title="Enlazar permanentemente con esta definición">¶</a></dt>
+<dd><p>Método que se encarga de actualizar el AutoLineEdit de cotizaciones con las cotizaciones disponibles</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h4>Tema anterior</h4>
+  <p class="topless"><a href="microbill.windows.NoNotificacion.html"
+                        title="capítulo anterior">NoNotificacion</a></p>
+  <h4>Próximo tema</h4>
+  <p class="topless"><a href="microbill.windows.PandasModel.html"
+                        title="próximo capítulo">PandasModel</a></p>
+  <div role="note" aria-label="source link">
+    <h3>Esta página</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/api/microbill.windows.DescontarWindow.rst.txt"
+            rel="nofollow">Mostrar el código</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Búsqueda rápida</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Ir a" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navegación</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="Índice General"
+             >índice</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Índice de Módulos Python"
+             >módulos</a> |</li>
+        <li class="right" >
+          <a href="microbill.windows.PandasModel.html" title="PandasModel"
+             >siguiente</a> |</li>
+        <li class="right" >
+          <a href="microbill.windows.NoNotificacion.html" title="NoNotificacion"
+             >anterior</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">documentación de Microbill - </a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../windows.html" >microbill.windows Module</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Derechos de autor 2019, Juan Barbosa.
+      Creado con <a href="http://sphinx-doc.org/">Sphinx</a> 2.1.2.
+    </div>
+  </body>
+</html>

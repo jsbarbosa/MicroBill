@@ -1,0 +1,41 @@
+BuscarWindow
+============
+
+.. currentmodule:: microbill.windows
+
+.. autoclass:: BuscarWindow
+   :show-inheritance:
+
+   .. rubric:: Attributes Summary
+
+   .. autosummary::
+
+      ~BuscarWindow.FIELDS
+      ~BuscarWindow.WIDGETS
+
+   .. rubric:: Methods Summary
+
+   .. autosummary::
+
+      ~BuscarWindow.doubleClick
+      ~BuscarWindow.eventFilter
+      ~BuscarWindow.getChanges
+      ~BuscarWindow.guardar
+      ~BuscarWindow.limpiar
+      ~BuscarWindow.update
+      ~BuscarWindow.updateAutoCompletar
+
+   .. rubric:: Attributes Documentation
+
+   .. autoattribute:: FIELDS
+   .. autoattribute:: WIDGETS
+
+   .. rubric:: Methods Documentation
+
+   .. automethod:: doubleClick
+   .. automethod:: eventFilter
+   .. automethod:: getChanges
+   .. automethod:: guardar
+   .. automethod:: limpiar
+   .. automethod:: update
+   .. automethod:: updateAutoCompletar

@@ -1,0 +1,566 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml" lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <title>CotizacionWindow &#8212; documentación de Microbill - </title>
+    <link rel="stylesheet" href="../_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/graphviz.css" />
+    
+    <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/language_data.js"></script>
+    <script type="text/javascript" src="../_static/translations.js"></script>
+    
+    <link rel="index" title="Índice" href="../genindex.html" />
+    <link rel="search" title="Búsqueda" href="../search.html" />
+    <link rel="next" title="NoNotificacion" href="microbill.windows.NoNotificacion.html" />
+    <link rel="prev" title="CodigosDialog" href="microbill.windows.CodigosDialog.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navegación</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="Índice General"
+             accesskey="I">índice</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Índice de Módulos Python"
+             >módulos</a> |</li>
+        <li class="right" >
+          <a href="microbill.windows.NoNotificacion.html" title="NoNotificacion"
+             accesskey="N">siguiente</a> |</li>
+        <li class="right" >
+          <a href="microbill.windows.CodigosDialog.html" title="CodigosDialog"
+             accesskey="P">anterior</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">documentación de Microbill - </a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../windows.html" accesskey="U">microbill.windows Module</a> &#187;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="cotizacionwindow">
+<h1>CotizacionWindow<a class="headerlink" href="#cotizacionwindow" title="Enlazar permanentemente con este título">¶</a></h1>
+<dl class="class">
+<dt id="microbill.windows.CotizacionWindow">
+<em class="property">class </em><code class="sig-prename descclassname">microbill.windows.</code><code class="sig-name descname">CotizacionWindow</code><span class="sig-paren">(</span><em class="sig-param">parent=None</em><span class="sig-paren">)</span><a class="headerlink" href="#microbill.windows.CotizacionWindow" title="Enlazar permanentemente con esta definición">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="microbill.windows.SubWindow.html#microbill.windows.SubWindow" title="microbill.windows.SubWindow"><code class="xref py py-class docutils literal notranslate"><span class="pre">microbill.windows.SubWindow</span></code></a></p>
+<p>Clase que representa la ventana Cotización</p>
+<p class="rubric">Attributes Summary</p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#microbill.windows.CotizacionWindow.AUTOCOMPLETE_FIELDS" title="microbill.windows.CotizacionWindow.AUTOCOMPLETE_FIELDS"><code class="xref py py-obj docutils literal notranslate"><span class="pre">AUTOCOMPLETE_FIELDS</span></code></a></p></td>
+<td><p>nombre de los campos que pueden ser autocompletados</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#microbill.windows.CotizacionWindow.AUTOCOMPLETE_WIDGETS" title="microbill.windows.CotizacionWindow.AUTOCOMPLETE_WIDGETS"><code class="xref py py-obj docutils literal notranslate"><span class="pre">AUTOCOMPLETE_WIDGETS</span></code></a></p></td>
+<td><p>nombre de los campos que pueden ser autocompletados computerfriendly</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#microbill.windows.CotizacionWindow.FIELDS" title="microbill.windows.CotizacionWindow.FIELDS"><code class="xref py py-obj docutils literal notranslate"><span class="pre">FIELDS</span></code></a></p></td>
+<td><p>nombre a mostrar de los campos</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#microbill.windows.CotizacionWindow.IGNORE" title="microbill.windows.CotizacionWindow.IGNORE"><code class="xref py py-obj docutils literal notranslate"><span class="pre">IGNORE</span></code></a></p></td>
+<td><p>nombre de los campos a ignorar en la verificación que los datos estén completos</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#microbill.windows.CotizacionWindow.WIDGETS" title="microbill.windows.CotizacionWindow.WIDGETS"><code class="xref py py-obj docutils literal notranslate"><span class="pre">WIDGETS</span></code></a></p></td>
+<td><p>nombre de los campos computerfriendly</p></td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Methods Summary</p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#microbill.windows.CotizacionWindow.addServicio" title="microbill.windows.CotizacionWindow.addServicio"><code class="xref py py-obj docutils literal notranslate"><span class="pre">addServicio</span></code></a>(self, servicio)</p></td>
+<td><p>Método que agrega al atributo cotizacion el servicio que entra por parámetro</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#microbill.windows.CotizacionWindow.agregarDesdeCodigo" title="microbill.windows.CotizacionWindow.agregarDesdeCodigo"><code class="xref py py-obj docutils literal notranslate"><span class="pre">agregarDesdeCodigo</span></code></a>(self, codigo)</p></td>
+<td><p>Método que agrega a la tabla de servicios el código que entra por parámetro y es tratado como agregado dinámicamente y no por el usuario</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#microbill.windows.CotizacionWindow.autoCompletar" title="microbill.windows.CotizacionWindow.autoCompletar"><code class="xref py py-obj docutils literal notranslate"><span class="pre">autoCompletar</span></code></a>(self, text)</p></td>
+<td><p>Método que se encarga de autocompletar todos los campos del formulario dependiendo del texto que entra por parámetro</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#microbill.windows.CotizacionWindow.changeAutocompletar" title="microbill.windows.CotizacionWindow.changeAutocompletar"><code class="xref py py-obj docutils literal notranslate"><span class="pre">changeAutocompletar</span></code></a>(self)</p></td>
+<td><p>Método que se encarga de modificar asignar como no chequeado el campo de autocompletar en la ventana</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#microbill.windows.CotizacionWindow.changeInterno" title="microbill.windows.CotizacionWindow.changeInterno"><code class="xref py py-obj docutils literal notranslate"><span class="pre">changeInterno</span></code></a>(self, index)</p></td>
+<td><p>Método que se encarga de modificar a nivel lógico la categoria del usuario.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#microbill.windows.CotizacionWindow.closePDF" title="microbill.windows.CotizacionWindow.closePDF"><code class="xref py py-obj docutils literal notranslate"><span class="pre">closePDF</span></code></a>(self, p1, old)</p></td>
+<td><p>Método que trata de cerrar el PDF asociado a una cotización</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#microbill.windows.CotizacionWindow.confirmGuardar" title="microbill.windows.CotizacionWindow.confirmGuardar"><code class="xref py py-obj docutils literal notranslate"><span class="pre">confirmGuardar</span></code></a>(self)</p></td>
+<td><p>Método que muestra un dialogo para confirmar que se desea guardar la cotización actual</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#microbill.windows.CotizacionWindow.errorWindow" title="microbill.windows.CotizacionWindow.errorWindow"><code class="xref py py-obj docutils literal notranslate"><span class="pre">errorWindow</span></code></a>(self, exception)</p></td>
+<td><p>Método que se encarga de mostrar un diálogo de alerta para todas las excepciones que se puedan generan en esta ventana</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#microbill.windows.CotizacionWindow.getCodigos" title="microbill.windows.CotizacionWindow.getCodigos"><code class="xref py py-obj docutils literal notranslate"><span class="pre">getCodigos</span></code></a>(self)</p></td>
+<td><p>Método que renorna los códigos de los servicios de la cotización actual</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#microbill.windows.CotizacionWindow.getCodigosPrefix" title="microbill.windows.CotizacionWindow.getCodigosPrefix"><code class="xref py py-obj docutils literal notranslate"><span class="pre">getCodigosPrefix</span></code></a>(self)</p></td>
+<td><p>Método que retorna los códigos de los servicios de la cotización actual</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#microbill.windows.CotizacionWindow.getInterno" title="microbill.windows.CotizacionWindow.getInterno"><code class="xref py py-obj docutils literal notranslate"><span class="pre">getInterno</span></code></a>(self)</p></td>
+<td><p>Método que retorna el tipo de usuario asociado a la cotización</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#microbill.windows.CotizacionWindow.getServicio" title="microbill.windows.CotizacionWindow.getServicio"><code class="xref py py-obj docutils literal notranslate"><span class="pre">getServicio</span></code></a>(self, cod)</p></td>
+<td><p>Método que retorna el servicio asociado al código que entra por parámetro</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#microbill.windows.CotizacionWindow.getServicios" title="microbill.windows.CotizacionWindow.getServicios"><code class="xref py py-obj docutils literal notranslate"><span class="pre">getServicios</span></code></a>(self)</p></td>
+<td><p>Método que retorna los servicios asociados a la cotización actual</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#microbill.windows.CotizacionWindow.guardar" title="microbill.windows.CotizacionWindow.guardar"><code class="xref py py-obj docutils literal notranslate"><span class="pre">guardar</span></code></a>(self)</p></td>
+<td><p>Método que guarda una cotización realizada.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#microbill.windows.CotizacionWindow.limpiar" title="microbill.windows.CotizacionWindow.limpiar"><code class="xref py py-obj docutils literal notranslate"><span class="pre">limpiar</span></code></a>(self)</p></td>
+<td><p>Método que limpia toda la información de la ventana</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#microbill.windows.CotizacionWindow.loadCotizacion" title="microbill.windows.CotizacionWindow.loadCotizacion"><code class="xref py py-obj docutils literal notranslate"><span class="pre">loadCotizacion</span></code></a>(self, number)</p></td>
+<td><p>Método que carga la cotización cuyo número entra por parámetro a la ventana actual</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#microbill.windows.CotizacionWindow.openPDF" title="microbill.windows.CotizacionWindow.openPDF"><code class="xref py py-obj docutils literal notranslate"><span class="pre">openPDF</span></code></a>(self, file)</p></td>
+<td><p>Método que trata de abrir el PDF de cotización automaticamente para su visualización, el nombre del archivo entra por parámetro</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#microbill.windows.CotizacionWindow.removeServicio" title="microbill.windows.CotizacionWindow.removeServicio"><code class="xref py py-obj docutils literal notranslate"><span class="pre">removeServicio</span></code></a>(self, index)</p></td>
+<td><p>Método que remueve el servicio n-ésimo de acuerdo al índice que entra por parámetro</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#microbill.windows.CotizacionWindow.sendCorreo" title="microbill.windows.CotizacionWindow.sendCorreo"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sendCorreo</span></code></a>(self, names)</p></td>
+<td><p>Método que es llamado en caso que se desee notificar al usuario de la cotización a su nombre</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#microbill.windows.CotizacionWindow.setAutoCompletar" title="microbill.windows.CotizacionWindow.setAutoCompletar"><code class="xref py py-obj docutils literal notranslate"><span class="pre">setAutoCompletar</span></code></a>(self)</p></td>
+<td><p>Método que determina el comportamiento dinámico de los campos que permiten ser autocompletados.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#microbill.windows.CotizacionWindow.setInternoWidget" title="microbill.windows.CotizacionWindow.setInternoWidget"><code class="xref py py-obj docutils literal notranslate"><span class="pre">setInternoWidget</span></code></a>(self, value)</p></td>
+<td><p>Método que se encarga de cambiar la selección del combobox asociado al campo interno en el formulario de la cotización</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#microbill.windows.CotizacionWindow.setTotal" title="microbill.windows.CotizacionWindow.setTotal"><code class="xref py py-obj docutils literal notranslate"><span class="pre">setTotal</span></code></a>(self, total)</p></td>
+<td><p>Método que calcula o asigna el valor total que entra por parámetro</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#microbill.windows.CotizacionWindow.updateAutoCompletar" title="microbill.windows.CotizacionWindow.updateAutoCompletar"><code class="xref py py-obj docutils literal notranslate"><span class="pre">updateAutoCompletar</span></code></a>(self)</p></td>
+<td><p>Método que se encarga de llamar al método update de todos los AutoLineEdit enlistados en el atributo AUTOCOMPLETE_WIDGETS</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#microbill.windows.CotizacionWindow.verCodigos" title="microbill.windows.CotizacionWindow.verCodigos"><code class="xref py py-obj docutils literal notranslate"><span class="pre">verCodigos</span></code></a>(self)</p></td>
+<td><p>Método que se encarga de mostrar la ventana que contiene todos los servicios disponibles</p></td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Attributes Documentation</p>
+<dl class="attribute">
+<dt id="microbill.windows.CotizacionWindow.AUTOCOMPLETE_FIELDS">
+<code class="sig-name descname">AUTOCOMPLETE_FIELDS</code><em class="property"> = ['Nombre', 'Correo', 'Documento', 'Teléfono']</em><a class="headerlink" href="#microbill.windows.CotizacionWindow.AUTOCOMPLETE_FIELDS" title="Enlazar permanentemente con esta definición">¶</a></dt>
+<dd><p>nombre de los campos que pueden ser autocompletados</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="microbill.windows.CotizacionWindow.AUTOCOMPLETE_WIDGETS">
+<code class="sig-name descname">AUTOCOMPLETE_WIDGETS</code><em class="property"> = ['nombre', 'correo', 'documento', 'telefono']</em><a class="headerlink" href="#microbill.windows.CotizacionWindow.AUTOCOMPLETE_WIDGETS" title="Enlazar permanentemente con esta definición">¶</a></dt>
+<dd><p>nombre de los campos que pueden ser autocompletados computerfriendly</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="microbill.windows.CotizacionWindow.FIELDS">
+<code class="sig-name descname">FIELDS</code><em class="property"> = ['Nombre', 'Correo', 'Teléfono', 'Institución', 'Documento', 'Dirección', 'Ciudad', 'Interno', 'Responsable', 'Proyecto', 'Código', 'Muestra']</em><a class="headerlink" href="#microbill.windows.CotizacionWindow.FIELDS" title="Enlazar permanentemente con esta definición">¶</a></dt>
+<dd><p>nombre a mostrar de los campos</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="microbill.windows.CotizacionWindow.IGNORE">
+<code class="sig-name descname">IGNORE</code><em class="property"> = ['proyecto', 'codigo']</em><a class="headerlink" href="#microbill.windows.CotizacionWindow.IGNORE" title="Enlazar permanentemente con esta definición">¶</a></dt>
+<dd><p>nombre de los campos a ignorar en la verificación que los datos estén completos</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="microbill.windows.CotizacionWindow.WIDGETS">
+<code class="sig-name descname">WIDGETS</code><em class="property"> = ['nombre', 'correo', 'telefono', 'institucion', 'documento', 'direccion', 'ciudad', 'interno', 'responsable', 'proyecto', 'codigo', 'muestra']</em><a class="headerlink" href="#microbill.windows.CotizacionWindow.WIDGETS" title="Enlazar permanentemente con esta definición">¶</a></dt>
+<dd><p>nombre de los campos computerfriendly</p>
+</dd></dl>
+
+<p class="rubric">Methods Documentation</p>
+<dl class="method">
+<dt id="microbill.windows.CotizacionWindow.addServicio">
+<code class="sig-name descname">addServicio</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">servicio:microbill.objects.Servicio</em><span class="sig-paren">)</span><a class="headerlink" href="#microbill.windows.CotizacionWindow.addServicio" title="Enlazar permanentemente con esta definición">¶</a></dt>
+<dd><p>Método que agrega al atributo cotizacion el servicio que entra por parámetro</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>servicio: objects.Servicio</strong></dt><dd><p>servicio a ser agregado a la cotización</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="microbill.windows.CotizacionWindow.agregarDesdeCodigo">
+<code class="sig-name descname">agregarDesdeCodigo</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">codigo:str</em><span class="sig-paren">)</span><a class="headerlink" href="#microbill.windows.CotizacionWindow.agregarDesdeCodigo" title="Enlazar permanentemente con esta definición">¶</a></dt>
+<dd><p>Método que agrega a la tabla de servicios el código que entra por parámetro y es tratado como agregado
+dinámicamente y no por el usuario</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>codigo: str</strong></dt><dd><p>código del servicio a agregar</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="microbill.windows.CotizacionWindow.autoCompletar">
+<code class="sig-name descname">autoCompletar</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">text:str</em><span class="sig-paren">)</span><a class="headerlink" href="#microbill.windows.CotizacionWindow.autoCompletar" title="Enlazar permanentemente con esta definición">¶</a></dt>
+<dd><p>Método que se encarga de autocompletar todos los campos del formulario dependiendo del texto que entra
+por parámetro</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>text: str</strong></dt><dd><p>texto asociado a cualquier valor de los campos enlistados en el atributo AUTOCOMPLETE_FIELDS</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="microbill.windows.CotizacionWindow.changeAutocompletar">
+<code class="sig-name descname">changeAutocompletar</code><span class="sig-paren">(</span><em class="sig-param">self</em><span class="sig-paren">)</span><a class="headerlink" href="#microbill.windows.CotizacionWindow.changeAutocompletar" title="Enlazar permanentemente con esta definición">¶</a></dt>
+<dd><p>Método que se encarga de modificar asignar como no chequeado el campo de autocompletar en la ventana</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="microbill.windows.CotizacionWindow.changeInterno">
+<code class="sig-name descname">changeInterno</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">index:int</em><span class="sig-paren">)</span><a class="headerlink" href="#microbill.windows.CotizacionWindow.changeInterno" title="Enlazar permanentemente con esta definición">¶</a></dt>
+<dd><p>Método que se encarga de modificar a nivel lógico la categoria del usuario. Habilita o no el
+campo responsable, proyecto y codigo en el formulario, además de modificar el valor total que se muestra
+en la cotización</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>index: int</strong></dt><dd><p>índice de la selección del combobox</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="microbill.windows.CotizacionWindow.closePDF">
+<code class="sig-name descname">closePDF</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">p1</em>, <em class="sig-param">old:Iterable</em><span class="sig-paren">)</span><a class="headerlink" href="#microbill.windows.CotizacionWindow.closePDF" title="Enlazar permanentemente con esta definición">¶</a></dt>
+<dd><p>Método que trata de cerrar el PDF asociado a una cotización</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>p1</strong></dt><dd></dd>
+<dt><strong>old: Iterable</strong></dt><dd><p>lista que contiene los procesos previos a la apertura del PDF</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="microbill.windows.CotizacionWindow.confirmGuardar">
+<code class="sig-name descname">confirmGuardar</code><span class="sig-paren">(</span><em class="sig-param">self</em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#microbill.windows.CotizacionWindow.confirmGuardar" title="Enlazar permanentemente con esta definición">¶</a></dt>
+<dd><p>Método que muestra un dialogo para confirmar que se desea guardar la cotización actual</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><dl class="simple">
+<dt>bool: True en caso que el usuario responda sí en el dialogo</dt><dd></dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="microbill.windows.CotizacionWindow.errorWindow">
+<code class="sig-name descname">errorWindow</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">exception:Exception</em><span class="sig-paren">)</span><a class="headerlink" href="#microbill.windows.CotizacionWindow.errorWindow" title="Enlazar permanentemente con esta definición">¶</a></dt>
+<dd><p>Método que se encarga de mostrar un diálogo de alerta para todas las excepciones que se puedan generan en
+esta ventana</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>exception: Exception</strong></dt><dd><p>la excepción que será mostrada</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="microbill.windows.CotizacionWindow.getCodigos">
+<code class="sig-name descname">getCodigos</code><span class="sig-paren">(</span><em class="sig-param">self</em><span class="sig-paren">)</span> &#x2192; list<a class="headerlink" href="#microbill.windows.CotizacionWindow.getCodigos" title="Enlazar permanentemente con esta definición">¶</a></dt>
+<dd><p>Método que renorna los códigos de los servicios de la cotización actual</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><dl class="simple">
+<dt>list: códigos de los servicios de la cotización actual</dt><dd></dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="microbill.windows.CotizacionWindow.getCodigosPrefix">
+<code class="sig-name descname">getCodigosPrefix</code><span class="sig-paren">(</span><em class="sig-param">self</em><span class="sig-paren">)</span> &#x2192; list<a class="headerlink" href="#microbill.windows.CotizacionWindow.getCodigosPrefix" title="Enlazar permanentemente con esta definición">¶</a></dt>
+<dd><p>Método que retorna los códigos de los servicios de la cotización actual</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><dl class="simple">
+<dt>list: prefijos de los códigos de los servicios de la cotización actual</dt><dd></dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="microbill.windows.CotizacionWindow.getInterno">
+<code class="sig-name descname">getInterno</code><span class="sig-paren">(</span><em class="sig-param">self</em><span class="sig-paren">)</span> &#x2192; str<a class="headerlink" href="#microbill.windows.CotizacionWindow.getInterno" title="Enlazar permanentemente con esta definición">¶</a></dt>
+<dd><p>Método que retorna el tipo de usuario asociado a la cotización</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><dl class="simple">
+<dt>str: tipo de usuario asociado a la cotización</dt><dd></dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="microbill.windows.CotizacionWindow.getServicio">
+<code class="sig-name descname">getServicio</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">cod:str</em><span class="sig-paren">)</span> &#x2192; microbill.objects.Servicio<a class="headerlink" href="#microbill.windows.CotizacionWindow.getServicio" title="Enlazar permanentemente con esta definición">¶</a></dt>
+<dd><p>Método que retorna el servicio asociado al código que entra por parámetro</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>cod: str</strong></dt><dd><p>código del servicio que se busca retornar</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt>objects.Servicio: servicio asociado al código que entra por parámetro</dt><dd></dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="microbill.windows.CotizacionWindow.getServicios">
+<code class="sig-name descname">getServicios</code><span class="sig-paren">(</span><em class="sig-param">self</em><span class="sig-paren">)</span> &#x2192; list<a class="headerlink" href="#microbill.windows.CotizacionWindow.getServicios" title="Enlazar permanentemente con esta definición">¶</a></dt>
+<dd><p>Método que retorna los servicios asociados a la cotización actual</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><dl class="simple">
+<dt>list: lista de los servicios con los que cuenta la cotización actual</dt><dd></dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="microbill.windows.CotizacionWindow.guardar">
+<code class="sig-name descname">guardar</code><span class="sig-paren">(</span><em class="sig-param">self</em><span class="sig-paren">)</span><a class="headerlink" href="#microbill.windows.CotizacionWindow.guardar" title="Enlazar permanentemente con esta definición">¶</a></dt>
+<dd><p>Método que guarda una cotización realizada. Verifica que no existan campos sin llenar. Antes de guardar
+la cotización muestra un dialogo de confirmación que la cotización está hecha de manera correcta</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="microbill.windows.CotizacionWindow.limpiar">
+<code class="sig-name descname">limpiar</code><span class="sig-paren">(</span><em class="sig-param">self</em><span class="sig-paren">)</span><a class="headerlink" href="#microbill.windows.CotizacionWindow.limpiar" title="Enlazar permanentemente con esta definición">¶</a></dt>
+<dd><p>Método que limpia toda la información de la ventana</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="microbill.windows.CotizacionWindow.loadCotizacion">
+<code class="sig-name descname">loadCotizacion</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">number:str</em><span class="sig-paren">)</span><a class="headerlink" href="#microbill.windows.CotizacionWindow.loadCotizacion" title="Enlazar permanentemente con esta definición">¶</a></dt>
+<dd><p>Método que carga la cotización cuyo número entra por parámetro a la ventana actual</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>number: str</strong></dt><dd><p>número de la cotización</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="microbill.windows.CotizacionWindow.openPDF">
+<code class="sig-name descname">openPDF</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">file:str) -&gt; (&lt;class 'str'&gt;</em>, <em class="sig-param">&lt;class 'list'&gt;</em><span class="sig-paren">)</span><a class="headerlink" href="#microbill.windows.CotizacionWindow.openPDF" title="Enlazar permanentemente con esta definición">¶</a></dt>
+<dd><p>Método que trata de abrir el PDF de cotización automaticamente para su visualización, el nombre del archivo
+entra por parámetro</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>file: str</strong></dt><dd><p>nombre del archivo PDF de la cotización</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt>tuple:</dt><dd><p>str: ruta del archivo PDF de la cotización
+list: lista de procesos previos a intentar abrir el PDF</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="microbill.windows.CotizacionWindow.removeServicio">
+<code class="sig-name descname">removeServicio</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">index:int</em><span class="sig-paren">)</span><a class="headerlink" href="#microbill.windows.CotizacionWindow.removeServicio" title="Enlazar permanentemente con esta definición">¶</a></dt>
+<dd><p>Método que remueve el servicio n-ésimo de acuerdo al índice que entra por parámetro</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>index: int</strong></dt><dd><p>índice del servicio a remover de la cotización actual</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="microbill.windows.CotizacionWindow.sendCorreo">
+<code class="sig-name descname">sendCorreo</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">names:Iterable</em><span class="sig-paren">)</span><a class="headerlink" href="#microbill.windows.CotizacionWindow.sendCorreo" title="Enlazar permanentemente con esta definición">¶</a></dt>
+<dd><p>Método que es llamado en caso que se desee notificar al usuario de la cotización a su nombre</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>names: Iterable</strong></dt><dd><p>nombres de las cotizaciones a enviar por correo electrónico</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><dl class="simple">
+<dt>exception: en caso que ocurra un error al tratar de enviar el correo</dt><dd></dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="microbill.windows.CotizacionWindow.setAutoCompletar">
+<code class="sig-name descname">setAutoCompletar</code><span class="sig-paren">(</span><em class="sig-param">self</em><span class="sig-paren">)</span><a class="headerlink" href="#microbill.windows.CotizacionWindow.setAutoCompletar" title="Enlazar permanentemente con esta definición">¶</a></dt>
+<dd><p>Método que determina el comportamiento dinámico de los campos que permiten ser autocompletados.
+Cuando se introduce un valor en el campo se llama al método autoCompletar de AutoLineEdit, y cuando se preciona
+enter se llama al método changeAutocompletar</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="microbill.windows.CotizacionWindow.setInternoWidget">
+<code class="sig-name descname">setInternoWidget</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">value:str</em><span class="sig-paren">)</span><a class="headerlink" href="#microbill.windows.CotizacionWindow.setInternoWidget" title="Enlazar permanentemente con esta definición">¶</a></dt>
+<dd><p>Método que se encarga de cambiar la selección del combobox asociado al campo interno en el formulario de
+la cotización</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>value: str</strong></dt><dd><p>tipo de usuario que desea ser seleccionado en el combobox de interno</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="microbill.windows.CotizacionWindow.setTotal">
+<code class="sig-name descname">setTotal</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">total:int=None</em><span class="sig-paren">)</span><a class="headerlink" href="#microbill.windows.CotizacionWindow.setTotal" title="Enlazar permanentemente con esta definición">¶</a></dt>
+<dd><p>Método que calcula o asigna el valor total que entra por parámetro</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>total: int</strong></dt><dd><p>valor total de la cotización, si es None, lo calcula</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="microbill.windows.CotizacionWindow.updateAutoCompletar">
+<code class="sig-name descname">updateAutoCompletar</code><span class="sig-paren">(</span><em class="sig-param">self</em><span class="sig-paren">)</span><a class="headerlink" href="#microbill.windows.CotizacionWindow.updateAutoCompletar" title="Enlazar permanentemente con esta definición">¶</a></dt>
+<dd><p>Método que se encarga de llamar al método update de todos los AutoLineEdit enlistados en el atributo
+AUTOCOMPLETE_WIDGETS</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="microbill.windows.CotizacionWindow.verCodigos">
+<code class="sig-name descname">verCodigos</code><span class="sig-paren">(</span><em class="sig-param">self</em><span class="sig-paren">)</span><a class="headerlink" href="#microbill.windows.CotizacionWindow.verCodigos" title="Enlazar permanentemente con esta definición">¶</a></dt>
+<dd><p>Método que se encarga de mostrar la ventana que contiene todos los servicios disponibles</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h4>Tema anterior</h4>
+  <p class="topless"><a href="microbill.windows.CodigosDialog.html"
+                        title="capítulo anterior">CodigosDialog</a></p>
+  <h4>Próximo tema</h4>
+  <p class="topless"><a href="microbill.windows.NoNotificacion.html"
+                        title="próximo capítulo">NoNotificacion</a></p>
+  <div role="note" aria-label="source link">
+    <h3>Esta página</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/api/microbill.windows.CotizacionWindow.rst.txt"
+            rel="nofollow">Mostrar el código</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Búsqueda rápida</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Ir a" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navegación</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="Índice General"
+             >índice</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Índice de Módulos Python"
+             >módulos</a> |</li>
+        <li class="right" >
+          <a href="microbill.windows.NoNotificacion.html" title="NoNotificacion"
+             >siguiente</a> |</li>
+        <li class="right" >
+          <a href="microbill.windows.CodigosDialog.html" title="CodigosDialog"
+             >anterior</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">documentación de Microbill - </a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../windows.html" >microbill.windows Module</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Derechos de autor 2019, Juan Barbosa.
+      Creado con <a href="http://sphinx-doc.org/">Sphinx</a> 2.1.2.
+    </div>
+  </body>
+</html>

@@ -1,0 +1,7 @@
+CalendarWidget
+==============
+
+.. currentmodule:: microbill.windows
+
+.. autoclass:: CalendarWidget
+   :show-inheritance:

@@ -1,0 +1,247 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml" lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <title>PandasModel &#8212; documentación de Microbill - </title>
+    <link rel="stylesheet" href="../_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/graphviz.css" />
+    
+    <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/language_data.js"></script>
+    <script type="text/javascript" src="../_static/translations.js"></script>
+    
+    <link rel="index" title="Índice" href="../genindex.html" />
+    <link rel="search" title="Búsqueda" href="../search.html" />
+    <link rel="next" title="BuscarWindow" href="microbill.windows.BuscarWindow.html" />
+    <link rel="prev" title="DescontarWindow" href="microbill.windows.DescontarWindow.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navegación</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="Índice General"
+             accesskey="I">índice</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Índice de Módulos Python"
+             >módulos</a> |</li>
+        <li class="right" >
+          <a href="microbill.windows.BuscarWindow.html" title="BuscarWindow"
+             accesskey="N">siguiente</a> |</li>
+        <li class="right" >
+          <a href="microbill.windows.DescontarWindow.html" title="DescontarWindow"
+             accesskey="P">anterior</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">documentación de Microbill - </a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../windows.html" accesskey="U">microbill.windows Module</a> &#187;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="pandasmodel">
+<h1>PandasModel<a class="headerlink" href="#pandasmodel" title="Enlazar permanentemente con este título">¶</a></h1>
+<dl class="class">
+<dt id="microbill.windows.PandasModel">
+<em class="property">class </em><code class="sig-prename descclassname">microbill.windows.</code><code class="sig-name descname">PandasModel</code><span class="sig-paren">(</span><em class="sig-param">data: pandas.core.frame.DataFrame</em>, <em class="sig-param">parent=None</em>, <em class="sig-param">checkbox: bool = True</em><span class="sig-paren">)</span><a class="headerlink" href="#microbill.windows.PandasModel" title="Enlazar permanentemente con esta definición">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyQt5.QtCore.QAbstractTableModel</span></code></p>
+<p>Clase que representa un Pandas DataFrame como un QAbstractTableModel</p>
+<p class="rubric">Methods Summary</p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#microbill.windows.PandasModel.columnCount" title="microbill.windows.PandasModel.columnCount"><code class="xref py py-obj docutils literal notranslate"><span class="pre">columnCount</span></code></a>(self)</p></td>
+<td><p>Método que retorna el número de columnas del dataframe</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#microbill.windows.PandasModel.data" title="microbill.windows.PandasModel.data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">data</span></code></a>()</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#microbill.windows.PandasModel.flags" title="microbill.windows.PandasModel.flags"><code class="xref py py-obj docutils literal notranslate"><span class="pre">flags</span></code></a>(self, index)</p></td>
+<td><p>Método que renorna las opciones asociadas al índice que entra por parámetro</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#microbill.windows.PandasModel.headerData" title="microbill.windows.PandasModel.headerData"><code class="xref py py-obj docutils literal notranslate"><span class="pre">headerData</span></code></a>(self, col, orientation, role)</p></td>
+<td><p>Método que determinar el comportamiento de QVariant dependiendo del role y la orientación que entran por parámetro</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#microbill.windows.PandasModel.rowCount" title="microbill.windows.PandasModel.rowCount"><code class="xref py py-obj docutils literal notranslate"><span class="pre">rowCount</span></code></a>(self)</p></td>
+<td><p>Método que retorna el número de filas del dataframe</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#microbill.windows.PandasModel.setData" title="microbill.windows.PandasModel.setData"><code class="xref py py-obj docutils literal notranslate"><span class="pre">setData</span></code></a>(self, index, value, role)</p></td>
+<td><p>Método encargado de asignar al modelo, según el índice que entra por parámetro, el valor y el rol del elemento dado por el índice</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#microbill.windows.PandasModel.whereIsChecked" title="microbill.windows.PandasModel.whereIsChecked"><code class="xref py py-obj docutils literal notranslate"><span class="pre">whereIsChecked</span></code></a>(self)</p></td>
+<td><p>Método que retorna True en las filas que se encuentran chequeadas y False en las demás</p></td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Methods Documentation</p>
+<dl class="method">
+<dt id="microbill.windows.PandasModel.columnCount">
+<code class="sig-name descname">columnCount</code><span class="sig-paren">(</span><em class="sig-param">self</em><span class="sig-paren">)</span> &#x2192; int<a class="headerlink" href="#microbill.windows.PandasModel.columnCount" title="Enlazar permanentemente con esta definición">¶</a></dt>
+<dd><p>Método que retorna el número de columnas del dataframe</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><dl class="simple">
+<dt>int: número de columnas del dataframe</dt><dd></dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="microbill.windows.PandasModel.data">
+<code class="sig-name descname">data</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#microbill.windows.PandasModel.data" title="Enlazar permanentemente con esta definición">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="microbill.windows.PandasModel.flags">
+<code class="sig-name descname">flags</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">index</em><span class="sig-paren">)</span> &#x2192; int<a class="headerlink" href="#microbill.windows.PandasModel.flags" title="Enlazar permanentemente con esta definición">¶</a></dt>
+<dd><p>Método que renorna las opciones asociadas al índice que entra por parámetro</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>index: parámetro al cual se le desean obtener las opciones</strong></dt><dd></dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt>int: opciones asociadas al índice</dt><dd></dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="microbill.windows.PandasModel.headerData">
+<code class="sig-name descname">headerData</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">col:int</em>, <em class="sig-param">orientation</em>, <em class="sig-param">role</em><span class="sig-paren">)</span><a class="headerlink" href="#microbill.windows.PandasModel.headerData" title="Enlazar permanentemente con esta definición">¶</a></dt>
+<dd><p>Método que determinar el comportamiento de QVariant dependiendo del role y la orientación que entran
+por parámetro</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>col: int</strong></dt><dd></dd>
+<dt><strong>orientation:</strong></dt><dd></dd>
+<dt><strong>role:</strong></dt><dd></dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="microbill.windows.PandasModel.rowCount">
+<code class="sig-name descname">rowCount</code><span class="sig-paren">(</span><em class="sig-param">self</em><span class="sig-paren">)</span> &#x2192; int<a class="headerlink" href="#microbill.windows.PandasModel.rowCount" title="Enlazar permanentemente con esta definición">¶</a></dt>
+<dd><p>Método que retorna el número de filas del dataframe</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><dl class="simple">
+<dt>int: número de filas del dataframe</dt><dd></dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="microbill.windows.PandasModel.setData">
+<code class="sig-name descname">setData</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">index</em>, <em class="sig-param">value</em>, <em class="sig-param">role</em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#microbill.windows.PandasModel.setData" title="Enlazar permanentemente con esta definición">¶</a></dt>
+<dd><p>Método encargado de asignar al modelo, según el índice que entra por parámetro, el valor y el rol del
+elemento dado por el índice</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>index</strong></dt><dd></dd>
+<dt><strong>value</strong></dt><dd></dd>
+<dt><strong>role</strong></dt><dd></dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt>bool: True en el caso que el índice sea valido, False de lo contrario</dt><dd></dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="microbill.windows.PandasModel.whereIsChecked">
+<code class="sig-name descname">whereIsChecked</code><span class="sig-paren">(</span><em class="sig-param">self</em><span class="sig-paren">)</span><a class="headerlink" href="#microbill.windows.PandasModel.whereIsChecked" title="Enlazar permanentemente con esta definición">¶</a></dt>
+<dd><p>Método que retorna True en las filas que se encuentran chequeadas y False en las demás</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><dl class="simple">
+<dt>np.array: array que contiene True en las filas que se encuentran chequeadas y False en las demás</dt><dd></dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h4>Tema anterior</h4>
+  <p class="topless"><a href="microbill.windows.DescontarWindow.html"
+                        title="capítulo anterior">DescontarWindow</a></p>
+  <h4>Próximo tema</h4>
+  <p class="topless"><a href="microbill.windows.BuscarWindow.html"
+                        title="próximo capítulo">BuscarWindow</a></p>
+  <div role="note" aria-label="source link">
+    <h3>Esta página</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/api/microbill.windows.PandasModel.rst.txt"
+            rel="nofollow">Mostrar el código</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Búsqueda rápida</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Ir a" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navegación</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="Índice General"
+             >índice</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Índice de Módulos Python"
+             >módulos</a> |</li>
+        <li class="right" >
+          <a href="microbill.windows.BuscarWindow.html" title="BuscarWindow"
+             >siguiente</a> |</li>
+        <li class="right" >
+          <a href="microbill.windows.DescontarWindow.html" title="DescontarWindow"
+             >anterior</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">documentación de Microbill - </a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../windows.html" >microbill.windows Module</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Derechos de autor 2019, Juan Barbosa.
+      Creado con <a href="http://sphinx-doc.org/">Sphinx</a> 2.1.2.
+    </div>
+  </body>
+</html>

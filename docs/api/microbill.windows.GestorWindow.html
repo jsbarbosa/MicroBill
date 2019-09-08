@@ -1,0 +1,237 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml" lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <title>GestorWindow &#8212; documentación de Microbill - </title>
+    <link rel="stylesheet" href="../_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/graphviz.css" />
+    
+    <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/language_data.js"></script>
+    <script type="text/javascript" src="../_static/translations.js"></script>
+    
+    <link rel="index" title="Índice" href="../genindex.html" />
+    <link rel="search" title="Búsqueda" href="../search.html" />
+    <link rel="next" title="MainWindow" href="microbill.windows.MainWindow.html" />
+    <link rel="prev" title="BuscarWindow" href="microbill.windows.BuscarWindow.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navegación</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="Índice General"
+             accesskey="I">índice</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Índice de Módulos Python"
+             >módulos</a> |</li>
+        <li class="right" >
+          <a href="microbill.windows.MainWindow.html" title="MainWindow"
+             accesskey="N">siguiente</a> |</li>
+        <li class="right" >
+          <a href="microbill.windows.BuscarWindow.html" title="BuscarWindow"
+             accesskey="P">anterior</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">documentación de Microbill - </a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../windows.html" accesskey="U">microbill.windows Module</a> &#187;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="gestorwindow">
+<h1>GestorWindow<a class="headerlink" href="#gestorwindow" title="Enlazar permanentemente con este título">¶</a></h1>
+<dl class="class">
+<dt id="microbill.windows.GestorWindow">
+<em class="property">class </em><code class="sig-prename descclassname">microbill.windows.</code><code class="sig-name descname">GestorWindow</code><span class="sig-paren">(</span><em class="sig-param">parent=None</em><span class="sig-paren">)</span><a class="headerlink" href="#microbill.windows.GestorWindow" title="Enlazar permanentemente con esta definición">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="microbill.windows.SubWindow.html#microbill.windows.SubWindow" title="microbill.windows.SubWindow"><code class="xref py py-class docutils literal notranslate"><span class="pre">microbill.windows.SubWindow</span></code></a></p>
+<p>Clase que visualiza la ventana de Enviar correo a Gestor</p>
+<p class="rubric">Attributes Summary</p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#microbill.windows.GestorWindow.FIELDS" title="microbill.windows.GestorWindow.FIELDS"><code class="xref py py-obj docutils literal notranslate"><span class="pre">FIELDS</span></code></a></p></td>
+<td><p>nombre de los campos que contiene la ventana</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#microbill.windows.GestorWindow.WIDGETS" title="microbill.windows.GestorWindow.WIDGETS"><code class="xref py py-obj docutils literal notranslate"><span class="pre">WIDGETS</span></code></a></p></td>
+<td><p>nombre de los campos que contiene la ventana computerfriendly</p></td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Methods Summary</p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#microbill.windows.GestorWindow.accept" title="microbill.windows.GestorWindow.accept"><code class="xref py py-obj docutils literal notranslate"><span class="pre">accept</span></code></a>(self)</p></td>
+<td><p>Método que verifica que la cotización que se va a enviar al gestor sea válida</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#microbill.windows.GestorWindow.autoCompletar" title="microbill.windows.GestorWindow.autoCompletar"><code class="xref py py-obj docutils literal notranslate"><span class="pre">autoCompletar</span></code></a>(self, text)</p></td>
+<td><p>Método que carga la cotización cuyo código entra por parámetro y la visualiza en los campos disponibles en esta ventana</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#microbill.windows.GestorWindow.clean" title="microbill.windows.GestorWindow.clean"><code class="xref py py-obj docutils literal notranslate"><span class="pre">clean</span></code></a>(self)</p></td>
+<td><p>Método que se encarga de limpiar el contenido de los campos de la vista</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#microbill.windows.GestorWindow.errorWindow" title="microbill.windows.GestorWindow.errorWindow"><code class="xref py py-obj docutils literal notranslate"><span class="pre">errorWindow</span></code></a>(self, exception)</p></td>
+<td><p>Método que se encarga de mostrar un diálogo de alerta para todas las excepciones que se puedan generan en esta ventana</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#microbill.windows.GestorWindow.sendCorreo" title="microbill.windows.GestorWindow.sendCorreo"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sendCorreo</span></code></a>(self)</p></td>
+<td><p>Método que se encarga de enviar el correo asociado a la cotización que se encuentra en el formulario de la ventana.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#microbill.windows.GestorWindow.updateAutoCompletar" title="microbill.windows.GestorWindow.updateAutoCompletar"><code class="xref py py-obj docutils literal notranslate"><span class="pre">updateAutoCompletar</span></code></a>(self)</p></td>
+<td><p>Método que hace que los AutoLineEdits actualicen el contenido del modelo con el cual autocompletan</p></td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Attributes Documentation</p>
+<dl class="attribute">
+<dt id="microbill.windows.GestorWindow.FIELDS">
+<code class="sig-name descname">FIELDS</code><em class="property"> = ['Cotización', 'Fecha', 'Nombre', 'Correo', 'Equipo', 'Valor', 'Tipo de Pago']</em><a class="headerlink" href="#microbill.windows.GestorWindow.FIELDS" title="Enlazar permanentemente con esta definición">¶</a></dt>
+<dd><p>nombre de los campos que contiene la ventana</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="microbill.windows.GestorWindow.WIDGETS">
+<code class="sig-name descname">WIDGETS</code><em class="property"> = ['cotizacion', 'fecha', 'nombre', 'correo', 'equipo', 'valor', 'tipo']</em><a class="headerlink" href="#microbill.windows.GestorWindow.WIDGETS" title="Enlazar permanentemente con esta definición">¶</a></dt>
+<dd><p>nombre de los campos que contiene la ventana computerfriendly</p>
+</dd></dl>
+
+<p class="rubric">Methods Documentation</p>
+<dl class="method">
+<dt id="microbill.windows.GestorWindow.accept">
+<code class="sig-name descname">accept</code><span class="sig-paren">(</span><em class="sig-param">self</em><span class="sig-paren">)</span><a class="headerlink" href="#microbill.windows.GestorWindow.accept" title="Enlazar permanentemente con esta definición">¶</a></dt>
+<dd><p>Método que verifica que la cotización que se va a enviar al gestor sea válida</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="microbill.windows.GestorWindow.autoCompletar">
+<code class="sig-name descname">autoCompletar</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">text:str</em><span class="sig-paren">)</span><a class="headerlink" href="#microbill.windows.GestorWindow.autoCompletar" title="Enlazar permanentemente con esta definición">¶</a></dt>
+<dd><p>Método que carga la cotización cuyo código entra por parámetro y la visualiza en los campos disponibles
+en esta ventana</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>text: str</strong></dt><dd><p>código de la cotización a cargar</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="microbill.windows.GestorWindow.clean">
+<code class="sig-name descname">clean</code><span class="sig-paren">(</span><em class="sig-param">self</em><span class="sig-paren">)</span><a class="headerlink" href="#microbill.windows.GestorWindow.clean" title="Enlazar permanentemente con esta definición">¶</a></dt>
+<dd><p>Método que se encarga de limpiar el contenido de los campos de la vista</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="microbill.windows.GestorWindow.errorWindow">
+<code class="sig-name descname">errorWindow</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">exception:Exception</em><span class="sig-paren">)</span><a class="headerlink" href="#microbill.windows.GestorWindow.errorWindow" title="Enlazar permanentemente con esta definición">¶</a></dt>
+<dd><p>Método que se encarga de mostrar un diálogo de alerta para todas las excepciones que se puedan generan en
+esta ventana</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>exception: Exception</strong></dt><dd><p>la excepción que será mostrada</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="microbill.windows.GestorWindow.sendCorreo">
+<code class="sig-name descname">sendCorreo</code><span class="sig-paren">(</span><em class="sig-param">self</em><span class="sig-paren">)</span><a class="headerlink" href="#microbill.windows.GestorWindow.sendCorreo" title="Enlazar permanentemente con esta definición">¶</a></dt>
+<dd><p>Método que se encarga de enviar el correo asociado a la cotización que se encuentra en el formulario de
+la ventana. En caso que el tipo de pago de la cotización sea por factura, el método abre un dialogo para
+seleccionar el archivo PDF de la Orden de servicios</p>
+<dl class="field-list simple">
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><dl class="simple">
+<dt>exception: en caso que ocurra un error enviando el correo, o que el tipo de pago no se encuentre entre</dt><dd></dd>
+<dt>Factura o Recibo</dt><dd></dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="microbill.windows.GestorWindow.updateAutoCompletar">
+<code class="sig-name descname">updateAutoCompletar</code><span class="sig-paren">(</span><em class="sig-param">self</em><span class="sig-paren">)</span><a class="headerlink" href="#microbill.windows.GestorWindow.updateAutoCompletar" title="Enlazar permanentemente con esta definición">¶</a></dt>
+<dd><p>Método que hace que los AutoLineEdits actualicen el contenido del modelo con el cual autocompletan</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h4>Tema anterior</h4>
+  <p class="topless"><a href="microbill.windows.BuscarWindow.html"
+                        title="capítulo anterior">BuscarWindow</a></p>
+  <h4>Próximo tema</h4>
+  <p class="topless"><a href="microbill.windows.MainWindow.html"
+                        title="próximo capítulo">MainWindow</a></p>
+  <div role="note" aria-label="source link">
+    <h3>Esta página</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/api/microbill.windows.GestorWindow.rst.txt"
+            rel="nofollow">Mostrar el código</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Búsqueda rápida</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Ir a" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navegación</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="Índice General"
+             >índice</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Índice de Módulos Python"
+             >módulos</a> |</li>
+        <li class="right" >
+          <a href="microbill.windows.MainWindow.html" title="MainWindow"
+             >siguiente</a> |</li>
+        <li class="right" >
+          <a href="microbill.windows.BuscarWindow.html" title="BuscarWindow"
+             >anterior</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">documentación de Microbill - </a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../windows.html" >microbill.windows Module</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Derechos de autor 2019, Juan Barbosa.
+      Creado con <a href="http://sphinx-doc.org/">Sphinx</a> 2.1.2.
+    </div>
+  </body>
+</html>

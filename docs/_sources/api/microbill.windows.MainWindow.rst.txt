@@ -1,0 +1,45 @@
+MainWindow
+==========
+
+.. currentmodule:: microbill.windows
+
+.. autoclass:: MainWindow
+   :show-inheritance:
+
+   .. rubric:: Methods Summary
+
+   .. autosummary::
+
+      ~MainWindow.abrirPDFCotizacion
+      ~MainWindow.buscarHandler
+      ~MainWindow.centerOnScreen
+      ~MainWindow.closeEvent
+      ~MainWindow.cotizacionHandler
+      ~MainWindow.descontarHandler
+      ~MainWindow.gestorHandler
+      ~MainWindow.modificarCotizacion
+      ~MainWindow.openHandler
+      ~MainWindow.propiedadesHandler
+      ~MainWindow.reboot
+      ~MainWindow.registrosHandler
+      ~MainWindow.reporteHandler
+      ~MainWindow.requestHandler
+      ~MainWindow.updateDataFrames
+
+   .. rubric:: Methods Documentation
+
+   .. automethod:: abrirPDFCotizacion
+   .. automethod:: buscarHandler
+   .. automethod:: centerOnScreen
+   .. automethod:: closeEvent
+   .. automethod:: cotizacionHandler
+   .. automethod:: descontarHandler
+   .. automethod:: gestorHandler
+   .. automethod:: modificarCotizacion
+   .. automethod:: openHandler
+   .. automethod:: propiedadesHandler
+   .. automethod:: reboot
+   .. automethod:: registrosHandler
+   .. automethod:: reporteHandler
+   .. automethod:: requestHandler
+   .. automethod:: updateDataFrames

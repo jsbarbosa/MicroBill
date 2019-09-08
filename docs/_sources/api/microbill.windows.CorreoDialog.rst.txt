@@ -1,0 +1,21 @@
+CorreoDialog
+============
+
+.. currentmodule:: microbill.windows
+
+.. autoclass:: CorreoDialog
+   :show-inheritance:
+
+   .. rubric:: Methods Summary
+
+   .. autosummary::
+
+      ~CorreoDialog.closeEvent
+      ~CorreoDialog.sendCorreo
+      ~CorreoDialog.start
+
+   .. rubric:: Methods Documentation
+
+   .. automethod:: closeEvent
+   .. automethod:: sendCorreo
+   .. automethod:: start

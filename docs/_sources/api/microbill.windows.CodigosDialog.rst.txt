@@ -1,0 +1,19 @@
+CodigosDialog
+=============
+
+.. currentmodule:: microbill.windows
+
+.. autoclass:: CodigosDialog
+   :show-inheritance:
+
+   .. rubric:: Methods Summary
+
+   .. autosummary::
+
+      ~CodigosDialog.doubleClick
+      ~CodigosDialog.setModel
+
+   .. rubric:: Methods Documentation
+
+   .. automethod:: doubleClick
+   .. automethod:: setModel

@@ -1,0 +1,41 @@
+Table
+=====
+
+.. currentmodule:: microbill.windows
+
+.. autoclass:: Table
+   :show-inheritance:
+
+   .. rubric:: Attributes Summary
+
+   .. autosummary::
+
+      ~Table.HEADER
+
+   .. rubric:: Methods Summary
+
+   .. autosummary::
+
+      ~Table.agregarServicio
+      ~Table.clean
+      ~Table.getCodigos
+      ~Table.handler
+      ~Table.readOnly
+      ~Table.removeServicio
+      ~Table.setFromCotizacion
+      ~Table.updateInterno
+
+   .. rubric:: Attributes Documentation
+
+   .. autoattribute:: HEADER
+
+   .. rubric:: Methods Documentation
+
+   .. automethod:: agregarServicio
+   .. automethod:: clean
+   .. automethod:: getCodigos
+   .. automethod:: handler
+   .. automethod:: readOnly
+   .. automethod:: removeServicio
+   .. automethod:: setFromCotizacion
+   .. automethod:: updateInterno

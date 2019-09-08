@@ -1,0 +1,29 @@
+PandasModel
+===========
+
+.. currentmodule:: microbill.windows
+
+.. autoclass:: PandasModel
+   :show-inheritance:
+
+   .. rubric:: Methods Summary
+
+   .. autosummary::
+
+      ~PandasModel.columnCount
+      ~PandasModel.data
+      ~PandasModel.flags
+      ~PandasModel.headerData
+      ~PandasModel.rowCount
+      ~PandasModel.setData
+      ~PandasModel.whereIsChecked
+
+   .. rubric:: Methods Documentation
+
+   .. automethod:: columnCount
+   .. automethod:: data
+   .. automethod:: flags
+   .. automethod:: headerData
+   .. automethod:: rowCount
+   .. automethod:: setData
+   .. automethod:: whereIsChecked

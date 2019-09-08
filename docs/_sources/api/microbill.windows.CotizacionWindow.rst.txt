@@ -1,0 +1,81 @@
+CotizacionWindow
+================
+
+.. currentmodule:: microbill.windows
+
+.. autoclass:: CotizacionWindow
+   :show-inheritance:
+
+   .. rubric:: Attributes Summary
+
+   .. autosummary::
+
+      ~CotizacionWindow.AUTOCOMPLETE_FIELDS
+      ~CotizacionWindow.AUTOCOMPLETE_WIDGETS
+      ~CotizacionWindow.FIELDS
+      ~CotizacionWindow.IGNORE
+      ~CotizacionWindow.WIDGETS
+
+   .. rubric:: Methods Summary
+
+   .. autosummary::
+
+      ~CotizacionWindow.addServicio
+      ~CotizacionWindow.agregarDesdeCodigo
+      ~CotizacionWindow.autoCompletar
+      ~CotizacionWindow.changeAutocompletar
+      ~CotizacionWindow.changeInterno
+      ~CotizacionWindow.closePDF
+      ~CotizacionWindow.confirmGuardar
+      ~CotizacionWindow.errorWindow
+      ~CotizacionWindow.getCodigos
+      ~CotizacionWindow.getCodigosPrefix
+      ~CotizacionWindow.getInterno
+      ~CotizacionWindow.getServicio
+      ~CotizacionWindow.getServicios
+      ~CotizacionWindow.guardar
+      ~CotizacionWindow.limpiar
+      ~CotizacionWindow.loadCotizacion
+      ~CotizacionWindow.openPDF
+      ~CotizacionWindow.removeServicio
+      ~CotizacionWindow.sendCorreo
+      ~CotizacionWindow.setAutoCompletar
+      ~CotizacionWindow.setInternoWidget
+      ~CotizacionWindow.setTotal
+      ~CotizacionWindow.updateAutoCompletar
+      ~CotizacionWindow.verCodigos
+
+   .. rubric:: Attributes Documentation
+
+   .. autoattribute:: AUTOCOMPLETE_FIELDS
+   .. autoattribute:: AUTOCOMPLETE_WIDGETS
+   .. autoattribute:: FIELDS
+   .. autoattribute:: IGNORE
+   .. autoattribute:: WIDGETS
+
+   .. rubric:: Methods Documentation
+
+   .. automethod:: addServicio
+   .. automethod:: agregarDesdeCodigo
+   .. automethod:: autoCompletar
+   .. automethod:: changeAutocompletar
+   .. automethod:: changeInterno
+   .. automethod:: closePDF
+   .. automethod:: confirmGuardar
+   .. automethod:: errorWindow
+   .. automethod:: getCodigos
+   .. automethod:: getCodigosPrefix
+   .. automethod:: getInterno
+   .. automethod:: getServicio
+   .. automethod:: getServicios
+   .. automethod:: guardar
+   .. automethod:: limpiar
+   .. automethod:: loadCotizacion
+   .. automethod:: openPDF
+   .. automethod:: removeServicio
+   .. automethod:: sendCorreo
+   .. automethod:: setAutoCompletar
+   .. automethod:: setInternoWidget
+   .. automethod:: setTotal
+   .. automethod:: updateAutoCompletar
+   .. automethod:: verCodigos

@@ -1,0 +1,45 @@
+PropiedadesWindow
+=================
+
+.. currentmodule:: microbill.windows
+
+.. autoclass:: PropiedadesWindow
+   :show-inheritance:
+
+   .. rubric:: Attributes Summary
+
+   .. autosummary::
+
+      ~PropiedadesWindow.CONSTANTS
+      ~PropiedadesWindow.KEY
+      ~PropiedadesWindow.WIDGETS
+
+   .. rubric:: Methods Summary
+
+   .. autosummary::
+
+      ~PropiedadesWindow.confirmation
+      ~PropiedadesWindow.guardar
+      ~PropiedadesWindow.leer
+      ~PropiedadesWindow.populateCorreoTab
+      ~PropiedadesWindow.populatePDFTab
+      ~PropiedadesWindow.populateVariosTab
+      ~PropiedadesWindow.readValues
+      ~PropiedadesWindow.saveValues
+
+   .. rubric:: Attributes Documentation
+
+   .. autoattribute:: CONSTANTS
+   .. autoattribute:: KEY
+   .. autoattribute:: WIDGETS
+
+   .. rubric:: Methods Documentation
+
+   .. automethod:: confirmation
+   .. automethod:: guardar
+   .. automethod:: leer
+   .. automethod:: populateCorreoTab
+   .. automethod:: populatePDFTab
+   .. automethod:: populateVariosTab
+   .. automethod:: readValues
+   .. automethod:: saveValues

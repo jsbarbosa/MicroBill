@@ -1,0 +1,49 @@
+DescontarWindow
+===============
+
+.. currentmodule:: microbill.windows
+
+.. autoclass:: DescontarWindow
+   :show-inheritance:
+
+   .. rubric:: Attributes Summary
+
+   .. autosummary::
+
+      ~DescontarWindow.FIELDS
+      ~DescontarWindow.WIDGETS
+
+   .. rubric:: Methods Summary
+
+   .. autosummary::
+
+      ~DescontarWindow.checkHandler
+      ~DescontarWindow.clean
+      ~DescontarWindow.cleanWidgets
+      ~DescontarWindow.cotizacionChanged
+      ~DescontarWindow.equipoChanged
+      ~DescontarWindow.errorWindow
+      ~DescontarWindow.guardarHandler
+      ~DescontarWindow.otrosHandler
+      ~DescontarWindow.removeOtros
+      ~DescontarWindow.sendCorreo
+      ~DescontarWindow.updateDataFrames
+
+   .. rubric:: Attributes Documentation
+
+   .. autoattribute:: FIELDS
+   .. autoattribute:: WIDGETS
+
+   .. rubric:: Methods Documentation
+
+   .. automethod:: checkHandler
+   .. automethod:: clean
+   .. automethod:: cleanWidgets
+   .. automethod:: cotizacionChanged
+   .. automethod:: equipoChanged
+   .. automethod:: errorWindow
+   .. automethod:: guardarHandler
+   .. automethod:: otrosHandler
+   .. automethod:: removeOtros
+   .. automethod:: sendCorreo
+   .. automethod:: updateDataFrames

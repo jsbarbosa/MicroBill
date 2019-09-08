@@ -1,0 +1,254 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml" lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <title>BuscarWindow &#8212; documentación de Microbill - </title>
+    <link rel="stylesheet" href="../_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/graphviz.css" />
+    
+    <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/language_data.js"></script>
+    <script type="text/javascript" src="../_static/translations.js"></script>
+    
+    <link rel="index" title="Índice" href="../genindex.html" />
+    <link rel="search" title="Búsqueda" href="../search.html" />
+    <link rel="next" title="GestorWindow" href="microbill.windows.GestorWindow.html" />
+    <link rel="prev" title="PandasModel" href="microbill.windows.PandasModel.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navegación</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="Índice General"
+             accesskey="I">índice</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Índice de Módulos Python"
+             >módulos</a> |</li>
+        <li class="right" >
+          <a href="microbill.windows.GestorWindow.html" title="GestorWindow"
+             accesskey="N">siguiente</a> |</li>
+        <li class="right" >
+          <a href="microbill.windows.PandasModel.html" title="PandasModel"
+             accesskey="P">anterior</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">documentación de Microbill - </a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../windows.html" accesskey="U">microbill.windows Module</a> &#187;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="buscarwindow">
+<h1>BuscarWindow<a class="headerlink" href="#buscarwindow" title="Enlazar permanentemente con este título">¶</a></h1>
+<dl class="class">
+<dt id="microbill.windows.BuscarWindow">
+<em class="property">class </em><code class="sig-prename descclassname">microbill.windows.</code><code class="sig-name descname">BuscarWindow</code><span class="sig-paren">(</span><em class="sig-param">parent=None</em><span class="sig-paren">)</span><a class="headerlink" href="#microbill.windows.BuscarWindow" title="Enlazar permanentemente con esta definición">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="microbill.windows.SubWindow.html#microbill.windows.SubWindow" title="microbill.windows.SubWindow"><code class="xref py py-class docutils literal notranslate"><span class="pre">microbill.windows.SubWindow</span></code></a></p>
+<p>Clase que representa la ventana en donde se puede buscar en el registro de cotizaciones viejas</p>
+<p class="rubric">Attributes Summary</p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#microbill.windows.BuscarWindow.FIELDS" title="microbill.windows.BuscarWindow.FIELDS"><code class="xref py py-obj docutils literal notranslate"><span class="pre">FIELDS</span></code></a></p></td>
+<td><p>nombre de los campos que contiene la ventana</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#microbill.windows.BuscarWindow.WIDGETS" title="microbill.windows.BuscarWindow.WIDGETS"><code class="xref py py-obj docutils literal notranslate"><span class="pre">WIDGETS</span></code></a></p></td>
+<td><p>nombre de los campos que contiene la ventana computerfriendly</p></td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Methods Summary</p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#microbill.windows.BuscarWindow.doubleClick" title="microbill.windows.BuscarWindow.doubleClick"><code class="xref py py-obj docutils literal notranslate"><span class="pre">doubleClick</span></code></a>(self, row, left)</p></td>
+<td><p>Método que se encarga de abrir el PDF de la cotización o abrir la cotización para su modificación.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#microbill.windows.BuscarWindow.eventFilter" title="microbill.windows.BuscarWindow.eventFilter"><code class="xref py py-obj docutils literal notranslate"><span class="pre">eventFilter</span></code></a>(self, source, event)</p></td>
+<td><p>Método que sobreescribe el método eventFilter, y permite determinar cuando se lleva a cabo un doble click sobre la tabla de búsqueda.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#microbill.windows.BuscarWindow.getChanges" title="microbill.windows.BuscarWindow.getChanges"><code class="xref py py-obj docutils literal notranslate"><span class="pre">getChanges</span></code></a>(self, source)</p></td>
+<td><p>Método que determina qué posiciones han cambiado debido a los filtros de la ventana respecto al dataframe de referencia de registros</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#microbill.windows.BuscarWindow.guardar" title="microbill.windows.BuscarWindow.guardar"><code class="xref py py-obj docutils literal notranslate"><span class="pre">guardar</span></code></a>(self)</p></td>
+<td><p>Método que se encarga de generar todos los reportes asociados a las cotizaciones seleccionadas en la vista</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#microbill.windows.BuscarWindow.limpiar" title="microbill.windows.BuscarWindow.limpiar"><code class="xref py py-obj docutils literal notranslate"><span class="pre">limpiar</span></code></a>(self)</p></td>
+<td><p>Método que se encarga de limpiar los widgets de filtro de búsqueda así como también reiniciar la vista de la tabla</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#microbill.windows.BuscarWindow.update" title="microbill.windows.BuscarWindow.update"><code class="xref py py-obj docutils literal notranslate"><span class="pre">update</span></code></a>(self)</p></td>
+<td><p>Método que actualiza la vista de la tabla dependiendo de los filtros actuales</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#microbill.windows.BuscarWindow.updateAutoCompletar" title="microbill.windows.BuscarWindow.updateAutoCompletar"><code class="xref py py-obj docutils literal notranslate"><span class="pre">updateAutoCompletar</span></code></a>(self)</p></td>
+<td><p>Método que hace que los AutoLineEdits actualicen el contenido del modelo con el cual autocompletan</p></td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Attributes Documentation</p>
+<dl class="attribute">
+<dt id="microbill.windows.BuscarWindow.FIELDS">
+<code class="sig-name descname">FIELDS</code><em class="property"> = ['Equipo', 'Nombre', 'Correo', 'Institución', 'Responsable', 'Cotización']</em><a class="headerlink" href="#microbill.windows.BuscarWindow.FIELDS" title="Enlazar permanentemente con esta definición">¶</a></dt>
+<dd><p>nombre de los campos que contiene la ventana</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="microbill.windows.BuscarWindow.WIDGETS">
+<code class="sig-name descname">WIDGETS</code><em class="property"> = ['equipo', 'nombre', 'correo', 'institucion', 'responsable', 'cotizacion']</em><a class="headerlink" href="#microbill.windows.BuscarWindow.WIDGETS" title="Enlazar permanentemente con esta definición">¶</a></dt>
+<dd><p>nombre de los campos que contiene la ventana computerfriendly</p>
+</dd></dl>
+
+<p class="rubric">Methods Documentation</p>
+<dl class="method">
+<dt id="microbill.windows.BuscarWindow.doubleClick">
+<code class="sig-name descname">doubleClick</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">row:int</em>, <em class="sig-param">left:bool</em><span class="sig-paren">)</span><a class="headerlink" href="#microbill.windows.BuscarWindow.doubleClick" title="Enlazar permanentemente con esta definición">¶</a></dt>
+<dd><p>Método que se encarga de abrir el PDF de la cotización o abrir la cotización para su modificación. En caso
+que left == True, se abre la cotización para su modifiación, en caso contrario se abre el PDF</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>row: int</strong></dt><dd><p>Fila de la tabla en donde tuvo lugar el doble click</p>
+</dd>
+<dt><strong>left: bool</strong></dt><dd><p>True en caso que el botón fuese el izquierdo</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="microbill.windows.BuscarWindow.eventFilter">
+<code class="sig-name descname">eventFilter</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">source</em>, <em class="sig-param">event</em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#microbill.windows.BuscarWindow.eventFilter" title="Enlazar permanentemente con esta definición">¶</a></dt>
+<dd><p>Método que sobreescribe el método eventFilter, y permite determinar cuando se lleva a cabo un doble click
+sobre la tabla de búsqueda. En caso que esto suceda se realiza la discriminación de las acciones dependiendo
+de si el doble click fue con el botón derecho o izquierdo del mouse</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>source</strong></dt><dd></dd>
+<dt><strong>event</strong></dt><dd></dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt>bool: True en caso que el evento fuese un doble click en la ventana de búsqueda, False de lo contrario</dt><dd></dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="microbill.windows.BuscarWindow.getChanges">
+<code class="sig-name descname">getChanges</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">source:str</em><span class="sig-paren">)</span><a class="headerlink" href="#microbill.windows.BuscarWindow.getChanges" title="Enlazar permanentemente con esta definición">¶</a></dt>
+<dd><p>Método que determina qué posiciones han cambiado debido a los filtros de la ventana respecto al dataframe
+de referencia de registros</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>source: str</strong></dt><dd><p>campo que está generando el cambio en la vista de las cotizaciones</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="microbill.windows.BuscarWindow.guardar">
+<code class="sig-name descname">guardar</code><span class="sig-paren">(</span><em class="sig-param">self</em><span class="sig-paren">)</span><a class="headerlink" href="#microbill.windows.BuscarWindow.guardar" title="Enlazar permanentemente con esta definición">¶</a></dt>
+<dd><p>Método que se encarga de generar todos los reportes asociados a las cotizaciones seleccionadas en la vista</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="microbill.windows.BuscarWindow.limpiar">
+<code class="sig-name descname">limpiar</code><span class="sig-paren">(</span><em class="sig-param">self</em><span class="sig-paren">)</span><a class="headerlink" href="#microbill.windows.BuscarWindow.limpiar" title="Enlazar permanentemente con esta definición">¶</a></dt>
+<dd><p>Método que se encarga de limpiar los widgets de filtro de búsqueda así como también reiniciar la vista
+de la tabla</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="microbill.windows.BuscarWindow.update">
+<code class="sig-name descname">update</code><span class="sig-paren">(</span><em class="sig-param">self</em><span class="sig-paren">)</span><a class="headerlink" href="#microbill.windows.BuscarWindow.update" title="Enlazar permanentemente con esta definición">¶</a></dt>
+<dd><p>Método que actualiza la vista de la tabla dependiendo de los filtros actuales</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="microbill.windows.BuscarWindow.updateAutoCompletar">
+<code class="sig-name descname">updateAutoCompletar</code><span class="sig-paren">(</span><em class="sig-param">self</em><span class="sig-paren">)</span><a class="headerlink" href="#microbill.windows.BuscarWindow.updateAutoCompletar" title="Enlazar permanentemente con esta definición">¶</a></dt>
+<dd><p>Método que hace que los AutoLineEdits actualicen el contenido del modelo con el cual autocompletan</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h4>Tema anterior</h4>
+  <p class="topless"><a href="microbill.windows.PandasModel.html"
+                        title="capítulo anterior">PandasModel</a></p>
+  <h4>Próximo tema</h4>
+  <p class="topless"><a href="microbill.windows.GestorWindow.html"
+                        title="próximo capítulo">GestorWindow</a></p>
+  <div role="note" aria-label="source link">
+    <h3>Esta página</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/api/microbill.windows.BuscarWindow.rst.txt"
+            rel="nofollow">Mostrar el código</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Búsqueda rápida</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Ir a" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navegación</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="Índice General"
+             >índice</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Índice de Módulos Python"
+             >módulos</a> |</li>
+        <li class="right" >
+          <a href="microbill.windows.GestorWindow.html" title="GestorWindow"
+             >siguiente</a> |</li>
+        <li class="right" >
+          <a href="microbill.windows.PandasModel.html" title="PandasModel"
+             >anterior</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">documentación de Microbill - </a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../windows.html" >microbill.windows Module</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Derechos de autor 2019, Juan Barbosa.
+      Creado con <a href="http://sphinx-doc.org/">Sphinx</a> 2.1.2.
+    </div>
+  </body>
+</html>

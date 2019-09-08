@@ -1,0 +1,21 @@
+ReporteWindow
+=============
+
+.. currentmodule:: microbill.windows
+
+.. autoclass:: ReporteWindow
+   :show-inheritance:
+
+   .. rubric:: Methods Summary
+
+   .. autosummary::
+
+      ~ReporteWindow.changeDate
+      ~ReporteWindow.send
+      ~ReporteWindow.setText
+
+   .. rubric:: Methods Documentation
+
+   .. automethod:: changeDate
+   .. automethod:: send
+   .. automethod:: setText

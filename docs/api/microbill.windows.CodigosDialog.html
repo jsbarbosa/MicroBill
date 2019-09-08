@@ -1,0 +1,162 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml" lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <title>CodigosDialog &#8212; documentación de Microbill - </title>
+    <link rel="stylesheet" href="../_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/graphviz.css" />
+    
+    <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/language_data.js"></script>
+    <script type="text/javascript" src="../_static/translations.js"></script>
+    
+    <link rel="index" title="Índice" href="../genindex.html" />
+    <link rel="search" title="Búsqueda" href="../search.html" />
+    <link rel="next" title="CotizacionWindow" href="microbill.windows.CotizacionWindow.html" />
+    <link rel="prev" title="CorreoDialog" href="microbill.windows.CorreoDialog.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navegación</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="Índice General"
+             accesskey="I">índice</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Índice de Módulos Python"
+             >módulos</a> |</li>
+        <li class="right" >
+          <a href="microbill.windows.CotizacionWindow.html" title="CotizacionWindow"
+             accesskey="N">siguiente</a> |</li>
+        <li class="right" >
+          <a href="microbill.windows.CorreoDialog.html" title="CorreoDialog"
+             accesskey="P">anterior</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">documentación de Microbill - </a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../windows.html" accesskey="U">microbill.windows Module</a> &#187;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="codigosdialog">
+<h1>CodigosDialog<a class="headerlink" href="#codigosdialog" title="Enlazar permanentemente con este título">¶</a></h1>
+<dl class="class">
+<dt id="microbill.windows.CodigosDialog">
+<em class="property">class </em><code class="sig-prename descclassname">microbill.windows.</code><code class="sig-name descname">CodigosDialog</code><span class="sig-paren">(</span><em class="sig-param">parent</em><span class="sig-paren">)</span><a class="headerlink" href="#microbill.windows.CodigosDialog" title="Enlazar permanentemente con esta definición">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyQt5.QtWidgets.QDialog</span></code></p>
+<p>Clase que representa la vista en donde se muestran todos los servicios disponibles por el Centro</p>
+<p class="rubric">Methods Summary</p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#microbill.windows.CodigosDialog.doubleClick" title="microbill.windows.CodigosDialog.doubleClick"><code class="xref py py-obj docutils literal notranslate"><span class="pre">doubleClick</span></code></a>(self, modelIndex)</p></td>
+<td><p>Método que se encarga de agregar un servicio a la ventana principal siempre que sobre esta ventana se haga doble click sobre un servicio</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#microbill.windows.CodigosDialog.setModel" title="microbill.windows.CodigosDialog.setModel"><code class="xref py py-obj docutils literal notranslate"><span class="pre">setModel</span></code></a>(self, equipo)</p></td>
+<td><p>Método que se encarga de poblar la pestaña asociada al equipo que entra por parámetro con los servicios correspondientes</p></td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Methods Documentation</p>
+<dl class="method">
+<dt id="microbill.windows.CodigosDialog.doubleClick">
+<code class="sig-name descname">doubleClick</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">modelIndex</em><span class="sig-paren">)</span><a class="headerlink" href="#microbill.windows.CodigosDialog.doubleClick" title="Enlazar permanentemente con esta definición">¶</a></dt>
+<dd><p>Método que se encarga de agregar un servicio a la ventana principal siempre que sobre esta ventana se haga
+doble click sobre un servicio</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>modelIndex: pyqt modelIndex</strong></dt><dd></dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="microbill.windows.CodigosDialog.setModel">
+<code class="sig-name descname">setModel</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">equipo:str</em><span class="sig-paren">)</span><a class="headerlink" href="#microbill.windows.CodigosDialog.setModel" title="Enlazar permanentemente con esta definición">¶</a></dt>
+<dd><p>Método que se encarga de poblar la pestaña asociada al equipo que entra por parámetro con los servicios
+correspondientes</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>equipo: str</strong></dt><dd><p>nombre de la pestaña que se desea poblar</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h4>Tema anterior</h4>
+  <p class="topless"><a href="microbill.windows.CorreoDialog.html"
+                        title="capítulo anterior">CorreoDialog</a></p>
+  <h4>Próximo tema</h4>
+  <p class="topless"><a href="microbill.windows.CotizacionWindow.html"
+                        title="próximo capítulo">CotizacionWindow</a></p>
+  <div role="note" aria-label="source link">
+    <h3>Esta página</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/api/microbill.windows.CodigosDialog.rst.txt"
+            rel="nofollow">Mostrar el código</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Búsqueda rápida</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Ir a" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navegación</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="Índice General"
+             >índice</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Índice de Módulos Python"
+             >módulos</a> |</li>
+        <li class="right" >
+          <a href="microbill.windows.CotizacionWindow.html" title="CotizacionWindow"
+             >siguiente</a> |</li>
+        <li class="right" >
+          <a href="microbill.windows.CorreoDialog.html" title="CorreoDialog"
+             >anterior</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">documentación de Microbill - </a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../windows.html" >microbill.windows Module</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Derechos de autor 2019, Juan Barbosa.
+      Creado con <a href="http://sphinx-doc.org/">Sphinx</a> 2.1.2.
+    </div>
+  </body>
+</html>

@@ -16,6 +16,7 @@ Bienvenidos a la documentación de Microbill!
    main
    pdflib
    objects
+   windows
 
 Indices and tables
 ==================

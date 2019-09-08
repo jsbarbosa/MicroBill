@@ -1,0 +1,39 @@
+GestorWindow
+============
+
+.. currentmodule:: microbill.windows
+
+.. autoclass:: GestorWindow
+   :show-inheritance:
+
+   .. rubric:: Attributes Summary
+
+   .. autosummary::
+
+      ~GestorWindow.FIELDS
+      ~GestorWindow.WIDGETS
+
+   .. rubric:: Methods Summary
+
+   .. autosummary::
+
+      ~GestorWindow.accept
+      ~GestorWindow.autoCompletar
+      ~GestorWindow.clean
+      ~GestorWindow.errorWindow
+      ~GestorWindow.sendCorreo
+      ~GestorWindow.updateAutoCompletar
+
+   .. rubric:: Attributes Documentation
+
+   .. autoattribute:: FIELDS
+   .. autoattribute:: WIDGETS
+
+   .. rubric:: Methods Documentation
+
+   .. automethod:: accept
+   .. automethod:: autoCompletar
+   .. automethod:: clean
+   .. automethod:: errorWindow
+   .. automethod:: sendCorreo
+   .. automethod:: updateAutoCompletar

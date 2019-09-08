@@ -1,0 +1,29 @@
+AutoLineEdit
+============
+
+.. currentmodule:: microbill.windows
+
+.. autoclass:: AutoLineEdit
+   :show-inheritance:
+
+   .. rubric:: Attributes Summary
+
+   .. autosummary::
+
+      ~AutoLineEdit.AUTOCOMPLETE
+
+   .. rubric:: Methods Summary
+
+   .. autosummary::
+
+      ~AutoLineEdit.event
+      ~AutoLineEdit.update
+
+   .. rubric:: Attributes Documentation
+
+   .. autoattribute:: AUTOCOMPLETE
+
+   .. rubric:: Methods Documentation
+
+   .. automethod:: event
+   .. automethod:: update

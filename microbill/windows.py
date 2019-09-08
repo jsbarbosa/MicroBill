@@ -19,33 +19,46 @@ from subprocess import Popen
 from threading import Thread
 
 import base64
+from typing import Iterable, Callable
 
 
 @export
 class SubWindow(QtWidgets.QMdiSubWindow):
-    def __init__(self, parent = None):
+    """ Clase que representa la clase base para todas las subventanas que se abren al interior
+     de la ventana principal """
+
+    def __init__(self, parent=None):
         super(SubWindow, self).__init__(parent)
         self.parent = parent
         self.is_closed = True
-        # self.setWindowIcon(constants.ICON)
         self.setMinimumSize(400, 400)
-        # self.setWindowFlags(QtCore.Qt.WindowStaysOnTopHint)
         self.setSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Expanding)
 
     def closeEvent(self, evnt):
+        """ Método que sobreescribe el comportamiento del método closeEvent para que únicamente se esconda la vista
+
+        Parameters
+        ----------
+        evnt: pyqt event
+        """
+
         evnt.accept()
         self.hide()
         self.is_closed = True
 
     def show(self):
+        """ Método que sobreescribe el comportamiento del método show, para modificar el valor del atributo is_closed"""
         self.is_closed = False
         QtWidgets.QMdiSubWindow.show(self)
 
 
 @export
 class Table(QtWidgets.QTableWidget):
-    HEADER = ['Código', 'Descripción', 'Cantidad', 'Valor Unitario', 'Valor Total']
-    def __init__(self, parent, rows = 25, cols = 5):
+    """ Clase usada para representar la tabla en donde se ingresan los servicios y su cantidad en CotizacionWindow """
+
+    HEADER = ['Código', 'Descripción', 'Cantidad', 'Valor Unitario', 'Valor Total']  #: columnas de la tabla
+
+    def __init__(self, parent, rows: int = 25, cols: int = 5):
         super(Table, self).__init__(rows, cols)
 
         self.parent = parent
@@ -64,21 +77,46 @@ class Table(QtWidgets.QTableWidget):
 
         self.cellChanged.connect(self.handler)
 
-    def agregarServicio(self, codigo):
+    def agregarServicio(self, codigo: str):
+        """ Método que agrega un servicio a la tabla, la identificación del servicio está dada por el código
+
+        Parameters
+        ----------
+        codigo: str
+            código del servicio a agregar
+        """
+
         for i in range(self.n_rows):
-            if self.item(i, 0).text() == "": break
+            if self.item(i, 0).text() == "":
+                break
 
         self.item(i, 0).setText(codigo)
 
     def removeServicio(self):
+        """ Método que remueve un servicio de la cotización que se encuentra registrada en CotizacionWindow
+        pero que no está en la tabla """
+
         table_codigos = self.getCodigos()
         regis_codigos = self.parent.getCodigosPrefix()
         for (i, codigo) in enumerate(regis_codigos):
-            if not codigo in table_codigos: self.parent.removeServicio(i)
+            if codigo not in table_codigos:
+                self.parent.removeServicio(i)
 
-    def handler(self, row, col):
+    def handler(self, row: int, col: int):
+        """ Método que se encarga de manejar las interacciones del usuario con la tabla. En caso que el usuario borre
+        el código de un servicio, se eliminan todas las columnas de esa misma fila. Al modificar la columna Cantidad
+        se calcula de ser posible el valor total por el servicio. Si el usuario modifica el valor total se recalculan
+        la cantidad. Además realiza el formato de valores a miles de pesos
+
+        Parameters
+        ----------
+        row: int
+            la fila en donde se lleva a cabo la modificación del usuario
+        col: int
+            la columna en donde se lleva a cabo la modificación del usuario
+        """
+
         self.blockSignals(True)
-        item = self.item(row, col)
         try:
             cod = self.item(row, 0).text()
             if col == 0:
@@ -122,7 +160,7 @@ class Table(QtWidgets.QTableWidget):
                         n = np.ceil(10 * n) / 10
                         servicio.setCantidad(n)
                         servicio.setValorTotal(total)
-                        self.item(row, 2).setText("%.1f"%n)
+                        self.item(row, 2).setText("%.1f" % n)
                     else:
                         total = servicio.getValorTotal()
 
@@ -131,10 +169,13 @@ class Table(QtWidgets.QTableWidget):
                     self.item(row, 4).setText("{:,}".format(total))
 
             if col == 2:
-                try: n = round(float(self.item(row, 2).text()), 1)
-                except: raise(Exception("Cantidad inválida.")); self.item(row, 2).setText("")
+                try:
+                    n = round(float(self.item(row, 2).text()), 1)
+                except:
+                    raise Exception("Cantidad inválida.")
+                    self.item(row, 2).setText("")
 
-                self.item(row, 2).setText("%.1f"%n)
+                self.item(row, 2).setText("%.1f" % n)
 
                 if cod != "":
                     servicio = self.parent.getServicio(cod)
@@ -144,8 +185,11 @@ class Table(QtWidgets.QTableWidget):
                     self.item(row, 4).setText("{:,}".format(total))
 
             if col == 4:
-                try: total = int(self.item(row, 4).text())
-                except: raise(Exception("Valor total inválido.")); self.item(row, 4).setText("")
+                try:
+                    total = int(self.item(row, 4).text())
+                except:
+                    raise(Exception("Valor total inválido."))
+                    self.item(row, 4).setText("")
 
                 self.item(row, 4).setText("{:,}".format(total))
 
@@ -158,7 +202,7 @@ class Table(QtWidgets.QTableWidget):
                     servicio.setCantidad(n)
                     servicio.setValorTotal(total)
 
-                    self.item(row, 2).setText("%.1f"%n)
+                    self.item(row, 2).setText("%.1f" % n)
 
             self.parent.setTotal()
         except Exception as e:
@@ -166,6 +210,9 @@ class Table(QtWidgets.QTableWidget):
         self.blockSignals(False)
 
     def updateInterno(self):
+        """ En caso de que se modifique el tipo de usario, el método recalcula los valores teniendo en cuenta que hubo
+        un cambio en el tipo de usuario """
+
         self.blockSignals(True)
 
         cods = self.getCodigos()
@@ -181,6 +228,9 @@ class Table(QtWidgets.QTableWidget):
         self.blockSignals(False)
 
     def setFromCotizacion(self):
+        """ Método que es llamado cuando se desea cargar una cotización previa. Carga la información de la cotización
+        que se encuentra en CotizacionWindow a la tabla """
+
         servicios = self.parent.getServicios()
         self.blockSignals(True)
         for (row, servicio) in enumerate(servicios):
@@ -189,17 +239,26 @@ class Table(QtWidgets.QTableWidget):
                     self.item(row, 0).setText(servicio.getCodigoPrefix())
                 except (IncompatibleError, AttributeError):
                     self.item(row, 0).setText(servicio.getCodigo())
-                    raise(IncompatibleError)
+                    raise IncompatibleError
                 self.item(row, 1).setText(servicio.getDescripcion())
-                self.item(row, 2).setText("%.1f"%servicio.getCantidad())
+                self.item(row, 2).setText("%.1f" % servicio.getCantidad())
                 self.item(row, 3).setText("{:,}".format(servicio.getValorUnitario()))
                 self.item(row, 4).setText("{:,}".format(servicio.getValorTotal()))
         self.blockSignals(False)
 
-    def getCodigos(self):
+    def getCodigos(self) -> list:
+        """ Método que retorna los códigos que se encuentran actualmente en la tabla
+
+        Returns
+        -------
+        list: lista de códigos presentes en la tabla
+        """
+
         return [self.item(i, 0).text() for i in range(self.n_rows)]
 
     def clean(self):
+        """ Método que borra todo el contenido que se encuentra en la tabla """
+
         self.blockSignals(True)
         for r in range(self.n_rows):
             for c in range(self.n_cols):
@@ -209,6 +268,8 @@ class Table(QtWidgets.QTableWidget):
         self.blockSignals(False)
 
     def readOnly(self):
+        """ Método encargado de inicializar las columnas 1 y 3 como columnas de lectura """
+
         flags = QtCore.Qt.ItemIsEditable
         for r in range(self.n_rows):
             for c in [1, 3]:
@@ -219,12 +280,15 @@ class Table(QtWidgets.QTableWidget):
 
 @export
 class AutoLineEdit(QtWidgets.QLineEdit):
-    AUTOCOMPLETE = ["Nombre", "Correo", "Documento", "Teléfono", "Cotización"]
-    def __init__(self, target, parent, autochange = True):
+    """ Clase base para los LineEdit que presentan la posibilidad de autocompletar """
+
+    AUTOCOMPLETE = ["Nombre", "Correo", "Documento", "Teléfono", "Cotización"]  #: Campos que pueden ser autocompletados
+
+    def __init__(self, target: str, parent):
         super(AutoLineEdit, self).__init__()
-        self.target = target
+        self.target = target  #: str: campo del autolineedit
         self.parent = parent
-        self.model = QtCore.QStringListModel()
+        self.model = QtCore.QStringListModel()  #: QStringListModel
         completer = QtWidgets.QCompleter()
         completer.setCaseSensitivity(False)
         completer.setModelSorting(0)
@@ -233,6 +297,18 @@ class AutoLineEdit(QtWidgets.QLineEdit):
         self.update()
 
     def event(self, event):
+        """ Método que se encarga de modificar el comportamiento del widget, dependiendo de si la funcionalidad de
+        autocompletar se encuentra o no activada desde la ventana padre
+
+        Parameters
+        ----------
+        event: pyqt event
+
+        Returns
+        -------
+        bool
+        """
+
         if event.type() == QtCore.QEvent.KeyPress and event.key() == QtCore.Qt.Key_Tab:
             try:
                 self.parent.changeAutocompletar()
@@ -242,6 +318,8 @@ class AutoLineEdit(QtWidgets.QLineEdit):
         return QtWidgets.QWidget.event(self, event)
 
     def update(self):
+        """ Método que modifica el contenido del atributo model, en caso que la base de clientes o registro cambie """
+
         if type(self.parent) is CotizacionWindow:
             dataframe = objects.CLIENTES_DATAFRAME
             order = 1
@@ -255,8 +333,10 @@ class AutoLineEdit(QtWidgets.QLineEdit):
 
 @export
 class ChangeCotizacion(QtWidgets.QDialog):
-    FIELDS = ["Cotización", "Fecha", "Nombre", "Correo", "Equipo", "Valor"]
-    WIDGETS = ["cotizacion", "fecha", "nombre", "correo", "equipo", "valor"]
+    """ Clase que representa el dialogo que se muestra cuando se desea cargar una cotización vieja """
+
+    FIELDS = ["Cotización", "Fecha", "Nombre", "Correo", "Equipo", "Valor"]  #: Nombre a mostrar de los campos
+    WIDGETS = ["cotizacion", "fecha", "nombre", "correo", "equipo", "valor"]  #: nombre de los campos computerfriendly
 
     def __init__(self, parent):
         super(ChangeCotizacion, self).__init__()
@@ -306,24 +386,39 @@ class ChangeCotizacion(QtWidgets.QDialog):
 
         self.cotizacion_widget.textChanged.connect(self.autoCompletar)
 
-    def autoCompletar(self, text):
+    def autoCompletar(self, text: str):
+        """ Método que usando el número de la cotización que entra por parámetro actualiza los WIDGETS con el valor
+        que se encuentre para estos en la cotización
+
+        Parameters
+        ----------
+        text: str
+            número de la cotización
+        """
+
         if text != "":
             registro = objects.REGISTRO_DATAFRAME[objects.REGISTRO_DATAFRAME["Cotización"] == text]
             if len(registro):
                 for (field, widgetT) in zip(self.FIELDS, self.WIDGETS):
-                        val = str(registro[field].values[0])
-                        if val == "nan": val = ""
-                        widget = eval("self.%s_widget"%widgetT)
+                        val: str = str(registro[field].values[0])
+                        if val == "nan":
+                            val = ""
+                        widget = eval("self.%s_widget" % widgetT)
                         widget.setText(val)
 
     def accept2(self):
+        """ Método que sobreescribe el comportamiento del método accept, para cargar la cotización a la ventana
+        CotizacionWidget """
+
         self.parent.loadCotizacion(self.cotizacion_widget.text())
         self.accept()
 
 
 @export
 class CorreoDialog(QtWidgets.QDialog):
-    def __init__(self, args, target):
+    """ Clase que representa el dialogo de envio de correos """
+
+    def __init__(self, args: Iterable, target: Callable):
         super(CorreoDialog, self).__init__()
         self.setWindowTitle("Enviando correo...")
 
@@ -331,20 +426,26 @@ class CorreoDialog(QtWidgets.QDialog):
 
         self.layout = QtWidgets.QVBoxLayout()
         self.setLayout(self.layout)
-        label = "Enviando correo a: \t<b>%s</b>"%args[0]
+        label = "Enviando correo a: \t<b>%s</b>" % args[0]
 
         self.layout.addWidget(QtWidgets.QLabel(label))
         self.resize(200, 100)
 
         self.setModal(True)
 
-        self.thread = Thread(target = self.sendCorreo, args=(target,))
+        self.thread = Thread(target=self.sendCorreo, args=(target,))
         self.thread.setDaemon(True)
 
         self.finished = False
         self.exception = None
 
     def closeEvent(self, event):
+        """ Método que modifica el método closeEvent cerrando el atributo thread de la clase
+
+        Parameters
+        ----------
+        event: pyqt event
+        """
         if self.finished:
             self.thread = None
             # sleep(2.5)
@@ -352,7 +453,15 @@ class CorreoDialog(QtWidgets.QDialog):
         else:
             event.ignore()
 
-    def sendCorreo(self, func):
+    def sendCorreo(self, func: Callable):
+        """ Método que es llamado por el thread para enviar el correo electrónico
+
+        Parameters
+        ----------
+        func: Callable
+            Función del módulo correo que se encarga de enviar el correo electrónico
+        """
+
         try:
             func(*self.args)
         except Exception as e:
@@ -362,11 +471,15 @@ class CorreoDialog(QtWidgets.QDialog):
         self.close()
 
     def start(self):
+        """ Método que es llamado para dar inicio al proceso de envío del correo electrónico """
+
         self.thread.start()
 
 
 @export
 class CodigosDialog(QtWidgets.QDialog):
+    """ Clase que representa la vista en donde se muestran todos los servicios disponibles por el Centro """
+
     def __init__(self, parent):
         super(CodigosDialog, self).__init__()
 
@@ -398,6 +511,14 @@ class CodigosDialog(QtWidgets.QDialog):
         self.resize(600, 400)
 
     def doubleClick(self, modelIndex):
+        """ Método que se encarga de agregar un servicio a la ventana principal siempre que sobre esta ventana se haga
+        doble click sobre un servicio
+
+        Parameters
+        ----------
+        modelIndex: pyqt modelIndex
+        """
+
         row = modelIndex.row()
         tab = self.tabs.currentIndex()
         equipo = constants.EQUIPOS[tab]
@@ -408,10 +529,18 @@ class CodigosDialog(QtWidgets.QDialog):
         codigo = equipo.split("_")[-1] + codigo
         self.parent.agregarDesdeCodigo(codigo)
 
-    def setModel(self, equipo):
+    def setModel(self, equipo: str):
+        """ Método que se encarga de poblar la pestaña asociada al equipo que entra por parámetro con los servicios
+        correspondientes
+
+        Parameters
+        ----------
+        equipo: str
+            nombre de la pestaña que se desea poblar
+        """
         table = getattr(self, "table_%s" % equipo)
         df = getattr(constants, equipo)
-        table.setModel(PandasModel(df, checkbox = False))
+        table.setModel(PandasModel(df, checkbox=False))
 
         table.setSizePolicy(QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Minimum)
 
@@ -427,13 +556,21 @@ class CodigosDialog(QtWidgets.QDialog):
 
 @export
 class CotizacionWindow(SubWindow):
-    IGNORE = ["proyecto", "codigo"]
-    FIELDS = ["Nombre", "Correo", "Teléfono", "Institución", "Documento", "Dirección", "Ciudad", "Interno", "Responsable", "Proyecto", "Código", "Muestra"]
-    WIDGETS = ["nombre", "correo", "telefono", "institucion", "documento", "direccion", "ciudad", "interno", "responsable", "proyecto", "codigo", "muestra"]
+    """ Clase que representa la ventana Cotización """
 
+    IGNORE = ["proyecto", "codigo"]  #: nombre de los campos a ignorar en la verificación que los datos estén completos
+    FIELDS = ["Nombre", "Correo", "Teléfono", "Institución", "Documento", "Dirección", "Ciudad", "Interno",
+              "Responsable", "Proyecto", "Código", "Muestra"]  #: nombre a mostrar de los campos
+    WIDGETS = ["nombre", "correo", "telefono", "institucion", "documento", "direccion", "ciudad", "interno",
+               "responsable", "proyecto", "codigo", "muestra"]  #: nombre de los campos computerfriendly
+
+    #: nombre de los campos que pueden ser autocompletados
     AUTOCOMPLETE_FIELDS = ["Nombre", "Correo", "Documento", "Teléfono"]
+
+    #: nombre de los campos que pueden ser autocompletados computerfriendly
     AUTOCOMPLETE_WIDGETS = ["nombre", "correo", "documento", "telefono"]
-    def __init__(self, parent = None):
+
+    def __init__(self, parent=None):
         super(CotizacionWindow, self).__init__(parent)
         self.setWindowTitle("Cotización")
 
@@ -576,7 +713,6 @@ class CotizacionWindow(SubWindow):
         self.observaciones_pdf_widget = QtWidgets.QTextEdit()
         self.observaciones_pdf_widget.setMaximumHeight(30)
         self.descuento_text_widget = QtWidgets.QLineEdit()
-        # self.descuento_text_widget.setMaximumHeight(20)
 
         self.observaciones_layout = QtWidgets.QFormLayout(self.observaciones_frame)
         self.observaciones_layout.addRow(QtWidgets.QLabel("Correo:"), self.observaciones_correo_widget)
@@ -599,7 +735,6 @@ class CotizacionWindow(SubWindow):
         self.setAutoCompletar()
 
         self.cotizacion = objects.Cotizacion()
-        self.setLastCotizacion()
 
         self.resize(600, 620)
 
@@ -608,58 +743,104 @@ class CotizacionWindow(SubWindow):
         self.guardar_button.clicked.connect(self.guardar)
         self.view_button.clicked.connect(self.verCodigos)
 
-    def agregarDesdeCodigo(self, codigo):
+        self.dialog = None
+
+    def agregarDesdeCodigo(self, codigo: str):
+        """ Método que agrega a la tabla de servicios el código que entra por parámetro y es tratado como agregado
+        dinámicamente y no por el usuario
+
+        Parameters
+        ----------
+        codigo: str
+            código del servicio a agregar
+        """
+
         self.table.agregarServicio(codigo)
 
     def setAutoCompletar(self):
+        """ Método que determina el comportamiento dinámico de los campos que permiten ser autocompletados.
+        Cuando se introduce un valor en el campo se llama al método autoCompletar de AutoLineEdit, y cuando se preciona
+        enter se llama al método changeAutocompletar """
+
         for item in self.AUTOCOMPLETE_WIDGETS:
-            widget = eval("self.%s_widget"%item)
+            widget = eval("self.%s_widget" % item)
             widget.textChanged.connect(self.autoCompletar)
             widget.returnPressed.connect(self.changeAutocompletar)
 
     def changeAutocompletar(self):
+        """ Método que se encarga de modificar asignar como no chequeado el campo de autocompletar en la ventana """
+
         self.autocompletar_widget.setChecked(False)
 
     def updateAutoCompletar(self):
-        for item in self.AUTOCOMPLETE_WIDGETS:
-            exec("self.%s_widget.update()"%item)
+        """ Método que se encarga de llamar al método update de todos los AutoLineEdit enlistados en el atributo
+        AUTOCOMPLETE_WIDGETS """
 
-    def setInternoWidget(self, value):
+        for item in self.AUTOCOMPLETE_WIDGETS:
+            exec("self.%s_widget.update()" % item)
+
+    def setInternoWidget(self, value: str):
+        """ Método que se encarga de cambiar la selección del combobox asociado al campo interno en el formulario de
+        la cotización
+
+        Parameters
+        ----------
+        value: str
+            tipo de usuario que desea ser seleccionado en el combobox de interno
+        """
+
         index = self.interno_widget.findText(value)
         self.interno_widget.setCurrentIndex(index)
 
-    def autoCompletar(self, text):
+    def autoCompletar(self, text: str):
+        """ Método que se encarga de autocompletar todos los campos del formulario dependiendo del texto que entra
+        por parámetro
+
+        Parameters
+        ----------
+        text: str
+            texto asociado a cualquier valor de los campos enlistados en el atributo AUTOCOMPLETE_FIELDS
+        """
+
         if text != "":
             df = objects.CLIENTES_DATAFRAME[self.AUTOCOMPLETE_FIELDS]
-            booleans = df.isin([text]).values.sum(axis = 1)
+            booleans = df.isin([text]).values.sum(axis=1)
             pos = np.where(booleans)[0]
             cliente = objects.CLIENTES_DATAFRAME.iloc[pos]
 
             if len(pos):
-                # if len(pos) > 1:
-                #     print(len(pos))
                 if self.autocompletar_widget.isChecked():
                     for (field, widgetT) in zip(self.FIELDS, self.WIDGETS):
                         if field in objects.CLIENTES_DATAFRAME.keys():
                             val = str(cliente[field].values[0])
-                            if val == "nan": val = ""
-                            widget = eval("self.%s_widget"%widgetT)
+                            if val == "nan":
+                                val = ""
+                            widget = eval("self.%s_widget" % widgetT)
 
                             if field == "Interno":
                                 self.setInternoWidget(val)
-                                # if val == "Interno": widget.setCheckState(2)
-                                # else: widget.setCheckState(0)
                             else:
                                 widget.blockSignals(True)
                                 widget.setText(val)
                                 widget.blockSignals(False)
 
-    def changeInterno(self, index):
+    def changeInterno(self, index: int):
+        """ Método que se encarga de modificar a nivel lógico la categoria del usuario. Habilita o no el
+        campo responsable, proyecto y codigo en el formulario, además de modificar el valor total que se muestra
+        en la cotización
+
+        Parameters
+        ----------
+        index: int
+            índice de la selección del combobox
+        """
+
         state = False
         division = self.getInterno()
         try:
             if division:
-                if division == 'Interno': state = True
+                if division == 'Interno':
+                    state = True
                 self.responsable_widget.setEnabled(state)
                 self.proyecto_widget.setEnabled(state)
                 self.codigo_widget.setEnabled(state)
@@ -672,24 +853,22 @@ class CotizacionWindow(SubWindow):
                 if division == 'Industria':
                     self.descuento_text_widget.setText("")
                     self.descuento_text_widget.setEnabled(False)
-                else: self.descuento_text_widget.setEnabled(True)
+                else:
+                    self.descuento_text_widget.setEnabled(True)
         except Exception as e:
             self.errorWindow(e)
 
-    def changeEquipo(self, i):
-        pass
-
     def limpiar(self):
+        """ Método que limpia toda la información de la ventana """
+
         self.table.clean()
         for field in self.WIDGETS:
-            widget = eval("self.%s_widget"%field)
+            widget = eval("self.%s_widget" % field)
             widget.blockSignals(True)
             if field != "interno":
                 widget.setText("")
             widget.blockSignals(False)
-        self.setLastCotizacion()
         self.setInternoWidget('Interno')
-        # self.interno_widget.setCheckState(2)
         self.pago_widget.setCurrentIndex(0)
         self.elaborado_widget.setCurrentIndex(0)
         self.notificar_widget.setChecked(True)
@@ -704,28 +883,52 @@ class CotizacionWindow(SubWindow):
         self.descuento_text_widget.setText("")
 
     def verCodigos(self):
+        """ Método que se encarga de mostrar la ventana que contiene todos los servicios disponibles """
+
         self.ver_dialog.show()
 
-    def sendCorreo(self, names):
+    def sendCorreo(self, names: Iterable):
+        """ Método que es llamado en caso que se desee notificar al usuario de la cotización a su nombre
+
+        Parameters
+        ----------
+        names: Iterable
+            nombres de las cotizaciones a enviar por correo electrónico
+
+        Raises
+        -------
+        exception: en caso que ocurra un error al tratar de enviar el correo
+        """
+
         if self.notificar_widget.isChecked():
             to = self.cotizacion.getUsuario().getCorreo()
             pago = self.pago_widget.currentText()
             observaciones = self.observaciones_correo_widget.toPlainText()
             if pago == "Transferencia interna":
-                self.dialog = CorreoDialog((to, names, observaciones), target = correo.sendCotizacionTransferencia)
+                self.dialog = CorreoDialog((to, names, observaciones), target=correo.sendCotizacionTransferencia)
             elif pago == "Factura":
-                self.dialog = CorreoDialog((to, names, observaciones), target = correo.sendCotizacionFactura)
+                self.dialog = CorreoDialog((to, names, observaciones), target=correo.sendCotizacionFactura)
             elif pago == "Recibo":
-                self.dialog = CorreoDialog((to, names, observaciones), target = correo.sendCotizacionRecibo)
-            else: print("ERROR, not implemented")
+                self.dialog = CorreoDialog((to, names, observaciones), target=correo.sendCotizacionRecibo)
+            else:
+                print("ERROR, not implemented")
             self.dialog.start()
             self.dialog.exec_()
-            if self.dialog.exception != None:
-                raise(self.dialog.exception)
+            if self.dialog.exception is not None:
+                raise self.dialog.exception
         else:
             NoNotificacion().exec_()
 
-    def closePDF(self, p1, old):
+    def closePDF(self, p1, old: Iterable):
+        """ Método que trata de cerrar el PDF asociado a una cotización
+
+        Parameters
+        ----------
+        p1
+        old: Iterable
+            lista que contiene los procesos previos a la apertura del PDF
+        """
+
         new = [proc.pid for proc in psutil.process_iter()]
         try:
             new.remove(p1.pid)
@@ -741,18 +944,26 @@ class CotizacionWindow(SubWindow):
             for proc in new:
                 p = psutil.Process(proc)
                 parent = p.parent()
-                if (parent != None):
+                if parent is not None:
                     sparent = parent.parent()
-                    if (sparent != None):
+                    if sparent is not None:
                         if (sparent.name() == current) or (sparent.name() == caller):
                             p.terminate()
                     if (parent.name() == current) or (parent.name() == caller):
                         p.terminate()
             p1.kill()
         except Exception as e:
-            print("On closePDF:", e)
+            if constants.DEBUG:
+                print("On closePDF:", e)
 
-    def confirmGuardar(self):
+    def confirmGuardar(self) -> bool:
+        """ Método que muestra un dialogo para confirmar que se desea guardar la cotización actual
+
+        Returns
+        -------
+        bool: True en caso que el usuario responda sí en el dialogo
+        """
+
         msg = QtWidgets.QMessageBox()
         msg.setIcon(QtWidgets.QMessageBox.Information)
         msg.setText("¿Está seguro que desea guardar esta cotización?.\nVerifique los datos.")
@@ -763,7 +974,22 @@ class CotizacionWindow(SubWindow):
             return True
         return False
 
-    def openPDF(self, file):
+    def openPDF(self, file: str) -> (str, list):
+        """ Método que trata de abrir el PDF de cotización automaticamente para su visualización, el nombre del archivo
+        entra por parámetro
+
+        Parameters
+        ----------
+        file: str
+            nombre del archivo PDF de la cotización
+
+        Returns
+        -------
+        tuple:
+            str: ruta del archivo PDF de la cotización
+            list: lista de procesos previos a intentar abrir el PDF
+        """
+
         path = os.path.dirname(sys.executable)
         path = os.path.join(path, file)
         if not os.path.exists(path):
@@ -773,24 +999,29 @@ class CotizacionWindow(SubWindow):
         return path, old
 
     def guardar(self):
+        """ Método que guarda una cotización realizada. Verifica que no existan campos sin llenar. Antes de guardar
+        la cotización muestra un dialogo de confirmación que la cotización está hecha de manera correcta """
+
         try:
             dic = {}
             for key in self.WIDGETS:
                 if key == "interno":
                     value = self.getInterno()
                     if not value:
-                        raise(Exception('El tipo de usuario no es valido.'))
-                else: value = eval("self.%s_widget.text()"%key)
-                if ((value == "") and not (key in self.IGNORE)):
-                    if (key == "responsable") and not (self.getInterno() in ['Interno', 'Campus']):
+                        raise Exception('El tipo de usuario no es valido.')
+                else:
+                    value = eval("self.%s_widget.text()" % key)
+                if (value == "") and (key not in self.IGNORE):
+                    if (key == "responsable") and (self.getInterno() not in ['Interno', 'Campus']):
                         pass
-                    else: raise(Exception("Existen campos sin llenar en la información del usuario."))
+                    else:
+                        raise Exception("Existen campos sin llenar en la información del usuario.")
                 dic[key] = value
             del dic["muestra"]
             dic["pago"] = self.pago_widget.currentText()
 
             if len(self.getServicios()) == 0:
-                raise(Exception("No existen servicios cotizados."))
+                raise Exception("No existen servicios cotizados.")
 
             if self.cotizacion.getElaborado() != "":
                 self.cotizacion.setModificado(self.elaborado_widget.currentText())
@@ -822,23 +1053,24 @@ class CotizacionWindow(SubWindow):
                 path, old = self.openPDF(cotizacion.getFilePath())
                 paths.append(path)
                 olds.append(old)
-                p1 = Popen(path, shell = True)
+                p1 = Popen(path, shell=True)
                 processes.append(p1)
             if self.confirmGuardar():
                 for (i, cotizacion) in enumerate(cotizaciones):
                     self.closePDF(processes[i], olds[i])
-                    cotizacion.save(to_pdf = False)
+                    cotizacion.save(to_pdf=False)
                 self.updateAutoCompletar()
                 self.sendCorreo(numeros)
                 self.limpiar()
-                self.setLastCotizacion()
             else:
                 self.cotizacion.setUsuario(None)
                 self.cotizacion.setMuestra(None)
                 for (i, cotizacion) in enumerate(cotizaciones):
                     self.closePDF(processes[i], olds[i])
-                    try: os.remove(paths[i])
-                    except PermissionError: pass
+                    try:
+                        os.remove(paths[i])
+                    except PermissionError:
+                        pass
 
             old_servicios = self.getServicios()
             self.cotizacion = objects.Cotizacion()
@@ -847,11 +1079,15 @@ class CotizacionWindow(SubWindow):
         except Exception as e:
             self.errorWindow(e)
 
-    def setLastCotizacion(self):
-        pass
+    def loadCotizacion(self, number: str):
+        """ Método que carga la cotización cuyo número entra por parámetro a la ventana actual
 
-    def loadCotizacion(self, number):
-        # try:
+        Parameters
+        ----------
+        number: str
+            número de la cotización
+        """
+
         try:
             cotizacion = self.cotizacion.load(number)
             self.limpiar()
@@ -862,11 +1098,12 @@ class CotizacionWindow(SubWindow):
             for widgetT in self.WIDGETS:
                 if widgetT != "interno":
                     text = widgetT.title()
-                    widget = eval("self.%s_widget"%widgetT)
+                    widget = eval("self.%s_widget" % widgetT)
                     try:
-                        val = str(eval("user.get%s()"%text))
+                        val = str(eval("user.get%s()" % text))
                         widget.setText(val)
-                    except: pass
+                    except:
+                        pass
 
             self.setInternoWidget(user.getInterno())
             self.pago_widget.setCurrentText(user.getPago())
@@ -887,48 +1124,113 @@ class CotizacionWindow(SubWindow):
             e = Exception("La cotización no se encuentra grabada.")
             self.errorWindow(e)
         except ModuleNotFoundError as e:
-            print(e)
+            if constants.DEBUG:
+                print(e)
 
-    def centerOnScreen(self):
-        resolution = QtWidgets.QDesktopWidget().screenGeometry()
-        self.move((resolution.width() / 2) - (self.frameSize().width() / 2),
-                  (resolution.height() / 2) - (self.frameSize().height() / 2))
+    def addServicio(self, servicio: objects.Servicio):
+        """ Método que agrega al atributo cotizacion el servicio que entra por parámetro
 
-    def addServicio(self, servicio):
+        Parameters
+        ----------
+        servicio: objects.Servicio
+            servicio a ser agregado a la cotización
+        """
+
         self.cotizacion.addServicio(servicio)
 
-    def getCodigos(self):
+    def getCodigos(self) -> list:
+        """ Método que renorna los códigos de los servicios de la cotización actual
+
+        Returns
+        -------
+        list: códigos de los servicios de la cotización actual
+        """
         return self.cotizacion.getCodigos()
 
-    def getCodigosPrefix(self):
+    def getCodigosPrefix(self) -> list:
+        """ Método que retorna los códigos de los servicios de la cotización actual
+
+        Returns
+        -------
+        list: prefijos de los códigos de los servicios de la cotización actual
+        """
+
         return self.cotizacion.getCodigosPrefix()
 
-    def getServicio(self, cod):
+    def getServicio(self, cod: str) -> objects.Servicio:
+        """ Método que retorna el servicio asociado al código que entra por parámetro
+
+        Parameters
+        ----------
+        cod: str
+            código del servicio que se busca retornar
+
+        Returns
+        -------
+        objects.Servicio: servicio asociado al código que entra por parámetro
+        """
+
         return self.cotizacion.getServicio(cod)
 
-    def getServicios(self):
+    def getServicios(self) -> list:
+        """ Método que retorna los servicios asociados a la cotización actual
+
+        Returns
+        -------
+        list: lista de los servicios con los que cuenta la cotización actual
+        """
+
         return self.cotizacion.getServicios()
 
-    # def getEquipo(self):
-    #     return self.equipo_widget.currentText()
+    def getInterno(self) -> str:
+        """ Método que retorna el tipo de usuario asociado a la cotización
 
-    def getInterno(self):
+        Returns
+        -------
+        str: tipo de usuario asociado a la cotización
+        """
+
         interno = self.interno_widget.currentText()
         return interno
 
-    def removeServicio(self, index):
+    def removeServicio(self, index: int):
+        """ Método que remueve el servicio n-ésimo de acuerdo al índice que entra por parámetro
+
+        Parameters
+        ----------
+        index: int
+            índice del servicio a remover de la cotización actual
+        """
+
         self.cotizacion.removeServicio(index)
 
-    def setTotal(self, total = None):
-        if total == None:
+    def setTotal(self, total: int = None):
+        """ Método que calcula o asigna el valor total que entra por parámetro
+
+        Parameters
+        ----------
+        total: int
+            valor total de la cotización, si es None, lo calcula
+        """
+
+        if total is None:
             total = self.cotizacion.getTotal()
             subtotal = self.cotizacion.getSubtotal()
             descuento = self.cotizacion.getDescuentos()
+
         self.subtotal_widget.setText("{:,}".format(subtotal))
         self.descuento_widget.setText("{:,}".format(-descuento))
         self.total_widget.setText("{:,}".format(total))
 
-    def errorWindow(self, exception):
+    def errorWindow(self, exception: Exception):
+        """ Método que se encarga de mostrar un diálogo de alerta para todas las excepciones que se puedan generan en
+        esta ventana
+
+        Parameters
+        ----------
+        exception: Exception
+            la excepción que será mostrada
+        """
         traceback.print_tb(exception.__traceback__)
         error_text = str(exception)
         msg = QtWidgets.QMessageBox()
@@ -941,6 +1243,8 @@ class CotizacionWindow(SubWindow):
 
 @export
 class NoNotificacion(QtWidgets.QMessageBox):
+    """ Clase que muestra un díalogo en donde se alerta que el usuario no será notificado (no se enviará un correo) """
+
     def __init__(self):
         super(NoNotificacion, self).__init__()
         self.setIcon(QtWidgets.QMessageBox.Information)
@@ -951,10 +1255,15 @@ class NoNotificacion(QtWidgets.QMessageBox):
 
 @export
 class DescontarWindow(SubWindow):
+    """ Clase que representa la ventana en donde se pueden descontar los usos asociados a una cotización """
+
+    #: nombre de los campos que contiene esta ventana
     FIELDS = ["Cotización", "Fecha", "Nombre", "Correo", "Equipo", "Valor"]
+
+    #: nombre de los campos que contiene esta ventana computerfriendly
     WIDGETS = ["cotizacion", "fecha", "nombre", "correo", "equipo", "valor"]
 
-    def __init__(self, parent = None):
+    def __init__(self, parent=None):
         super(DescontarWindow, self).__init__(parent)
         self.setWindowTitle("Descontar servicios")
 
@@ -1039,7 +1348,22 @@ class DescontarWindow(SubWindow):
         self.init_size = (600, 450)
         self.setFixedSize(*self.init_size)
 
+        self.otros_equipo_label = None
+        self.otros_codigo_label = None
+        self.otros_cantidad_label = None
+
+        self.otros_equipo_widget = None
+        self.otros_codigo_widget = None
+        self.otros_cantidad_widget = None
+
+        self.dialog = None
+
+        self.elaborado_label = None
+        self.elaborado_widget = None
+
     def removeOtros(self):
+        """ Método que remueve los widgets asociados a los servicios que fueron agregados posteriormente """
+
         if self.otros_widget.text() != "Otros":
             self.otros_widget.setText("Otros")
             self.otros_layout.removeWidget(self.otros_equipo_label)
@@ -1057,6 +1381,8 @@ class DescontarWindow(SubWindow):
             self.otros_cantidad_widget.deleteLater()
 
     def otrosHandler(self):
+        """ Método que se encarga de crear o borrar los servicios agregados posteriormente de la ventana """
+
         if self.otros_widget.text() == "Otros":
             self.otros_widget.setText("Agregar")
             self.otros_equipo_label = QtWidgets.QLabel("Equipo:")
@@ -1071,7 +1397,6 @@ class DescontarWindow(SubWindow):
 
             self.otros_cantidad_widget.setMinimum(0)
             self.otros_cantidad_widget.setDecimals(1)
-            # self.otros_cantidad_widget.setMaximum(rest)
             self.otros_cantidad_widget.setSingleStep(0.1)
 
             self.otros_equipo_widget.currentIndexChanged.connect(self.equipoChanged)
@@ -1092,7 +1417,7 @@ class DescontarWindow(SubWindow):
 
             if value:
                 servicio = objects.Servicio(equipo, codigo, self.cotizacion.getInterno(),
-                            cantidad = 0, agregado_posteriormente = True)
+                                            cantidad=0, agregado_posteriormente=True)
                 try:
                     self.cotizacion.addServicio(servicio)
                 except Exception as e:
@@ -1103,38 +1428,54 @@ class DescontarWindow(SubWindow):
             self.removeOtros()
             self.guardarHandler()
 
-    def equipoChanged(self, equipo):
+    def equipoChanged(self, index: int):
+        """ Método que se encarga de modificar los widgets dado un cambio en el equipo
+
+        Parameters
+        ----------
+        index: int
+            índice de la selección del equipo
+        """
+
         equipo = self.otros_equipo_widget.currentText()
         self.otros_codigo_widget.clear()
-        if self.cotizacion != None:
+        if self.cotizacion is not None:
             interno = "Externo"
             if self.cotizacion.getInterno():
                 interno = "Interno"
 
-            df = eval("constants.%s"%equipo)[["Código", "Descripción", interno]].values
-            values = ["%s-%s (%s)"%(c, d, p) for (c, d, p) in df]
+            df = eval("constants.%s" % equipo)[["Código", "Descripción", interno]].values
+            values = ["%s-%s (%s)" % (c, d, p) for (c, d, p) in df]
             self.otros_codigo_widget.addItems(values)
 
     def updateDataFrames(self):
+        """ Método que se encarga de actualizar el AutoLineEdit de cotizaciones con las cotizaciones disponibles """
+
         self.cotizacion_widget.update()
 
     def sendCorreo(self):
+        """ Método que se encarga de enviar un correo electrónico con el estado de la cotización actual, siempre que
+        la opción de notificación se encuentre activa
+        """
+
         if self.notificar_widget.isChecked():
             to = self.cotizacion.getUsuario().getCorreo()
             file_name = self.cotizacion.getNumero()
-            self.dialog = CorreoDialog((to, file_name), target = correo.sendRegistro)
+            self.dialog = CorreoDialog((to, file_name), target=correo.sendRegistro)
             self.dialog.start()
             self.dialog.exec_()
-            if self.dialog.exception != None:
-                raise(self.dialog.exception)
+            if self.dialog.exception is not None:
+                raise self.dialog.exception
         else:
             NoNotificacion().exec_()
 
     def guardarHandler(self):
+        """ Método que se encarga de guardar las modificaciones a una cotización luego de realizar la disminución
+        de las cantidad o el aplicado por """
         servicios = self.cotizacion.getServicios()
         try:
             if len(servicios):
-                if self.check_widget != None:
+                if self.check_widget is not None:
                     if self.check_widget.isChecked():
                         self.cotizacion.setPago(self.referencia_widget.text())
                         self.cotizacion.setAplicado(self.elaborado_widget.currentText())
@@ -1143,7 +1484,7 @@ class DescontarWindow(SubWindow):
                     val = self.floats_spins[i].value()
                     servicio = servicios[i]
                     servicio.descontar(val)
-                self.cotizacion.save(to_cotizacion = False, to_reporte = True)
+                self.cotizacion.save(to_cotizacion=False, to_reporte=True)
                 self.cotizacion.toRegistro()
                 self.sendCorreo()
             self.clean()
@@ -1151,25 +1492,39 @@ class DescontarWindow(SubWindow):
             self.errorWindow(e)
 
     def clean(self):
-        for widget in self.WIDGETS: exec("self.%s_widget.setText('')"%widget)
+        """ Método que se encarga de limpiar la vista actual """
+
+        for widget in self.WIDGETS:
+            exec("self.%s_widget.setText('')" % widget)
         self.cleanWidgets()
 
-    def cotizacionChanged(self, text):
+    def cotizacionChanged(self, text: str):
+        """ Método que carga la cotización cuyo código entra por parámetro y la visualiza en los campos disponibles
+        en esta ventana
+
+        Parameters
+        ----------
+        text: str
+            código de la cotización a cargar
+        """
+
         if text != "":
             self.otros_widget.setEnabled(False)
             self.removeOtros()
             registro = objects.REGISTRO_DATAFRAME[objects.REGISTRO_DATAFRAME["Cotización"] == text]
             if len(registro):
                 for (field, widgetT) in zip(self.FIELDS, self.WIDGETS):
-                        val = str(registro[field].values[0])
-                        widget = eval("self.%s_widget"%widgetT)
-                        if val == "nan": val = ""
-                        widget.setText(val)
+                    val = str(registro[field].values[0])
+                    widget = eval("self.%s_widget" % widgetT)
+                    if val == "nan":
+                        val = ""
+                    widget.setText(val)
             self.cleanWidgets()
             try:
                 self.cotizacion = self.cotizacion.load(text)
                 n = len(self.cotizacion.getServicios())
-            except: n = 0
+            except:
+                n = 0
 
             i = -1
             for (i, servicio) in enumerate(self.cotizacion.getServicios()):
@@ -1184,7 +1539,7 @@ class DescontarWindow(SubWindow):
                 rest = servicio.getRestantes()
                 used = paid - rest
                 spin = QtWidgets.QDoubleSpinBox()
-                total = QtWidgets.QLabel(fmt % ("%.1f/%.1f"%(used, paid)))
+                total = QtWidgets.QLabel(fmt % ("%.1f/%.1f" % (used, paid)))
                 spin.setMinimum(0)
                 spin.setDecimals(1)
                 spin.setMaximum(rest)
@@ -1201,7 +1556,7 @@ class DescontarWindow(SubWindow):
             if i >= 0:
                 dinero = "{:,}".format(self.cotizacion.getDineroUsado())
                 total_d = "{:,}".format(self.cotizacion.getTotal())
-                self.valor_widget.setText("%s/%s"%(dinero, total_d))
+                self.valor_widget.setText("%s/%s" % (dinero, total_d))
 
                 self.check_widget = QtWidgets.QCheckBox("Aplicar pago")
                 self.check_label = QtWidgets.QLabel("Referencia:")
@@ -1230,17 +1585,18 @@ class DescontarWindow(SubWindow):
                     self.elaborado_widget.setEnabled(False)
 
                 h = self.init_size[1]
-                h += 18*(len(self.cotizacion.getServicios()) + 4)
+                h += 18 * (len(self.cotizacion.getServicios()) + 4)
                 self.setFixedHeight(h)
 
     def cleanWidgets(self):
+        """ Método que se encarga de limpiar la información de los campos de la vista """
         for item in self.floats_labels:
             self.item_layout.removeWidget(item)
             item.deleteLater()
         for item in self.floats_spins:
             self.item_layout.removeWidget(item)
             item.deleteLater()
-        if self.check_widget != None:
+        if self.check_widget is not None:
             self.pago_layout.removeWidget(self.check_widget)
             self.pago_layout.removeWidget(self.check_label)
             self.pago_layout.removeWidget(self.referencia_widget)
@@ -1263,7 +1619,11 @@ class DescontarWindow(SubWindow):
         self.cotizacion = objects.Cotizacion()
         self.setFixedSize(*self.init_size)
 
-    def checkHandler(self, state):
+    def checkHandler(self, state: bool):
+        """ Método que agrupa el comportamiento de los campos: referencia, y elaborado para su activación o
+        desactivación en función del valor que entra por parámetro
+        """
+
         if state:
             self.referencia_widget.setEnabled(True)
             self.elaborado_widget.setEnabled(True)
@@ -1273,7 +1633,16 @@ class DescontarWindow(SubWindow):
             self.referencia_widget.setEnabled(False)
             self.elaborado_widget.setEnabled(False)
 
-    def errorWindow(self, exception):
+    def errorWindow(self, exception: Exception):
+        """ Método que se encarga de mostrar un diálogo de alerta para todas las excepciones que se puedan generan en
+        esta ventana
+
+        Parameters
+        ----------
+        exception: Exception
+            la excepción que será mostrada
+        """
+
         error_text = str(exception)
         msg = QtWidgets.QMessageBox()
         msg.setIcon(QtWidgets.QMessageBox.Warning)
@@ -1285,7 +1654,8 @@ class DescontarWindow(SubWindow):
 
 @export
 class PandasModel(QtCore.QAbstractTableModel):
-    def __init__(self, data, parent = None, checkbox = True):
+    """ Clase que representa un Pandas DataFrame como un QAbstractTableModel """
+    def __init__(self, data: pd.DataFrame, parent=None, checkbox: bool = True):
         QtCore.QAbstractTableModel.__init__(self, parent)
         self.dataframe = data
         self._data = data.values
@@ -1298,7 +1668,7 @@ class PandasModel(QtCore.QAbstractTableModel):
                 c.setChecked(True)
                 temp.append(c)
 
-            new = np.zeros((self._data.shape[0], self._data.shape[1] + 1), dtype = object)
+            new = np.zeros((self._data.shape[0], self._data.shape[1] + 1), dtype=object)
             new[:, 0] = temp
             new[:, 1:] = self._data
 
@@ -1308,31 +1678,38 @@ class PandasModel(QtCore.QAbstractTableModel):
         else:
             self.headerdata = list(data.keys())
 
-    def rowCount(self, parent=None):
+    def rowCount(self) -> int:
+        """ Método que retorna el número de filas del dataframe
+
+        Returns
+        -------
+        int: número de filas del dataframe
+        """
+
         return self._data.shape[0]
 
-    def columnCount(self, parent=None):
+    def columnCount(self) -> int:
+        """ Método que retorna el número de columnas del dataframe
+
+        Returns
+        -------
+        int: número de columnas del dataframe
+        """
+
         return self._data.shape[1]
 
-    def data(self, index, role = QtCore.Qt.DisplayRole):
-        if not index.isValid():
-            return None
-        if (index.column() == 0 and self.checkbox):
-            value = self._data[index.row(), index.column()].text()
-        else:
-            value = self._data[index.row(), index.column()]
-        if role == QtCore.Qt.EditRole:
-            return value
-        elif role == QtCore.Qt.DisplayRole:
-            return value
-        elif role == QtCore.Qt.CheckStateRole:
-            if index.column() == 0 and self.checkbox:
-                if self._data[index.row(), index.column()].isChecked():
-                    return QtCore.Qt.Checked
-                else:
-                    return QtCore.Qt.Unchecked
+    def flags(self, index) -> int:
+        """ Método que renorna las opciones asociadas al índice que entra por parámetro
 
-    def flags(self, index):
+        Parameters
+        ----------
+        index: parámetro al cual se le desean obtener las opciones
+
+        Returns
+        -------
+        int: opciones asociadas al índice
+        """
+
         if not index.isValid():
             return None
         if index.column() == 0 and self.checkbox:
@@ -1340,13 +1717,37 @@ class PandasModel(QtCore.QAbstractTableModel):
         else:
             return QtCore.Qt.ItemIsEnabled | QtCore.Qt.ItemIsSelectable
 
-    def headerData(self, col, orientation, role):
+    def headerData(self, col: int, orientation, role):
+        """ Método que determinar el comportamiento de QVariant dependiendo del role y la orientación que entran
+        por parámetro
+
+        Parameters
+        ----------
+        col: int
+        orientation:
+        role:
+        """
+
         if orientation == QtCore.Qt.Horizontal and role == QtCore.Qt.DisplayRole:
             return QtCore.QVariant(self.headerdata[col])
 
         return QtCore.QVariant()
 
-    def setData(self, index, value, role):
+    def setData(self, index, value, role) -> bool:
+        """ Método encargado de asignar al modelo, según el índice que entra por parámetro, el valor y el rol del
+        elemento dado por el índice
+
+        Parameters
+        ----------
+        index
+        value
+        role
+
+        Returns
+        -------
+        bool: True en el caso que el índice sea valido, False de lo contrario
+        """
+
         if not index.isValid():
             return False
         if role == QtCore.Qt.CheckStateRole and index.column() == 0:
@@ -1359,14 +1760,27 @@ class PandasModel(QtCore.QAbstractTableModel):
         return True
 
     def whereIsChecked(self):
-        return np.array([self._data[i, 0].isChecked() for i in range(self.rowCount())], dtype = bool)
+        """ Método que retorna True en las filas que se encuentran chequeadas y False en las demás
+
+        Returns
+        -------
+        np.array: array que contiene True en las filas que se encuentran chequeadas y False en las demás
+        """
+
+        return np.array([self._data[i, 0].isChecked() for i in range(self.rowCount())], dtype=bool)
 
 
 @export
 class BuscarWindow(SubWindow):
+    """ Clase que representa la ventana en donde se puede buscar en el registro de cotizaciones viejas """
+
+    #: nombre de los campos que contiene la ventana computerfriendly
     WIDGETS = ["equipo", "nombre", "correo", "institucion", "responsable", "cotizacion"]
+
+    #: nombre de los campos que contiene la ventana
     FIELDS = ["Equipo", "Nombre", "Correo", "Institución", "Responsable", "Cotización"]
-    def __init__(self, parent = None):
+
+    def __init__(self, parent=None):
         super(BuscarWindow, self).__init__(parent)
         self.setWindowTitle("Buscar")
         self.parent = parent
@@ -1423,8 +1837,6 @@ class BuscarWindow(SubWindow):
         self.limpiar_button.clicked.connect(self.limpiar)
 
         self.table = QtWidgets.QTableView()
-        # self.table.setSortingEnabled(True)
-        # self.table.doubleClicked.connect(self.doubleClick)
         self.table.viewport().installEventFilter(self)
         self.layout.addWidget(form)
         self.layout.addWidget(self.table)
@@ -1442,19 +1854,44 @@ class BuscarWindow(SubWindow):
         self.table.resizeRowsToContents()
         self.table.resizeColumnsToContents()
 
-    def eventFilter(self, source, event):
-        if (event.type() == QtCore.QEvent.MouseButtonDblClick and
-            source is self.table.viewport()):
+    def eventFilter(self, source, event) -> bool:
+        """ Método que sobreescribe el método eventFilter, y permite determinar cuando se lleva a cabo un doble click
+        sobre la tabla de búsqueda. En caso que esto suceda se realiza la discriminación de las acciones dependiendo
+        de si el doble click fue con el botón derecho o izquierdo del mouse
+
+        Parameters
+        ----------
+        source
+        event
+
+        Returns
+        -------
+        bool: True en caso que el evento fuese un doble click en la ventana de búsqueda, False de lo contrario
+        """
+
+        if (event.type() == QtCore.QEvent.MouseButtonDblClick) and (source is self.table.viewport()):
             item = self.table.indexAt(event.pos())
             row = item.row()
-            if(event.buttons() == QtCore.Qt.RightButton):
+            if event.buttons() == QtCore.Qt.RightButton:
                 self.doubleClick(row, False)
             else:
                 self.doubleClick(row, True)
             return True
         return False
 
-    def doubleClick(self, row, left):
+    def doubleClick(self, row: int, left: bool):
+        """ Método que se encarga de abrir el PDF de la cotización o abrir la cotización para su modificación. En caso
+        que left == True, se abre la cotización para su modifiación, en caso contrario se abre el PDF
+
+        Parameters
+        ----------
+        row: int
+            Fila de la tabla en donde tuvo lugar el doble click
+
+        left: bool
+            True en caso que el botón fuese el izquierdo
+        """
+
         df = self.table.model().dataframe
         cotizacion = df.iloc[row]['Cotización']
         if left:
@@ -1462,36 +1899,51 @@ class BuscarWindow(SubWindow):
         else:
             self.parent.abrirPDFCotizacion(cotizacion)
 
-    def getChanges(self, source):
-        self.bools = np.ones(objects.REGISTRO_DATAFRAME.shape[0], dtype = bool)
+    def getChanges(self, source: str):
+        """ Método que determina qué posiciones han cambiado debido a los filtros de la ventana respecto al dataframe
+        de referencia de registros
+
+        Parameters
+        ----------
+        source: str
+            campo que está generando el cambio en la vista de las cotizaciones
+        """
+
+        self.bools = np.ones(objects.REGISTRO_DATAFRAME.shape[0], dtype=bool)
         for i in range(len(self.WIDGETS)):
             source = self.FIELDS[i]
             widget = self.WIDGETS[i]
-            value = eval("self.%s_widget"%widget).text()
+            value = eval("self.%s_widget" % widget).text()
             if value != "":
-                pos = objects.REGISTRO_DATAFRAME[source].str.contains(value, case = False, na = False)
+                pos = objects.REGISTRO_DATAFRAME[source].str.contains(value, case=False, na=False)
                 self.bools *= pos
         self.update()
 
     def updateAutoCompletar(self):
+        """ Método que hace que los AutoLineEdits actualicen el contenido del modelo con el cual autocompletan """
+
         self.equipo_widget.update()
         self.nombre_widget.update()
         self.institucion_widget.update()
         self.responsable_widget.update()
 
     def update(self):
+        """ Método que actualiza la vista de la tabla dependiendo de los filtros actuales """
+
         if self.bools.shape[0] != objects.REGISTRO_DATAFRAME.shape[0]:
-            self.bools = np.ones(objects.REGISTRO_DATAFRAME.shape[0], dtype = bool)
+            self.bools = np.ones(objects.REGISTRO_DATAFRAME.shape[0], dtype=bool)
         old = self.table.model().dataframe
         df = objects.REGISTRO_DATAFRAME[self.bools]
         if not old.equals(df):
             model = PandasModel(df)
             self.table.setModel(model)
-            #self.table.resizeRowsToContents()
 
     def limpiar(self):
+        """ Método que se encarga de limpiar los widgets de filtro de búsqueda así como también reiniciar la vista
+        de la tabla """
+
         for widget in self.WIDGETS:
-            widget = eval("self.%s_widget"%widget)
+            widget = eval("self.%s_widget" % widget)
             widget.blockSignals(True)
             widget.setText("")
             widget.blockSignals(False)
@@ -1499,10 +1951,13 @@ class BuscarWindow(SubWindow):
         self.table.setModel(PandasModel(objects.REGISTRO_DATAFRAME))
 
     def guardar(self):
+        """ Método que se encarga de generar todos los reportes asociados a las cotizaciones seleccionadas en la vista
+        """
+
         if os.getcwd()[0] == "\\":
             quit_msg = "No es posible grabar desde un computador en red."
             QtWidgets.QMessageBox.warning(self, 'Error',
-                             quit_msg, QtWidgets.QMessageBox.Ok)
+                                          quit_msg, QtWidgets.QMessageBox.Ok)
 
         else:
             folder = QtWidgets.QFileDialog.getExistingDirectory(self, "Select Directory")
@@ -1516,14 +1971,21 @@ class BuscarWindow(SubWindow):
                     old = os.path.join(constants.PDF_DIR, cot + "_Reporte.pdf")
                     new = os.path.join(folder, cot + "_Reporte.pdf")
                     os.rename(old, new)
-                except Exception as e: pass
+                except Exception as e:
+                    pass
 
 
 @export
 class GestorWindow(SubWindow):
+    """ Clase que visualiza la ventana de Enviar correo a Gestor """
+
+    #: nombre de los campos que contiene la ventana
     FIELDS = ["Cotización", "Fecha", "Nombre", "Correo", "Equipo", "Valor", "Tipo de Pago"]
+
+    #: nombre de los campos que contiene la ventana computerfriendly
     WIDGETS = ["cotizacion", "fecha", "nombre", "correo", "equipo", "valor", "tipo"]
-    def __init__(self, parent = None):
+
+    def __init__(self, parent=None):
         super(GestorWindow, self).__init__(parent)
         self.setWindowTitle("Enviar correo a Gestor")
 
@@ -1564,7 +2026,7 @@ class GestorWindow(SubWindow):
         self.form_layout.addRow(cotizacion_label, self.cotizacion_widget)
 
         self.buttons = QtWidgets.QDialogButtonBox(QtWidgets.QDialogButtonBox.Ok,
-            QtCore.Qt.Horizontal, self)
+                                                  QtCore.Qt.Horizontal, self)
 
         self.layout.addWidget(self.form)
         self.layout.addWidget(self.buttons)
@@ -1575,65 +2037,105 @@ class GestorWindow(SubWindow):
 
         self.setFixedSize(self.layout.sizeHint())
 
+        self.dialog = None
+
     def updateAutoCompletar(self):
+        """ Método que hace que los AutoLineEdits actualicen el contenido del modelo con el cual autocompletan """
+
         self.cotizacion_widget.update()
 
-    def autoCompletar(self, text):
+    def autoCompletar(self, text: str):
+        """ Método que carga la cotización cuyo código entra por parámetro y la visualiza en los campos disponibles
+        en esta ventana
+
+        Parameters
+        ----------
+        text: str
+            código de la cotización a cargar
+        """
+
         if text != "":
             registro = objects.REGISTRO_DATAFRAME[objects.REGISTRO_DATAFRAME["Cotización"] == text]
             if len(registro):
                 for (field, widgetT) in zip(self.FIELDS, self.WIDGETS):
-                        val = str(registro[field].values[0])
-                        if val == "nan": val = ""
-                        widget = eval("self.%s_widget"%widgetT)
-                        widget.setText(val)
+                    val = str(registro[field].values[0])
+                    if val == "nan":
+                        val = ""
+                    widget = eval("self.%s_widget" % widgetT)
+                    widget.setText(val)
 
     def sendCorreo(self):
+        """ Método que se encarga de enviar el correo asociado a la cotización que se encuentra en el formulario de
+        la ventana. En caso que el tipo de pago de la cotización sea por factura, el método abre un dialogo para
+        seleccionar el archivo PDF de la Orden de servicios
+
+        Raises
+        ------
+        exception: en caso que ocurra un error enviando el correo, o que el tipo de pago no se encuentre entre
+        Factura o Recibo
+        """
+
         file_name = self.cotizacion_widget.text()
         pago = self.tipo_widget.text()
         if pago == "Factura":
-            fileName, _ = QtWidgets.QFileDialog.getOpenFileName(self, "Orden de servicios", "", "Portable Document Format (*.pdf)")
+            fileName, _ = QtWidgets.QFileDialog.getOpenFileName(self, "Orden de servicios", "",
+                                                                "Portable Document Format (*.pdf)")
             if fileName:
                 cwd = os.getcwd()
                 if cwd[0] == "\\":
                     quit_msg = "No es posible leer desde un computador en red."
                     QtWidgets.QMessageBox.warning(self, 'Error',
-                                     quit_msg, QtWidgets.QMessageBox.Ok)
+                                                  quit_msg, QtWidgets.QMessageBox.Ok)
                 else:
-                    self.dialog = CorreoDialog((file_name, fileName), target = correo.sendGestorFactura)
+                    self.dialog = CorreoDialog((file_name, fileName), target=correo.sendGestorFactura)
                     self.dialog.start()
                     self.dialog.exec_()
-                    if self.dialog.exception != None:
-                        raise(self.dialog.exception)
-                    else: self.clean()
+                    if self.dialog.exception is not None:
+                        raise self.dialog.exception
+                    else:
+                        self.clean()
         elif pago == "Recibo":
-            self.dialog = CorreoDialog((file_name, ), target = correo.sendGestorRecibo)
+            self.dialog = CorreoDialog((file_name, ), target=correo.sendGestorRecibo)
             self.dialog.start()
             self.dialog.exec_()
-            if self.dialog.exception != None:
-                raise(self.dialog.exception)
-            else: self.clean()
+            if self.dialog.exception is not None:
+                raise self.dialog.exception
+            else:
+                self.clean()
         else:
-            raise(Exception("Los tipos válidos corresponden con: Recibo y Factura."))
+            raise Exception("Los tipos válidos corresponden con: Recibo y Factura.")
 
     def clean(self):
+        """ Método que se encarga de limpiar el contenido de los campos de la vista """
+
         self.cotizacion_widget.blockSignals(True)
         for widgetT in self.WIDGETS:
-            widget = eval("self.%s_widget"%widgetT)
+            widget = eval("self.%s_widget" % widgetT)
             widget.setText("")
         self.cotizacion_widget.blockSignals(False)
 
     def accept(self):
+        """ Método que verifica que la cotización que se va a enviar al gestor sea válida """
+
         tipo = self.tipo_widget.text()
         try:
             if tipo != '':
                 self.sendCorreo()
             else:
-                raise(Exception("La cotización actual no tiene tipo."))
+                raise Exception("La cotización actual no tiene tipo.")
         except Exception as e:
             self.errorWindow(e)
 
-    def errorWindow(self, exception):
+    def errorWindow(self, exception: Exception):
+        """ Método que se encarga de mostrar un diálogo de alerta para todas las excepciones que se puedan generan en
+        esta ventana
+
+        Parameters
+        ----------
+        exception: Exception
+            la excepción que será mostrada
+        """
+
         error_text = str(exception)
         msg = QtWidgets.QMessageBox()
         msg.setIcon(QtWidgets.QMessageBox.Warning)
@@ -1645,7 +2147,9 @@ class GestorWindow(SubWindow):
 
 @export
 class MainWindow(QtWidgets.QMainWindow):
-    def __init__(self, parent = None):
+    """ Clase que representa la ventana principal en donde se encuentran todas las demás ventanas de Microbill """
+
+    def __init__(self, parent=None):
         super(QtWidgets.QMainWindow, self).__init__(parent)
         self.setWindowTitle("Microbill")
 
@@ -1657,7 +2161,7 @@ class MainWindow(QtWidgets.QMainWindow):
         buttons_widget = QtWidgets.QWidget(central_widget)
         self.buttons_layout = QtWidgets.QVBoxLayout(buttons_widget)
         self.buttons_layout.setSpacing(0)
-        self.buttons_layout.setContentsMargins(0,0,0,0)
+        self.buttons_layout.setContentsMargins(0, 0, 0, 0)
         buttons_widget.setSizePolicy(QtWidgets.QSizePolicy.Maximum, QtWidgets.QSizePolicy.Expanding)
 
         self.central_layout.addWidget(buttons_widget)
@@ -1700,8 +2204,6 @@ class MainWindow(QtWidgets.QMainWindow):
         self.reporte_window = ReporteWindow(self)
         self.propiedades_window = PropiedadesWindow(self)
 
-        # self.cotizacion_window.setWindowFlags(QtCore.Qt.WindowMinimizeButtonHint)
-
         self.request_window.setWindowFlags(QtCore.Qt.WindowMinimizeButtonHint)
 
         self.mdi = QtWidgets.QMdiArea()
@@ -1733,16 +2235,18 @@ class MainWindow(QtWidgets.QMainWindow):
         self.centerOnScreen()
 
     def updateDataFrames(self):
+        """ Método que se encarga de revisar periódicamente que los dataframes de clientes y registro que se encuentran
+        en RAM sean los mismos que se encuentran en disco duro """
+
         cli, reg = objects.readDataFrames()
-        if (cli is None):
+        if cli is None:
             cli = objects.CLIENTES_DATAFRAME
-        if (reg is None):
+        if reg is None:
             reg = objects.REGISTRO_DATAFRAME
         if (not cli.equals(objects.CLIENTES_DATAFRAME)) | (not reg.equals(objects.REGISTRO_DATAFRAME)):
             objects.CLIENTES_DATAFRAME = cli
             objects.REGISTRO_DATAFRAME = reg
             self.cotizacion_window.updateAutoCompletar()
-            self.cotizacion_window.setLastCotizacion()
             self.descontar_window.updateDataFrames()
             self.gestor_window.updateAutoCompletar()
             self.buscar_window.updateAutoCompletar()
@@ -1750,59 +2254,102 @@ class MainWindow(QtWidgets.QMainWindow):
             self.buscar_window.limpiar()
 
     def centerOnScreen(self):
+        """ Método que se encarga de centrar la ventana en la pantalla """
+
         resolution = QtWidgets.QDesktopWidget().screenGeometry()
         self.move((resolution.width() / 2) - (self.frameSize().width() / 2),
                   (resolution.height() / 2) - (self.frameSize().height() / 2))
 
     def cotizacionHandler(self):
+        """ Método encargado de mostrar la ventana de cotización """
+
         self.cotizacion_window.show()
 
     def descontarHandler(self):
+        """ Método que muestra la ventana de descontar """
         self.descontar_window.show()
 
     def requestHandler(self):
+        """ Método que muestra la ventana de solicitar datos """
+
         self.request_window.show()
 
     def buscarHandler(self):
+        """ Método que muestra la ventana de búsqueda """
+
         self.buscar_window.table.resizeRowsToContents()
         self.buscar_window.show()
 
     def openHandler(self):
+        """ Método que abre el directorio de PDFs """
+
         path = os.path.dirname(sys.executable)
         path = os.path.join(path, constants.PDF_DIR)
         try:
             os.startfile(path)
         except FileNotFoundError as e:
-            print(e)
+            if constants.DEBUG:
+                print(e)
 
     def registrosHandler(self):
+        """ Método que abre el directorio de registros """
+
         path = os.path.dirname(sys.executable)
         path = os.path.join(path, constants.REGISTERS_DIR)
         try:
             os.startfile(path)
         except FileNotFoundError as e:
-            print(e)
+            if constants.DEBUG:
+                print(e)
 
     def gestorHandler(self):
+        """ Método que muestra la ventana de envío a gestor """
         self.gestor_window.show()
 
     def reporteHandler(self):
+        """ Método que muestra la ventana de reporte """
+
         self.reporte_window.show()
 
     def propiedadesHandler(self):
-        self.propiedades_window.show()
-        # self.propiedades_window.showMaximized()
+        """ Método que muestra la ventana de propiedades """
 
-    def modificarCotizacion(self, cot):
+        self.propiedades_window.show()
+
+    def modificarCotizacion(self, cot: str):
+        """ Método que carga la cotización que entra por parámetro y la visualiza en la ventana de cotizaciones
+
+        Parameters
+        ----------
+        cot: str
+            número de la cotización a cargar
+        """
+
         self.cotizacionHandler()
         self.cotizacion_window.loadCotizacion(cot)
 
-    def abrirPDFCotizacion(self, cot):
+    def abrirPDFCotizacion(self, cot: str):
+        """ Método que trata de abrir el PDF de una cotización cuyo número entra por parámetro
+
+        Parameters
+        ----------
+        cot: str
+            número de la cotización
+        """
+
         file = os.path.join(constants.PDF_DIR, cot + ".pdf")
         path, old = self.cotizacion_window.openPDF(file)
-        Popen('"%s"' % path, shell = True)
+        Popen('"%s"' % path, shell=True)
 
     def closeEvent(self, event):
+        """ Método que sobreescribe el método closeEvent para realizar una verificación previa de que todas las
+        subventanas estén cerradas antes de proceder a cerrar la aplicación
+
+        Parameters
+        ----------
+        event: pyqt event
+        """
+
         windows = [self.cotizacion_window, self.descontar_window, self.request_window, self.buscar_window, self.gestor_window]
         suma = sum([window.is_closed for window in windows])
         if suma == len(windows):
@@ -1810,20 +2357,25 @@ class MainWindow(QtWidgets.QMainWindow):
         else:
             quit_msg = "Existen ventanas sin cerrar.\n¿Está seguro que desea cerrar el programa?"
             reply = QtWidgets.QMessageBox.question(self, 'Cerrar',
-                             quit_msg, QtWidgets.QMessageBox.Yes, QtWidgets.QMessageBox.No)
+                                                   quit_msg, QtWidgets.QMessageBox.Yes, QtWidgets.QMessageBox.No)
             if reply == QtWidgets.QMessageBox.Yes:
                 for window in windows:
-                    if not window.is_closed: window.close()
+                    if not window.is_closed:
+                        window.close()
                 event.accept()
             else:
                 event.ignore()
 
     def reboot(self):
-        QtWidgets.qApp.exit( constants.EXIT_CODE_REBOOT )
+        """ Método que reinicia la aplicación """
+
+        QtWidgets.qApp.exit(constants.EXIT_CODE_REBOOT)
 
 
 @export
 class CalendarWidget(QtWidgets.QDateTimeEdit):
+    """ Clase que genera una vista para un Calendario con formato dd/MM/yyyy """
+
     def __init__(self, parent = None):
         now = datetime.now()
         super(CalendarWidget, self).__init__(now)
@@ -1835,7 +2387,9 @@ class CalendarWidget(QtWidgets.QDateTimeEdit):
 
 @export
 class ReporteWindow(SubWindow):
-    def __init__(self, parent = None):
+    """ Clase que visualiza la ventana de generación interna de reportes """
+
+    def __init__(self, parent=None):
         super(ReporteWindow, self).__init__(parent)
 
         self.setWindowTitle("Reporte Interno")
@@ -1853,7 +2407,6 @@ class ReporteWindow(SubWindow):
         from_ = QtWidgets.QLabel("From:")
         to_ = QtWidgets.QLabel("To:")
         send_to = QtWidgets.QLabel("Send to:")
-        include = QtWidgets.QLabel("Include:")
 
         self.from_widget = CalendarWidget()
         self.from_widget.setDate(self.from_widget.date().addDays(-7))
@@ -1877,13 +2430,16 @@ class ReporteWindow(SubWindow):
         self.to_widget.dateChanged.connect(self.changeDate)
 
         self.excel = None
+        self.dialog = None
         self.changeDate()
 
         self.setFixedSize(400, 250)
 
     def changeDate(self):
+        """ Método que gestiona los cambios de fecha que se da en los campos desde y hasta """
+
         start_date = self.from_widget.date().toPyDate()
-        end_date =  self.to_widget.date().toPyDate()
+        end_date = self.to_widget.date().toPyDate()
 
         start_date = datetime.combine(start_date, datetime.min.time())
         end_date = datetime.combine(end_date, datetime.max.time())
@@ -1895,24 +2451,31 @@ class ReporteWindow(SubWindow):
         self.setText()
 
     def setText(self):
+        """ Método que actualiza el número de cotizaciones seleccionadas """
+
         n = len(self.excel)
         total = len(objects.REGISTRO_DATAFRAME)
         self.text_widget.setText("Cotizaciones seleccionadas: %d/%d" % (n, total))
 
     def send(self):
+        """ Método que envía por correo electrónico el reporte de las cotizaciones realizadas entre el rango de fechas.
+        En caso de que ocurra un error al momento de enviar el correo, muestra un dialogo con el error
+        """
+
         e_to = self.send_to.text()
         try:
             if e_to != "":
-                if not "@" in e_to: e_to += '@uniandes.edu.co'
+                if not "@" in e_to:
+                    e_to += '@uniandes.edu.co'
                 if len(self.excel):
-                    self.excel.to_excel(constants.REPORTE_INTERNO, index = False)
+                    self.excel.to_excel(constants.REPORTE_INTERNO, index=False)
                     self.dialog = CorreoDialog([e_to], correo.sendReporteExcel)
                     self.dialog.start()
                     self.dialog.exec_()
                 else:
-                    raise(Exception("No existen cotizaciones realizadas en esas fechas."))
+                    raise Exception("No existen cotizaciones realizadas en esas fechas.")
             else:
-                raise(Exception("El correo no es válido."))
+                raise Exception("El correo no es válido.")
         except Exception as e:
             error_text = str(e)
             msg = QtWidgets.QMessageBox()
@@ -1925,7 +2488,9 @@ class ReporteWindow(SubWindow):
 
 @export
 class RequestWindow(SubWindow):
-    def __init__(self, parent = None):
+    """ Clase que visualiza la ventana de solicitud de información """
+
+    def __init__(self, parent=None):
         super(RequestWindow, self).__init__(parent)
         self.setWindowTitle("Solicitar información")
 
@@ -1952,22 +2517,35 @@ class RequestWindow(SubWindow):
 
         self.setFixedSize(400, 100)
 
+        self.dialog = None
+
     def sendCorreo(self):
+        """ Método que envía el correo con la solicitud de información a un usuario """
+
         text = self.correo_widget.text()
         try:
-            if not "@" in text: text += '@uniandes.edu.co'
+            if not "@" in text:
+                text += '@uniandes.edu.co'
             self.dialog = CorreoDialog((text,), correo.sendRequest)
             self.dialog.start()
             self.dialog.exec_()
-            if self.dialog.exception != None:
-                raise(self.dialog.exception)
+            if self.dialog.exception is not None:
+                raise self.dialog.exception
             else:
                 self.close()
-            # else: raise(Exception("Correo no válido."))
         except Exception as e:
             self.errorWindow(e)
 
-    def errorWindow(self, exception):
+    def errorWindow(self, exception: Exception):
+        """ Método que se encarga de mostrar un diálogo de alerta para todas las excepciones que se puedan generan en
+        esta ventana
+
+        Parameters
+        ----------
+        exception: Exception
+            la excepción que será mostrada
+        """
+
         error_text = str(exception)
         msg = QtWidgets.QMessageBox()
         msg.setIcon(QtWidgets.QMessageBox.Warning)
@@ -1979,34 +2557,38 @@ class RequestWindow(SubWindow):
 
 @export
 class PropiedadesWindow(SubWindow):
+    """ Clase que visualiza la ventana de configuración de Microbill """
+
     KEY = '1234567890123456'
     WIDGETS = ["codigo_gestion", "codigo_pep", 'terminos', 'confidencialidad', 'dependencias',
-            'alto_logo', 'ancho_logo', 'logo_path',
-            'admins',
-            'splash_logo_path',
-            'centro',
-            'saludo',
-            'subject_cotizaciones', 'mensaje_recibo', 'mensaje_transferencia', 'mensaje_factura',
-            'subject_solicitud', 'mensaje_solicitud',
-            'subject_reportes', 'mensaje_reportes',
-            'correo_grecibo', 'subject_grecibo', 'mensaje_grecibo',
-            'correo_gfactura', 'subject_gfactura', 'mensaje_gfactura',
-            'send_server', 'send_port',
-            'user', 'password']
+               'alto_logo', 'ancho_logo', 'logo_path',
+               'admins',
+               'splash_logo_path',
+               'centro',
+               'saludo',
+               'subject_cotizaciones', 'mensaje_recibo', 'mensaje_transferencia', 'mensaje_factura',
+               'subject_solicitud', 'mensaje_solicitud',
+               'subject_reportes', 'mensaje_reportes',
+               'correo_grecibo', 'subject_grecibo', 'mensaje_grecibo',
+               'correo_gfactura', 'subject_gfactura', 'mensaje_gfactura',
+               'send_server', 'send_port',
+               'user', 'password']  #: nombre de los campos que contiene esta ventana computerfriendly
+
     CONSTANTS = ['CODIGO_GESTION', 'CODIGO_PEP', 'TERMINOS_Y_CONDICIONES', 'CONFIDENCIALIDAD', 'DEPENDENCIAS',
-                'ALTO_LOGO', 'ANCHO_LOGO', 'LOGO_PATH',
-                'ADMINS',
-                'SPLASH_LOGO_PATH',
-                'CENTRO',
-                'SALUDO',
-                'COTIZACION_SUBJECT_RECIBO', 'COTIZACION_MENSAJE_RECIBO', 'COTIZACION_MENSAJE_TRANSFERENCIA', 'COTIZACION_MENSAJE_FACTURA',
-                'REQUEST_SUBJECT', 'REQUEST_MENSAJE',
-                'REPORTE_SUBJECT', 'REPORTE_MENSAJE',
-                'GESTOR_RECIBO_CORREO', 'GESTOR_RECIBO_SUBJECT', 'GESTOR_RECIBO_MENSAJE',
-                'GESTOR_FACTURA_CORREO', 'GESTOR_FACTURA_SUBJECT', 'GESTOR_FACTURA_MENSAJE',
-                'SEND_SERVER', 'SEND_PORT',
-                'FROM', 'PASSWORD']
-    def __init__(self, parent = None):
+                 'ALTO_LOGO', 'ANCHO_LOGO', 'LOGO_PATH',
+                 'ADMINS',
+                 'SPLASH_LOGO_PATH',
+                 'CENTRO',
+                 'SALUDO',
+                 'COTIZACION_SUBJECT_RECIBO', 'COTIZACION_MENSAJE_RECIBO', 'COTIZACION_MENSAJE_TRANSFERENCIA', 'COTIZACION_MENSAJE_FACTURA',
+                 'REQUEST_SUBJECT', 'REQUEST_MENSAJE',
+                 'REPORTE_SUBJECT', 'REPORTE_MENSAJE',
+                 'GESTOR_RECIBO_CORREO', 'GESTOR_RECIBO_SUBJECT', 'GESTOR_RECIBO_MENSAJE',
+                 'GESTOR_FACTURA_CORREO', 'GESTOR_FACTURA_SUBJECT', 'GESTOR_FACTURA_MENSAJE',
+                 'SEND_SERVER', 'SEND_PORT',
+                 'FROM', 'PASSWORD']  #: nombre de las constantes asociadas a los campos que contiene esta ventana
+
+    def __init__(self, parent=None):
         super(PropiedadesWindow, self).__init__(parent)
         self.setWindowTitle("Propiedades MicroBill")
 
@@ -2056,7 +2638,7 @@ class PropiedadesWindow(SubWindow):
 
         self.buttons_layout = QtWidgets.QHBoxLayout(self.buttons_frame)
         self.buttons_layout.setSpacing(6)
-        self.buttons_layout.setContentsMargins(0,0,0,0)
+        self.buttons_layout.setContentsMargins(0, 0, 0, 0)
 
         self.buttons_layout.addWidget(frame)
         self.buttons_layout.addWidget(self.guardar_button, 0, QtCore.Qt.AlignRight)
@@ -2064,21 +2646,35 @@ class PropiedadesWindow(SubWindow):
 
         self.layout.addWidget(self.buttons_frame)
 
+        self.codigo_gestion_widget = None
+        self.codigo_pep_widget = None
+        self.terminos_widget = None
+        self.confidencialidad_widget = None
+        self.dependencias_widget = None
+        self.ancho_logo_widget = None
+        self.alto_logo_widget = None
+        self.logo_path_widget = None
+
+        self.admins_widget = None
+        self.splash_logo_path_widget = None
+        self.centro_widget = None
+
         self.populatePDFTab()
         self.populateVariosTab()
         self.populateCorreoTab()
 
         self.readValues()
-        # self.setWindowFlag(QtCore.Qt.WindowMaximizeButtonHint, False)
 
         self.guardar_button.clicked.connect(self.guardar)
         self.leer_button.clicked.connect(self.leer)
 
     def populatePDFTab(self):
+        """ Método que puebla la pestaña asociada a la configuración de PDFs """
+
         self.codigo_gestion_widget = QtWidgets.QLineEdit()
         self.codigo_pep_widget = QtWidgets.QLineEdit()
         self.terminos_widget = QtWidgets.QTextEdit()
-        self.confidencialidad_widget  = QtWidgets.QTextEdit()
+        self.confidencialidad_widget = QtWidgets.QTextEdit()
         self.dependencias_widget = QtWidgets.QTextEdit()
         self.ancho_logo_widget = QtWidgets.QLineEdit()
         self.alto_logo_widget = QtWidgets.QLineEdit()
@@ -2094,6 +2690,8 @@ class PropiedadesWindow(SubWindow):
         self.pdf_layout.addRow(QLabel("Nombre del logo:"), self.logo_path_widget)
 
     def populateVariosTab(self):
+        """ Método que puebla la pestaña asociada a varios """
+
         self.admins_widget = QtWidgets.QTextEdit()
         self.splash_logo_path_widget = QtWidgets.QLineEdit()
         self.centro_widget = QtWidgets.QLineEdit()
@@ -2103,6 +2701,8 @@ class PropiedadesWindow(SubWindow):
         self.varios_layout.addRow(QLabel("Nombre logo inicial:"), self.splash_logo_path_widget)
 
     def populateCorreoTab(self):
+        """ Método que puebla la pestaña asociada a la configuración del correo """
+
         self.cotizaciones_groupBox = QtWidgets.QGroupBox("Cotizaciones")
         cotizaciones_layout = QtWidgets.QFormLayout()
         self.saludo_widget = QtWidgets.QTextEdit()
@@ -2190,24 +2790,29 @@ class PropiedadesWindow(SubWindow):
         policy.setVerticalStretch(1)
 
         widgets = [self.mensaje_recibo_widget, self.mensaje_transferencia_widget, self.mensaje_factura_widget,
-                    self.mensaje_reportes_widget, self.mensaje_solicitud_widget]
-        for widget in widgets: widget.setSizePolicy(policy)
+                   self.mensaje_reportes_widget, self.mensaje_solicitud_widget]
+        for widget in widgets:
+            widget.setSizePolicy(policy)
 
         self.cotizaciones_groupBox.setMinimumHeight(900)
         self.solicitud_groupBox.setMinimumHeight(300)
         self.reportes_groupBox.setMinimumHeight(300)
 
     def saveValues(self):
+        """ Método que genera el archivo de configuración config.py """
+
         txt = ""
         lists = ['dependencias', 'terminos', 'admins']
         floats = ['ancho_logo', 'alto_logo']
         for (i, name) in enumerate(self.WIDGETS):
             widget = getattr(self, "%s_widget" % name)
-            try: value = widget.text()
-            except AttributeError: value = widget.toPlainText()
+            try:
+                value = widget.text()
+            except AttributeError:
+                value = widget.toPlainText()
             if name != 'password':
                 if name in lists:
-                    temp = ['"%s"'%line for line in value.split('\n')]
+                    temp = ['"%s"' % line for line in value.split('\n')]
                     temp = ', '.join(temp)
                     txt += '%s = [%s]\n' % (self.CONSTANTS[i], temp)
                 elif name in floats:
@@ -2220,45 +2825,93 @@ class PropiedadesWindow(SubWindow):
                 encoded = encode(self.KEY, value)
                 txt += '%s = "%s"\n' % (self.CONSTANTS[i], encoded)
 
-        if os.path.exists('microbill'): file = os.path.join('microbill', 'config.py')
-        else: file = 'config.py'
-        with open(file, 'w', encoding = "utf8") as file: file.write(txt)
+        if os.path.exists('microbill'):
+            file = os.path.join('microbill', 'config.py')
+        else:
+            file = 'config.py'
+        with open(file, 'w', encoding="utf8") as file:
+            file.write(txt)
 
-    def readValues(self, default = False):
+    def readValues(self, default: bool = False):
+        """ Método que lee la información del módulo config y la visualiza en la interfaz
+
+        Parameters
+        ----------
+        default: bool
+            True si se quieren leer los valores por defecto. False en caso contrario
+        """
+
         for constant, widget_name in zip(self.CONSTANTS, self.WIDGETS):
-            if default: value = getattr(constants, constant)
-            else: value = getattr(config, constant)
+            if default:
+                value = getattr(constants, constant)
+            else:
+                value = getattr(config, constant)
             widget = getattr(self, "%s_widget" % widget_name)
             try:
-                if type(value) == list: value = "\n".join(value)
-                elif type(value) == int: value = str(value)
-                elif type(value) == float: value = "%.2f" % value
+                if type(value) == list:
+                    value = "\n".join(value)
+                elif type(value) == int:
+                    value = str(value)
+                elif type(value) == float:
+                    value = "%.2f" % value
                 widget.setText(value)
             except AttributeError as e:
-                print(e)
+                if constants.DEBUG:
+                    print(e)
 
     def guardar(self):
+        """ Método que guarda la configuración actual a disco duro. Antes de realizar el procedimiento pide verificación
+        del usuario """
+
         if self.confirmation():
             self.saveValues()
             self.parent.reboot()
 
     def leer(self):
+        """ Método que lee el archivo de configuración por defecto, para realizar esto es necesario escribirlo y
+        reiniciar la aplicación """
+
         if self.confirmation():
-            if os.path.exists('microbill'): file = os.path.join('microbill', 'config.py')
-            else: file = 'config.py'
-            with open(file, 'w', encoding = "utf8") as file: file.write(constants.DEFAULT_CONFIG)
+            if os.path.exists('microbill'):
+                file = os.path.join('microbill', 'config.py')
+            else:
+                file = 'config.py'
+            with open(file, 'w', encoding="utf8") as file:
+                file.write(constants.DEFAULT_CONFIG)
             self.parent.reboot()
 
-    def confirmation(self):
+    def confirmation(self) -> bool:
+        """ Método que realiza la confirmación de la acción guardar nuevas propiedades
+
+        Returns
+        -------
+        bool: True si el usuario acepta, False de lo contrario
+        """
+
         quit_msg = "Está seguro que desea guardar las nuevas propiedades?\nEl sistema se reiniciará automáticamente."
         reply = QtWidgets.QMessageBox.question(self, 'Guardar propiedades',
-                         quit_msg, QtWidgets.QMessageBox.Yes, QtWidgets.QMessageBox.No)
-        if reply == QtWidgets.QMessageBox.Yes: return True
+                                               quit_msg, QtWidgets.QMessageBox.Yes, QtWidgets.QMessageBox.No)
+        if reply == QtWidgets.QMessageBox.Yes:
+            return True
         return False
 
 
 @export
-def encode(key, clear):
+def encode(key: str, clear: str) -> str:
+    """ Método que permite encriptar un mensaje usando una llave
+
+    Parameters
+    ----------
+    key: str
+        llave de encriptación
+    clear: str
+        mensaje a encriptar
+
+    Returns
+    -------
+    str: el texto del parámetro clear encriptado
+    """
+
     enc = []
     for i in range(len(clear)):
         key_c = key[i % len(key)]
