@@ -13,12 +13,9 @@ Bienvenidos a la documentación de Microbill!
    constants
    correo
    exceptions
-
-Microbill
-=====================
-.. automodule:: microbill
-   :members:
-   :undoc-members:
+   main
+   pdflib
+   objects
 
 Indices and tables
 ==================

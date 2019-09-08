@@ -1,0 +1,989 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml" lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <title>Cotizacion &#8212; documentación de Microbill - </title>
+    <link rel="stylesheet" href="../_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/graphviz.css" />
+    
+    <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/language_data.js"></script>
+    <script type="text/javascript" src="../_static/translations.js"></script>
+    
+    <link rel="index" title="Índice" href="../genindex.html" />
+    <link rel="search" title="Búsqueda" href="../search.html" />
+    <link rel="next" title="Usuario" href="microbill.objects.Usuario.html" />
+    <link rel="prev" title="guardarCotizaciones" href="microbill.objects.guardarCotizaciones.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navegación</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="Índice General"
+             accesskey="I">índice</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Índice de Módulos Python"
+             >módulos</a> |</li>
+        <li class="right" >
+          <a href="microbill.objects.Usuario.html" title="Usuario"
+             accesskey="N">siguiente</a> |</li>
+        <li class="right" >
+          <a href="microbill.objects.guardarCotizaciones.html" title="guardarCotizaciones"
+             accesskey="P">anterior</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">documentación de Microbill - </a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../objects.html" accesskey="U">microbill.objects Module</a> &#187;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="cotizacion">
+<h1>Cotizacion<a class="headerlink" href="#cotizacion" title="Enlazar permanentemente con este título">¶</a></h1>
+<dl class="class">
+<dt id="microbill.objects.Cotizacion">
+<em class="property">class </em><code class="sig-prename descclassname">microbill.objects.</code><code class="sig-name descname">Cotizacion</code><span class="sig-paren">(</span><em class="sig-param">numero=None</em>, <em class="sig-param">usuario=None</em>, <em class="sig-param">servicios: Iterable = []</em>, <em class="sig-param">muestra: str = None</em><span class="sig-paren">)</span><a class="headerlink" href="#microbill.objects.Cotizacion" title="Enlazar permanentemente con esta definición">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Clase Cotización, la clase cotización cuenta con un usuario de la clase Usuario, y varios servicios asociados
+a un mismo equipo</p>
+<p class="rubric">Methods Summary</p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#microbill.objects.Cotizacion.addServicio" title="microbill.objects.Cotizacion.addServicio"><code class="xref py py-obj docutils literal notranslate"><span class="pre">addServicio</span></code></a>(self, servicio)</p></td>
+<td><p>Método que agrega el servicio a la cotización</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#microbill.objects.Cotizacion.addServicios" title="microbill.objects.Cotizacion.addServicios"><code class="xref py py-obj docutils literal notranslate"><span class="pre">addServicios</span></code></a>(self, servicios)</p></td>
+<td><p>Método que agrega los servicios que entran por parámetro a la cotización</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#microbill.objects.Cotizacion.getAplicado" title="microbill.objects.Cotizacion.getAplicado"><code class="xref py py-obj docutils literal notranslate"><span class="pre">getAplicado</span></code></a>(self)</p></td>
+<td><p>Método que retorna el nombre de la persona que aplicó el pago de la cotización</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#microbill.objects.Cotizacion.getCodigos" title="microbill.objects.Cotizacion.getCodigos"><code class="xref py py-obj docutils literal notranslate"><span class="pre">getCodigos</span></code></a>(self)</p></td>
+<td><p>Método que retorna los códigos de los servicios asociados a la cotización</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#microbill.objects.Cotizacion.getCodigosPrefix" title="microbill.objects.Cotizacion.getCodigosPrefix"><code class="xref py py-obj docutils literal notranslate"><span class="pre">getCodigosPrefix</span></code></a>(self)</p></td>
+<td><p>Método que retorna los prefijos códigos de los servicios asociados a la cotización</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#microbill.objects.Cotizacion.getDescuentoText" title="microbill.objects.Cotizacion.getDescuentoText"><code class="xref py py-obj docutils literal notranslate"><span class="pre">getDescuentoText</span></code></a>(self)</p></td>
+<td><p>Método que retorna el texto asociado al descuento de la cotización</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#microbill.objects.Cotizacion.getDescuentos" title="microbill.objects.Cotizacion.getDescuentos"><code class="xref py py-obj docutils literal notranslate"><span class="pre">getDescuentos</span></code></a>(self)</p></td>
+<td><p>Método que retorna el total de descuentos de la cotización</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#microbill.objects.Cotizacion.getDineroUsado" title="microbill.objects.Cotizacion.getDineroUsado"><code class="xref py py-obj docutils literal notranslate"><span class="pre">getDineroUsado</span></code></a>(self)</p></td>
+<td><p>Método que retorna el total de dinero usado de la cotización</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#microbill.objects.Cotizacion.getElaborado" title="microbill.objects.Cotizacion.getElaborado"><code class="xref py py-obj docutils literal notranslate"><span class="pre">getElaborado</span></code></a>(self)</p></td>
+<td><p>Método que retorna el nombre de la persona que elaboró la cotización</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#microbill.objects.Cotizacion.getEstado" title="microbill.objects.Cotizacion.getEstado"><code class="xref py py-obj docutils literal notranslate"><span class="pre">getEstado</span></code></a>(self)</p></td>
+<td><p>Método que el porcentaje de uso de la cotización</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#microbill.objects.Cotizacion.getFileName" title="microbill.objects.Cotizacion.getFileName"><code class="xref py py-obj docutils literal notranslate"><span class="pre">getFileName</span></code></a>(self)</p></td>
+<td><p>Método que retorna el nombre del archivo pdf asociado a la cotización</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#microbill.objects.Cotizacion.getFilePath" title="microbill.objects.Cotizacion.getFilePath"><code class="xref py py-obj docutils literal notranslate"><span class="pre">getFilePath</span></code></a>(self)</p></td>
+<td><p>Método que retorna la ruta del archivo pdf asociado a la cotización</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#microbill.objects.Cotizacion.getInterno" title="microbill.objects.Cotizacion.getInterno"><code class="xref py py-obj docutils literal notranslate"><span class="pre">getInterno</span></code></a>(self)</p></td>
+<td><p>Método que retorna el atributo interno del usuario de la cotización</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#microbill.objects.Cotizacion.getModificado" title="microbill.objects.Cotizacion.getModificado"><code class="xref py py-obj docutils literal notranslate"><span class="pre">getModificado</span></code></a>(self)</p></td>
+<td><p>Método que retorna el nombre de la persona que modificó la cotización</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#microbill.objects.Cotizacion.getMuestra" title="microbill.objects.Cotizacion.getMuestra"><code class="xref py py-obj docutils literal notranslate"><span class="pre">getMuestra</span></code></a>(self)</p></td>
+<td><p>Método que el tipo de muestra de la cotización</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#microbill.objects.Cotizacion.getNumero" title="microbill.objects.Cotizacion.getNumero"><code class="xref py py-obj docutils literal notranslate"><span class="pre">getNumero</span></code></a>(self)</p></td>
+<td><p>Método que retorna el número de la cotización</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#microbill.objects.Cotizacion.getObservacionCorreo" title="microbill.objects.Cotizacion.getObservacionCorreo"><code class="xref py py-obj docutils literal notranslate"><span class="pre">getObservacionCorreo</span></code></a>(self)</p></td>
+<td><p>Método que retorna la observación al correo de la cotización</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#microbill.objects.Cotizacion.getObservacionPDF" title="microbill.objects.Cotizacion.getObservacionPDF"><code class="xref py py-obj docutils literal notranslate"><span class="pre">getObservacionPDF</span></code></a>(self)</p></td>
+<td><p>Método que retorna la observación al PDF de la cotización</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#microbill.objects.Cotizacion.getPago" title="microbill.objects.Cotizacion.getPago"><code class="xref py py-obj docutils literal notranslate"><span class="pre">getPago</span></code></a>(self)</p></td>
+<td><p>Método que retorna el tipo de pago asociado al usuario</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#microbill.objects.Cotizacion.getReferenciaPago" title="microbill.objects.Cotizacion.getReferenciaPago"><code class="xref py py-obj docutils literal notranslate"><span class="pre">getReferenciaPago</span></code></a>(self)</p></td>
+<td><p>Método que retorna la referencia de pago de la cotización</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#microbill.objects.Cotizacion.getServicio" title="microbill.objects.Cotizacion.getServicio"><code class="xref py py-obj docutils literal notranslate"><span class="pre">getServicio</span></code></a>(self, cod)</p></td>
+<td><p>Método que retorna el servicio con codigo cod</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#microbill.objects.Cotizacion.getServicios" title="microbill.objects.Cotizacion.getServicios"><code class="xref py py-obj docutils literal notranslate"><span class="pre">getServicios</span></code></a>(self)</p></td>
+<td><p>Método que retorna todos los servicios asociados a la cotización</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#microbill.objects.Cotizacion.getSubtotal" title="microbill.objects.Cotizacion.getSubtotal"><code class="xref py py-obj docutils literal notranslate"><span class="pre">getSubtotal</span></code></a>(self)</p></td>
+<td><p>Método que retorna el subtotal a pagar por la cotización</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#microbill.objects.Cotizacion.getTotal" title="microbill.objects.Cotizacion.getTotal"><code class="xref py py-obj docutils literal notranslate"><span class="pre">getTotal</span></code></a>(self)</p></td>
+<td><p>Método que retorna el total a pagar por la cotización</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#microbill.objects.Cotizacion.getUsuario" title="microbill.objects.Cotizacion.getUsuario"><code class="xref py py-obj docutils literal notranslate"><span class="pre">getUsuario</span></code></a>(self)</p></td>
+<td><p>Método que retorna el usuario de la cotización</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#microbill.objects.Cotizacion.getValorRestante" title="microbill.objects.Cotizacion.getValorRestante"><code class="xref py py-obj docutils literal notranslate"><span class="pre">getValorRestante</span></code></a>(self)</p></td>
+<td><p>Método que retorna el valor en dinero que aún no ha sido usado de la cotización</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#microbill.objects.Cotizacion.internoTreatment" title="microbill.objects.Cotizacion.internoTreatment"><code class="xref py py-obj docutils literal notranslate"><span class="pre">internoTreatment</span></code></a>(self)</p></td>
+<td><p>Método que retorna si la cotización está asociada a un usuario interno o independiente</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#microbill.objects.Cotizacion.isPago" title="microbill.objects.Cotizacion.isPago"><code class="xref py py-obj docutils literal notranslate"><span class="pre">isPago</span></code></a>(self)</p></td>
+<td><p>Método que retorna si la cotización ha sido pagada</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#microbill.objects.Cotizacion.isPagoStr" title="microbill.objects.Cotizacion.isPagoStr"><code class="xref py py-obj docutils literal notranslate"><span class="pre">isPagoStr</span></code></a>(self)</p></td>
+<td><p>Método que retorna si la cotización ha sido paga como un string</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#microbill.objects.Cotizacion.limpiar" title="microbill.objects.Cotizacion.limpiar"><code class="xref py py-obj docutils literal notranslate"><span class="pre">limpiar</span></code></a>(self)</p></td>
+<td><p>Método que limpia completamente la cotización</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#microbill.objects.Cotizacion.load" title="microbill.objects.Cotizacion.load"><code class="xref py py-obj docutils literal notranslate"><span class="pre">load</span></code></a>(self, file)</p></td>
+<td><p>Método que carga una cotización vieja en un objeto de la clase Cotizacion</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#microbill.objects.Cotizacion.makeCotizacionTable" title="microbill.objects.Cotizacion.makeCotizacionTable"><code class="xref py py-obj docutils literal notranslate"><span class="pre">makeCotizacionTable</span></code></a>(self)</p></td>
+<td><p>Método que genera la tabla que es usada por PDFCotizacion con la información de la cotización</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#microbill.objects.Cotizacion.makePDFCotizacion" title="microbill.objects.Cotizacion.makePDFCotizacion"><code class="xref py py-obj docutils literal notranslate"><span class="pre">makePDFCotizacion</span></code></a>(self)</p></td>
+<td><p>Método que renderiza el PDF de una cotización</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#microbill.objects.Cotizacion.makePDFReporte" title="microbill.objects.Cotizacion.makePDFReporte"><code class="xref py py-obj docutils literal notranslate"><span class="pre">makePDFReporte</span></code></a>(self)</p></td>
+<td><p>Método que renderiza el PDF de reporte de una cotización</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#microbill.objects.Cotizacion.makeReporteTable" title="microbill.objects.Cotizacion.makeReporteTable"><code class="xref py py-obj docutils literal notranslate"><span class="pre">makeReporteTable</span></code></a>(self)</p></td>
+<td><p>Método que genera la tabla que es usada por PDFReporte con la información de usos de los servicios de la cotización</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#microbill.objects.Cotizacion.makeResumenTable" title="microbill.objects.Cotizacion.makeResumenTable"><code class="xref py py-obj docutils literal notranslate"><span class="pre">makeResumenTable</span></code></a>(self)</p></td>
+<td><p>Método que genera la tabla que es usada por PDFReporte con la información de los servicios de la cotización</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#microbill.objects.Cotizacion.removeServicio" title="microbill.objects.Cotizacion.removeServicio"><code class="xref py py-obj docutils literal notranslate"><span class="pre">removeServicio</span></code></a>(self, index)</p></td>
+<td><p>Método que elimina el servicio asociado al índice que entra por parámetro</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#microbill.objects.Cotizacion.save" title="microbill.objects.Cotizacion.save"><code class="xref py py-obj docutils literal notranslate"><span class="pre">save</span></code></a>(self, to_cotizacion, to_reporte, to_pdf)</p></td>
+<td><p>Método que guarda una cotización como pickle.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#microbill.objects.Cotizacion.setAplicado" title="microbill.objects.Cotizacion.setAplicado"><code class="xref py py-obj docutils literal notranslate"><span class="pre">setAplicado</span></code></a>(self, name)</p></td>
+<td><p>Método que asigna el nombre de la persona que aplica el pago de la cotización que entra por parámetro como el valor del atributo aplicado_por</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#microbill.objects.Cotizacion.setDescuentoText" title="microbill.objects.Cotizacion.setDescuentoText"><code class="xref py py-obj docutils literal notranslate"><span class="pre">setDescuentoText</span></code></a>(self, text)</p></td>
+<td><p>Método que asigna el texto de descuento de la cotización que entra por parámetro como el valor del atributo</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#microbill.objects.Cotizacion.setElaborado" title="microbill.objects.Cotizacion.setElaborado"><code class="xref py py-obj docutils literal notranslate"><span class="pre">setElaborado</span></code></a>(self, name)</p></td>
+<td><p>Método que asigna el nombre de la persona que elaboró la cotización que entra por parámetro como el valor del atributo elaborado_por</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#microbill.objects.Cotizacion.setFileName" title="microbill.objects.Cotizacion.setFileName"><code class="xref py py-obj docutils literal notranslate"><span class="pre">setFileName</span></code></a>(self, name)</p></td>
+<td><p>Método que asigna el nombre del archivo PDF de la cotización que entra por parámetro como el valor del atributo pdf_file_name</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#microbill.objects.Cotizacion.setInterno" title="microbill.objects.Cotizacion.setInterno"><code class="xref py py-obj docutils literal notranslate"><span class="pre">setInterno</span></code></a>(self, interno)</p></td>
+<td><p>Método que asigna el tipo de usuario que entra por parámetro como el valor del atributo interno</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#microbill.objects.Cotizacion.setModificado" title="microbill.objects.Cotizacion.setModificado"><code class="xref py py-obj docutils literal notranslate"><span class="pre">setModificado</span></code></a>(self, name)</p></td>
+<td><p>Método que asigna el nombre de la persona que modificó la cotización que entra por parámetro como el valor del atributo modificado_por</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#microbill.objects.Cotizacion.setMuestra" title="microbill.objects.Cotizacion.setMuestra"><code class="xref py py-obj docutils literal notranslate"><span class="pre">setMuestra</span></code></a>(self, muestra)</p></td>
+<td><p>Método que asigna el tipo de muestra que entra por parámetro como el valor del atributo muestra</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#microbill.objects.Cotizacion.setNumero" title="microbill.objects.Cotizacion.setNumero"><code class="xref py py-obj docutils literal notranslate"><span class="pre">setNumero</span></code></a>(self, numero)</p></td>
+<td><p>Método que asigna el número de la cotización que entra por parámetro como el valor del atributo numero</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#microbill.objects.Cotizacion.setObservacionCorreo" title="microbill.objects.Cotizacion.setObservacionCorreo"><code class="xref py py-obj docutils literal notranslate"><span class="pre">setObservacionCorreo</span></code></a>(self, text)</p></td>
+<td><p>Método que asigna el texto de las observaciones al correo de la cotización que entra por parámetro como el valor del atributo observacion_correo</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#microbill.objects.Cotizacion.setObservacionPDF" title="microbill.objects.Cotizacion.setObservacionPDF"><code class="xref py py-obj docutils literal notranslate"><span class="pre">setObservacionPDF</span></code></a>(self, text)</p></td>
+<td><p>Método que asigna el texto de observaciones al PDF de la cotización que entra por parámetro como el valor del atributo observacion_pdf</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#microbill.objects.Cotizacion.setPago" title="microbill.objects.Cotizacion.setPago"><code class="xref py py-obj docutils literal notranslate"><span class="pre">setPago</span></code></a>(self, ref)</p></td>
+<td><p>Método que asigna el la referencia de pago que entra por parámetro como el valor del atributo referencia_pago y asigna el atributo is_pago a True</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#microbill.objects.Cotizacion.setPath" title="microbill.objects.Cotizacion.setPath"><code class="xref py py-obj docutils literal notranslate"><span class="pre">setPath</span></code></a>(self, name)</p></td>
+<td><p>Método que asigna la ruta del archivo PDF de la cotización que entra por parámetro como el valor del atributo pdf_path y pdf_file_name</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#microbill.objects.Cotizacion.setServicios" title="microbill.objects.Cotizacion.setServicios"><code class="xref py py-obj docutils literal notranslate"><span class="pre">setServicios</span></code></a>(self, servicios)</p></td>
+<td><p>Método que asigna los servicios que entran por parámetro como el atributo servicios</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#microbill.objects.Cotizacion.setUsuario" title="microbill.objects.Cotizacion.setUsuario"><code class="xref py py-obj docutils literal notranslate"><span class="pre">setUsuario</span></code></a>(self, usuario)</p></td>
+<td><p>Método que asigna el usuario que entra por parámetro como el valor del atributo usuario</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#microbill.objects.Cotizacion.toRegistro" title="microbill.objects.Cotizacion.toRegistro"><code class="xref py py-obj docutils literal notranslate"><span class="pre">toRegistro</span></code></a>(self)</p></td>
+<td><p>Método que guarda una cotización en el archivo de Registro</p></td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Methods Documentation</p>
+<dl class="method">
+<dt id="microbill.objects.Cotizacion.addServicio">
+<code class="sig-name descname">addServicio</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">servicio</em><span class="sig-paren">)</span><a class="headerlink" href="#microbill.objects.Cotizacion.addServicio" title="Enlazar permanentemente con esta definición">¶</a></dt>
+<dd><p>Método que agrega el servicio a la cotización</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>servicio: Servicio</strong></dt><dd><p>servicio a agregar en la cotización</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="microbill.objects.Cotizacion.addServicios">
+<code class="sig-name descname">addServicios</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">servicios:list</em><span class="sig-paren">)</span><a class="headerlink" href="#microbill.objects.Cotizacion.addServicios" title="Enlazar permanentemente con esta definición">¶</a></dt>
+<dd><p>Método que agrega los servicios que entran por parámetro a la cotización</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>servicios: list</strong></dt><dd><p>servicios que serán agregados a la cotización</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="microbill.objects.Cotizacion.getAplicado">
+<code class="sig-name descname">getAplicado</code><span class="sig-paren">(</span><em class="sig-param">self</em><span class="sig-paren">)</span> &#x2192; str<a class="headerlink" href="#microbill.objects.Cotizacion.getAplicado" title="Enlazar permanentemente con esta definición">¶</a></dt>
+<dd><p>Método que retorna el nombre de la persona que aplicó el pago de la cotización</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><dl class="simple">
+<dt>str: nombre de la persona que aplicó el pago de la cotización</dt><dd></dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="microbill.objects.Cotizacion.getCodigos">
+<code class="sig-name descname">getCodigos</code><span class="sig-paren">(</span><em class="sig-param">self</em><span class="sig-paren">)</span> &#x2192; list<a class="headerlink" href="#microbill.objects.Cotizacion.getCodigos" title="Enlazar permanentemente con esta definición">¶</a></dt>
+<dd><p>Método que retorna los códigos de los servicios asociados a la cotización</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><dl class="simple">
+<dt>list: códigos de los servicios asociados a la cotización</dt><dd></dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="microbill.objects.Cotizacion.getCodigosPrefix">
+<code class="sig-name descname">getCodigosPrefix</code><span class="sig-paren">(</span><em class="sig-param">self</em><span class="sig-paren">)</span> &#x2192; list<a class="headerlink" href="#microbill.objects.Cotizacion.getCodigosPrefix" title="Enlazar permanentemente con esta definición">¶</a></dt>
+<dd><p>Método que retorna los prefijos códigos de los servicios asociados a la cotización</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><dl class="simple">
+<dt>list: prefijos de los códigos de los servicios asociados a la cotización</dt><dd></dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="microbill.objects.Cotizacion.getDescuentoText">
+<code class="sig-name descname">getDescuentoText</code><span class="sig-paren">(</span><em class="sig-param">self</em><span class="sig-paren">)</span> &#x2192; str<a class="headerlink" href="#microbill.objects.Cotizacion.getDescuentoText" title="Enlazar permanentemente con esta definición">¶</a></dt>
+<dd><p>Método que retorna el texto asociado al descuento de la cotización</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><dl class="simple">
+<dt>str: texto asociado al descuento de la cotización</dt><dd></dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="microbill.objects.Cotizacion.getDescuentos">
+<code class="sig-name descname">getDescuentos</code><span class="sig-paren">(</span><em class="sig-param">self</em><span class="sig-paren">)</span> &#x2192; int<a class="headerlink" href="#microbill.objects.Cotizacion.getDescuentos" title="Enlazar permanentemente con esta definición">¶</a></dt>
+<dd><p>Método que retorna el total de descuentos de la cotización</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><dl class="simple">
+<dt>int: total de descuentos de la cotización</dt><dd></dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="microbill.objects.Cotizacion.getDineroUsado">
+<code class="sig-name descname">getDineroUsado</code><span class="sig-paren">(</span><em class="sig-param">self</em><span class="sig-paren">)</span> &#x2192; int<a class="headerlink" href="#microbill.objects.Cotizacion.getDineroUsado" title="Enlazar permanentemente con esta definición">¶</a></dt>
+<dd><p>Método que retorna el total de dinero usado de la cotización</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><dl class="simple">
+<dt>int: total de dinero usado de la cotización</dt><dd></dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="microbill.objects.Cotizacion.getElaborado">
+<code class="sig-name descname">getElaborado</code><span class="sig-paren">(</span><em class="sig-param">self</em><span class="sig-paren">)</span> &#x2192; str<a class="headerlink" href="#microbill.objects.Cotizacion.getElaborado" title="Enlazar permanentemente con esta definición">¶</a></dt>
+<dd><p>Método que retorna el nombre de la persona que elaboró la cotización</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><dl class="simple">
+<dt>str: nombre de la persona que elaboró la cotización</dt><dd></dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="microbill.objects.Cotizacion.getEstado">
+<code class="sig-name descname">getEstado</code><span class="sig-paren">(</span><em class="sig-param">self</em><span class="sig-paren">)</span> &#x2192; int<a class="headerlink" href="#microbill.objects.Cotizacion.getEstado" title="Enlazar permanentemente con esta definición">¶</a></dt>
+<dd><p>Método que el porcentaje de uso de la cotización</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><dl class="simple">
+<dt>int: porcentaje de uso de la cotización</dt><dd></dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="microbill.objects.Cotizacion.getFileName">
+<code class="sig-name descname">getFileName</code><span class="sig-paren">(</span><em class="sig-param">self</em><span class="sig-paren">)</span> &#x2192; str<a class="headerlink" href="#microbill.objects.Cotizacion.getFileName" title="Enlazar permanentemente con esta definición">¶</a></dt>
+<dd><p>Método que retorna el nombre del archivo pdf asociado a la cotización</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><dl class="simple">
+<dt>str: nombre del archivo pdf asociado a la cotización</dt><dd></dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="microbill.objects.Cotizacion.getFilePath">
+<code class="sig-name descname">getFilePath</code><span class="sig-paren">(</span><em class="sig-param">self</em><span class="sig-paren">)</span> &#x2192; str<a class="headerlink" href="#microbill.objects.Cotizacion.getFilePath" title="Enlazar permanentemente con esta definición">¶</a></dt>
+<dd><p>Método que retorna la ruta del archivo pdf asociado a la cotización</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><dl class="simple">
+<dt>str: ruta del archivo pdf asociado a la cotización</dt><dd></dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="microbill.objects.Cotizacion.getInterno">
+<code class="sig-name descname">getInterno</code><span class="sig-paren">(</span><em class="sig-param">self</em><span class="sig-paren">)</span><a class="headerlink" href="#microbill.objects.Cotizacion.getInterno" title="Enlazar permanentemente con esta definición">¶</a></dt>
+<dd><p>Método que retorna el atributo interno del usuario de la cotización</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><dl class="simple">
+<dt>str: categoría del usuario</dt><dd></dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="microbill.objects.Cotizacion.getModificado">
+<code class="sig-name descname">getModificado</code><span class="sig-paren">(</span><em class="sig-param">self</em><span class="sig-paren">)</span> &#x2192; str<a class="headerlink" href="#microbill.objects.Cotizacion.getModificado" title="Enlazar permanentemente con esta definición">¶</a></dt>
+<dd><p>Método que retorna el nombre de la persona que modificó la cotización</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><dl class="simple">
+<dt>str: nombre de la persona que modificó la cotización</dt><dd></dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="microbill.objects.Cotizacion.getMuestra">
+<code class="sig-name descname">getMuestra</code><span class="sig-paren">(</span><em class="sig-param">self</em><span class="sig-paren">)</span> &#x2192; str<a class="headerlink" href="#microbill.objects.Cotizacion.getMuestra" title="Enlazar permanentemente con esta definición">¶</a></dt>
+<dd><p>Método que el tipo de muestra de la cotización</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><dl class="simple">
+<dt>str: tipo de muestra de la cotización</dt><dd></dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="microbill.objects.Cotizacion.getNumero">
+<code class="sig-name descname">getNumero</code><span class="sig-paren">(</span><em class="sig-param">self</em><span class="sig-paren">)</span> &#x2192; str<a class="headerlink" href="#microbill.objects.Cotizacion.getNumero" title="Enlazar permanentemente con esta definición">¶</a></dt>
+<dd><p>Método que retorna el número de la cotización</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><dl class="simple">
+<dt>str: número de la cotización</dt><dd></dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="microbill.objects.Cotizacion.getObservacionCorreo">
+<code class="sig-name descname">getObservacionCorreo</code><span class="sig-paren">(</span><em class="sig-param">self</em><span class="sig-paren">)</span> &#x2192; str<a class="headerlink" href="#microbill.objects.Cotizacion.getObservacionCorreo" title="Enlazar permanentemente con esta definición">¶</a></dt>
+<dd><p>Método que retorna la observación al correo de la cotización</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><dl class="simple">
+<dt>str: observación al correo de la cotización</dt><dd></dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="microbill.objects.Cotizacion.getObservacionPDF">
+<code class="sig-name descname">getObservacionPDF</code><span class="sig-paren">(</span><em class="sig-param">self</em><span class="sig-paren">)</span> &#x2192; str<a class="headerlink" href="#microbill.objects.Cotizacion.getObservacionPDF" title="Enlazar permanentemente con esta definición">¶</a></dt>
+<dd><p>Método que retorna la observación al PDF de la cotización</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><dl class="simple">
+<dt>str: observación al PDF de la cotización</dt><dd></dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="microbill.objects.Cotizacion.getPago">
+<code class="sig-name descname">getPago</code><span class="sig-paren">(</span><em class="sig-param">self</em><span class="sig-paren">)</span> &#x2192; str<a class="headerlink" href="#microbill.objects.Cotizacion.getPago" title="Enlazar permanentemente con esta definición">¶</a></dt>
+<dd><p>Método que retorna el tipo de pago asociado al usuario</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><dl class="simple">
+<dt>str: tipo de pago asociado al usuario</dt><dd></dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="microbill.objects.Cotizacion.getReferenciaPago">
+<code class="sig-name descname">getReferenciaPago</code><span class="sig-paren">(</span><em class="sig-param">self</em><span class="sig-paren">)</span> &#x2192; str<a class="headerlink" href="#microbill.objects.Cotizacion.getReferenciaPago" title="Enlazar permanentemente con esta definición">¶</a></dt>
+<dd><p>Método que retorna la referencia de pago de la cotización</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><dl class="simple">
+<dt>str: referencia de pago de la cotización</dt><dd></dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="microbill.objects.Cotizacion.getServicio">
+<code class="sig-name descname">getServicio</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">cod:str</em><span class="sig-paren">)</span><a class="headerlink" href="#microbill.objects.Cotizacion.getServicio" title="Enlazar permanentemente con esta definición">¶</a></dt>
+<dd><p>Método que retorna el servicio con codigo cod</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>cod: str</strong></dt><dd><p>código del servicio a retornar</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt>Servicio: servicio asociado al código</dt><dd></dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="microbill.objects.Cotizacion.getServicios">
+<code class="sig-name descname">getServicios</code><span class="sig-paren">(</span><em class="sig-param">self</em><span class="sig-paren">)</span> &#x2192; Iterable<a class="headerlink" href="#microbill.objects.Cotizacion.getServicios" title="Enlazar permanentemente con esta definición">¶</a></dt>
+<dd><p>Método que retorna todos los servicios asociados a la cotización</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><dl class="simple">
+<dt>Iterable: todos los servicios asociados a la cotización</dt><dd></dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="microbill.objects.Cotizacion.getSubtotal">
+<code class="sig-name descname">getSubtotal</code><span class="sig-paren">(</span><em class="sig-param">self</em><span class="sig-paren">)</span> &#x2192; int<a class="headerlink" href="#microbill.objects.Cotizacion.getSubtotal" title="Enlazar permanentemente con esta definición">¶</a></dt>
+<dd><p>Método que retorna el subtotal a pagar por la cotización</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><dl class="simple">
+<dt>int: subtotal a pagar por la cotización</dt><dd></dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="microbill.objects.Cotizacion.getTotal">
+<code class="sig-name descname">getTotal</code><span class="sig-paren">(</span><em class="sig-param">self</em><span class="sig-paren">)</span> &#x2192; int<a class="headerlink" href="#microbill.objects.Cotizacion.getTotal" title="Enlazar permanentemente con esta definición">¶</a></dt>
+<dd><p>Método que retorna el total a pagar por la cotización</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><dl class="simple">
+<dt>int: total a pagar por la cotización</dt><dd></dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="microbill.objects.Cotizacion.getUsuario">
+<code class="sig-name descname">getUsuario</code><span class="sig-paren">(</span><em class="sig-param">self</em><span class="sig-paren">)</span><a class="headerlink" href="#microbill.objects.Cotizacion.getUsuario" title="Enlazar permanentemente con esta definición">¶</a></dt>
+<dd><p>Método que retorna el usuario de la cotización</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><dl class="simple">
+<dt>Usuario: el usuario de la cotización</dt><dd></dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="microbill.objects.Cotizacion.getValorRestante">
+<code class="sig-name descname">getValorRestante</code><span class="sig-paren">(</span><em class="sig-param">self</em><span class="sig-paren">)</span> &#x2192; int<a class="headerlink" href="#microbill.objects.Cotizacion.getValorRestante" title="Enlazar permanentemente con esta definición">¶</a></dt>
+<dd><p>Método que retorna el valor en dinero que aún no ha sido usado de la cotización</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><dl class="simple">
+<dt>str: valor en dinero que aún no ha sido usado de la cotización</dt><dd></dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="microbill.objects.Cotizacion.internoTreatment">
+<code class="sig-name descname">internoTreatment</code><span class="sig-paren">(</span><em class="sig-param">self</em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#microbill.objects.Cotizacion.internoTreatment" title="Enlazar permanentemente con esta definición">¶</a></dt>
+<dd><p>Método que retorna si la cotización está asociada a un usuario interno o independiente</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><dl class="simple">
+<dt>bool:</dt><dd><p>True si la cotización está asociada a un interno o independiente</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="microbill.objects.Cotizacion.isPago">
+<code class="sig-name descname">isPago</code><span class="sig-paren">(</span><em class="sig-param">self</em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#microbill.objects.Cotizacion.isPago" title="Enlazar permanentemente con esta definición">¶</a></dt>
+<dd><p>Método que retorna si la cotización ha sido pagada</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><dl class="simple">
+<dt>bool: True si la cotización ha sido pagada</dt><dd></dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="microbill.objects.Cotizacion.isPagoStr">
+<code class="sig-name descname">isPagoStr</code><span class="sig-paren">(</span><em class="sig-param">self</em><span class="sig-paren">)</span> &#x2192; str<a class="headerlink" href="#microbill.objects.Cotizacion.isPagoStr" title="Enlazar permanentemente con esta definición">¶</a></dt>
+<dd><p>Método que retorna si la cotización ha sido paga como un string</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><dl class="simple">
+<dt>str: Pagado si ha sido paga, Pendiente si no ha sido pagada</dt><dd></dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="microbill.objects.Cotizacion.limpiar">
+<code class="sig-name descname">limpiar</code><span class="sig-paren">(</span><em class="sig-param">self</em><span class="sig-paren">)</span><a class="headerlink" href="#microbill.objects.Cotizacion.limpiar" title="Enlazar permanentemente con esta definición">¶</a></dt>
+<dd><p>Método que limpia completamente la cotización</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="microbill.objects.Cotizacion.load">
+<code class="sig-name descname">load</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">file:str</em><span class="sig-paren">)</span><a class="headerlink" href="#microbill.objects.Cotizacion.load" title="Enlazar permanentemente con esta definición">¶</a></dt>
+<dd><p>Método que carga una cotización vieja en un objeto de la clase Cotizacion</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>file: str</strong></dt><dd><p>nombre del archivo de la cotización a cargar</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt>Cotizacion: objeto de la clase cotización con la información del archivo que entra por parametro</dt><dd></dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="microbill.objects.Cotizacion.makeCotizacionTable">
+<code class="sig-name descname">makeCotizacionTable</code><span class="sig-paren">(</span><em class="sig-param">self</em><span class="sig-paren">)</span><a class="headerlink" href="#microbill.objects.Cotizacion.makeCotizacionTable" title="Enlazar permanentemente con esta definición">¶</a></dt>
+<dd><p>Método que genera la tabla que es usada por PDFCotizacion con la información de la cotización</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><dl class="simple">
+<dt>list: lista en donde cada fila se encuentra la información de makeCotizacionTable por cada servicio de la</dt><dd></dd>
+<dt>cotización</dt><dd></dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="microbill.objects.Cotizacion.makePDFCotizacion">
+<code class="sig-name descname">makePDFCotizacion</code><span class="sig-paren">(</span><em class="sig-param">self</em><span class="sig-paren">)</span><a class="headerlink" href="#microbill.objects.Cotizacion.makePDFCotizacion" title="Enlazar permanentemente con esta definición">¶</a></dt>
+<dd><p>Método que renderiza el PDF de una cotización</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="microbill.objects.Cotizacion.makePDFReporte">
+<code class="sig-name descname">makePDFReporte</code><span class="sig-paren">(</span><em class="sig-param">self</em><span class="sig-paren">)</span><a class="headerlink" href="#microbill.objects.Cotizacion.makePDFReporte" title="Enlazar permanentemente con esta definición">¶</a></dt>
+<dd><p>Método que renderiza el PDF de reporte de una cotización</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="microbill.objects.Cotizacion.makeReporteTable">
+<code class="sig-name descname">makeReporteTable</code><span class="sig-paren">(</span><em class="sig-param">self</em><span class="sig-paren">)</span><a class="headerlink" href="#microbill.objects.Cotizacion.makeReporteTable" title="Enlazar permanentemente con esta definición">¶</a></dt>
+<dd><p>Método que genera la tabla que es usada por PDFReporte con la información de usos de los servicios
+de la cotización</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><dl class="simple">
+<dt>list: lista en donde cada fila se encuentra la información de makeReporteTable por cada servicio de la</dt><dd></dd>
+<dt>cotización</dt><dd></dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="microbill.objects.Cotizacion.makeResumenTable">
+<code class="sig-name descname">makeResumenTable</code><span class="sig-paren">(</span><em class="sig-param">self</em><span class="sig-paren">)</span><a class="headerlink" href="#microbill.objects.Cotizacion.makeResumenTable" title="Enlazar permanentemente con esta definición">¶</a></dt>
+<dd><p>Método que genera la tabla que es usada por PDFReporte con la información de los servicios
+de la cotización</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><dl class="simple">
+<dt>list: lista en donde cada fila se encuentra la información de makeResumenTable por cada servicio de la</dt><dd></dd>
+<dt>cotización</dt><dd></dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="microbill.objects.Cotizacion.removeServicio">
+<code class="sig-name descname">removeServicio</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">index:int</em><span class="sig-paren">)</span><a class="headerlink" href="#microbill.objects.Cotizacion.removeServicio" title="Enlazar permanentemente con esta definición">¶</a></dt>
+<dd><p>Método que elimina el servicio asociado al índice que entra por parámetro</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>index: int</strong></dt><dd><p>índice del servicio a eliminar</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="microbill.objects.Cotizacion.save">
+<code class="sig-name descname">save</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">to_cotizacion:bool=True</em>, <em class="sig-param">to_reporte:bool=False</em>, <em class="sig-param">to_pdf:bool=True</em><span class="sig-paren">)</span><a class="headerlink" href="#microbill.objects.Cotizacion.save" title="Enlazar permanentemente con esta definición">¶</a></dt>
+<dd><p>Método que guarda una cotización como pickle. Si to_cotizacion == True, la información se guarda en los
+archivos de registro (tanto el registro del usuario como el registro de cotizaciones); si to_reporte == to_pdf
+== True se genera el PDF del reporte; si solo to_pdf == True, se genera el PDF de la cotización</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="microbill.objects.Cotizacion.setAplicado">
+<code class="sig-name descname">setAplicado</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">name:str</em><span class="sig-paren">)</span><a class="headerlink" href="#microbill.objects.Cotizacion.setAplicado" title="Enlazar permanentemente con esta definición">¶</a></dt>
+<dd><p>Método que asigna el nombre de la persona que aplica el pago de la cotización que entra por parámetro como
+el valor del atributo aplicado_por</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>name: str</strong></dt><dd><p>nombre de la persona que aplica el pago de la cotización</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="microbill.objects.Cotizacion.setDescuentoText">
+<code class="sig-name descname">setDescuentoText</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">text:str</em><span class="sig-paren">)</span><a class="headerlink" href="#microbill.objects.Cotizacion.setDescuentoText" title="Enlazar permanentemente con esta definición">¶</a></dt>
+<dd><dl class="simple">
+<dt>Método que asigna el texto de descuento de la cotización que entra por parámetro como el valor del atributo</dt><dd><p>descuento_text</p>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>text: str</strong></dt><dd><p>texto de descuento</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="microbill.objects.Cotizacion.setElaborado">
+<code class="sig-name descname">setElaborado</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">name:str</em><span class="sig-paren">)</span><a class="headerlink" href="#microbill.objects.Cotizacion.setElaborado" title="Enlazar permanentemente con esta definición">¶</a></dt>
+<dd><p>Método que asigna el nombre de la persona que elaboró la cotización que entra por parámetro como el
+valor del atributo elaborado_por</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>name: str</strong></dt><dd><p>nombre de la persona que elaboró la cotización</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="microbill.objects.Cotizacion.setFileName">
+<code class="sig-name descname">setFileName</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">name:str</em><span class="sig-paren">)</span><a class="headerlink" href="#microbill.objects.Cotizacion.setFileName" title="Enlazar permanentemente con esta definición">¶</a></dt>
+<dd><p>Método que asigna el nombre del archivo PDF de la cotización que entra por parámetro como el valor del
+atributo pdf_file_name</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>name: str</strong></dt><dd><p>nombre del archivo PDF de la cotización</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="microbill.objects.Cotizacion.setInterno">
+<code class="sig-name descname">setInterno</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">interno:str</em><span class="sig-paren">)</span><a class="headerlink" href="#microbill.objects.Cotizacion.setInterno" title="Enlazar permanentemente con esta definición">¶</a></dt>
+<dd><p>Método que asigna el tipo de usuario que entra por parámetro como el valor del atributo interno</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>interno: str</strong></dt><dd><p>tipo de usuario asociado a la cotización</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="microbill.objects.Cotizacion.setModificado">
+<code class="sig-name descname">setModificado</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">name:str</em><span class="sig-paren">)</span><a class="headerlink" href="#microbill.objects.Cotizacion.setModificado" title="Enlazar permanentemente con esta definición">¶</a></dt>
+<dd><p>Método que asigna el nombre de la persona que modificó la cotización que entra por parámetro como el valor
+del atributo modificado_por</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>name: str</strong></dt><dd><p>nombre de la persona que modificó la cotización</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="microbill.objects.Cotizacion.setMuestra">
+<code class="sig-name descname">setMuestra</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">muestra:str</em><span class="sig-paren">)</span><a class="headerlink" href="#microbill.objects.Cotizacion.setMuestra" title="Enlazar permanentemente con esta definición">¶</a></dt>
+<dd><p>Método que asigna el tipo de muestra que entra por parámetro como el valor del atributo muestra</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>muestra: str</strong></dt><dd><p>tipo de muestra asociada a la cotización</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="microbill.objects.Cotizacion.setNumero">
+<code class="sig-name descname">setNumero</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">numero:str</em><span class="sig-paren">)</span><a class="headerlink" href="#microbill.objects.Cotizacion.setNumero" title="Enlazar permanentemente con esta definición">¶</a></dt>
+<dd><p>Método que asigna el número de la cotización que entra por parámetro como el valor del atributo numero</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>numero: str</strong></dt><dd><p>número de la cotización</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="microbill.objects.Cotizacion.setObservacionCorreo">
+<code class="sig-name descname">setObservacionCorreo</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">text:str</em><span class="sig-paren">)</span><a class="headerlink" href="#microbill.objects.Cotizacion.setObservacionCorreo" title="Enlazar permanentemente con esta definición">¶</a></dt>
+<dd><p>Método que asigna el texto de las observaciones al correo de la cotización que entra por parámetro
+como el valor del atributo observacion_correo</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>text: str</strong></dt><dd><p>texto de observaciones al correo de la cotización</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="microbill.objects.Cotizacion.setObservacionPDF">
+<code class="sig-name descname">setObservacionPDF</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">text:str</em><span class="sig-paren">)</span><a class="headerlink" href="#microbill.objects.Cotizacion.setObservacionPDF" title="Enlazar permanentemente con esta definición">¶</a></dt>
+<dd><p>Método que asigna el texto de observaciones al PDF de la cotización que entra por parámetro como el valor
+del atributo observacion_pdf</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>text: str</strong></dt><dd><p>texto de observaciones al PDF de la cotización</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="microbill.objects.Cotizacion.setPago">
+<code class="sig-name descname">setPago</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">ref:str</em><span class="sig-paren">)</span><a class="headerlink" href="#microbill.objects.Cotizacion.setPago" title="Enlazar permanentemente con esta definición">¶</a></dt>
+<dd><p>Método que asigna el la referencia de pago que entra por parámetro como el valor del atributo
+referencia_pago y asigna el atributo is_pago a True</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>ref: str</strong></dt><dd><p>referencia de pago de la cotización</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="microbill.objects.Cotizacion.setPath">
+<code class="sig-name descname">setPath</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">name:str</em><span class="sig-paren">)</span><a class="headerlink" href="#microbill.objects.Cotizacion.setPath" title="Enlazar permanentemente con esta definición">¶</a></dt>
+<dd><p>Método que asigna la ruta del archivo PDF de la cotización que entra por parámetro como el valor del
+atributo pdf_path y pdf_file_name</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>name: str</strong></dt><dd><p>ruta del archivo PDF de la cotización</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="microbill.objects.Cotizacion.setServicios">
+<code class="sig-name descname">setServicios</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">servicios:Iterable</em><span class="sig-paren">)</span><a class="headerlink" href="#microbill.objects.Cotizacion.setServicios" title="Enlazar permanentemente con esta definición">¶</a></dt>
+<dd><p>Método que asigna los servicios que entran por parámetro como el atributo servicios</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>servicios: Iterable</strong></dt><dd><p>servicios asociados a la cotización</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="microbill.objects.Cotizacion.setUsuario">
+<code class="sig-name descname">setUsuario</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">usuario</em><span class="sig-paren">)</span><a class="headerlink" href="#microbill.objects.Cotizacion.setUsuario" title="Enlazar permanentemente con esta definición">¶</a></dt>
+<dd><p>Método que asigna el usuario que entra por parámetro como el valor del atributo usuario</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>usuario: Usuario</strong></dt><dd><p>usuario asociado a la cotización</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="microbill.objects.Cotizacion.toRegistro">
+<code class="sig-name descname">toRegistro</code><span class="sig-paren">(</span><em class="sig-param">self</em><span class="sig-paren">)</span><a class="headerlink" href="#microbill.objects.Cotizacion.toRegistro" title="Enlazar permanentemente con esta definición">¶</a></dt>
+<dd><p>Método que guarda una cotización en el archivo de Registro</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h4>Tema anterior</h4>
+  <p class="topless"><a href="microbill.objects.guardarCotizaciones.html"
+                        title="capítulo anterior">guardarCotizaciones</a></p>
+  <h4>Próximo tema</h4>
+  <p class="topless"><a href="microbill.objects.Usuario.html"
+                        title="próximo capítulo">Usuario</a></p>
+  <div role="note" aria-label="source link">
+    <h3>Esta página</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/api/microbill.objects.Cotizacion.rst.txt"
+            rel="nofollow">Mostrar el código</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Búsqueda rápida</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Ir a" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navegación</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="Índice General"
+             >índice</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Índice de Módulos Python"
+             >módulos</a> |</li>
+        <li class="right" >
+          <a href="microbill.objects.Usuario.html" title="Usuario"
+             >siguiente</a> |</li>
+        <li class="right" >
+          <a href="microbill.objects.guardarCotizaciones.html" title="guardarCotizaciones"
+             >anterior</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">documentación de Microbill - </a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../objects.html" >microbill.objects Module</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Derechos de autor 2019, Juan Barbosa.
+      Creado con <a href="http://sphinx-doc.org/">Sphinx</a> 2.1.2.
+    </div>
+  </body>
+</html>

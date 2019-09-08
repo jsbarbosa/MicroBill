@@ -1,0 +1,532 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml" lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <title>Usuario &#8212; documentación de Microbill - </title>
+    <link rel="stylesheet" href="../_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/graphviz.css" />
+    
+    <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/language_data.js"></script>
+    <script type="text/javascript" src="../_static/translations.js"></script>
+    
+    <link rel="index" title="Índice" href="../genindex.html" />
+    <link rel="search" title="Búsqueda" href="../search.html" />
+    <link rel="next" title="Servicio" href="microbill.objects.Servicio.html" />
+    <link rel="prev" title="Cotizacion" href="microbill.objects.Cotizacion.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navegación</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="Índice General"
+             accesskey="I">índice</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Índice de Módulos Python"
+             >módulos</a> |</li>
+        <li class="right" >
+          <a href="microbill.objects.Servicio.html" title="Servicio"
+             accesskey="N">siguiente</a> |</li>
+        <li class="right" >
+          <a href="microbill.objects.Cotizacion.html" title="Cotizacion"
+             accesskey="P">anterior</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">documentación de Microbill - </a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../objects.html" accesskey="U">microbill.objects Module</a> &#187;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="usuario">
+<h1>Usuario<a class="headerlink" href="#usuario" title="Enlazar permanentemente con este título">¶</a></h1>
+<dl class="class">
+<dt id="microbill.objects.Usuario">
+<em class="property">class </em><code class="sig-prename descclassname">microbill.objects.</code><code class="sig-name descname">Usuario</code><span class="sig-paren">(</span><em class="sig-param">nombre: str = None</em>, <em class="sig-param">correo: str = None</em>, <em class="sig-param">institucion: str = None</em>, <em class="sig-param">documento: str = None</em>, <em class="sig-param">direccion: str = None</em>, <em class="sig-param">ciudad: str = None</em>, <em class="sig-param">telefono: str = None</em>, <em class="sig-param">interno: str = None</em>, <em class="sig-param">responsable: str = None</em>, <em class="sig-param">proyecto: str = None</em>, <em class="sig-param">codigo: str = None</em>, <em class="sig-param">pago: str = None</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#microbill.objects.Usuario" title="Enlazar permanentemente con esta definición">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Clase Usuario, la clase representa la información de un usuario</p>
+<p class="rubric">Methods Summary</p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#microbill.objects.Usuario.getCiudad" title="microbill.objects.Usuario.getCiudad"><code class="xref py py-obj docutils literal notranslate"><span class="pre">getCiudad</span></code></a>(self)</p></td>
+<td><p>Método que retorna la ciudad de residencia asociada al usuario</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#microbill.objects.Usuario.getCodigo" title="microbill.objects.Usuario.getCodigo"><code class="xref py py-obj docutils literal notranslate"><span class="pre">getCodigo</span></code></a>(self)</p></td>
+<td><p>Método que retorna el código del proyecto asociado al usuario</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#microbill.objects.Usuario.getCorreo" title="microbill.objects.Usuario.getCorreo"><code class="xref py py-obj docutils literal notranslate"><span class="pre">getCorreo</span></code></a>(self)</p></td>
+<td><p>Método que retorna el correo asociado al usuario</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#microbill.objects.Usuario.getDireccion" title="microbill.objects.Usuario.getDireccion"><code class="xref py py-obj docutils literal notranslate"><span class="pre">getDireccion</span></code></a>(self)</p></td>
+<td><p>Método que retorna la dirección asociada al usuario</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#microbill.objects.Usuario.getDocumento" title="microbill.objects.Usuario.getDocumento"><code class="xref py py-obj docutils literal notranslate"><span class="pre">getDocumento</span></code></a>(self)</p></td>
+<td><p>Método que retorna el documento asociado al usuario</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#microbill.objects.Usuario.getInstitucion" title="microbill.objects.Usuario.getInstitucion"><code class="xref py py-obj docutils literal notranslate"><span class="pre">getInstitucion</span></code></a>(self)</p></td>
+<td><p>Método que retorna de la institución asociada al usuario</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#microbill.objects.Usuario.getInterno" title="microbill.objects.Usuario.getInterno"><code class="xref py py-obj docutils literal notranslate"><span class="pre">getInterno</span></code></a>(self)</p></td>
+<td><p>Método que retorna el tipo de usuario</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#microbill.objects.Usuario.getNombre" title="microbill.objects.Usuario.getNombre"><code class="xref py py-obj docutils literal notranslate"><span class="pre">getNombre</span></code></a>(self)</p></td>
+<td><p>Método que retorna el nombre asociado al usuario</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#microbill.objects.Usuario.getPago" title="microbill.objects.Usuario.getPago"><code class="xref py py-obj docutils literal notranslate"><span class="pre">getPago</span></code></a>(self)</p></td>
+<td><p>Método que retorna el tipo de pago asociado al usuario</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#microbill.objects.Usuario.getProyecto" title="microbill.objects.Usuario.getProyecto"><code class="xref py py-obj docutils literal notranslate"><span class="pre">getProyecto</span></code></a>(self)</p></td>
+<td><p>Método que retorna el nombre del proyecto asociado al usuario</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#microbill.objects.Usuario.getResponsable" title="microbill.objects.Usuario.getResponsable"><code class="xref py py-obj docutils literal notranslate"><span class="pre">getResponsable</span></code></a>(self)</p></td>
+<td><p>Método que retorna el nombre del responsable asociado al usuario</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#microbill.objects.Usuario.getTelefono" title="microbill.objects.Usuario.getTelefono"><code class="xref py py-obj docutils literal notranslate"><span class="pre">getTelefono</span></code></a>(self)</p></td>
+<td><p>Método que retorna el teléfono asociado al usuario</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#microbill.objects.Usuario.save" title="microbill.objects.Usuario.save"><code class="xref py py-obj docutils literal notranslate"><span class="pre">save</span></code></a>(self)</p></td>
+<td><p>Método que guarda un usuario en el archivo de Clientes</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#microbill.objects.Usuario.setCiudad" title="microbill.objects.Usuario.setCiudad"><code class="xref py py-obj docutils literal notranslate"><span class="pre">setCiudad</span></code></a>(self, ciudad)</p></td>
+<td><p>Método que asigna el nombre de la ciudad que entra por parámetro como el valor del atributo ciudad</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#microbill.objects.Usuario.setCodigo" title="microbill.objects.Usuario.setCodigo"><code class="xref py py-obj docutils literal notranslate"><span class="pre">setCodigo</span></code></a>(self, codigo)</p></td>
+<td><p>Método que asigna el código del proyecto que entra por parámetro como el valor del atributo codigo</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#microbill.objects.Usuario.setCorreo" title="microbill.objects.Usuario.setCorreo"><code class="xref py py-obj docutils literal notranslate"><span class="pre">setCorreo</span></code></a>(self, correo)</p></td>
+<td><p>Método que asigna el correo que entra por parámetro como el valor del atributo correo</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#microbill.objects.Usuario.setDireccion" title="microbill.objects.Usuario.setDireccion"><code class="xref py py-obj docutils literal notranslate"><span class="pre">setDireccion</span></code></a>(self, direccion)</p></td>
+<td><p>Método que asigna la dirección que entra por parámetro como el valor del atributo direccion</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#microbill.objects.Usuario.setDocumento" title="microbill.objects.Usuario.setDocumento"><code class="xref py py-obj docutils literal notranslate"><span class="pre">setDocumento</span></code></a>(self, documento)</p></td>
+<td><p>Método que asigna el documento que entra por parámetro como el valor del atributo documento</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#microbill.objects.Usuario.setInstitucion" title="microbill.objects.Usuario.setInstitucion"><code class="xref py py-obj docutils literal notranslate"><span class="pre">setInstitucion</span></code></a>(self, institucion)</p></td>
+<td><p>Método que asigna el nombre de la institución que entra por parámetro como el valor del atributo institucion</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#microbill.objects.Usuario.setInterno" title="microbill.objects.Usuario.setInterno"><code class="xref py py-obj docutils literal notranslate"><span class="pre">setInterno</span></code></a>(self, interno)</p></td>
+<td><p>Método que asigna el tipo de usuario que entra por parámetro como el valor del atributo interno</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#microbill.objects.Usuario.setNombre" title="microbill.objects.Usuario.setNombre"><code class="xref py py-obj docutils literal notranslate"><span class="pre">setNombre</span></code></a>(self, nombre)</p></td>
+<td><p>Método que asigna el nombre que entra por parámetro como el valor del atributo nombre</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#microbill.objects.Usuario.setPago" title="microbill.objects.Usuario.setPago"><code class="xref py py-obj docutils literal notranslate"><span class="pre">setPago</span></code></a>(self, pago)</p></td>
+<td><p>Método que asigna el tipo de pago que entra por parámetro como el valor del atributo pago</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#microbill.objects.Usuario.setProyecto" title="microbill.objects.Usuario.setProyecto"><code class="xref py py-obj docutils literal notranslate"><span class="pre">setProyecto</span></code></a>(self, proyecto)</p></td>
+<td><p>Método que asigna el nombre del proyecto que entra por parámetro como el valor del atributo proyecto</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#microbill.objects.Usuario.setResponsable" title="microbill.objects.Usuario.setResponsable"><code class="xref py py-obj docutils literal notranslate"><span class="pre">setResponsable</span></code></a>(self, responsable)</p></td>
+<td><p>Método que asigna el nombre del responsable que entra por parámetro como el valor del atributo responsable</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#microbill.objects.Usuario.setTelefono" title="microbill.objects.Usuario.setTelefono"><code class="xref py py-obj docutils literal notranslate"><span class="pre">setTelefono</span></code></a>(self, telefono)</p></td>
+<td><p>Método que asigna el teléfono que entra por parámetro como el valor del atributo telefono</p></td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Methods Documentation</p>
+<dl class="method">
+<dt id="microbill.objects.Usuario.getCiudad">
+<code class="sig-name descname">getCiudad</code><span class="sig-paren">(</span><em class="sig-param">self</em><span class="sig-paren">)</span> &#x2192; str<a class="headerlink" href="#microbill.objects.Usuario.getCiudad" title="Enlazar permanentemente con esta definición">¶</a></dt>
+<dd><p>Método que retorna la ciudad de residencia asociada al usuario</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><dl class="simple">
+<dt>str: ciudad de recidencia asociada al usuario</dt><dd></dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="microbill.objects.Usuario.getCodigo">
+<code class="sig-name descname">getCodigo</code><span class="sig-paren">(</span><em class="sig-param">self</em><span class="sig-paren">)</span> &#x2192; str<a class="headerlink" href="#microbill.objects.Usuario.getCodigo" title="Enlazar permanentemente con esta definición">¶</a></dt>
+<dd><p>Método que retorna el código del proyecto asociado al usuario</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><dl class="simple">
+<dt>str: código del proyecto asociado al usuario</dt><dd></dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="microbill.objects.Usuario.getCorreo">
+<code class="sig-name descname">getCorreo</code><span class="sig-paren">(</span><em class="sig-param">self</em><span class="sig-paren">)</span> &#x2192; str<a class="headerlink" href="#microbill.objects.Usuario.getCorreo" title="Enlazar permanentemente con esta definición">¶</a></dt>
+<dd><p>Método que retorna el correo asociado al usuario</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><dl class="simple">
+<dt>str: correo asociado al usuario</dt><dd></dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="microbill.objects.Usuario.getDireccion">
+<code class="sig-name descname">getDireccion</code><span class="sig-paren">(</span><em class="sig-param">self</em><span class="sig-paren">)</span> &#x2192; str<a class="headerlink" href="#microbill.objects.Usuario.getDireccion" title="Enlazar permanentemente con esta definición">¶</a></dt>
+<dd><p>Método que retorna la dirección asociada al usuario</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><dl class="simple">
+<dt>str: dirección asociada al usuario</dt><dd></dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="microbill.objects.Usuario.getDocumento">
+<code class="sig-name descname">getDocumento</code><span class="sig-paren">(</span><em class="sig-param">self</em><span class="sig-paren">)</span> &#x2192; str<a class="headerlink" href="#microbill.objects.Usuario.getDocumento" title="Enlazar permanentemente con esta definición">¶</a></dt>
+<dd><p>Método que retorna el documento asociado al usuario</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><dl class="simple">
+<dt>str: documento asociado al usuario</dt><dd></dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="microbill.objects.Usuario.getInstitucion">
+<code class="sig-name descname">getInstitucion</code><span class="sig-paren">(</span><em class="sig-param">self</em><span class="sig-paren">)</span> &#x2192; str<a class="headerlink" href="#microbill.objects.Usuario.getInstitucion" title="Enlazar permanentemente con esta definición">¶</a></dt>
+<dd><p>Método que retorna de la institución asociada al usuario</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><dl class="simple">
+<dt>str: nombre de la institución asociada al usuario</dt><dd></dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="microbill.objects.Usuario.getInterno">
+<code class="sig-name descname">getInterno</code><span class="sig-paren">(</span><em class="sig-param">self</em><span class="sig-paren">)</span> &#x2192; str<a class="headerlink" href="#microbill.objects.Usuario.getInterno" title="Enlazar permanentemente con esta definición">¶</a></dt>
+<dd><p>Método que retorna el tipo de usuario</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><dl class="simple">
+<dt>str: tipo de usuario</dt><dd></dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="microbill.objects.Usuario.getNombre">
+<code class="sig-name descname">getNombre</code><span class="sig-paren">(</span><em class="sig-param">self</em><span class="sig-paren">)</span> &#x2192; str<a class="headerlink" href="#microbill.objects.Usuario.getNombre" title="Enlazar permanentemente con esta definición">¶</a></dt>
+<dd><p>Método que retorna el nombre asociado al usuario</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><dl class="simple">
+<dt>str: nombre asociado al usuario</dt><dd></dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="microbill.objects.Usuario.getPago">
+<code class="sig-name descname">getPago</code><span class="sig-paren">(</span><em class="sig-param">self</em><span class="sig-paren">)</span> &#x2192; str<a class="headerlink" href="#microbill.objects.Usuario.getPago" title="Enlazar permanentemente con esta definición">¶</a></dt>
+<dd><p>Método que retorna el tipo de pago asociado al usuario</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><dl class="simple">
+<dt>str: tipo de pago asociado al usuario</dt><dd></dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="microbill.objects.Usuario.getProyecto">
+<code class="sig-name descname">getProyecto</code><span class="sig-paren">(</span><em class="sig-param">self</em><span class="sig-paren">)</span> &#x2192; str<a class="headerlink" href="#microbill.objects.Usuario.getProyecto" title="Enlazar permanentemente con esta definición">¶</a></dt>
+<dd><p>Método que retorna el nombre del proyecto asociado al usuario</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><dl class="simple">
+<dt>str: nombre del proyecto asociado al usuario</dt><dd></dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="microbill.objects.Usuario.getResponsable">
+<code class="sig-name descname">getResponsable</code><span class="sig-paren">(</span><em class="sig-param">self</em><span class="sig-paren">)</span> &#x2192; str<a class="headerlink" href="#microbill.objects.Usuario.getResponsable" title="Enlazar permanentemente con esta definición">¶</a></dt>
+<dd><p>Método que retorna el nombre del responsable asociado al usuario</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><dl class="simple">
+<dt>str: nombre del responsable asociado al usuario</dt><dd></dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="microbill.objects.Usuario.getTelefono">
+<code class="sig-name descname">getTelefono</code><span class="sig-paren">(</span><em class="sig-param">self</em><span class="sig-paren">)</span> &#x2192; str<a class="headerlink" href="#microbill.objects.Usuario.getTelefono" title="Enlazar permanentemente con esta definición">¶</a></dt>
+<dd><p>Método que retorna el teléfono asociado al usuario</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><dl class="simple">
+<dt>str: teléfono asociado al usuario</dt><dd></dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="microbill.objects.Usuario.save">
+<code class="sig-name descname">save</code><span class="sig-paren">(</span><em class="sig-param">self</em><span class="sig-paren">)</span><a class="headerlink" href="#microbill.objects.Usuario.save" title="Enlazar permanentemente con esta definición">¶</a></dt>
+<dd><p>Método que guarda un usuario en el archivo de Clientes</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="microbill.objects.Usuario.setCiudad">
+<code class="sig-name descname">setCiudad</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">ciudad:str</em><span class="sig-paren">)</span><a class="headerlink" href="#microbill.objects.Usuario.setCiudad" title="Enlazar permanentemente con esta definición">¶</a></dt>
+<dd><p>Método que asigna el nombre de la ciudad que entra por parámetro como el valor del atributo ciudad</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>ciudad: str</strong></dt><dd><p>nombre de la ciudad al que será asociado el usuario</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="microbill.objects.Usuario.setCodigo">
+<code class="sig-name descname">setCodigo</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">codigo:str</em><span class="sig-paren">)</span><a class="headerlink" href="#microbill.objects.Usuario.setCodigo" title="Enlazar permanentemente con esta definición">¶</a></dt>
+<dd><p>Método que asigna el código del proyecto que entra por parámetro como el valor del atributo codigo</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>codigo: str</strong></dt><dd><p>código del proyecto al que será asociado el usuario</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="microbill.objects.Usuario.setCorreo">
+<code class="sig-name descname">setCorreo</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">correo:str</em><span class="sig-paren">)</span><a class="headerlink" href="#microbill.objects.Usuario.setCorreo" title="Enlazar permanentemente con esta definición">¶</a></dt>
+<dd><p>Método que asigna el correo que entra por parámetro como el valor del atributo correo</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>correo: str</strong></dt><dd><p>correo al que será asociado el usuario</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="microbill.objects.Usuario.setDireccion">
+<code class="sig-name descname">setDireccion</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">direccion:str</em><span class="sig-paren">)</span><a class="headerlink" href="#microbill.objects.Usuario.setDireccion" title="Enlazar permanentemente con esta definición">¶</a></dt>
+<dd><p>Método que asigna la dirección que entra por parámetro como el valor del atributo direccion</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>direccion: str</strong></dt><dd><p>dirección a la que será asociada el usuario</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="microbill.objects.Usuario.setDocumento">
+<code class="sig-name descname">setDocumento</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">documento:str</em><span class="sig-paren">)</span><a class="headerlink" href="#microbill.objects.Usuario.setDocumento" title="Enlazar permanentemente con esta definición">¶</a></dt>
+<dd><p>Método que asigna el documento que entra por parámetro como el valor del atributo documento</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>documento: str</strong></dt><dd><p>documento al que será asociado el usuario</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="microbill.objects.Usuario.setInstitucion">
+<code class="sig-name descname">setInstitucion</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">institucion:str</em><span class="sig-paren">)</span><a class="headerlink" href="#microbill.objects.Usuario.setInstitucion" title="Enlazar permanentemente con esta definición">¶</a></dt>
+<dd><p>Método que asigna el nombre de la institución que entra por parámetro como el valor del atributo institucion</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>institucion: str</strong></dt><dd><p>nombre de la institución al que será asociado el usuario</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="microbill.objects.Usuario.setInterno">
+<code class="sig-name descname">setInterno</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">interno:str</em><span class="sig-paren">)</span><a class="headerlink" href="#microbill.objects.Usuario.setInterno" title="Enlazar permanentemente con esta definición">¶</a></dt>
+<dd><p>Método que asigna el tipo de usuario que entra por parámetro como el valor del atributo interno</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>interno: str</strong></dt><dd><p>tipo de usuario al que será asociado el usuario</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="microbill.objects.Usuario.setNombre">
+<code class="sig-name descname">setNombre</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">nombre:str</em><span class="sig-paren">)</span><a class="headerlink" href="#microbill.objects.Usuario.setNombre" title="Enlazar permanentemente con esta definición">¶</a></dt>
+<dd><p>Método que asigna el nombre que entra por parámetro como el valor del atributo nombre</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>nombre: str</strong></dt><dd><p>nombre al que será asociado el usuario</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="microbill.objects.Usuario.setPago">
+<code class="sig-name descname">setPago</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">pago:str</em><span class="sig-paren">)</span><a class="headerlink" href="#microbill.objects.Usuario.setPago" title="Enlazar permanentemente con esta definición">¶</a></dt>
+<dd><p>Método que asigna el tipo de pago que entra por parámetro como el valor del atributo pago</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>pago: str</strong></dt><dd><p>tipo de pago al que será asociado el usuario</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="microbill.objects.Usuario.setProyecto">
+<code class="sig-name descname">setProyecto</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">proyecto:str</em><span class="sig-paren">)</span><a class="headerlink" href="#microbill.objects.Usuario.setProyecto" title="Enlazar permanentemente con esta definición">¶</a></dt>
+<dd><p>Método que asigna el nombre del proyecto que entra por parámetro como el valor del atributo proyecto</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>proyecto: str</strong></dt><dd><p>nombre del proyecto al que será asociado el usuario</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="microbill.objects.Usuario.setResponsable">
+<code class="sig-name descname">setResponsable</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">responsable:str</em><span class="sig-paren">)</span><a class="headerlink" href="#microbill.objects.Usuario.setResponsable" title="Enlazar permanentemente con esta definición">¶</a></dt>
+<dd><p>Método que asigna el nombre del responsable que entra por parámetro como el valor del atributo responsable</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>responsable: str</strong></dt><dd><p>nombre del responsable al que será asociado el usuario</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="microbill.objects.Usuario.setTelefono">
+<code class="sig-name descname">setTelefono</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">telefono:str</em><span class="sig-paren">)</span><a class="headerlink" href="#microbill.objects.Usuario.setTelefono" title="Enlazar permanentemente con esta definición">¶</a></dt>
+<dd><p>Método que asigna el teléfono que entra por parámetro como el valor del atributo telefono</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>telefono: str</strong></dt><dd><p>teléfono al que será asociado el usuario</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h4>Tema anterior</h4>
+  <p class="topless"><a href="microbill.objects.Cotizacion.html"
+                        title="capítulo anterior">Cotizacion</a></p>
+  <h4>Próximo tema</h4>
+  <p class="topless"><a href="microbill.objects.Servicio.html"
+                        title="próximo capítulo">Servicio</a></p>
+  <div role="note" aria-label="source link">
+    <h3>Esta página</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/api/microbill.objects.Usuario.rst.txt"
+            rel="nofollow">Mostrar el código</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Búsqueda rápida</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Ir a" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navegación</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="Índice General"
+             >índice</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Índice de Módulos Python"
+             >módulos</a> |</li>
+        <li class="right" >
+          <a href="microbill.objects.Servicio.html" title="Servicio"
+             >siguiente</a> |</li>
+        <li class="right" >
+          <a href="microbill.objects.Cotizacion.html" title="Cotizacion"
+             >anterior</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">documentación de Microbill - </a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../objects.html" >microbill.objects Module</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Derechos de autor 2019, Juan Barbosa.
+      Creado con <a href="http://sphinx-doc.org/">Sphinx</a> 2.1.2.
+    </div>
+  </body>
+</html>

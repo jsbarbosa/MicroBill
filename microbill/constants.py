@@ -3,6 +3,10 @@ import pandas as pd
 
 DEBUG: bool = False
 
+__all__ = ['OLD_DIR', 'PDF_DIR', 'REGISTERS_DIR', 'CLIENTES_FILE', 'REGISTRO_FILE', 'PRECIOS_FILE',
+           'BASE_DIR', 'EQUIPOS_KEYS', 'REGISTRO_KEYS', 'CLIENTES_KEYS', 'DOCUMENTOS_FINALES', 'EQUIPOS',
+           'PRICES_DIVISION', 'REPORTE_INTERNO', 'DEFAULT_CONFIG']
+
 OLD_DIR: str = "Old" #: carpeta donde se guardan las cotizaciones realizadas
 PDF_DIR: str = "PDF" #: carpeta donde se guardan los PDFs asociados a cotizaciones realizadas
 
@@ -17,7 +21,6 @@ PRECIOS_DAEMON_FILE: str = "Precios (daemon).xlsx"
 
 #: directorio base desde el cual se está ejecutando el intérprete de Python
 BASE_DIR: str = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-
 if os.path.exists(os.path.join(BASE_DIR, 'microbill')):
     BASE_DIR = os.path.join(BASE_DIR, 'microbill')
 
@@ -37,16 +40,17 @@ EQUIPOS_KEYS: list = ['Código', 'Descripción', 'Interno', 'Académico', 'Indus
 
 #: columnas que debe tener el archivo de registro
 REGISTRO_KEYS: list = ['Cotización', 'Fecha', 'Nombre', 'Correo', 'Teléfono', 'Institución', 'Interno',
-                  'Responsable', 'Muestra', 'Equipo', 'Elaboró', 'Modificó', 'Estado', 'Pago', 'Referencia', 'Aplicó', 'Tipo de Pago', 'Valor']
+                       'Responsable', 'Muestra', 'Equipo', 'Elaboró', 'Modificó', 'Estado', 'Pago', 'Referencia',
+                       'Aplicó', 'Tipo de Pago', 'Valor']
 
 #: columnas que debe tener el archivo de clientes
 CLIENTES_KEYS: list = ['Nombre', 'Correo', 'Teléfono', 'Institución', 'Documento',
-                 'Dirección', 'Ciudad', 'Interno', 'Responsable', 'Proyecto', 'Código', 'Tipo de Pago']
+                       'Dirección', 'Ciudad', 'Interno', 'Responsable', 'Proyecto', 'Código', 'Tipo de Pago']
 
 #: posibles formas de pago de una cotizacion
 DOCUMENTOS_FINALES: list = ["Transferencia interna", "Factura", "Recibo"]
 
-df = pd.read_excel(PRECIOS_FILE, sheet_name = None)
+df = pd.read_excel(PRECIOS_FILE, sheet_name=None)
 EQUIPOS: list = list(df.keys()) #: almacena el nombre de las hojas del archivo de precios
 
 for item in EQUIPOS:
@@ -55,7 +59,7 @@ for item in EQUIPOS:
 
 INDEPENDIENTES_DF = pd.read_excel(INDEPENDIENTES_FILE)
 
-DAEMON_DF = pd.read_excel(PRECIOS_DAEMON_FILE, sheet_name = None)
+DAEMON_DF = pd.read_excel(PRECIOS_DAEMON_FILE, sheet_name=None)
 DAEMON_SUBCLASSES = list(df.keys())
 
 #: categorias que dividen los precios de los servicios
@@ -66,6 +70,7 @@ REPORTE_INTERNO: str = "ReporteInterno.xlsx" #: nombre del archivo en donde se a
 #: configuracion por defecto
 DEFAULT_CONFIG: str = '''﻿ADMINS = ["Humberto Ibarra", "Monica Lopez", "Juan Camilo Orozco", "Laura Sotelo"]
 
+CORREOS_CONVENIOS = ["uniandes"]
 
 """
     PDF

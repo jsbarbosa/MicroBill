@@ -1,0 +1,653 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml" lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <title>Servicio &#8212; documentación de Microbill - </title>
+    <link rel="stylesheet" href="../_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/graphviz.css" />
+    
+    <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/language_data.js"></script>
+    <script type="text/javascript" src="../_static/translations.js"></script>
+    
+    <link rel="index" title="Índice" href="../genindex.html" />
+    <link rel="search" title="Búsqueda" href="../search.html" />
+    <link rel="next" title="LAST_MODIFICATION_CLIENTES" href="microbill.objects.LAST_MODIFICATION_CLIENTES.html" />
+    <link rel="prev" title="Usuario" href="microbill.objects.Usuario.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navegación</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="Índice General"
+             accesskey="I">índice</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Índice de Módulos Python"
+             >módulos</a> |</li>
+        <li class="right" >
+          <a href="microbill.objects.LAST_MODIFICATION_CLIENTES.html" title="LAST_MODIFICATION_CLIENTES"
+             accesskey="N">siguiente</a> |</li>
+        <li class="right" >
+          <a href="microbill.objects.Usuario.html" title="Usuario"
+             accesskey="P">anterior</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">documentación de Microbill - </a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../objects.html" accesskey="U">microbill.objects Module</a> &#187;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="servicio">
+<h1>Servicio<a class="headerlink" href="#servicio" title="Enlazar permanentemente con este título">¶</a></h1>
+<dl class="class">
+<dt id="microbill.objects.Servicio">
+<em class="property">class </em><code class="sig-prename descclassname">microbill.objects.</code><code class="sig-name descname">Servicio</code><span class="sig-paren">(</span><em class="sig-param">codigo: str = None</em>, <em class="sig-param">interno: str = None</em>, <em class="sig-param">cantidad: (&lt;class 'int'&gt;</em>, <em class="sig-param">&lt;class 'float'&gt;) = None</em>, <em class="sig-param">usos: dict = None</em>, <em class="sig-param">agregado_posteriormente: bool = False</em><span class="sig-paren">)</span><a class="headerlink" href="#microbill.objects.Servicio" title="Enlazar permanentemente con esta definición">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Clase Servicio, un servicio contiene el código del servicio, si el servicio es para un usuario interno,
+industria, etc, la cantidad solicitada de este servicio, el número de usos que ha tenido, y si fue agregado
+posteriormente</p>
+<p class="rubric">Methods Summary</p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#microbill.objects.Servicio.descontar" title="microbill.objects.Servicio.descontar"><code class="xref py py-obj docutils literal notranslate"><span class="pre">descontar</span></code></a>(self, n)</p></td>
+<td><p>Método que descuenta en n la cantidad disponible del servicio, a la fecha actual</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#microbill.objects.Servicio.getCantidad" title="microbill.objects.Servicio.getCantidad"><code class="xref py py-obj docutils literal notranslate"><span class="pre">getCantidad</span></code></a>(self)</p></td>
+<td><p>Método que retorna la cantidad del servicio</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#microbill.objects.Servicio.getCodigo" title="microbill.objects.Servicio.getCodigo"><code class="xref py py-obj docutils literal notranslate"><span class="pre">getCodigo</span></code></a>(self)</p></td>
+<td><p>Método que retorna el código asociado a este servicio</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#microbill.objects.Servicio.getCodigoPrefix" title="microbill.objects.Servicio.getCodigoPrefix"><code class="xref py py-obj docutils literal notranslate"><span class="pre">getCodigoPrefix</span></code></a>(self)</p></td>
+<td><p>Método que retorna el prefijo del código del servicio (código del equipo)</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#microbill.objects.Servicio.getDescripcion" title="microbill.objects.Servicio.getDescripcion"><code class="xref py py-obj docutils literal notranslate"><span class="pre">getDescripcion</span></code></a>(self)</p></td>
+<td><p>Método que retorna la descripción del servicio</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#microbill.objects.Servicio.getDescuentoTotal" title="microbill.objects.Servicio.getDescuentoTotal"><code class="xref py py-obj docutils literal notranslate"><span class="pre">getDescuentoTotal</span></code></a>(self)</p></td>
+<td><p>Método que retorna el descuento total asociado al servicio</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#microbill.objects.Servicio.getDescuentoUnitario" title="microbill.objects.Servicio.getDescuentoUnitario"><code class="xref py py-obj docutils literal notranslate"><span class="pre">getDescuentoUnitario</span></code></a>(self)</p></td>
+<td><p>Método que retorna el valor del descuento por unidad del servicio</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#microbill.objects.Servicio.getDineroUsado" title="microbill.objects.Servicio.getDineroUsado"><code class="xref py py-obj docutils literal notranslate"><span class="pre">getDineroUsado</span></code></a>(self)</p></td>
+<td><p>Método que retorna el valor en dinero asociado a las cantidades ya usadas</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#microbill.objects.Servicio.getEquipo" title="microbill.objects.Servicio.getEquipo"><code class="xref py py-obj docutils literal notranslate"><span class="pre">getEquipo</span></code></a>(self)</p></td>
+<td><p>Método que retorna el equipo asociado a este servicio</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#microbill.objects.Servicio.getInterno" title="microbill.objects.Servicio.getInterno"><code class="xref py py-obj docutils literal notranslate"><span class="pre">getInterno</span></code></a>(self)</p></td>
+<td><p>Método que retorna la categoria del cliente y del servicio (Interno, Industria, etc)</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#microbill.objects.Servicio.getRestantes" title="microbill.objects.Servicio.getRestantes"><code class="xref py py-obj docutils literal notranslate"><span class="pre">getRestantes</span></code></a>(self)</p></td>
+<td><p>Método que retorna el número de usos restantes</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#microbill.objects.Servicio.getTotal" title="microbill.objects.Servicio.getTotal"><code class="xref py py-obj docutils literal notranslate"><span class="pre">getTotal</span></code></a>(self)</p></td>
+<td><p>Método que retorna el valor a pagar por el servicio</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#microbill.objects.Servicio.getUsados" title="microbill.objects.Servicio.getUsados"><code class="xref py py-obj docutils literal notranslate"><span class="pre">getUsados</span></code></a>(self)</p></td>
+<td><p>Método que retorna el número de usos que ha tenido el servicio</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#microbill.objects.Servicio.getUsos" title="microbill.objects.Servicio.getUsos"><code class="xref py py-obj docutils literal notranslate"><span class="pre">getUsos</span></code></a>(self)</p></td>
+<td><p>Método que retorna el diccionario de usos del servicio</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#microbill.objects.Servicio.getValorTotal" title="microbill.objects.Servicio.getValorTotal"><code class="xref py py-obj docutils literal notranslate"><span class="pre">getValorTotal</span></code></a>(self)</p></td>
+<td><p>Método que retorna el valor total asociado al servicio (cantidad * valor_unitario)</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#microbill.objects.Servicio.getValorUnitario" title="microbill.objects.Servicio.getValorUnitario"><code class="xref py py-obj docutils literal notranslate"><span class="pre">getValorUnitario</span></code></a>(self)</p></td>
+<td><p>Método que retorna el valor unitario del servicio</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#microbill.objects.Servicio.isAgregado" title="microbill.objects.Servicio.isAgregado"><code class="xref py py-obj docutils literal notranslate"><span class="pre">isAgregado</span></code></a>(self)</p></td>
+<td><p>Método que retorna si el servicio fue agregado posterior a la realización de la cotización o no</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#microbill.objects.Servicio.makeCotizacionTable" title="microbill.objects.Servicio.makeCotizacionTable"><code class="xref py py-obj docutils literal notranslate"><span class="pre">makeCotizacionTable</span></code></a>(self)</p></td>
+<td><p>Método que genera la tabla que es usada por PDFCotizacion con la información del servicio</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#microbill.objects.Servicio.makeReporteTable" title="microbill.objects.Servicio.makeReporteTable"><code class="xref py py-obj docutils literal notranslate"><span class="pre">makeReporteTable</span></code></a>(self)</p></td>
+<td><p>Método que genera la tabla que es usada por PDFReporte con la información de usos del servicio</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#microbill.objects.Servicio.makeResumenTable" title="microbill.objects.Servicio.makeResumenTable"><code class="xref py py-obj docutils literal notranslate"><span class="pre">makeResumenTable</span></code></a>(self)</p></td>
+<td><p>Método que genera la tabla que es usada por PDFReporte con la información resumida del servicio</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#microbill.objects.Servicio.setCantidad" title="microbill.objects.Servicio.setCantidad"><code class="xref py py-obj docutils literal notranslate"><span class="pre">setCantidad</span></code></a>(self, cantidad)</p></td>
+<td><p>Método que asigna la cantidad que entra por parámetro como el valor del atributo cantidad</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#microbill.objects.Servicio.setCodigo" title="microbill.objects.Servicio.setCodigo"><code class="xref py py-obj docutils literal notranslate"><span class="pre">setCodigo</span></code></a>(self, codigo)</p></td>
+<td><p>Método que asigna el código que entra por parámetro como el valor del atributo codigo</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#microbill.objects.Servicio.setDescripcion" title="microbill.objects.Servicio.setDescripcion"><code class="xref py py-obj docutils literal notranslate"><span class="pre">setDescripcion</span></code></a>(self, valor)</p></td>
+<td><p>Método que asigna la descripción que entra por parámetro como el valor del atributo descripcion</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#microbill.objects.Servicio.setDescuentoText" title="microbill.objects.Servicio.setDescuentoText"><code class="xref py py-obj docutils literal notranslate"><span class="pre">setDescuentoText</span></code></a>(self, text)</p></td>
+<td><p>Método que asigna el texto asociado al descuento que entra por parámetro como el valor del atributo descuento_text</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#microbill.objects.Servicio.setDescuentoTotal" title="microbill.objects.Servicio.setDescuentoTotal"><code class="xref py py-obj docutils literal notranslate"><span class="pre">setDescuentoTotal</span></code></a>(self, valor)</p></td>
+<td><p>Método que asigna el descuento total que entra por parámetro como el valor del atributo descuento_total</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#microbill.objects.Servicio.setDescuentoUnitario" title="microbill.objects.Servicio.setDescuentoUnitario"><code class="xref py py-obj docutils literal notranslate"><span class="pre">setDescuentoUnitario</span></code></a>(self, valor)</p></td>
+<td><p>Método que asigna el descuento unitario que entra por parámetro como el valor del atributo descuento_unitario</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#microbill.objects.Servicio.setEquipo" title="microbill.objects.Servicio.setEquipo"><code class="xref py py-obj docutils literal notranslate"><span class="pre">setEquipo</span></code></a>(self, equipo)</p></td>
+<td><p>Método que asigna el equipo que entra por parámetro como el valor del atributo equipo</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#microbill.objects.Servicio.setInterno" title="microbill.objects.Servicio.setInterno"><code class="xref py py-obj docutils literal notranslate"><span class="pre">setInterno</span></code></a>(self, interno)</p></td>
+<td><p>Método que asigna el valor de interno que entra por parámetro como el valor del atributo interno</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#microbill.objects.Servicio.setRestantes" title="microbill.objects.Servicio.setRestantes"><code class="xref py py-obj docutils literal notranslate"><span class="pre">setRestantes</span></code></a>(self)</p></td>
+<td><p>Método que calcula el número de usos restantes del servicio</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#microbill.objects.Servicio.setUsos" title="microbill.objects.Servicio.setUsos"><code class="xref py py-obj docutils literal notranslate"><span class="pre">setUsos</span></code></a>(self, usos)</p></td>
+<td><p>Método que asigna los usos que entran por parámetro como el valor del atributo usos</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#microbill.objects.Servicio.setValorTotal" title="microbill.objects.Servicio.setValorTotal"><code class="xref py py-obj docutils literal notranslate"><span class="pre">setValorTotal</span></code></a>(self, valor)</p></td>
+<td><p>Método que asigna el valor total que entra por parámetro como el valor del atributo valor_total</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#microbill.objects.Servicio.setValorUnitario" title="microbill.objects.Servicio.setValorUnitario"><code class="xref py py-obj docutils literal notranslate"><span class="pre">setValorUnitario</span></code></a>(self, valor)</p></td>
+<td><p>Método que asigna el valor unitario que entra por parámetro como el valor del atributo valor_unitario</p></td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Methods Documentation</p>
+<dl class="method">
+<dt id="microbill.objects.Servicio.descontar">
+<code class="sig-name descname">descontar</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">n:(&lt;class 'int'&gt;</em>, <em class="sig-param">&lt;class 'float'&gt;)</em><span class="sig-paren">)</span><a class="headerlink" href="#microbill.objects.Servicio.descontar" title="Enlazar permanentemente con esta definición">¶</a></dt>
+<dd><p>Método que descuenta en n la cantidad disponible del servicio, a la fecha actual</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>n: int, float</strong></dt><dd><p>cantidad a descontar del servicio</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="microbill.objects.Servicio.getCantidad">
+<code class="sig-name descname">getCantidad</code><span class="sig-paren">(</span><em class="sig-param">self) -&gt; (&lt;class 'int'&gt;</em>, <em class="sig-param">&lt;class 'float'&gt;</em><span class="sig-paren">)</span><a class="headerlink" href="#microbill.objects.Servicio.getCantidad" title="Enlazar permanentemente con esta definición">¶</a></dt>
+<dd><p>Método que retorna la cantidad del servicio</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><dl class="simple">
+<dt>int, float: cantidad del servicio</dt><dd></dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="microbill.objects.Servicio.getCodigo">
+<code class="sig-name descname">getCodigo</code><span class="sig-paren">(</span><em class="sig-param">self</em><span class="sig-paren">)</span> &#x2192; str<a class="headerlink" href="#microbill.objects.Servicio.getCodigo" title="Enlazar permanentemente con esta definición">¶</a></dt>
+<dd><p>Método que retorna el código asociado a este servicio</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><dl class="simple">
+<dt>str: código asociado</dt><dd></dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="microbill.objects.Servicio.getCodigoPrefix">
+<code class="sig-name descname">getCodigoPrefix</code><span class="sig-paren">(</span><em class="sig-param">self</em><span class="sig-paren">)</span> &#x2192; str<a class="headerlink" href="#microbill.objects.Servicio.getCodigoPrefix" title="Enlazar permanentemente con esta definición">¶</a></dt>
+<dd><p>Método que retorna el prefijo del código del servicio (código del equipo)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><dl class="simple">
+<dt>str: prefijo del código</dt><dd></dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="microbill.objects.Servicio.getDescripcion">
+<code class="sig-name descname">getDescripcion</code><span class="sig-paren">(</span><em class="sig-param">self</em><span class="sig-paren">)</span> &#x2192; str<a class="headerlink" href="#microbill.objects.Servicio.getDescripcion" title="Enlazar permanentemente con esta definición">¶</a></dt>
+<dd><p>Método que retorna la descripción del servicio</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><dl class="simple">
+<dt>str: descripción del servicio</dt><dd></dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="microbill.objects.Servicio.getDescuentoTotal">
+<code class="sig-name descname">getDescuentoTotal</code><span class="sig-paren">(</span><em class="sig-param">self</em><span class="sig-paren">)</span> &#x2192; int<a class="headerlink" href="#microbill.objects.Servicio.getDescuentoTotal" title="Enlazar permanentemente con esta definición">¶</a></dt>
+<dd><p>Método que retorna el descuento total asociado al servicio</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><dl class="simple">
+<dt>int: descuento total asociado al servicio</dt><dd></dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="microbill.objects.Servicio.getDescuentoUnitario">
+<code class="sig-name descname">getDescuentoUnitario</code><span class="sig-paren">(</span><em class="sig-param">self</em><span class="sig-paren">)</span> &#x2192; int<a class="headerlink" href="#microbill.objects.Servicio.getDescuentoUnitario" title="Enlazar permanentemente con esta definición">¶</a></dt>
+<dd><p>Método que retorna el valor del descuento por unidad del servicio</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><dl class="simple">
+<dt>int: descuento unitario del servicio</dt><dd></dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="microbill.objects.Servicio.getDineroUsado">
+<code class="sig-name descname">getDineroUsado</code><span class="sig-paren">(</span><em class="sig-param">self</em><span class="sig-paren">)</span> &#x2192; int<a class="headerlink" href="#microbill.objects.Servicio.getDineroUsado" title="Enlazar permanentemente con esta definición">¶</a></dt>
+<dd><p>Método que retorna el valor en dinero asociado a las cantidades ya usadas</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><dl class="simple">
+<dt>int: dinero asociado a las cantidades ya usadas</dt><dd></dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="microbill.objects.Servicio.getEquipo">
+<code class="sig-name descname">getEquipo</code><span class="sig-paren">(</span><em class="sig-param">self</em><span class="sig-paren">)</span> &#x2192; str<a class="headerlink" href="#microbill.objects.Servicio.getEquipo" title="Enlazar permanentemente con esta definición">¶</a></dt>
+<dd><p>Método que retorna el equipo asociado a este servicio</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><dl class="simple">
+<dt>str: equipo asociado</dt><dd></dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="microbill.objects.Servicio.getInterno">
+<code class="sig-name descname">getInterno</code><span class="sig-paren">(</span><em class="sig-param">self</em><span class="sig-paren">)</span> &#x2192; str<a class="headerlink" href="#microbill.objects.Servicio.getInterno" title="Enlazar permanentemente con esta definición">¶</a></dt>
+<dd><p>Método que retorna la categoria del cliente y del servicio (Interno, Industria, etc)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><dl class="simple">
+<dt>str: Interno, Industria, etc</dt><dd></dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="microbill.objects.Servicio.getRestantes">
+<code class="sig-name descname">getRestantes</code><span class="sig-paren">(</span><em class="sig-param">self) -&gt; (&lt;class 'int'&gt;</em>, <em class="sig-param">&lt;class 'float'&gt;</em><span class="sig-paren">)</span><a class="headerlink" href="#microbill.objects.Servicio.getRestantes" title="Enlazar permanentemente con esta definición">¶</a></dt>
+<dd><p>Método que retorna el número de usos restantes</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><dl class="simple">
+<dt>int, float: numero de usos restantes</dt><dd></dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="microbill.objects.Servicio.getTotal">
+<code class="sig-name descname">getTotal</code><span class="sig-paren">(</span><em class="sig-param">self</em><span class="sig-paren">)</span> &#x2192; int<a class="headerlink" href="#microbill.objects.Servicio.getTotal" title="Enlazar permanentemente con esta definición">¶</a></dt>
+<dd><p>Método que retorna el valor a pagar por el servicio</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><dl class="simple">
+<dt>int: valor a pagar por el servicio</dt><dd></dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="microbill.objects.Servicio.getUsados">
+<code class="sig-name descname">getUsados</code><span class="sig-paren">(</span><em class="sig-param">self) -&gt; (&lt;class 'int'&gt;</em>, <em class="sig-param">&lt;class 'float'&gt;</em><span class="sig-paren">)</span><a class="headerlink" href="#microbill.objects.Servicio.getUsados" title="Enlazar permanentemente con esta definición">¶</a></dt>
+<dd><p>Método que retorna el número de usos que ha tenido el servicio</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><dl class="simple">
+<dt>int, float: número de usos que ha tenido el servicio</dt><dd></dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="microbill.objects.Servicio.getUsos">
+<code class="sig-name descname">getUsos</code><span class="sig-paren">(</span><em class="sig-param">self</em><span class="sig-paren">)</span> &#x2192; dict<a class="headerlink" href="#microbill.objects.Servicio.getUsos" title="Enlazar permanentemente con esta definición">¶</a></dt>
+<dd><p>Método que retorna el diccionario de usos del servicio</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><dl class="simple">
+<dt>dict: diccionario de usos del servicio</dt><dd></dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="microbill.objects.Servicio.getValorTotal">
+<code class="sig-name descname">getValorTotal</code><span class="sig-paren">(</span><em class="sig-param">self</em><span class="sig-paren">)</span> &#x2192; int<a class="headerlink" href="#microbill.objects.Servicio.getValorTotal" title="Enlazar permanentemente con esta definición">¶</a></dt>
+<dd><p>Método que retorna el valor total asociado al servicio (cantidad * valor_unitario)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><dl class="simple">
+<dt>int: valor total asociado al servicio</dt><dd></dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="microbill.objects.Servicio.getValorUnitario">
+<code class="sig-name descname">getValorUnitario</code><span class="sig-paren">(</span><em class="sig-param">self</em><span class="sig-paren">)</span> &#x2192; int<a class="headerlink" href="#microbill.objects.Servicio.getValorUnitario" title="Enlazar permanentemente con esta definición">¶</a></dt>
+<dd><p>Método que retorna el valor unitario del servicio</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><dl class="simple">
+<dt>int: valor unitario del servicio</dt><dd></dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="microbill.objects.Servicio.isAgregado">
+<code class="sig-name descname">isAgregado</code><span class="sig-paren">(</span><em class="sig-param">self</em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#microbill.objects.Servicio.isAgregado" title="Enlazar permanentemente con esta definición">¶</a></dt>
+<dd><p>Método que retorna si el servicio fue agregado posterior a la realización de la cotización o no</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><dl class="simple">
+<dt>bool: si el servicio fue agregado posterior a la realización de la cotización o no</dt><dd></dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="microbill.objects.Servicio.makeCotizacionTable">
+<code class="sig-name descname">makeCotizacionTable</code><span class="sig-paren">(</span><em class="sig-param">self</em><span class="sig-paren">)</span> &#x2192; tuple<a class="headerlink" href="#microbill.objects.Servicio.makeCotizacionTable" title="Enlazar permanentemente con esta definición">¶</a></dt>
+<dd><p>Método que genera la tabla que es usada por PDFCotizacion con la información del servicio</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><dl class="simple">
+<dt>tuple:</dt><dd><p>completo: la información del servicio, el código, la descripción, la cantidad, el valor unitario y el valor
+total
+descuento: el descuento asociado al servicio, la razón del descuento y el valor total del descuento</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="microbill.objects.Servicio.makeReporteTable">
+<code class="sig-name descname">makeReporteTable</code><span class="sig-paren">(</span><em class="sig-param">self</em><span class="sig-paren">)</span> &#x2192; list<a class="headerlink" href="#microbill.objects.Servicio.makeReporteTable" title="Enlazar permanentemente con esta definición">¶</a></dt>
+<dd><p>Método que genera la tabla que es usada por PDFReporte con la información de usos del servicio</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><dl class="simple">
+<dt>list:</dt><dd><p>fecha de cada uso, código, descripción, cantidad, número de usos y número de restantes por fecha</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="microbill.objects.Servicio.makeResumenTable">
+<code class="sig-name descname">makeResumenTable</code><span class="sig-paren">(</span><em class="sig-param">self</em><span class="sig-paren">)</span> &#x2192; list<a class="headerlink" href="#microbill.objects.Servicio.makeResumenTable" title="Enlazar permanentemente con esta definición">¶</a></dt>
+<dd><p>Método que genera la tabla que es usada por PDFReporte con la información resumida del servicio</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><dl class="simple">
+<dt>list:</dt><dd><p>descripción del servicio, cantidad, número de usos restantes, y su equivalente en dinero usado</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="microbill.objects.Servicio.setCantidad">
+<code class="sig-name descname">setCantidad</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">cantidad:(&lt;class 'int'&gt;</em>, <em class="sig-param">&lt;class 'float'&gt;)</em><span class="sig-paren">)</span><a class="headerlink" href="#microbill.objects.Servicio.setCantidad" title="Enlazar permanentemente con esta definición">¶</a></dt>
+<dd><p>Método que asigna la cantidad que entra por parámetro como el valor del atributo cantidad</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>cantidad: int, float</strong></dt><dd><p>cantidad al que será asociado el servicio</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="microbill.objects.Servicio.setCodigo">
+<code class="sig-name descname">setCodigo</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">codigo:str</em><span class="sig-paren">)</span><a class="headerlink" href="#microbill.objects.Servicio.setCodigo" title="Enlazar permanentemente con esta definición">¶</a></dt>
+<dd><p>Método que asigna el código que entra por parámetro como el valor del atributo codigo</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>codigo: str</strong></dt><dd><p>codigo al que será asociado el servicio</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="microbill.objects.Servicio.setDescripcion">
+<code class="sig-name descname">setDescripcion</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">valor:str=None</em><span class="sig-paren">)</span><a class="headerlink" href="#microbill.objects.Servicio.setDescripcion" title="Enlazar permanentemente con esta definición">¶</a></dt>
+<dd><p>Método que asigna la descripción que entra por parámetro como el valor del atributo descripcion</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>valor: str</strong></dt><dd><p>descripción a la que será asociada el servicio</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="microbill.objects.Servicio.setDescuentoText">
+<code class="sig-name descname">setDescuentoText</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">text:str</em><span class="sig-paren">)</span><a class="headerlink" href="#microbill.objects.Servicio.setDescuentoText" title="Enlazar permanentemente con esta definición">¶</a></dt>
+<dd><p>Método que asigna el texto asociado al descuento que entra por parámetro como el valor del atributo
+descuento_text</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>text: str</strong></dt><dd><p>texto de descuento al que será asociado el servicio</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="microbill.objects.Servicio.setDescuentoTotal">
+<code class="sig-name descname">setDescuentoTotal</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">valor:int=None</em><span class="sig-paren">)</span><a class="headerlink" href="#microbill.objects.Servicio.setDescuentoTotal" title="Enlazar permanentemente con esta definición">¶</a></dt>
+<dd><p>Método que asigna el descuento total que entra por parámetro como el valor del atributo descuento_total</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>valor: int</strong></dt><dd><p>descuento total al que será asociado el servicio</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="microbill.objects.Servicio.setDescuentoUnitario">
+<code class="sig-name descname">setDescuentoUnitario</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">valor:int=None</em><span class="sig-paren">)</span><a class="headerlink" href="#microbill.objects.Servicio.setDescuentoUnitario" title="Enlazar permanentemente con esta definición">¶</a></dt>
+<dd><p>Método que asigna el descuento unitario que entra por parámetro como el valor del atributo
+descuento_unitario</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>valor: int</strong></dt><dd><p>descuento unitario al que será asociado el servicio</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="microbill.objects.Servicio.setEquipo">
+<code class="sig-name descname">setEquipo</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">equipo:str</em><span class="sig-paren">)</span><a class="headerlink" href="#microbill.objects.Servicio.setEquipo" title="Enlazar permanentemente con esta definición">¶</a></dt>
+<dd><p>Método que asigna el equipo que entra por parámetro como el valor del atributo equipo</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>equipo: str</strong></dt><dd><p>equipo al que será asociado el servicio</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="microbill.objects.Servicio.setInterno">
+<code class="sig-name descname">setInterno</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">interno:str</em><span class="sig-paren">)</span><a class="headerlink" href="#microbill.objects.Servicio.setInterno" title="Enlazar permanentemente con esta definición">¶</a></dt>
+<dd><p>Método que asigna el valor de interno que entra por parámetro como el valor del atributo interno</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>interno: str</strong></dt><dd><p>interno al que será asociado el servicio</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="microbill.objects.Servicio.setRestantes">
+<code class="sig-name descname">setRestantes</code><span class="sig-paren">(</span><em class="sig-param">self</em><span class="sig-paren">)</span><a class="headerlink" href="#microbill.objects.Servicio.setRestantes" title="Enlazar permanentemente con esta definición">¶</a></dt>
+<dd><p>Método que calcula el número de usos restantes del servicio</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="microbill.objects.Servicio.setUsos">
+<code class="sig-name descname">setUsos</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">usos:dict</em><span class="sig-paren">)</span><a class="headerlink" href="#microbill.objects.Servicio.setUsos" title="Enlazar permanentemente con esta definición">¶</a></dt>
+<dd><p>Método que asigna los usos que entran por parámetro como el valor del atributo usos</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>usos: dict</strong></dt><dd><p>usos a los que estará asociado el servicio</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="microbill.objects.Servicio.setValorTotal">
+<code class="sig-name descname">setValorTotal</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">valor:int=None</em><span class="sig-paren">)</span><a class="headerlink" href="#microbill.objects.Servicio.setValorTotal" title="Enlazar permanentemente con esta definición">¶</a></dt>
+<dd><p>Método que asigna el valor total que entra por parámetro como el valor del atributo valor_total</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>valor: int</strong></dt><dd><p>valor total al que será asociado el servicio</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="microbill.objects.Servicio.setValorUnitario">
+<code class="sig-name descname">setValorUnitario</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">valor:int=None</em><span class="sig-paren">)</span><a class="headerlink" href="#microbill.objects.Servicio.setValorUnitario" title="Enlazar permanentemente con esta definición">¶</a></dt>
+<dd><p>Método que asigna el valor unitario que entra por parámetro como el valor del atributo valor_unitario</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>valor: int</strong></dt><dd><p>valor unitario al que será asociado el servicio</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h4>Tema anterior</h4>
+  <p class="topless"><a href="microbill.objects.Usuario.html"
+                        title="capítulo anterior">Usuario</a></p>
+  <h4>Próximo tema</h4>
+  <p class="topless"><a href="microbill.objects.LAST_MODIFICATION_CLIENTES.html"
+                        title="próximo capítulo">LAST_MODIFICATION_CLIENTES</a></p>
+  <div role="note" aria-label="source link">
+    <h3>Esta página</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/api/microbill.objects.Servicio.rst.txt"
+            rel="nofollow">Mostrar el código</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Búsqueda rápida</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Ir a" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navegación</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="Índice General"
+             >índice</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Índice de Módulos Python"
+             >módulos</a> |</li>
+        <li class="right" >
+          <a href="microbill.objects.LAST_MODIFICATION_CLIENTES.html" title="LAST_MODIFICATION_CLIENTES"
+             >siguiente</a> |</li>
+        <li class="right" >
+          <a href="microbill.objects.Usuario.html" title="Usuario"
+             >anterior</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">documentación de Microbill - </a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../objects.html" >microbill.objects Module</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Derechos de autor 2019, Juan Barbosa.
+      Creado con <a href="http://sphinx-doc.org/">Sphinx</a> 2.1.2.
+    </div>
+  </body>
+</html>

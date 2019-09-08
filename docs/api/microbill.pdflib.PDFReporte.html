@@ -1,0 +1,176 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml" lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <title>PDFReporte &#8212; documentación de Microbill - </title>
+    <link rel="stylesheet" href="../_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/graphviz.css" />
+    
+    <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/language_data.js"></script>
+    <script type="text/javascript" src="../_static/translations.js"></script>
+    
+    <link rel="index" title="Índice" href="../genindex.html" />
+    <link rel="search" title="Búsqueda" href="../search.html" />
+    <link rel="next" title="microbill.objects Module" href="../objects.html" />
+    <link rel="prev" title="PDFCotizacion" href="microbill.pdflib.PDFCotizacion.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navegación</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="Índice General"
+             accesskey="I">índice</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Índice de Módulos Python"
+             >módulos</a> |</li>
+        <li class="right" >
+          <a href="../objects.html" title="microbill.objects Module"
+             accesskey="N">siguiente</a> |</li>
+        <li class="right" >
+          <a href="microbill.pdflib.PDFCotizacion.html" title="PDFCotizacion"
+             accesskey="P">anterior</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">documentación de Microbill - </a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../pdflib.html" accesskey="U">microbill.pdflib Module</a> &#187;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="pdfreporte">
+<h1>PDFReporte<a class="headerlink" href="#pdfreporte" title="Enlazar permanentemente con este título">¶</a></h1>
+<dl class="class">
+<dt id="microbill.pdflib.PDFReporte">
+<em class="property">class </em><code class="sig-prename descclassname">microbill.pdflib.</code><code class="sig-name descname">PDFReporte</code><span class="sig-paren">(</span><em class="sig-param">cotizacion</em><span class="sig-paren">)</span><a class="headerlink" href="#microbill.pdflib.PDFReporte" title="Enlazar permanentemente con esta definición">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="microbill.pdflib.PDFBase.html#microbill.pdflib.PDFBase" title="microbill.pdflib.PDFBase"><code class="xref py py-class docutils literal notranslate"><span class="pre">microbill.pdflib.PDFBase</span></code></a></p>
+<p>Clase que representa el PDF de los reportes. Hereda de la clase PDFBase</p>
+<p class="rubric">Methods Summary</p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#microbill.pdflib.PDFReporte.doAll" title="microbill.pdflib.PDFReporte.doAll"><code class="xref py py-obj docutils literal notranslate"><span class="pre">doAll</span></code></a>(self)</p></td>
+<td><p>Método que renderiza una cotización</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#microbill.pdflib.PDFReporte.makeFrames" title="microbill.pdflib.PDFReporte.makeFrames"><code class="xref py py-obj docutils literal notranslate"><span class="pre">makeFrames</span></code></a>(self)</p></td>
+<td><p>Método que genera los marcos en los cuales se organiza la información al interior de un SimpleDocTemplate.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#microbill.pdflib.PDFReporte.makeResumen" title="microbill.pdflib.PDFReporte.makeResumen"><code class="xref py py-obj docutils literal notranslate"><span class="pre">makeResumen</span></code></a>(self)</p></td>
+<td><p>Función que genera la tabla en donde se enlistan los servicios ya usados</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#microbill.pdflib.PDFReporte.makeTable" title="microbill.pdflib.PDFReporte.makeTable"><code class="xref py py-obj docutils literal notranslate"><span class="pre">makeTable</span></code></a>(self)</p></td>
+<td><p>Función que genera la tabla en donde se enlistan los servicios, sus códigos, cantidad, precio unitatio, precio total, el subtotal, el descuento total y el total a pagar</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#microbill.pdflib.PDFReporte.makeTop" title="microbill.pdflib.PDFReporte.makeTop"><code class="xref py py-obj docutils literal notranslate"><span class="pre">makeTop</span></code></a>(self)</p></td>
+<td><p>Método que genera el encabezado del PDF, incluye el LOGO_PATH, el CODIGO_PEP, el número de la cotización, y la fecha de validez de la misma</p></td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Methods Documentation</p>
+<dl class="method">
+<dt id="microbill.pdflib.PDFReporte.doAll">
+<code class="sig-name descname">doAll</code><span class="sig-paren">(</span><em class="sig-param">self</em><span class="sig-paren">)</span><a class="headerlink" href="#microbill.pdflib.PDFReporte.doAll" title="Enlazar permanentemente con esta definición">¶</a></dt>
+<dd><p>Método que renderiza una cotización</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="microbill.pdflib.PDFReporte.makeFrames">
+<code class="sig-name descname">makeFrames</code><span class="sig-paren">(</span><em class="sig-param">self</em><span class="sig-paren">)</span><a class="headerlink" href="#microbill.pdflib.PDFReporte.makeFrames" title="Enlazar permanentemente con esta definición">¶</a></dt>
+<dd><p>Método que genera los marcos en los cuales se organiza la información al interior de un SimpleDocTemplate.
+Los dos primeros frames contienen la información personal del usuario (una columna por frame).
+El último marco contiene la tabla, el recuadro de observaciones y condiciones</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="microbill.pdflib.PDFReporte.makeResumen">
+<code class="sig-name descname">makeResumen</code><span class="sig-paren">(</span><em class="sig-param">self</em><span class="sig-paren">)</span><a class="headerlink" href="#microbill.pdflib.PDFReporte.makeResumen" title="Enlazar permanentemente con esta definición">¶</a></dt>
+<dd><p>Función que genera la tabla en donde se enlistan los servicios ya usados</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="microbill.pdflib.PDFReporte.makeTable">
+<code class="sig-name descname">makeTable</code><span class="sig-paren">(</span><em class="sig-param">self</em><span class="sig-paren">)</span><a class="headerlink" href="#microbill.pdflib.PDFReporte.makeTable" title="Enlazar permanentemente con esta definición">¶</a></dt>
+<dd><p>Función que genera la tabla en donde se enlistan los servicios, sus códigos, cantidad, precio unitatio,
+precio total, el subtotal, el descuento total y el total a pagar</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="microbill.pdflib.PDFReporte.makeTop">
+<code class="sig-name descname">makeTop</code><span class="sig-paren">(</span><em class="sig-param">self</em><span class="sig-paren">)</span><a class="headerlink" href="#microbill.pdflib.PDFReporte.makeTop" title="Enlazar permanentemente con esta definición">¶</a></dt>
+<dd><p>Método que genera el encabezado del PDF, incluye el LOGO_PATH, el CODIGO_PEP, el número de la cotización,
+y la fecha de validez de la misma</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h4>Tema anterior</h4>
+  <p class="topless"><a href="microbill.pdflib.PDFCotizacion.html"
+                        title="capítulo anterior">PDFCotizacion</a></p>
+  <h4>Próximo tema</h4>
+  <p class="topless"><a href="../objects.html"
+                        title="próximo capítulo">microbill.objects Module</a></p>
+  <div role="note" aria-label="source link">
+    <h3>Esta página</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/api/microbill.pdflib.PDFReporte.rst.txt"
+            rel="nofollow">Mostrar el código</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Búsqueda rápida</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Ir a" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navegación</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="Índice General"
+             >índice</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Índice de Módulos Python"
+             >módulos</a> |</li>
+        <li class="right" >
+          <a href="../objects.html" title="microbill.objects Module"
+             >siguiente</a> |</li>
+        <li class="right" >
+          <a href="microbill.pdflib.PDFCotizacion.html" title="PDFCotizacion"
+             >anterior</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">documentación de Microbill - </a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../pdflib.html" >microbill.pdflib Module</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Derechos de autor 2019, Juan Barbosa.
+      Creado con <a href="http://sphinx-doc.org/">Sphinx</a> 2.1.2.
+    </div>
+  </body>
+</html>

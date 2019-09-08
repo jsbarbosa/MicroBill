@@ -1,0 +1,5 @@
+<map id="inheritance0b5e3635bf" name="inheritance0b5e3635bf">
+<area shape="rect" id="node1" href="api/microbill.pdflib.PDFBase.html#microbill.pdflib.PDFBase" target="_top" title="Clase base para PDFCotización y PDFReporte. Inicializa el SimpleDocTemplate de ReportLab sobre el cual se construye" alt="" coords="5,31,84,56"/>
+<area shape="rect" id="node2" href="api/microbill.pdflib.PDFCotizacion.html#microbill.pdflib.PDFCotizacion" target="_top" title="Clase que representa el PDF de las cotizaciones. Hereda de la clase PDFBase" alt="" coords="132,5,247,31"/>
+<area shape="rect" id="node3" href="api/microbill.pdflib.PDFReporte.html#microbill.pdflib.PDFReporte" target="_top" title="Clase que representa el PDF de los reportes. Hereda de la clase PDFBase" alt="" coords="141,55,238,80"/>
+</map>

@@ -1,0 +1,205 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml" lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <title>microbill.objects Module &#8212; documentación de Microbill - </title>
+    <link rel="stylesheet" href="_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="_static/graphviz.css" />
+    
+    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/language_data.js"></script>
+    <script type="text/javascript" src="_static/translations.js"></script>
+    
+    <link rel="index" title="Índice" href="genindex.html" />
+    <link rel="search" title="Búsqueda" href="search.html" />
+    <link rel="next" title="readDataFrames" href="api/microbill.objects.readDataFrames.html" />
+    <link rel="prev" title="PDFReporte" href="api/microbill.pdflib.PDFReporte.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navegación</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="Índice General"
+             accesskey="I">índice</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Índice de Módulos Python"
+             >módulos</a> |</li>
+        <li class="right" >
+          <a href="api/microbill.objects.readDataFrames.html" title="readDataFrames"
+             accesskey="N">siguiente</a> |</li>
+        <li class="right" >
+          <a href="api/microbill.pdflib.PDFReporte.html" title="PDFReporte"
+             accesskey="P">anterior</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">documentación de Microbill - </a> &#187;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="module-microbill.objects">
+<span id="microbill-objects-module"></span><h1>microbill.objects Module<a class="headerlink" href="#module-microbill.objects" title="Enlazar permanentemente con este título">¶</a></h1>
+<div class="section" id="functions">
+<h2>Functions<a class="headerlink" href="#functions" title="Enlazar permanentemente con este título">¶</a></h2>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="api/microbill.objects.readDataFrames.html#microbill.objects.readDataFrames" title="microbill.objects.readDataFrames"><code class="xref py py-obj docutils literal notranslate"><span class="pre">readDataFrames</span></code></a>()</p></td>
+<td><p>Función que revisa si existen modificaciones en los archivos de clientes y registro.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="api/microbill.objects.getNumeroCotizacion.html#microbill.objects.getNumeroCotizacion" title="microbill.objects.getNumeroCotizacion"><code class="xref py py-obj docutils literal notranslate"><span class="pre">getNumeroCotizacion</span></code></a>(equipo)</p></td>
+<td><p>Función que usando el nombre del equipo que entra por parámetro retorna el último número de la cotización + 1 asociada a dicho equipo en formato ____</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="api/microbill.objects.getEquipoName.html#microbill.objects.getEquipoName" title="microbill.objects.getEquipoName"><code class="xref py py-obj docutils literal notranslate"><span class="pre">getEquipoName</span></code></a>(codigo)</p></td>
+<td><p>Función que retorna el nombre del equipo a partir de su código</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="api/microbill.objects.sortServicios.html#microbill.objects.sortServicios" title="microbill.objects.sortServicios"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sortServicios</span></code></a>(servicios)</p></td>
+<td><p>Función que usando los servicios que entran por parámetro, los ordena en un diccionario asociandolos por equipo</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="api/microbill.objects.obtenerTipoUsuario.html#microbill.objects.obtenerTipoUsuario" title="microbill.objects.obtenerTipoUsuario"><code class="xref py py-obj docutils literal notranslate"><span class="pre">obtenerTipoUsuario</span></code></a>(correo)</p></td>
+<td><p>Función que clasifica a un usuario como Interno, Independiente, Académico, o Industria a partir de su correo</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="api/microbill.objects.crearCotizaciones.html#microbill.objects.crearCotizaciones" title="microbill.objects.crearCotizaciones"><code class="xref py py-obj docutils literal notranslate"><span class="pre">crearCotizaciones</span></code></a>(usuario, servicios, …)</p></td>
+<td><p>Función que crea las cotizaciones asociadas a varios servicios de un mismo usuario</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="api/microbill.objects.generarPDFs.html#microbill.objects.generarPDFs" title="microbill.objects.generarPDFs"><code class="xref py py-obj docutils literal notranslate"><span class="pre">generarPDFs</span></code></a>(cotizaciones)</p></td>
+<td><p>Función que genera los PDFs de las cotizaciones que entran por parámetro</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="api/microbill.objects.guardarCotizaciones.html#microbill.objects.guardarCotizaciones" title="microbill.objects.guardarCotizaciones"><code class="xref py py-obj docutils literal notranslate"><span class="pre">guardarCotizaciones</span></code></a>(cotizaciones)</p></td>
+<td><p>Función que guarda las cotizaciones que entran por parámetro en el registro</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="classes">
+<h2>Classes<a class="headerlink" href="#classes" title="Enlazar permanentemente con este título">¶</a></h2>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="api/microbill.objects.Cotizacion.html#microbill.objects.Cotizacion" title="microbill.objects.Cotizacion"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Cotizacion</span></code></a>([numero, usuario, servicios, muestra])</p></td>
+<td><p>Clase Cotización, la clase cotización cuenta con un usuario de la clase Usuario, y varios servicios asociados a un mismo equipo</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="api/microbill.objects.Usuario.html#microbill.objects.Usuario" title="microbill.objects.Usuario"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Usuario</span></code></a>([nombre, correo, institucion, …])</p></td>
+<td><p>Clase Usuario, la clase representa la información de un usuario</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="api/microbill.objects.Servicio.html#microbill.objects.Servicio" title="microbill.objects.Servicio"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Servicio</span></code></a>([codigo, interno, cantidad, usos, …])</p></td>
+<td><p>Clase Servicio, un servicio contiene el código del servicio, si el servicio es para un usuario interno, industria, etc, la cantidad solicitada de este servicio, el número de usos que ha tenido, y si fue agregado posteriormente</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="variables">
+<h2>Variables<a class="headerlink" href="#variables" title="Enlazar permanentemente con este título">¶</a></h2>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="api/microbill.objects.LAST_MODIFICATION_CLIENTES.html#microbill.objects.LAST_MODIFICATION_CLIENTES" title="microbill.objects.LAST_MODIFICATION_CLIENTES"><code class="xref py py-obj docutils literal notranslate"><span class="pre">LAST_MODIFICATION_CLIENTES</span></code></a></p></td>
+<td><p>tiempo de la última modificación del archivo de clientes</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="api/microbill.objects.LAST_MODIFICATION_REGISTRO.html#microbill.objects.LAST_MODIFICATION_REGISTRO" title="microbill.objects.LAST_MODIFICATION_REGISTRO"><code class="xref py py-obj docutils literal notranslate"><span class="pre">LAST_MODIFICATION_REGISTRO</span></code></a></p></td>
+<td><p>tiempo de la última modificación del archivo de registro</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="api/microbill.objects.CLIENTES_DATAFRAME.html#microbill.objects.CLIENTES_DATAFRAME" title="microbill.objects.CLIENTES_DATAFRAME"><code class="xref py py-obj docutils literal notranslate"><span class="pre">CLIENTES_DATAFRAME</span></code></a></p></td>
+<td><p>Two-dimensional size-mutable, potentially heterogeneous tabular data structure with labeled axes (rows and columns).</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="api/microbill.objects.REGISTRO_DATAFRAME.html#microbill.objects.REGISTRO_DATAFRAME" title="microbill.objects.REGISTRO_DATAFRAME"><code class="xref py py-obj docutils literal notranslate"><span class="pre">REGISTRO_DATAFRAME</span></code></a></p></td>
+<td><p>Two-dimensional size-mutable, potentially heterogeneous tabular data structure with labeled axes (rows and columns).</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="class-inheritance-diagram">
+<h2>Class Inheritance Diagram<a class="headerlink" href="#class-inheritance-diagram" title="Enlazar permanentemente con este título">¶</a></h2>
+<div class="graphviz"><img src="_images/inheritance-d5aa03f9306ef34e2ff29aea8b5d03ef526aeb25.png" alt="Inheritance diagram of microbill.objects.Cotizacion, microbill.objects.Usuario, microbill.objects.Servicio" usemap="#inheritancee1b67a4499" class="inheritance graphviz" /></div>
+<map id="inheritancee1b67a4499" name="inheritancee1b67a4499">
+<area shape="rect" id="node1" href="api/microbill.objects.Cotizacion.html#microbill.objects.Cotizacion" target="_top" title="Clase Cotización, la clase cotización cuenta con un usuario de la clase Usuario, y varios servicios asociados" alt="" coords="5,104,96,129"/>
+<area shape="rect" id="node2" href="api/microbill.objects.Servicio.html#microbill.objects.Servicio" target="_top" title="Clase Servicio, un servicio contiene el código del servicio, si el servicio es para un usuario interno," alt="" coords="13,55,88,80"/>
+<area shape="rect" id="node3" href="api/microbill.objects.Usuario.html#microbill.objects.Usuario" target="_top" title="Clase Usuario, la clase representa la información de un usuario" alt="" coords="15,5,87,31"/>
+</map></div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Tabla de contenido</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">microbill.objects Module</a><ul>
+<li><a class="reference internal" href="#functions">Functions</a></li>
+<li><a class="reference internal" href="#classes">Classes</a></li>
+<li><a class="reference internal" href="#variables">Variables</a></li>
+<li><a class="reference internal" href="#class-inheritance-diagram">Class Inheritance Diagram</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Tema anterior</h4>
+  <p class="topless"><a href="api/microbill.pdflib.PDFReporte.html"
+                        title="capítulo anterior">PDFReporte</a></p>
+  <h4>Próximo tema</h4>
+  <p class="topless"><a href="api/microbill.objects.readDataFrames.html"
+                        title="próximo capítulo">readDataFrames</a></p>
+  <div role="note" aria-label="source link">
+    <h3>Esta página</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/objects.rst.txt"
+            rel="nofollow">Mostrar el código</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Búsqueda rápida</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Ir a" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navegación</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="Índice General"
+             >índice</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Índice de Módulos Python"
+             >módulos</a> |</li>
+        <li class="right" >
+          <a href="api/microbill.objects.readDataFrames.html" title="readDataFrames"
+             >siguiente</a> |</li>
+        <li class="right" >
+          <a href="api/microbill.pdflib.PDFReporte.html" title="PDFReporte"
+             >anterior</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">documentación de Microbill - </a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Derechos de autor 2019, Juan Barbosa.
+      Creado con <a href="http://sphinx-doc.org/">Sphinx</a> 2.1.2.
+    </div>
+  </body>
+</html>

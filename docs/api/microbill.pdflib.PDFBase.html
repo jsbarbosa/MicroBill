@@ -1,0 +1,180 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml" lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <title>PDFBase &#8212; documentación de Microbill - </title>
+    <link rel="stylesheet" href="../_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/graphviz.css" />
+    
+    <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/language_data.js"></script>
+    <script type="text/javascript" src="../_static/translations.js"></script>
+    
+    <link rel="index" title="Índice" href="../genindex.html" />
+    <link rel="search" title="Búsqueda" href="../search.html" />
+    <link rel="next" title="PDFCotizacion" href="microbill.pdflib.PDFCotizacion.html" />
+    <link rel="prev" title="microbill.pdflib Module" href="../pdflib.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navegación</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="Índice General"
+             accesskey="I">índice</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Índice de Módulos Python"
+             >módulos</a> |</li>
+        <li class="right" >
+          <a href="microbill.pdflib.PDFCotizacion.html" title="PDFCotizacion"
+             accesskey="N">siguiente</a> |</li>
+        <li class="right" >
+          <a href="../pdflib.html" title="microbill.pdflib Module"
+             accesskey="P">anterior</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">documentación de Microbill - </a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../pdflib.html" accesskey="U">microbill.pdflib Module</a> &#187;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="pdfbase">
+<h1>PDFBase<a class="headerlink" href="#pdfbase" title="Enlazar permanentemente con este título">¶</a></h1>
+<dl class="class">
+<dt id="microbill.pdflib.PDFBase">
+<em class="property">class </em><code class="sig-prename descclassname">microbill.pdflib.</code><code class="sig-name descname">PDFBase</code><span class="sig-paren">(</span><em class="sig-param">cotizacion=None</em>, <em class="sig-param">is_reporte: bool = False</em><span class="sig-paren">)</span><a class="headerlink" href="#microbill.pdflib.PDFBase" title="Enlazar permanentemente con esta definición">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Clase base para PDFCotización y PDFReporte. Inicializa el SimpleDocTemplate de ReportLab sobre el cual se construye
+el PDF.</p>
+<p class="rubric">Methods Summary</p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#microbill.pdflib.PDFBase.build" title="microbill.pdflib.PDFBase.build"><code class="xref py py-obj docutils literal notranslate"><span class="pre">build</span></code></a>(self, template)</p></td>
+<td><p>Renderiza el documento PDF</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#microbill.pdflib.PDFBase.drawPage" title="microbill.pdflib.PDFBase.drawPage"><code class="xref py py-obj docutils literal notranslate"><span class="pre">drawPage</span></code></a>(self, canvas, doc)</p></td>
+<td><p>Método necesario por reportlab al momento de generar el PageTemplate</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#microbill.pdflib.PDFBase.makeEnd" title="microbill.pdflib.PDFBase.makeEnd"><code class="xref py py-obj docutils literal notranslate"><span class="pre">makeEnd</span></code></a>(self)</p></td>
+<td><p>Método que genera el pie de página con el listado de dependencias de la universida y el centro de servicios</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#microbill.pdflib.PDFBase.makeInfo" title="microbill.pdflib.PDFBase.makeInfo"><code class="xref py py-obj docutils literal notranslate"><span class="pre">makeInfo</span></code></a>(self)</p></td>
+<td><p>Método que construye la parte superior del PDF en donde se muestra el nombre de la dependencia, junto con Universidad de los Andes y la información del usuario.</p></td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Methods Documentation</p>
+<dl class="method">
+<dt id="microbill.pdflib.PDFBase.build">
+<code class="sig-name descname">build</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">template:reportlab.platypus.doctemplate.PageTemplate</em><span class="sig-paren">)</span><a class="headerlink" href="#microbill.pdflib.PDFBase.build" title="Enlazar permanentemente con esta definición">¶</a></dt>
+<dd><p>Renderiza el documento PDF</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>template: el PageTemplate usado para renderizar el documento</strong></dt><dd></dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="microbill.pdflib.PDFBase.drawPage">
+<code class="sig-name descname">drawPage</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">canvas</em>, <em class="sig-param">doc</em><span class="sig-paren">)</span><a class="headerlink" href="#microbill.pdflib.PDFBase.drawPage" title="Enlazar permanentemente con esta definición">¶</a></dt>
+<dd><p>Método necesario por reportlab al momento de generar el PageTemplate</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>canvas: reportlab.Canvas</strong></dt><dd></dd>
+<dt><strong>doc: reportlab.SimpleDocTemplate</strong></dt><dd></dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="microbill.pdflib.PDFBase.makeEnd">
+<code class="sig-name descname">makeEnd</code><span class="sig-paren">(</span><em class="sig-param">self</em><span class="sig-paren">)</span><a class="headerlink" href="#microbill.pdflib.PDFBase.makeEnd" title="Enlazar permanentemente con esta definición">¶</a></dt>
+<dd><p>Método que genera el pie de página con el listado de dependencias de la universida y el centro de servicios</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="microbill.pdflib.PDFBase.makeInfo">
+<code class="sig-name descname">makeInfo</code><span class="sig-paren">(</span><em class="sig-param">self</em><span class="sig-paren">)</span><a class="headerlink" href="#microbill.pdflib.PDFBase.makeInfo" title="Enlazar permanentemente con esta definición">¶</a></dt>
+<dd><p>Método que construye la parte superior del PDF en donde se muestra el nombre de la dependencia, junto con
+Universidad de los Andes y la información del usuario.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h4>Tema anterior</h4>
+  <p class="topless"><a href="../pdflib.html"
+                        title="capítulo anterior">microbill.pdflib Module</a></p>
+  <h4>Próximo tema</h4>
+  <p class="topless"><a href="microbill.pdflib.PDFCotizacion.html"
+                        title="próximo capítulo">PDFCotizacion</a></p>
+  <div role="note" aria-label="source link">
+    <h3>Esta página</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/api/microbill.pdflib.PDFBase.rst.txt"
+            rel="nofollow">Mostrar el código</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Búsqueda rápida</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Ir a" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navegación</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="Índice General"
+             >índice</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Índice de Módulos Python"
+             >módulos</a> |</li>
+        <li class="right" >
+          <a href="microbill.pdflib.PDFCotizacion.html" title="PDFCotizacion"
+             >siguiente</a> |</li>
+        <li class="right" >
+          <a href="../pdflib.html" title="microbill.pdflib Module"
+             >anterior</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">documentación de Microbill - </a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../pdflib.html" >microbill.pdflib Module</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Derechos de autor 2019, Juan Barbosa.
+      Creado con <a href="http://sphinx-doc.org/">Sphinx</a> 2.1.2.
+    </div>
+  </body>
+</html>

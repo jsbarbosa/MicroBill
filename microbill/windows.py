@@ -5,22 +5,23 @@ import traceback
 import numpy as np
 import pandas as pd
 from copy import copy
-from time import sleep
 from datetime import datetime
-from PyQt5 import QtCore, QtWidgets, QtGui
+from PyQt5 import QtCore, QtWidgets
 
 from PyQt5.QtWidgets import QLabel
 
 from . import correo, objects, constants
 from .exceptions import *
+from .utils import export
 
 import psutil
 from subprocess import Popen
 from threading import Thread
 
 import base64
-# config.ADMINS = [""] + config.ADMINS
 
+
+@export
 class SubWindow(QtWidgets.QMdiSubWindow):
     def __init__(self, parent = None):
         super(SubWindow, self).__init__(parent)
@@ -40,6 +41,8 @@ class SubWindow(QtWidgets.QMdiSubWindow):
         self.is_closed = False
         QtWidgets.QMdiSubWindow.show(self)
 
+
+@export
 class Table(QtWidgets.QTableWidget):
     HEADER = ['Código', 'Descripción', 'Cantidad', 'Valor Unitario', 'Valor Total']
     def __init__(self, parent, rows = 25, cols = 5):
@@ -213,6 +216,8 @@ class Table(QtWidgets.QTableWidget):
                 item.setFlags(flags)
                 self.setItem(r, c, item)
 
+
+@export
 class AutoLineEdit(QtWidgets.QLineEdit):
     AUTOCOMPLETE = ["Nombre", "Correo", "Documento", "Teléfono", "Cotización"]
     def __init__(self, target, parent, autochange = True):
@@ -247,6 +252,8 @@ class AutoLineEdit(QtWidgets.QLineEdit):
         data = sorted(data)[::order]
         self.model.setStringList(data)
 
+
+@export
 class ChangeCotizacion(QtWidgets.QDialog):
     FIELDS = ["Cotización", "Fecha", "Nombre", "Correo", "Equipo", "Valor"]
     WIDGETS = ["cotizacion", "fecha", "nombre", "correo", "equipo", "valor"]
@@ -313,6 +320,8 @@ class ChangeCotizacion(QtWidgets.QDialog):
         self.parent.loadCotizacion(self.cotizacion_widget.text())
         self.accept()
 
+
+@export
 class CorreoDialog(QtWidgets.QDialog):
     def __init__(self, args, target):
         super(CorreoDialog, self).__init__()
@@ -355,6 +364,8 @@ class CorreoDialog(QtWidgets.QDialog):
     def start(self):
         self.thread.start()
 
+
+@export
 class CodigosDialog(QtWidgets.QDialog):
     def __init__(self, parent):
         super(CodigosDialog, self).__init__()
@@ -413,6 +424,8 @@ class CodigosDialog(QtWidgets.QDialog):
         for i in range(2, len(df.keys())):
             header.setSectionResizeMode(i, QtWidgets.QHeaderView.ResizeToContents)
 
+
+@export
 class CotizacionWindow(SubWindow):
     IGNORE = ["proyecto", "codigo"]
     FIELDS = ["Nombre", "Correo", "Teléfono", "Institución", "Documento", "Dirección", "Ciudad", "Interno", "Responsable", "Proyecto", "Código", "Muestra"]
@@ -925,6 +938,8 @@ class CotizacionWindow(SubWindow):
         msg.setStandardButtons(QtWidgets.QMessageBox.Ok)
         msg.exec_()
 
+
+@export
 class NoNotificacion(QtWidgets.QMessageBox):
     def __init__(self):
         super(NoNotificacion, self).__init__()
@@ -933,6 +948,8 @@ class NoNotificacion(QtWidgets.QMessageBox):
         self.setWindowTitle("Warning")
         self.setStandardButtons(QtWidgets.QMessageBox.Ok)
 
+
+@export
 class DescontarWindow(SubWindow):
     FIELDS = ["Cotización", "Fecha", "Nombre", "Correo", "Equipo", "Valor"]
     WIDGETS = ["cotizacion", "fecha", "nombre", "correo", "equipo", "valor"]
@@ -1265,6 +1282,8 @@ class DescontarWindow(SubWindow):
         msg.setStandardButtons(QtWidgets.QMessageBox.Ok)
         msg.exec_()
 
+
+@export
 class PandasModel(QtCore.QAbstractTableModel):
     def __init__(self, data, parent = None, checkbox = True):
         QtCore.QAbstractTableModel.__init__(self, parent)
@@ -1342,6 +1361,8 @@ class PandasModel(QtCore.QAbstractTableModel):
     def whereIsChecked(self):
         return np.array([self._data[i, 0].isChecked() for i in range(self.rowCount())], dtype = bool)
 
+
+@export
 class BuscarWindow(SubWindow):
     WIDGETS = ["equipo", "nombre", "correo", "institucion", "responsable", "cotizacion"]
     FIELDS = ["Equipo", "Nombre", "Correo", "Institución", "Responsable", "Cotización"]
@@ -1497,6 +1518,8 @@ class BuscarWindow(SubWindow):
                     os.rename(old, new)
                 except Exception as e: pass
 
+
+@export
 class GestorWindow(SubWindow):
     FIELDS = ["Cotización", "Fecha", "Nombre", "Correo", "Equipo", "Valor", "Tipo de Pago"]
     WIDGETS = ["cotizacion", "fecha", "nombre", "correo", "equipo", "valor", "tipo"]
@@ -1619,6 +1642,8 @@ class GestorWindow(SubWindow):
         msg.setStandardButtons(QtWidgets.QMessageBox.Ok)
         msg.exec_()
 
+
+@export
 class MainWindow(QtWidgets.QMainWindow):
     def __init__(self, parent = None):
         super(QtWidgets.QMainWindow, self).__init__(parent)
@@ -1796,6 +1821,8 @@ class MainWindow(QtWidgets.QMainWindow):
     def reboot(self):
         QtWidgets.qApp.exit( constants.EXIT_CODE_REBOOT )
 
+
+@export
 class CalendarWidget(QtWidgets.QDateTimeEdit):
     def __init__(self, parent = None):
         now = datetime.now()
@@ -1805,6 +1832,8 @@ class CalendarWidget(QtWidgets.QDateTimeEdit):
 
         self.setMaximumDate(now)
 
+
+@export
 class ReporteWindow(SubWindow):
     def __init__(self, parent = None):
         super(ReporteWindow, self).__init__(parent)
@@ -1893,6 +1922,8 @@ class ReporteWindow(SubWindow):
             msg.setStandardButtons(QtWidgets.QMessageBox.Ok)
             msg.exec_()
 
+
+@export
 class RequestWindow(SubWindow):
     def __init__(self, parent = None):
         super(RequestWindow, self).__init__(parent)
@@ -1945,6 +1976,8 @@ class RequestWindow(SubWindow):
         msg.setStandardButtons(QtWidgets.QMessageBox.Ok)
         msg.exec_()
 
+
+@export
 class PropiedadesWindow(SubWindow):
     KEY = '1234567890123456'
     WIDGETS = ["codigo_gestion", "codigo_pep", 'terminos', 'confidencialidad', 'dependencias',
@@ -2223,6 +2256,8 @@ class PropiedadesWindow(SubWindow):
         if reply == QtWidgets.QMessageBox.Yes: return True
         return False
 
+
+@export
 def encode(key, clear):
     enc = []
     for i in range(len(clear)):

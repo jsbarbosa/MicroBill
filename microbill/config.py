@@ -1,5 +1,6 @@
-﻿ADMINS = ["Humberto Ibarra", "Monica Lopez", "Juan Camilo Orozco", "Laura Sotelo"] #: Almacena las personas que pueden hacer y modificar una cotización
+﻿ADMINS = ["Humberto Ibarra", "Monica Lopez", "Juan Camilo Orozco", "Laura Sotelo"]
 
+CORREOS_CONVENIOS = ["uniandes"]
 
 """
     PDF

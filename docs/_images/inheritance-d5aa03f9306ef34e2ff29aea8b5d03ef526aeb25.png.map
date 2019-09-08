@@ -1,0 +1,5 @@
+<map id="inheritancee1b67a4499" name="inheritancee1b67a4499">
+<area shape="rect" id="node1" href="api/microbill.objects.Cotizacion.html#microbill.objects.Cotizacion" target="_top" title="Clase Cotización, la clase cotización cuenta con un usuario de la clase Usuario, y varios servicios asociados" alt="" coords="5,104,96,129"/>
+<area shape="rect" id="node2" href="api/microbill.objects.Servicio.html#microbill.objects.Servicio" target="_top" title="Clase Servicio, un servicio contiene el código del servicio, si el servicio es para un usuario interno," alt="" coords="13,55,88,80"/>
+<area shape="rect" id="node3" href="api/microbill.objects.Usuario.html#microbill.objects.Usuario" target="_top" title="Clase Usuario, la clase representa la información de un usuario" alt="" coords="15,5,87,31"/>
+</map>

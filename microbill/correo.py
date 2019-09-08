@@ -3,14 +3,19 @@ import smtplib
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 from email.mime.application import MIMEApplication
-from .config import SEND_SERVER, SEND_PORT, REPORTE_MENSAJE, REPORTE_SUBJECT, REQUEST_SUBJECT, REQUEST_MENSAJE, DEPENDENCIAS
+from .config import SEND_SERVER, SEND_PORT, REPORTE_MENSAJE, REPORTE_SUBJECT, REQUEST_SUBJECT, REQUEST_MENSAJE
 from .config import COTIZACION_MENSAJE_RECIBO, COTIZACION_MENSAJE_FACTURA, COTIZACION_MENSAJE_TRANSFERENCIA
-from .config import COTIZACION_SUBJECT_RECIBO
+from .config import COTIZACION_SUBJECT_RECIBO, DEPENDENCIAS
 from .config import GESTOR_RECIBO_CORREO, GESTOR_RECIBO_SUBJECT, GESTOR_RECIBO_MENSAJE
 from .config import GESTOR_FACTURA_CORREO, GESTOR_FACTURA_SUBJECT, GESTOR_FACTURA_MENSAJE, SALUDO
 from . import constants, config
+from .utils import export
 from .objects import Cotizacion
 from typing import Callable, Iterable
+
+__all__ = ["dependencias", "SALUDO", "COTIZACION_MENSAJE_RECIBO", "COTIZACION_MENSAJE_FACTURA",
+           "COTIZACION_MENSAJE_TRANSFERENCIA", "REPORTE_MENSAJE", "REQUEST_MENSAJE", "GESTOR_RECIBO_MENSAJE",
+           "GESTOR_FACTURA_MENSAJE", "CORREO"]
 
 dependencias: str = ("\n" + "\n".join(DEPENDENCIAS)).title()
 
@@ -43,17 +48,20 @@ GESTOR_FACTURA_MENSAJE = GESTOR_FACTURA_MENSAJE.replace("\n", "<br>")
 
 CORREO = smtplib.SMTP(SEND_SERVER, SEND_PORT, timeout=30)  #: instancia de SMTP
 
+
+@export
 def initCorreo():
     """ Inicializa la comunicación con el servidor SMTP, y autentica a el usuario
     """
 
     global CORREO
-    CORREO.ehlo() # Hostname to send for this command defaults to the fully qualified domain name of the local host.
-    CORREO.starttls() # Puts connection to SMTP server in TLS mode
+    CORREO.ehlo()  # Hostname to send for this command defaults to the fully qualified domain name of the local host.
+    CORREO.starttls()  # Puts connection to SMTP server in TLS mode
     CORREO.ehlo()
     CORREO.login(config.FROM, config.PASSWORD)
 
 
+@export
 def sendEmail(to: str, subject: str, text: str, attachments: Iterable = []):
     """ Función encargada de constuir un correo electrónico y enviarlo
 
@@ -89,10 +97,11 @@ def sendEmail(to: str, subject: str, text: str, attachments: Iterable = []):
         if item != constants.REPORTE_INTERNO:
             name = os.path.join(constants.PDF_DIR, item + ".pdf")
             item = os.path.basename(item + ".pdf")
-        else: name = item
+        else:
+            name = item
         with open(name, "rb") as file:
             app = MIMEApplication(file.read())
-            app.add_header('Content-Disposition', 'attachment', filename = item)
+            app.add_header('Content-Disposition', 'attachment', filename=item)
             msg.attach(app)
 
     to = [to, config.FROM]
@@ -108,6 +117,7 @@ def sendEmail(to: str, subject: str, text: str, attachments: Iterable = []):
                 raise(Exception("Could not send email."))
 
 
+@export
 def sendCotizacionRecibo(to: str, file_name: (str, Iterable), observaciones: str = ""):
     """ Función que envía por correo electrónico una cotización con forma de pago de recibo
 
@@ -126,12 +136,14 @@ def sendCotizacionRecibo(to: str, file_name: (str, Iterable), observaciones: str
         en caso que luego de 5 intentos, no se pueda enviar el correo electrónico
     """
 
-    if observaciones != "": observaciones = observaciones.replace("\n", "<br>") + 2*"<br>"
+    if observaciones != "":
+        observaciones = observaciones.replace("\n", "<br>") + 2 * "<br>"
     subject = COTIZACION_SUBJECT_RECIBO + ' - '
     subject += ' - '.join(file_name)
     sendEmail(to, subject, SALUDO + observaciones + COTIZACION_MENSAJE_RECIBO, file_name)
 
 
+@export
 def sendCotizacionTransferencia(to: str, file_name: (str, Iterable), observaciones: str = ""):
     """ Función que envía por correo electrónico una cotización con forma de pago de transferencia interna
 
@@ -150,12 +162,14 @@ def sendCotizacionTransferencia(to: str, file_name: (str, Iterable), observacion
         en caso que luego de 5 intentos, no se pueda enviar el correo electrónico
     """
 
-    if observaciones != "": observaciones = observaciones.replace("\n", "<br>") + 2*"<br>"
+    if observaciones != "":
+        observaciones = observaciones.replace("\n", "<br>") + 2 * "<br>"
     subject = COTIZACION_SUBJECT_RECIBO + ' - '
     subject += ' - '.join(file_name)
     sendEmail(to, subject,  SALUDO + observaciones + COTIZACION_MENSAJE_TRANSFERENCIA, file_name)
 
 
+@export
 def sendCotizacionFactura(to: str, file_name: (str, Iterable), observaciones: str = ""):
     """ Función que envía por correo electrónico una cotización con forma de pago de factura
 
@@ -174,12 +188,14 @@ def sendCotizacionFactura(to: str, file_name: (str, Iterable), observaciones: st
         en caso que luego de 5 intentos, no se pueda enviar el correo electrónico
     """
 
-    if observaciones != "": observaciones = observaciones.replace("\n", "<br>") + 2*"<br>"
+    if observaciones != "":
+        observaciones = observaciones.replace("\n", "<br>") + 2 * "<br>"
     subject = COTIZACION_SUBJECT_RECIBO + ' - '
     subject += ' - '.join(file_name)
     sendEmail(to, subject, SALUDO + observaciones + COTIZACION_MENSAJE_FACTURA, file_name)
 
 
+@export
 def sendRegistro(to: str, file_name: str):
     """ Función que envía un correo electrónico con un reporte de los servicios usados hasta el momento
 
@@ -196,9 +212,10 @@ def sendRegistro(to: str, file_name: str):
         en caso que luego de 5 intentos, no se pueda enviar el correo electrónico
     """
 
-    sendEmail(to, REPORTE_SUBJECT + " - %s"%file_name, SALUDO + REPORTE_MENSAJE, [file_name + "_Reporte"])
+    sendEmail(to, REPORTE_SUBJECT + " - %s" % file_name, SALUDO + REPORTE_MENSAJE, [file_name + "_Reporte"])
 
 
+@export
 def sendRequest(to: str):
     """ Función que envía un correo electrónico de solicitud de información
 
@@ -216,6 +233,7 @@ def sendRequest(to: str):
     sendEmail(to, REQUEST_SUBJECT, SALUDO + REQUEST_MENSAJE)
 
 
+@export
 def sendGestorRecibo(file_name: str):
     """ Función que envía al Gestor de Recibos una solicitud para realizar un recibo
 
@@ -233,6 +251,7 @@ def sendGestorRecibo(file_name: str):
     sendEmail(GESTOR_RECIBO_CORREO, GESTOR_RECIBO_SUBJECT + " - %s" % file_name, GESTOR_RECIBO_MENSAJE, [file_name])
 
 
+@export
 def sendGestorFactura(file_name: str, orden_name: str):
     """ Función que envía al Gestor de Facturas una solicitud para realizar una factura
 
@@ -252,9 +271,11 @@ def sendGestorFactura(file_name: str, orden_name: str):
     orden_name = orden_name.split(".")[:-1]
     if type(orden_name) is list:
         orden_name = ".".join(orden_name)
-    sendEmail(GESTOR_FACTURA_CORREO, GESTOR_FACTURA_SUBJECT + " - %s" % file_name, GESTOR_FACTURA_MENSAJE, [file_name, orden_name])
+    sendEmail(GESTOR_FACTURA_CORREO, GESTOR_FACTURA_SUBJECT + " - %s" % file_name,
+              GESTOR_FACTURA_MENSAJE, [file_name, orden_name])
 
 
+@export
 def sendReporteExcel(to: str):
     """ Función encargada de enviar al destinatario el archivo de Excel asociado a un reporte
 
@@ -272,6 +293,7 @@ def sendReporteExcel(to: str):
     sendEmail(to, "Reporte semanal", "Microbill envia el reporte de cotizaciones", [constants.REPORTE_INTERNO])
 
 
+@export
 def correoTargetArgs(cotizaciones: Iterable, observaciones: str) -> (Callable, int):
     """ Función que se encarga de generar los parámetros para las funciones sendCotizacionTransferencia,
     sendCotizacionFactura, sendCotizacioinRecibo dependiendo de la información contenida en la forma de pago de las

@@ -1,10 +1,14 @@
 import os
 import sys
 from PyQt5 import QtCore, QtGui, QtWidgets
-from .constants import BASE_DIR, EXIT_CODE_REBOOT
-# from PyQt5.QtWebEngineWidgets import QWebEngineView
+from .constants import BASE_DIR
+from .utils import export
 
+
+@export
 def threadedCorreo():
+    """ Función que inicializa el correo cada 10 minutos """
+
     while True:
         try:
             correo.initCorreo()
@@ -13,19 +17,26 @@ def threadedCorreo():
             sleep(1 * 60)
             print(e)
 
+
+@export
 def testFiles():
+    """ Función que revisa que los archivos de registro y clientes se encuentren configurados de manera correcta
+
+    Raises
+    -------
+    Exception
+        en caso que alguno de los archivos no se encuentre configurado de manera correcta
     """
-        Registro y clientes
-    """
+
     global REGISTRO_DATAFRAME, CLIENTES_DATAFRAME
-    if (list(REGISTRO_DATAFRAME.keys()) != constants.REGISTRO_KEYS):
+    if list(REGISTRO_DATAFRAME.keys()) != constants.REGISTRO_KEYS:
         fields = ", ".join(constants.REGISTRO_KEYS)
-        txt = "Registro no está bien configurado, las columnas deben ser: %s."%fields
+        txt = "Registro no está bien configurado, las columnas deben ser: %s." % fields
         raise(Exception(txt))
 
-    if (list(CLIENTES_DATAFRAME.keys()) != constants.CLIENTES_KEYS):
+    if list(CLIENTES_DATAFRAME.keys()) != constants.CLIENTES_KEYS:
         fields = ", ".join(constants.CLIENTES_KEYS)
-        txt = "Clientes no está bien configurado, las columnas deben ser: %s."%fields
+        txt = "Clientes no está bien configurado, las columnas deben ser: %s." % fields
         raise(Exception(txt))
     """
         Equipo
@@ -33,15 +44,24 @@ def testFiles():
     for item in constants.EQUIPOS:
         df = eval("constants.%s"%item)
         keys = list(df.keys())
-        if (keys != constants.EQUIPOS_KEYS):
+        if keys != constants.EQUIPOS_KEYS:
             fields = ", ".join(constants.EQUIPOS_KEYS)
-            txt = "%s no está bien configurado, las columnas deben ser: %s."%(item, fields)
+            txt = "%s no está bien configurado, las columnas deben ser: %s." % (item, fields)
             raise(Exception(txt))
 
-def run():
+
+@export
+def run() -> int:
+    """ Función encargada de cargar la aplicación principal y sus dependencias. Antes de ejecutar la aplicación verifica
+    la integridad de las dependencias incluyendo los archivos a los que el administrador tiene acceso
+
+    Returns
+    -------
+    int: Código de salida de la aplicación al cerrarse
+    """
+
     from . import config
     global correo, config, constants, sleep, Thread, MainWindow, REGISTRO_DATAFRAME, CLIENTES_DATAFRAME
-    sys.argv += ["--disable-web-security", "--web-security=no", "--allow-file-access-from-files"]
     app = QtWidgets.QApplication(sys.argv)
 
     icon = QtGui.QIcon(os.path.join(BASE_DIR, 'icon.ico'))
@@ -72,7 +92,7 @@ def run():
 
     main = MainWindow()
 
-    thread = Thread(target = threadedCorreo)
+    thread = Thread(target=threadedCorreo)
     thread.setDaemon(True)
     thread.start()
 
