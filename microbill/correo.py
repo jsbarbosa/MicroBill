@@ -55,11 +55,12 @@ def initCorreo():
     """
 
     global CORREO
-    CORREO.ehlo()  # Hostname to send for this command defaults to the fully qualified domain name of the local host.
-    CORREO.starttls()  # Puts connection to SMTP server in TLS mode
-    CORREO.ehlo()
-    CORREO.login(config.FROM, config.PASSWORD)
-
+    try:
+        CORREO.starttls()  # Puts connection to SMTP server in TLS mode
+        CORREO.ehlo()  # Hostname to send for this command defaults to the fully qualified domain name of the local host.
+        CORREO.login(config.FROM, config.PASSWORD)
+    except smtplib.SMTPException:
+        pass
 
 @export
 def sendEmail(to: str, subject: str, text: str, attachments: Iterable = []):

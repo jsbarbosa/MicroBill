@@ -233,6 +233,36 @@ Tel: (57-1) 339 4949 Ext. 1444
 SEND_SERVER = "smtp-mail.outlook.com"
 SEND_PORT = 587
 
+READ_SERVER = "imap-mail.outlook.com"
+READ_PORT = 993
+
+READ_EVERY_S = 10
+
+READ_EMAIL_FOLDER = "INBOX/AGENDO"
+READ_REQUEST_DETAILS = "Request details"
+READ_FIELDS = "Fields"
+READ_LAST = "Please go to the link below to view this request.  "
+
+READ_FIELDS_DICT = {'nombre': "A new request was submitted by ",
+                "id":"Request id ",
+                "documento": "Nit/CC ",
+                "responsable": "Person in charge ",
+                "direccion": "Address ",
+                "ciudad": "City ",
+                "telefono": "Telephone ",
+                "institucion": "Institution ",
+                "pago": "Paying method ",
+                "tipo": "Sample type ",
+                "proyecto": "Project name ",
+                "muestra": "Sample type ",
+                "codigo": "Project code ",
+		"externo": "External funds ",
+                }
+
+READ_NUMERIC_FIELDS = ["Request id", "Id", "Telephone"]
+READ_SEARCH_FOR = ['FROM "lists@cirklo.org" SUBJECT "[Agendo] New request (2-Quote request"']
+
+
 FROM = "cmicroscopia@uniandes.edu.co"
 PASSWORD = "fmPClsKmZcKpwppowqlhZQ=="
 '''

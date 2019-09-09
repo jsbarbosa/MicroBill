@@ -2,34 +2,23 @@
 import os
 import sys
 import traceback
-sys.path.append(os.path.dirname(sys.executable))
 
 import re
 import codecs
 import imaplib
 import pandas as pd
-from correo import *
 from time import sleep
 from io import StringIO
 from threading import Thread
 from datetime import datetime
-from html2text import html2text #  lxml
+from html2text import html2text  # lxml
 from email import message_from_bytes
 
-import constants
+from . import constants, objects, config, correo
+from .objects import Cotizacion, Usuario, Servicio, getNumeroCotizacion
 
-import objects
-from objects import Cotizacion, Usuario, Servicio, getNumeroCotizacion
-
-from config import READ_SERVER, READ_PORT, CORREOS_CONVENIOS, \
-                READ_EMAIL_FOLDER, \
-                READ_FIELDS_DICT, \
-                READ_SEARCH_FOR, \
-                READ_EVERY_S # READ_LAST, READ_REQUEST_DETAILS, READ_FIELDS_DICT
-
-from PyQt5.QtWidgets import QLabel, QWidget, QMainWindow, QHBoxLayout,\
-        QGroupBox, QFormLayout, QSystemTrayIcon, QApplication, QMenu, \
-        QStyleFactory, QMessageBox, QWidget, QPlainTextEdit, QTextEdit
+from PyQt5.QtWidgets import QMainWindow, QHBoxLayout, QSystemTrayIcon, QApplication, \
+                            QMenu, QStyleFactory, QWidget, QTextEdit
 
 from PyQt5.QtGui import QIcon
 from PyQt5.QtCore import QTimer, Qt, QCoreApplication
@@ -38,24 +27,38 @@ REDIRECT_STDOUT = True
 constants.DEBUG = True
 LECTOR_DE_CORREOS = None
 
-def imprimirExcepcion(e):
+
+def imprimirExcepcion(e: Exception):
+    """ Función que imprime una excepción
+
+    Parameters
+    ----------
+    e: Exception
+        excepción a imprimir
+    """
+
     if constants.DEBUG:
         traceback.print_exc()
 
+
 class LectorCorreos(object):
+    """ Clase para la lectura de correos. Contiene objetos del módulo imaplib """
+
     IMAP_EXCEPTIONS = (imaplib.IMAP4.error, imaplib.IMAP4.abort, imaplib.IMAP4.readonly)
+
     def __init__(self):
-        self.servidor = None #: atributo para objeto de la clase IMAP4_SSL
-        self.identificadores = [] #: atributo contenedor de los identificadores numericos de los correos
-        self.contenido_correos = [] #: atributo contenedor del contenido de los correos asociados al identificador en la misma posicion
+        self.servidor = None  #: atributo para objeto de la clase IMAP4_SSL
+        self.identificadores = []  #: atributo contenedor de los identificadores numericos de los correos
+        #: atributo contenedor del contenido de los correos asociados al identificador en la misma posicion
+        self.contenido_correos = []
         self.registrarse()
 
     def registrarse(self):
         while True:
             try:
-                self.servidor = imaplib.IMAP4_SSL(READ_SERVER, READ_PORT)
-                self.servidor.login(FROM, PASSWORD)
-                self.servidor.select(READ_EMAIL_FOLDER)
+                self.servidor = imaplib.IMAP4_SSL(config.READ_SERVER, config.READ_PORT)
+                self.servidor.login(config.FROM, config.PASSWORD)
+                self.servidor.select(config.READ_EMAIL_FOLDER)
                 break
             except self.IMAP_EXCEPTIONS as e:
                 imprimirExcepcion(e)
@@ -74,7 +77,7 @@ class LectorCorreos(object):
         correos = []
         for i in identificadores:
             typ, data = self.servidor.fetch(i, '(RFC822)')
-            self.marcarNoLeido(i) # fetch marca como leido
+            self.marcarNoLeido(i)  #: fetch marca como leido
             txt = message_from_bytes(data[0][1])
             msg = self.darBloqueTexto(txt)
             msg = self.decodificar(msg)
@@ -86,15 +89,15 @@ class LectorCorreos(object):
     def decodificar(self, texto):
         # decodificar acentos
         buscar = re.findall(r"=\S\S=\S\S", texto)
-        remplazos = [codecs.decode(patron.replace("=", ""), "hex").decode('utf-8')\
-                    for patron in buscar]
+        remplazos = [codecs.decode(patron.replace("=", ""), "hex").decode('utf-8')
+                     for patron in buscar]
         for (patron, cambio) in zip(buscar, remplazos):
             texto = texto.replace(patron, cambio)
 
         return texto.replace('=\r\n', '')
 
     def darIdentificadores(self):
-        for identificador in READ_SEARCH_FOR:
+        for identificador in config.READ_SEARCH_FOR:
             ans, ids = self.servidor.search(None, identificador, '(UNSEEN)')
             self.identificadores += ids[0].split()
         self.identificadores = list(set(self.identificadores))
@@ -115,22 +118,24 @@ class LectorCorreos(object):
         correos = self.darCorreos(identificadores)
         return identificadores, correos
 
+
 class CorreoAgendo(object):
     PATRON_CORREO = re.compile('\((.*?)\)')
     PATRON_OBSERVACIONES = re.compile('(?s)The following comment was left by the requesting user  \n  \n(.*?)-----------------------------')
-    REMPLAZOS_NORMALIZACION = ['*', "=\r\n", ":", "= "] #: caracteres innecesarios a remover en contenido_texto
+    REMPLAZOS_NORMALIZACION = ['*', "=\r\n", ":", "= "]  #: caracteres innecesarios a remover en contenido_texto
+
     def __init__(self, identificador, contenido):
         self.tabla = None
         self.identificador = identificador
         self.contenido_completo = contenido
         self.contenido_texto = self.normalizar(contenido)
-        for atributo in READ_FIELDS_DICT.keys():
+        for atributo in config.READ_FIELDS_DICT.keys():
             setattr(self, atributo, None)
             self.darAtributo(atributo)
 
         self.correo = re.findall(self.PATRON_CORREO, self.contenido_texto)[0]
         self.darAtributo('nombre')
-        self.nombre = self.nombre.replace(" (%s)"%self.correo, '')
+        self.nombre = self.nombre.replace(" (%s)" % self.correo, '')
         try:
             self.observaciones = re.findall(self.PATRON_OBSERVACIONES, self.contenido_texto)[0]
             self.observaciones = self.observaciones.rstrip('\\').rstrip(' ').rstrip('\n')
@@ -150,11 +155,11 @@ class CorreoAgendo(object):
             if atributo == "tabla":
                 return self.__darServicios__()
 
-            variable = getattr(self, atributo)
-            if variable != None:
+            variable = getattr(self, atributo, None)
+            if variable is not None:
                 return variable
 
-            buscar = READ_FIELDS_DICT[atributo]
+            buscar = config.READ_FIELDS_DICT[atributo]
             p_inicial = self.contenido_texto.find(buscar)
             p_final = self.contenido_texto[p_inicial:].find('\n')
             if (p_inicial >= 0) | (p_final >= 0):
@@ -176,16 +181,18 @@ class CorreoAgendo(object):
 
     def __repr__(self):
         txt = ['Correo: %s (%d)'%(self.correo, int(self.identificador))]
-        for atributo in READ_FIELDS_DICT.keys():
+        for atributo in config.READ_FIELDS_DICT.keys():
             txt += ['\t%s: %s'%(atributo, str(getattr(self, atributo)))]
         txt = '\n'.join(txt)
         return txt
 
+
 def crearUsuario(correo_agendo):
     dict = correo_agendo.darDiccionario()
     remitente = correo_agendo.darAtributo('correo')
-    dict['interno'] = obtenerTipoUsuario(remitente)
+    dict['interno'] = objects.obtenerTipoUsuario(remitente)
     return Usuario(**dict)
+
 
 def crearServicios(tabla_agendo, interno):
     campos = tabla_agendo[['Subclass', 'Item', 'Units']]
@@ -206,6 +213,7 @@ def crearServicios(tabla_agendo, interno):
             servicios[equipo].append(servicio)
     return servicios
 
+
 def solicitudMicrobill(correo_agendo):
     global LECTOR_DE_CORREOS
     usuario = crearUsuario(correo_agendo)
@@ -225,19 +233,20 @@ def solicitudMicrobill(correo_agendo):
 
     return cotizaciones, numeros
 
+
 def enviarCorreos(lector_correos, correo_agendo, cotizaciones, numeros):
     pago = correo_agendo.darAtributo('pago')
     identificador = correo_agendo.darAtributo('identificador')
-    correo = correo_agendo.darAtributo('correo')
+    dir_correo = correo_agendo.darAtributo('correo')
     try:
         for cotizacion in cotizaciones:
-            cotizacion.save(to_cotizacion = False)
+            cotizacion.save(to_cotizacion=False)
         if pago == "Transferencia interna":
-            sendCotizacionTransferencia(correo, numeros)
+            correo.sendCotizacionTransferencia(dir_correo, numeros)
         elif pago == "Factura":
-            sendCotizacionFactura(correo, numeros)
+            correo.sendCotizacionFactura(dir_correo, numeros)
         elif pago == "Recibo":
-            sendCotizacionRecibo(correo, numeros)
+            correo.sendCotizacionRecibo(dir_correo, numeros)
 
         for cotizacion in cotizaciones:
             cotizacion.save(to_pdf = False)
@@ -246,6 +255,7 @@ def enviarCorreos(lector_correos, correo_agendo, cotizaciones, numeros):
     except Exception as e:
         imprimirExcepcion(e)
         return []
+
 
 class MainWindow(QMainWindow):
     def __init__(self):
@@ -297,6 +307,7 @@ class MainWindow(QMainWindow):
         event.ignore()
         self.hide()
 
+
 class SystemTrayIcon(QSystemTrayIcon):
     def __init__(self, icon, parent = None):
         QSystemTrayIcon.__init__(self, icon, parent)
@@ -321,6 +332,7 @@ class SystemTrayIcon(QSystemTrayIcon):
 
     def openMain(self):
         self.main_window.show()
+
 
 def runDaemon():
     lector = None
@@ -352,10 +364,11 @@ def runDaemon():
             except Exception as e:
                 imprimirExcepcion(e)
         i += 1
-        sleep(READ_EVERY_S / 10)
+        sleep(config.READ_EVERY_S / 10)
 
-if __name__ == '__main__':
-    thread = Thread(target = runDaemon)
+
+def run():
+    thread = Thread(target=runDaemon)
     if REDIRECT_STDOUT:
         thread.setDaemon(True)
     thread.start()
@@ -365,7 +378,7 @@ if __name__ == '__main__':
         sys.stderr = sys.stdout
 
         app = QApplication(sys.argv)
-        QApplication.setStyle(QStyleFactory.create('Fusion')) # <- Choose the style
+        QApplication.setStyle(QStyleFactory.create('Fusion'))  # <- Choose the style
 
         icon = QIcon('icon.ico')
         app.setWindowIcon(icon)
@@ -377,3 +390,7 @@ if __name__ == '__main__':
         trayIcon.show()
 
         app.exec_()
+
+
+if __name__ == '__main__':
+    run()
