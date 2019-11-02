@@ -50,7 +50,7 @@
 <h1>PandasModel<a class="headerlink" href="#pandasmodel" title="Enlazar permanentemente con este título">¶</a></h1>
 <dl class="class">
 <dt id="microbill.windows.PandasModel">
-<em class="property">class </em><code class="sig-prename descclassname">microbill.windows.</code><code class="sig-name descname">PandasModel</code><span class="sig-paren">(</span><em class="sig-param">data: pandas.core.frame.DataFrame</em>, <em class="sig-param">parent=None</em>, <em class="sig-param">checkbox: bool = True</em><span class="sig-paren">)</span><a class="headerlink" href="#microbill.windows.PandasModel" title="Enlazar permanentemente con esta definición">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">microbill.windows.</code><code class="sig-name descname">PandasModel</code><span class="sig-paren">(</span><em class="sig-param">data: pandas.core.frame.DataFrame</em>, <em class="sig-param">parent=None</em>, <em class="sig-param">checkbox: bool = False</em><span class="sig-paren">)</span><a class="headerlink" href="#microbill.windows.PandasModel" title="Enlazar permanentemente con esta definición">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyQt5.QtCore.QAbstractTableModel</span></code></p>
 <p>Clase que representa un Pandas DataFrame como un QAbstractTableModel</p>
 <p class="rubric">Methods Summary</p>
@@ -60,11 +60,11 @@
 <col style="width: 90%" />
 </colgroup>
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="#microbill.windows.PandasModel.columnCount" title="microbill.windows.PandasModel.columnCount"><code class="xref py py-obj docutils literal notranslate"><span class="pre">columnCount</span></code></a>(self)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#microbill.windows.PandasModel.columnCount" title="microbill.windows.PandasModel.columnCount"><code class="xref py py-obj docutils literal notranslate"><span class="pre">columnCount</span></code></a>(self, \*args)</p></td>
 <td><p>Método que retorna el número de columnas del dataframe</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#microbill.windows.PandasModel.data" title="microbill.windows.PandasModel.data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">data</span></code></a>()</p></td>
-<td><p></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#microbill.windows.PandasModel.data" title="microbill.windows.PandasModel.data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">data</span></code></a>(self, index, role)</p></td>
+<td><p>Método encargado de asignar al modelo, según el índice que entra por parámetro, el valor y el rol del elemento dado por el índice</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#microbill.windows.PandasModel.flags" title="microbill.windows.PandasModel.flags"><code class="xref py py-obj docutils literal notranslate"><span class="pre">flags</span></code></a>(self, index)</p></td>
 <td><p>Método que renorna las opciones asociadas al índice que entra por parámetro</p></td>
@@ -72,13 +72,10 @@
 <tr class="row-even"><td><p><a class="reference internal" href="#microbill.windows.PandasModel.headerData" title="microbill.windows.PandasModel.headerData"><code class="xref py py-obj docutils literal notranslate"><span class="pre">headerData</span></code></a>(self, col, orientation, role)</p></td>
 <td><p>Método que determinar el comportamiento de QVariant dependiendo del role y la orientación que entran por parámetro</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#microbill.windows.PandasModel.rowCount" title="microbill.windows.PandasModel.rowCount"><code class="xref py py-obj docutils literal notranslate"><span class="pre">rowCount</span></code></a>(self)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#microbill.windows.PandasModel.rowCount" title="microbill.windows.PandasModel.rowCount"><code class="xref py py-obj docutils literal notranslate"><span class="pre">rowCount</span></code></a>(self, \*args)</p></td>
 <td><p>Método que retorna el número de filas del dataframe</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#microbill.windows.PandasModel.setData" title="microbill.windows.PandasModel.setData"><code class="xref py py-obj docutils literal notranslate"><span class="pre">setData</span></code></a>(self, index, value, role)</p></td>
-<td><p>Método encargado de asignar al modelo, según el índice que entra por parámetro, el valor y el rol del elemento dado por el índice</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#microbill.windows.PandasModel.whereIsChecked" title="microbill.windows.PandasModel.whereIsChecked"><code class="xref py py-obj docutils literal notranslate"><span class="pre">whereIsChecked</span></code></a>(self)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#microbill.windows.PandasModel.whereIsChecked" title="microbill.windows.PandasModel.whereIsChecked"><code class="xref py py-obj docutils literal notranslate"><span class="pre">whereIsChecked</span></code></a>(self)</p></td>
 <td><p>Método que retorna True en las filas que se encuentran chequeadas y False en las demás</p></td>
 </tr>
 </tbody>
@@ -86,7 +83,7 @@
 <p class="rubric">Methods Documentation</p>
 <dl class="method">
 <dt id="microbill.windows.PandasModel.columnCount">
-<code class="sig-name descname">columnCount</code><span class="sig-paren">(</span><em class="sig-param">self</em><span class="sig-paren">)</span> &#x2192; int<a class="headerlink" href="#microbill.windows.PandasModel.columnCount" title="Enlazar permanentemente con esta definición">¶</a></dt>
+<code class="sig-name descname">columnCount</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">*args</em><span class="sig-paren">)</span> &#x2192; int<a class="headerlink" href="#microbill.windows.PandasModel.columnCount" title="Enlazar permanentemente con esta definición">¶</a></dt>
 <dd><p>Método que retorna el número de columnas del dataframe</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
@@ -99,8 +96,24 @@
 
 <dl class="method">
 <dt id="microbill.windows.PandasModel.data">
-<code class="sig-name descname">data</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#microbill.windows.PandasModel.data" title="Enlazar permanentemente con esta definición">¶</a></dt>
-<dd></dd></dl>
+<code class="sig-name descname">data</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">index</em>, <em class="sig-param">role</em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#microbill.windows.PandasModel.data" title="Enlazar permanentemente con esta definición">¶</a></dt>
+<dd><p>Método encargado de asignar al modelo, según el índice que entra por parámetro, el valor y el rol del
+elemento dado por el índice</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>index</strong></dt><dd></dd>
+<dt><strong>value</strong></dt><dd></dd>
+<dt><strong>role</strong></dt><dd></dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt>bool: True en el caso que el índice sea valido, False de lo contrario</dt><dd></dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="method">
 <dt id="microbill.windows.PandasModel.flags">
@@ -138,33 +151,12 @@ por parámetro</p>
 
 <dl class="method">
 <dt id="microbill.windows.PandasModel.rowCount">
-<code class="sig-name descname">rowCount</code><span class="sig-paren">(</span><em class="sig-param">self</em><span class="sig-paren">)</span> &#x2192; int<a class="headerlink" href="#microbill.windows.PandasModel.rowCount" title="Enlazar permanentemente con esta definición">¶</a></dt>
+<code class="sig-name descname">rowCount</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">*args</em><span class="sig-paren">)</span> &#x2192; int<a class="headerlink" href="#microbill.windows.PandasModel.rowCount" title="Enlazar permanentemente con esta definición">¶</a></dt>
 <dd><p>Método que retorna el número de filas del dataframe</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
 <dd class="field-odd"><dl class="simple">
 <dt>int: número de filas del dataframe</dt><dd></dd>
-</dl>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="method">
-<dt id="microbill.windows.PandasModel.setData">
-<code class="sig-name descname">setData</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">index</em>, <em class="sig-param">value</em>, <em class="sig-param">role</em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#microbill.windows.PandasModel.setData" title="Enlazar permanentemente con esta definición">¶</a></dt>
-<dd><p>Método encargado de asignar al modelo, según el índice que entra por parámetro, el valor y el rol del
-elemento dado por el índice</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><dl class="simple">
-<dt><strong>index</strong></dt><dd></dd>
-<dt><strong>value</strong></dt><dd></dd>
-<dt><strong>role</strong></dt><dd></dd>
-</dl>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><dl class="simple">
-<dt>bool: True en el caso que el índice sea valido, False de lo contrario</dt><dd></dd>
 </dl>
 </dd>
 </dl>
