@@ -1528,30 +1528,31 @@ class DescontarWindow(SubWindow):
 
             i = -1
             for (i, servicio) in enumerate(self.cotizacion.getServicios()):
-                self.otros_widget.setEnabled(True)
-                fmt = "%s"
-                if servicio.isAgregado():
-                    fmt = "<font color='red'>%s</font>"
+                if servicio.getValorUnitario() != 0:
+                    self.otros_widget.setEnabled(True)
+                    fmt = "%s"
+                    if servicio.isAgregado():
+                        fmt = "<font color='red'>%s</font>"
 
-                cod = QtWidgets.QLabel(fmt % servicio.getCodigo())
-                dec = QtWidgets.QLabel(fmt % servicio.getDescripcion())
-                paid = servicio.getCantidad()
-                rest = servicio.getRestantes()
-                used = paid - rest
-                spin = QtWidgets.QDoubleSpinBox()
-                total = QtWidgets.QLabel(fmt % ("%.1f/%.1f" % (used, paid)))
-                spin.setMinimum(0)
-                spin.setDecimals(1)
-                spin.setMaximum(rest)
-                spin.setSingleStep(0.1)
-                self.item_layout.addWidget(cod, i + 1, 0)
-                self.item_layout.addWidget(dec, i + 1, 1)
-                self.item_layout.addWidget(spin, i + 1, 2)
-                self.item_layout.addWidget(total, i + 1, 3)
-                self.floats_labels.append(cod)
-                self.floats_labels.append(dec)
-                self.floats_spins.append(spin)
-                self.floats_labels.append(total)
+                    cod = QtWidgets.QLabel(fmt % servicio.getCodigo())
+                    dec = QtWidgets.QLabel(fmt % servicio.getDescripcion())
+                    paid = servicio.getCantidad()
+                    rest = servicio.getRestantes()
+                    used = paid - rest
+                    spin = QtWidgets.QDoubleSpinBox()
+                    total = QtWidgets.QLabel(fmt % ("%.1f/%.1f" % (used, paid)))
+                    spin.setMinimum(0)
+                    spin.setDecimals(1)
+                    spin.setMaximum(rest)
+                    spin.setSingleStep(0.1)
+                    self.item_layout.addWidget(cod, i + 1, 0)
+                    self.item_layout.addWidget(dec, i + 1, 1)
+                    self.item_layout.addWidget(spin, i + 1, 2)
+                    self.item_layout.addWidget(total, i + 1, 3)
+                    self.floats_labels.append(cod)
+                    self.floats_labels.append(dec)
+                    self.floats_spins.append(spin)
+                    self.floats_labels.append(total)
 
             if i >= 0:
                 dinero = "{:,}".format(self.cotizacion.getDineroUsado())

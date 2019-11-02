@@ -1633,8 +1633,8 @@ class Servicio(object):
             descuento: el descuento asociado al servicio, la razón del descuento y el valor total del descuento
         """
         if self.getValorUnitario() == 0:
-            completo = ["", self.getDescripcion(), "", ""]
-            return completo, 5 * [""]
+            completo = ["", "%s" % self.getDescripcion(), "", ""]
+            return completo, #5 * [""]
         else:
             completo = [self.getCodigo(), self.getDescripcion(), "%.1f" % self.getCantidad(),
                         "{:,}".format(self.getValorUnitario()), "{:,}".format(self.getValorTotal())]
@@ -1665,8 +1665,11 @@ class Servicio(object):
             fecha = fechas[i]
             usados = self.usos[fecha]
             restantes = cantidad - usados
-            table[i] = [fecha, self.getCodigo(), self.getDescripcion(),
-                        "%.1f" % self.getCantidad(), "%.1f" % usados, "%.1f" % restantes]
+            if self.getValorUnitario() == 0:
+                table[i] = ["", "",  "%s" % self.getDescripcion(), "", "", ""]
+            else:
+                table[i] = [fecha, self.getCodigo(), self.getDescripcion(),
+                            "%.1f" % self.getCantidad(), "%.1f" % usados, "%.1f" % restantes]
             cantidad = restantes
         return table
 
@@ -1678,5 +1681,7 @@ class Servicio(object):
         list:
             descripción del servicio, cantidad, número de usos restantes, y su equivalente en dinero usado
         """
+        if self.getValorUnitario() == 0:
+            return [self.getDescripcion(), "", "", ""]
         return [self.getDescripcion(), "%.1f" % self.getCantidad(),
                 "%.1f" % self.getRestantes(), "{:,}".format(self.getDineroUsado())]

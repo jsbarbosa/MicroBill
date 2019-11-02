@@ -256,6 +256,17 @@ class PDFCotizacion(PDFBase):
         subtotal = self.cotizacion.getSubtotal()
         descuentos = -self.cotizacion.getDescuentos()
         total = self.cotizacion.getTotal()
+
+        table_style = []
+        for i, row in enumerate(table):
+            if row[-1] == '':
+                i += 1
+                ts = [('FONTNAME', (0, i), (-1, i), 'Courier-Bold'),
+                      ('BOX', (0, i), (-1, i), 0.15, colors.black),
+                      ('ALIGN', (0, i), (-1, i), "CENTER"),
+                      ('BACKGROUND', (0, i), (-1, i), colors.Color(233, 233, 233))]
+                table_style += ts
+
         table.insert(0, ["COD", "SERVICIO", "CANTIDAD", "PRECIO UNIDAD", "PRECIO TOTAL"])
 
         if self.cotizacion.getInterno() == "Industria":
@@ -271,15 +282,17 @@ class PDFCotizacion(PDFBase):
 
         t = Table(table, [40, 260, 70, 90, 90], 15, hAlign='CENTER')
 
-        t.setStyle(TableStyle([('BOX', (0, 0), (-1, -1), 0.25, colors.black),
-                               ('ALIGN', (0, 0), (-1, 0), "CENTER"),
-                               ('BACKGROUND', (0, 0), (-1, 0), colors.lightgrey),
-                               ('ALIGN', (-3, 0), (-1, -1), "RIGHT"),
-                               ('SPAN', (0, -1), (-3, -1)),
-                               ('BOX', (-2, o_row), (-1, -1), 0.5, colors.black),
-                               ('BOX', (-2, -1), (-1, -1), 0.5, colors.red),
-                               ('BACKGROUND', (-2, o_row), (-2, -1), colors.lightgrey),
-                               ]))
+        table_style += [('BOX', (0, 0), (-1, -1), 0.25, colors.black),
+                       ('ALIGN', (0, 0), (-1, 0), "CENTER"),
+                       ('BACKGROUND', (0, 0), (-1, 0), colors.lightgrey),
+                       ('ALIGN', (-3, 0), (-1, -1), "RIGHT"),
+                       ('SPAN', (0, -1), (-3, -1)),
+                       ('BOX', (-2, o_row), (-1, -1), 0.5, colors.black),
+                       ('BOX', (-2, -1), (-1, -1), 0.5, colors.red),
+                       ('BACKGROUND', (-2, o_row), (-2, -1), colors.lightgrey),
+                       ]
+
+        t.setStyle(TableStyle(table_style))
         self.story.append(t)
         self.story.append(Spacer(1, 24))
 
@@ -384,9 +397,8 @@ class PDFReporte(PDFBase):
         """ Método que genera el encabezado del PDF, incluye el LOGO_PATH, el CODIGO_PEP, el número de la cotización,
         y la fecha de validez de la misma
         """
-
-        height = 1.5
-        logo = Image("logo.png", height * 5.72 * cm, height * cm, hAlign="CENTER")
+        logo = Image(os.path.join(BASE_DIR, config.LOGO_PATH), config.ANCHO_LOGO * cm,
+                     config.ALTO_LOGO * cm, hAlign="CENTER")
 
         self.story.append(logo)
         self.story.append(FrameBreak())
