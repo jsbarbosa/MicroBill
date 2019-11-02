@@ -1125,7 +1125,7 @@ class CotizacionWindow(SubWindow):
             self.errorWindow(e)
         except ModuleNotFoundError as e:
             if constants.DEBUG:
-                print(e)
+                print("ModuleNotFoundError: ", e)
 
     def addServicio(self, servicio: objects.Servicio):
         """ Método que agrega al atributo cotizacion el servicio que entra por parámetro
@@ -1655,7 +1655,8 @@ class DescontarWindow(SubWindow):
 @export
 class PandasModel(QtCore.QAbstractTableModel):
     """ Clase que representa un Pandas DataFrame como un QAbstractTableModel """
-    def __init__(self, data: pd.DataFrame, parent=None, checkbox: bool = True):
+    def __init__(self, data: pd.DataFrame, parent=None, checkbox: bool = False):
+        #: TODO checkbox compatibility
         QtCore.QAbstractTableModel.__init__(self, parent)
         self.dataframe = data
         self._data = data.values
@@ -1678,7 +1679,7 @@ class PandasModel(QtCore.QAbstractTableModel):
         else:
             self.headerdata = list(data.keys())
 
-    def rowCount(self) -> int:
+    def rowCount(self, *args) -> int:
         """ Método que retorna el número de filas del dataframe
 
         Returns
@@ -1688,7 +1689,7 @@ class PandasModel(QtCore.QAbstractTableModel):
 
         return self._data.shape[0]
 
-    def columnCount(self) -> int:
+    def columnCount(self, *args) -> int:
         """ Método que retorna el número de columnas del dataframe
 
         Returns
@@ -1712,8 +1713,8 @@ class PandasModel(QtCore.QAbstractTableModel):
 
         if not index.isValid():
             return None
-        if index.column() == 0 and self.checkbox:
-            return QtCore.Qt.ItemIsEnabled | QtCore.Qt.ItemIsSelectable | QtCore.Qt.ItemIsUserCheckable
+        # if index.column() == 0 and self.checkbox:
+        #     return QtCore.Qt.ItemIsEnabled | QtCore.Qt.ItemIsSelectable | QtCore.Qt.ItemIsUserCheckable
         else:
             return QtCore.Qt.ItemIsEnabled | QtCore.Qt.ItemIsSelectable
 
@@ -1733,7 +1734,7 @@ class PandasModel(QtCore.QAbstractTableModel):
 
         return QtCore.QVariant()
 
-    def setData(self, index, value, role) -> bool:
+    def data(self, index, role) -> bool:
         """ Método encargado de asignar al modelo, según el índice que entra por parámetro, el valor y el rol del
         elemento dado por el índice
 
@@ -1747,17 +1748,44 @@ class PandasModel(QtCore.QAbstractTableModel):
         -------
         bool: True en el caso que el índice sea valido, False de lo contrario
         """
-
         if not index.isValid():
-            return False
-        if role == QtCore.Qt.CheckStateRole and index.column() == 0:
-            if value == QtCore.Qt.Checked:
-                self._data[index.row(), index.column()].setChecked(True)
-            else:
-                self._data[index.row(), index.column()].setChecked(False)
+            return None
+        if index.column() == 0 and self.checkbox:
+            value = self._data[index.row(), index.column()].text()
+        else:
+            value = self._data[index.row(), index.column()]
+        if role == QtCore.Qt.EditRole:
+            return value
+        elif role == QtCore.Qt.DisplayRole:
+            return value
+        # elif role == QtCore.Qt.CheckStateRole:
+        #     ans = None
+        #     if index.column() == 0 and self.checkbox:
+        #         if self._data[index.row(), index.column()].isChecked():
+        #             ans = QtCore.Qt.Checked
+        #         else:
+        #             ans = QtCore.Qt.Unchecked
+        #     return ans
 
-        self.dataChanged.emit(index, index)
-        return True
+        # if not index.isValid():
+        #     return False
+        # if index.column() == 0 and self.checkbox:
+        #     value = self._data[index.row(), index.column()].text()
+        # else:
+        #     value = self._data[index.row(), index.column()]
+        # if role == QtCore.Qt.CheckStateRole and index.column() == 0:
+        #     if value == QtCore.Qt.Checked:
+        #         if self._data[index.row(), index.column()].isChecked():
+        #             return QtCore.Qt.Checked
+        #         else:
+        #             return QtCore.Qt.Unchecked
+            #
+            #     self._data[index.row(), index.column()].setChecked(True)
+            # else:
+            #     self._data[index.row(), index.column()].setChecked(False)
+
+        #
+        # return True
 
     def whereIsChecked(self):
         """ Método que retorna True en las filas que se encuentran chequeadas y False en las demás
@@ -1802,12 +1830,12 @@ class BuscarWindow(SubWindow):
         layout.addWidget(self.form1)
         layout.addWidget(self.form2)
 
-        self.equipo_widget = AutoLineEdit('Equipo', self, False)
-        self.nombre_widget = AutoLineEdit('Nombre', self, False)
-        self.institucion_widget = AutoLineEdit("Institución", self, False)
-        self.correo_widget = AutoLineEdit("Correo", self, False)
-        self.responsable_widget = AutoLineEdit("Responsable", self, False)
-        self.cotizacion_widget = AutoLineEdit('Cotización', self, False)
+        self.equipo_widget = AutoLineEdit('Equipo', self)
+        self.nombre_widget = AutoLineEdit('Nombre', self)
+        self.institucion_widget = AutoLineEdit("Institución", self)
+        self.correo_widget = AutoLineEdit("Correo", self)
+        self.responsable_widget = AutoLineEdit("Responsable", self)
+        self.cotizacion_widget = AutoLineEdit('Cotización', self)
 
         self.form1_layout.addRow(QtWidgets.QLabel('Equipo'), self.equipo_widget)
         self.form1_layout.addRow(QtWidgets.QLabel('Nombre'), self.nombre_widget)
@@ -2289,7 +2317,7 @@ class MainWindow(QtWidgets.QMainWindow):
             os.startfile(path)
         except FileNotFoundError as e:
             if constants.DEBUG:
-                print(e)
+                print("FileNotFoundError: ", e)
 
     def registrosHandler(self):
         """ Método que abre el directorio de registros """
@@ -2300,7 +2328,7 @@ class MainWindow(QtWidgets.QMainWindow):
             os.startfile(path)
         except FileNotFoundError as e:
             if constants.DEBUG:
-                print(e)
+                print("FileNotFoundError: ", e)
 
     def gestorHandler(self):
         """ Método que muestra la ventana de envío a gestor """
@@ -2565,6 +2593,7 @@ class PropiedadesWindow(SubWindow):
                'admins',
                'splash_logo_path',
                'centro',
+               'prefijo',
                'saludo',
                'subject_cotizaciones', 'mensaje_recibo', 'mensaje_transferencia', 'mensaje_factura',
                'subject_solicitud', 'mensaje_solicitud',
@@ -2579,6 +2608,7 @@ class PropiedadesWindow(SubWindow):
                  'ADMINS',
                  'SPLASH_LOGO_PATH',
                  'CENTRO',
+                 'PREFIJO',
                  'SALUDO',
                  'COTIZACION_SUBJECT_RECIBO', 'COTIZACION_MENSAJE_RECIBO', 'COTIZACION_MENSAJE_TRANSFERENCIA', 'COTIZACION_MENSAJE_FACTURA',
                  'REQUEST_SUBJECT', 'REQUEST_MENSAJE',
@@ -2695,8 +2725,10 @@ class PropiedadesWindow(SubWindow):
         self.admins_widget = QtWidgets.QTextEdit()
         self.splash_logo_path_widget = QtWidgets.QLineEdit()
         self.centro_widget = QtWidgets.QLineEdit()
+        self.prefijo_widget = QtWidgets.QLineEdit()
 
         self.varios_layout.addRow(QLabel("Nombre del centro:"), self.centro_widget)
+        self.varios_layout.addRow(QLabel("Prefijo cotización:"), self.prefijo_widget)
         self.varios_layout.addRow(QLabel("Administradores:"), self.admins_widget)
         self.varios_layout.addRow(QLabel("Nombre logo inicial:"), self.splash_logo_path_widget)
 

@@ -12,7 +12,7 @@ for folder in FOLDERS:
     to_ = os.path.join(TO_PATH, folder)
 
     try: copytree(from_, to_)
-    except PermissionError as e: print(e)
+    except PermissionError as e: print('PermissionError: ', e)
 
     print("%s has been copied: %s" % (from_, to_))
 
@@ -22,6 +22,6 @@ for file in FILES:
     to_ = os.path.join(TO_PATH, file)
 
     try: copy(from_, TO_PATH)
-    except PermissionError as e: print(e)
+    except PermissionError as e: print('PermissionError: ', e)
 
     print("%s has been copied: %s" % (from_, to_))

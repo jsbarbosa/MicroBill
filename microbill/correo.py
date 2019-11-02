@@ -113,7 +113,7 @@ def sendEmail(to: str, subject: str, text: str, attachments: Iterable = []):
             CORREO.sendmail(config.FROM, to, msg.as_string())
             break
         except Exception as e:
-            print(e)
+            print("email error:", e)
             if i == 4:
                 raise(Exception("Could not send email."))
 

@@ -1,14 +1,14 @@
 import os
 import pandas as pd
 
-DEBUG: bool = False
+DEBUG: bool = True
 
 __all__ = ['OLD_DIR', 'PDF_DIR', 'REGISTERS_DIR', 'CLIENTES_FILE', 'REGISTRO_FILE', 'PRECIOS_FILE',
            'BASE_DIR', 'EQUIPOS_KEYS', 'REGISTRO_KEYS', 'CLIENTES_KEYS', 'DOCUMENTOS_FINALES', 'EQUIPOS',
            'PRICES_DIVISION', 'REPORTE_INTERNO', 'DEFAULT_CONFIG']
 
-OLD_DIR: str = "Old" #: carpeta donde se guardan las cotizaciones realizadas
-PDF_DIR: str = "PDF" #: carpeta donde se guardan los PDFs asociados a cotizaciones realizadas
+OLD_DIR: str = "Old"  #: carpeta donde se guardan las cotizaciones realizadas
+PDF_DIR: str = "PDF"  #: carpeta donde se guardan los PDFs asociados a cotizaciones realizadas
 
 #: carpeta donde se encuentran los archivos de registro de Microbill (Excel de los que se alimenta)
 REGISTERS_DIR: str = "Registers"
@@ -55,7 +55,7 @@ EQUIPOS: list = list(df.keys()) #: almacena el nombre de las hojas del archivo d
 
 for item in EQUIPOS:
     data = df[item].astype(str)
-    exec("%s = data"%item)
+    exec("%s = data" % item)
 
 INDEPENDIENTES_DF = pd.read_excel(INDEPENDIENTES_FILE)
 
@@ -89,6 +89,7 @@ TERMINOS_Y_CONDICIONES = ["Para usuarios internos favor realizar el traslado al 
 
 CONFIDENCIALIDAD = "El contratista se obliga a respetar el carácter confidencial de este documento y de la información, condiciones y documentos relacionados con el mismo, de conformidad con las normas constitucionales y legales aplicables. En consecuencia, el contratista se compromete a no publicar, difundir, comentar o analizar frente a terceros, copiar, reproducir o hacer uso diferente al acordado, de la información que el Centro de Microscopía le entregue en este documento, ya sea de forma impresa, electrónica, verbal o de cualquier otra manera, o de aquella que el contratista llegue a conocer, teniendo en cuenta que dicha información tiene como finalidad exclusiva, permitir y facilitar la debida prestación de los servicios solicitados."
 CENTRO = "Centro de Microscopía"
+PREFIJO = "U"
 
 DEPENDENCIAS = [CENTRO.upper(),
         "VICERRECTORÍA DE INVESTIGACIONES",

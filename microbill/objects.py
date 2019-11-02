@@ -7,7 +7,7 @@ import pandas as pd
 from copy import copy
 from datetime import datetime
 
-from . import constants
+from . import constants, config
 from .utils import export
 from .exceptions import *
 from .pdflib import PDFCotizacion, PDFReporte
@@ -87,7 +87,7 @@ def getNumeroCotizacion(equipo: str) -> str:
     else:
         val = "%04d" % (int(val) + 1)
 
-    cod = "%s-%s" % (cod, val)
+    cod = "%s%s-%s" % (config.PREFIJO, cod, val)
     return cod
 
 
@@ -1632,18 +1632,21 @@ class Servicio(object):
             total
             descuento: el descuento asociado al servicio, la razón del descuento y el valor total del descuento
         """
-
-        completo = [self.getCodigo(), self.getDescripcion(), "%.1f" % self.getCantidad(),
-                    "{:,}".format(self.getValorUnitario()), "{:,}".format(self.getValorTotal())]
-
-        if (self.interno != "Industria") and (self.descuento_text == ""):
-            descuento = ["", "Descuento por %s" % self.interno, "", "", "{:,}".format(-self.getDescuentoTotal())]
-            return completo, descuento
-        elif self.interno != "Industria":
-            descuento = ["", "Descuento por %s" % self.descuento_text, "", "", "{:,}".format(-self.getDescuentoTotal())]
-            return completo, descuento
+        if self.getValorUnitario() == 0:
+            completo = ["", self.getDescripcion(), "", ""]
+            return completo, 5 * [""]
         else:
-            return completo,
+            completo = [self.getCodigo(), self.getDescripcion(), "%.1f" % self.getCantidad(),
+                        "{:,}".format(self.getValorUnitario()), "{:,}".format(self.getValorTotal())]
+
+            if (self.interno != "Industria") and (self.descuento_text == ""):
+                descuento = ["", "Descuento por %s" % self.interno, "", "", "{:,}".format(-self.getDescuentoTotal())]
+                return completo, descuento
+            elif self.interno != "Industria":
+                descuento = ["", "Descuento por %s" % self.descuento_text, "", "", "{:,}".format(-self.getDescuentoTotal())]
+                return completo, descuento
+            else:
+                return completo,
 
     def makeReporteTable(self) -> list:
         """ Método que genera la tabla que es usada por PDFReporte con la información de usos del servicio

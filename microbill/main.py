@@ -15,7 +15,7 @@ def threadedCorreo():
             sleep(10 * 60)
         except Exception as e:
             sleep(1 * 60)
-            print(e)
+            print("error correo: ", e)
 
 
 @export
@@ -84,7 +84,7 @@ def run() -> int:
     except Exception as e:
         msg = QtWidgets.QMessageBox()
         msg.setIcon(QtWidgets.QMessageBox.Warning)
-        msg.setText("Error de configuración inicial:\n%s"%str(e))
+        msg.setText("Error de configuración inicial:\n%s" % str(e))
         msg.setWindowTitle("Error")
         msg.setStandardButtons(QtWidgets.QMessageBox.Ok)
         msg.exec_()
