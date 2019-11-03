@@ -1317,6 +1317,16 @@ class Servicio(object):
 
         return self.usos
 
+    def getIsSubtitle(self) -> bool:
+        """ Método que responde si es el servicio corresponde con un subtitulo. Los subtitulos empiezan con el prefijo t
+
+        Returns
+        -------
+        bool: Si el servicio es un subtitulo True. False de lo contrario
+        """
+
+        return self.codigo[0] == 't'
+
     def getValorUnitario(self) -> int:
         """ Método que retorna el valor unitario del servicio
 
@@ -1632,9 +1642,9 @@ class Servicio(object):
             total
             descuento: el descuento asociado al servicio, la razón del descuento y el valor total del descuento
         """
-        if self.getValorUnitario() == 0:
+        if self.getIsSubtitle():
             completo = ["", "%s" % self.getDescripcion(), "", ""]
-            return completo, #5 * [""]
+            return completo,
         else:
             completo = [self.getCodigo(), self.getDescripcion(), "%.1f" % self.getCantidad(),
                         "{:,}".format(self.getValorUnitario()), "{:,}".format(self.getValorTotal())]
@@ -1665,7 +1675,7 @@ class Servicio(object):
             fecha = fechas[i]
             usados = self.usos[fecha]
             restantes = cantidad - usados
-            if self.getValorUnitario() == 0:
+            if self.getIsSubtitle():
                 table[i] = ["", "",  "%s" % self.getDescripcion(), "", "", ""]
             else:
                 table[i] = [fecha, self.getCodigo(), self.getDescripcion(),
@@ -1681,7 +1691,7 @@ class Servicio(object):
         list:
             descripción del servicio, cantidad, número de usos restantes, y su equivalente en dinero usado
         """
-        if self.getValorUnitario() == 0:
+        if self.getIsSubtitle():
             return [self.getDescripcion(), "", "", ""]
         return [self.getDescripcion(), "%.1f" % self.getCantidad(),
                 "%.1f" % self.getRestantes(), "{:,}".format(self.getDineroUsado())]

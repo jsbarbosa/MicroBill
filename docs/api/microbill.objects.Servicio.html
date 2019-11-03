@@ -92,70 +92,73 @@ posteriormente</p>
 <tr class="row-even"><td><p><a class="reference internal" href="#microbill.objects.Servicio.getInterno" title="microbill.objects.Servicio.getInterno"><code class="xref py py-obj docutils literal notranslate"><span class="pre">getInterno</span></code></a>(self)</p></td>
 <td><p>Método que retorna la categoria del cliente y del servicio (Interno, Industria, etc)</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#microbill.objects.Servicio.getRestantes" title="microbill.objects.Servicio.getRestantes"><code class="xref py py-obj docutils literal notranslate"><span class="pre">getRestantes</span></code></a>(self)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#microbill.objects.Servicio.getIsSubtitle" title="microbill.objects.Servicio.getIsSubtitle"><code class="xref py py-obj docutils literal notranslate"><span class="pre">getIsSubtitle</span></code></a>(self)</p></td>
+<td><p>Método que responde si es el servicio corresponde con un subtitulo.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#microbill.objects.Servicio.getRestantes" title="microbill.objects.Servicio.getRestantes"><code class="xref py py-obj docutils literal notranslate"><span class="pre">getRestantes</span></code></a>(self)</p></td>
 <td><p>Método que retorna el número de usos restantes</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#microbill.objects.Servicio.getTotal" title="microbill.objects.Servicio.getTotal"><code class="xref py py-obj docutils literal notranslate"><span class="pre">getTotal</span></code></a>(self)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#microbill.objects.Servicio.getTotal" title="microbill.objects.Servicio.getTotal"><code class="xref py py-obj docutils literal notranslate"><span class="pre">getTotal</span></code></a>(self)</p></td>
 <td><p>Método que retorna el valor a pagar por el servicio</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#microbill.objects.Servicio.getUsados" title="microbill.objects.Servicio.getUsados"><code class="xref py py-obj docutils literal notranslate"><span class="pre">getUsados</span></code></a>(self)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#microbill.objects.Servicio.getUsados" title="microbill.objects.Servicio.getUsados"><code class="xref py py-obj docutils literal notranslate"><span class="pre">getUsados</span></code></a>(self)</p></td>
 <td><p>Método que retorna el número de usos que ha tenido el servicio</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#microbill.objects.Servicio.getUsos" title="microbill.objects.Servicio.getUsos"><code class="xref py py-obj docutils literal notranslate"><span class="pre">getUsos</span></code></a>(self)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#microbill.objects.Servicio.getUsos" title="microbill.objects.Servicio.getUsos"><code class="xref py py-obj docutils literal notranslate"><span class="pre">getUsos</span></code></a>(self)</p></td>
 <td><p>Método que retorna el diccionario de usos del servicio</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#microbill.objects.Servicio.getValorTotal" title="microbill.objects.Servicio.getValorTotal"><code class="xref py py-obj docutils literal notranslate"><span class="pre">getValorTotal</span></code></a>(self)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#microbill.objects.Servicio.getValorTotal" title="microbill.objects.Servicio.getValorTotal"><code class="xref py py-obj docutils literal notranslate"><span class="pre">getValorTotal</span></code></a>(self)</p></td>
 <td><p>Método que retorna el valor total asociado al servicio (cantidad * valor_unitario)</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#microbill.objects.Servicio.getValorUnitario" title="microbill.objects.Servicio.getValorUnitario"><code class="xref py py-obj docutils literal notranslate"><span class="pre">getValorUnitario</span></code></a>(self)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#microbill.objects.Servicio.getValorUnitario" title="microbill.objects.Servicio.getValorUnitario"><code class="xref py py-obj docutils literal notranslate"><span class="pre">getValorUnitario</span></code></a>(self)</p></td>
 <td><p>Método que retorna el valor unitario del servicio</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#microbill.objects.Servicio.isAgregado" title="microbill.objects.Servicio.isAgregado"><code class="xref py py-obj docutils literal notranslate"><span class="pre">isAgregado</span></code></a>(self)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#microbill.objects.Servicio.isAgregado" title="microbill.objects.Servicio.isAgregado"><code class="xref py py-obj docutils literal notranslate"><span class="pre">isAgregado</span></code></a>(self)</p></td>
 <td><p>Método que retorna si el servicio fue agregado posterior a la realización de la cotización o no</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#microbill.objects.Servicio.makeCotizacionTable" title="microbill.objects.Servicio.makeCotizacionTable"><code class="xref py py-obj docutils literal notranslate"><span class="pre">makeCotizacionTable</span></code></a>(self)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#microbill.objects.Servicio.makeCotizacionTable" title="microbill.objects.Servicio.makeCotizacionTable"><code class="xref py py-obj docutils literal notranslate"><span class="pre">makeCotizacionTable</span></code></a>(self)</p></td>
 <td><p>Método que genera la tabla que es usada por PDFCotizacion con la información del servicio</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#microbill.objects.Servicio.makeReporteTable" title="microbill.objects.Servicio.makeReporteTable"><code class="xref py py-obj docutils literal notranslate"><span class="pre">makeReporteTable</span></code></a>(self)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#microbill.objects.Servicio.makeReporteTable" title="microbill.objects.Servicio.makeReporteTable"><code class="xref py py-obj docutils literal notranslate"><span class="pre">makeReporteTable</span></code></a>(self)</p></td>
 <td><p>Método que genera la tabla que es usada por PDFReporte con la información de usos del servicio</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#microbill.objects.Servicio.makeResumenTable" title="microbill.objects.Servicio.makeResumenTable"><code class="xref py py-obj docutils literal notranslate"><span class="pre">makeResumenTable</span></code></a>(self)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#microbill.objects.Servicio.makeResumenTable" title="microbill.objects.Servicio.makeResumenTable"><code class="xref py py-obj docutils literal notranslate"><span class="pre">makeResumenTable</span></code></a>(self)</p></td>
 <td><p>Método que genera la tabla que es usada por PDFReporte con la información resumida del servicio</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#microbill.objects.Servicio.setCantidad" title="microbill.objects.Servicio.setCantidad"><code class="xref py py-obj docutils literal notranslate"><span class="pre">setCantidad</span></code></a>(self, cantidad)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#microbill.objects.Servicio.setCantidad" title="microbill.objects.Servicio.setCantidad"><code class="xref py py-obj docutils literal notranslate"><span class="pre">setCantidad</span></code></a>(self, cantidad)</p></td>
 <td><p>Método que asigna la cantidad que entra por parámetro como el valor del atributo cantidad</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#microbill.objects.Servicio.setCodigo" title="microbill.objects.Servicio.setCodigo"><code class="xref py py-obj docutils literal notranslate"><span class="pre">setCodigo</span></code></a>(self, codigo)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#microbill.objects.Servicio.setCodigo" title="microbill.objects.Servicio.setCodigo"><code class="xref py py-obj docutils literal notranslate"><span class="pre">setCodigo</span></code></a>(self, codigo)</p></td>
 <td><p>Método que asigna el código que entra por parámetro como el valor del atributo codigo</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#microbill.objects.Servicio.setDescripcion" title="microbill.objects.Servicio.setDescripcion"><code class="xref py py-obj docutils literal notranslate"><span class="pre">setDescripcion</span></code></a>(self, valor)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#microbill.objects.Servicio.setDescripcion" title="microbill.objects.Servicio.setDescripcion"><code class="xref py py-obj docutils literal notranslate"><span class="pre">setDescripcion</span></code></a>(self, valor)</p></td>
 <td><p>Método que asigna la descripción que entra por parámetro como el valor del atributo descripcion</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#microbill.objects.Servicio.setDescuentoText" title="microbill.objects.Servicio.setDescuentoText"><code class="xref py py-obj docutils literal notranslate"><span class="pre">setDescuentoText</span></code></a>(self, text)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#microbill.objects.Servicio.setDescuentoText" title="microbill.objects.Servicio.setDescuentoText"><code class="xref py py-obj docutils literal notranslate"><span class="pre">setDescuentoText</span></code></a>(self, text)</p></td>
 <td><p>Método que asigna el texto asociado al descuento que entra por parámetro como el valor del atributo descuento_text</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#microbill.objects.Servicio.setDescuentoTotal" title="microbill.objects.Servicio.setDescuentoTotal"><code class="xref py py-obj docutils literal notranslate"><span class="pre">setDescuentoTotal</span></code></a>(self, valor)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#microbill.objects.Servicio.setDescuentoTotal" title="microbill.objects.Servicio.setDescuentoTotal"><code class="xref py py-obj docutils literal notranslate"><span class="pre">setDescuentoTotal</span></code></a>(self, valor)</p></td>
 <td><p>Método que asigna el descuento total que entra por parámetro como el valor del atributo descuento_total</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#microbill.objects.Servicio.setDescuentoUnitario" title="microbill.objects.Servicio.setDescuentoUnitario"><code class="xref py py-obj docutils literal notranslate"><span class="pre">setDescuentoUnitario</span></code></a>(self, valor)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#microbill.objects.Servicio.setDescuentoUnitario" title="microbill.objects.Servicio.setDescuentoUnitario"><code class="xref py py-obj docutils literal notranslate"><span class="pre">setDescuentoUnitario</span></code></a>(self, valor)</p></td>
 <td><p>Método que asigna el descuento unitario que entra por parámetro como el valor del atributo descuento_unitario</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#microbill.objects.Servicio.setEquipo" title="microbill.objects.Servicio.setEquipo"><code class="xref py py-obj docutils literal notranslate"><span class="pre">setEquipo</span></code></a>(self, equipo)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#microbill.objects.Servicio.setEquipo" title="microbill.objects.Servicio.setEquipo"><code class="xref py py-obj docutils literal notranslate"><span class="pre">setEquipo</span></code></a>(self, equipo)</p></td>
 <td><p>Método que asigna el equipo que entra por parámetro como el valor del atributo equipo</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#microbill.objects.Servicio.setInterno" title="microbill.objects.Servicio.setInterno"><code class="xref py py-obj docutils literal notranslate"><span class="pre">setInterno</span></code></a>(self, interno)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#microbill.objects.Servicio.setInterno" title="microbill.objects.Servicio.setInterno"><code class="xref py py-obj docutils literal notranslate"><span class="pre">setInterno</span></code></a>(self, interno)</p></td>
 <td><p>Método que asigna el valor de interno que entra por parámetro como el valor del atributo interno</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#microbill.objects.Servicio.setRestantes" title="microbill.objects.Servicio.setRestantes"><code class="xref py py-obj docutils literal notranslate"><span class="pre">setRestantes</span></code></a>(self)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#microbill.objects.Servicio.setRestantes" title="microbill.objects.Servicio.setRestantes"><code class="xref py py-obj docutils literal notranslate"><span class="pre">setRestantes</span></code></a>(self)</p></td>
 <td><p>Método que calcula el número de usos restantes del servicio</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#microbill.objects.Servicio.setUsos" title="microbill.objects.Servicio.setUsos"><code class="xref py py-obj docutils literal notranslate"><span class="pre">setUsos</span></code></a>(self, usos)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#microbill.objects.Servicio.setUsos" title="microbill.objects.Servicio.setUsos"><code class="xref py py-obj docutils literal notranslate"><span class="pre">setUsos</span></code></a>(self, usos)</p></td>
 <td><p>Método que asigna los usos que entran por parámetro como el valor del atributo usos</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#microbill.objects.Servicio.setValorTotal" title="microbill.objects.Servicio.setValorTotal"><code class="xref py py-obj docutils literal notranslate"><span class="pre">setValorTotal</span></code></a>(self, valor)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#microbill.objects.Servicio.setValorTotal" title="microbill.objects.Servicio.setValorTotal"><code class="xref py py-obj docutils literal notranslate"><span class="pre">setValorTotal</span></code></a>(self, valor)</p></td>
 <td><p>Método que asigna el valor total que entra por parámetro como el valor del atributo valor_total</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#microbill.objects.Servicio.setValorUnitario" title="microbill.objects.Servicio.setValorUnitario"><code class="xref py py-obj docutils literal notranslate"><span class="pre">setValorUnitario</span></code></a>(self, valor)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#microbill.objects.Servicio.setValorUnitario" title="microbill.objects.Servicio.setValorUnitario"><code class="xref py py-obj docutils literal notranslate"><span class="pre">setValorUnitario</span></code></a>(self, valor)</p></td>
 <td><p>Método que asigna el valor unitario que entra por parámetro como el valor del atributo valor_unitario</p></td>
 </tr>
 </tbody>
@@ -287,6 +290,19 @@ posteriormente</p>
 <dt class="field-odd">Returns</dt>
 <dd class="field-odd"><dl class="simple">
 <dt>str: Interno, Industria, etc</dt><dd></dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="microbill.objects.Servicio.getIsSubtitle">
+<code class="sig-name descname">getIsSubtitle</code><span class="sig-paren">(</span><em class="sig-param">self</em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#microbill.objects.Servicio.getIsSubtitle" title="Enlazar permanentemente con esta definición">¶</a></dt>
+<dd><p>Método que responde si es el servicio corresponde con un subtitulo. Los subtitulos empiezan con el prefijo t</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><dl class="simple">
+<dt>bool: Si el servicio es un subtitulo True. False de lo contrario</dt><dd></dd>
 </dl>
 </dd>
 </dl>

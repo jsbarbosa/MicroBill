@@ -139,10 +139,13 @@ class Table(QtWidgets.QTableWidget):
                         except:
                             n = 1
                             total = 0
-                            self.item(row, 2).setText("1.0")
+                            if 't' not in cod:
+                                self.item(row, 2).setText("1.0")
+                            else:
+                                self.item(row, 2).setText("")
 
                     try:
-                        servicio = objects.Servicio(codigo = cod, interno = interno, cantidad = n)
+                        servicio = objects.Servicio(codigo=cod, interno=interno, cantidad=n)
                         self.parent.addServicio(servicio)
                     except Exception as e:
                         self.item(row, 0).setText("")
@@ -160,15 +163,20 @@ class Table(QtWidgets.QTableWidget):
                         n = np.ceil(10 * n) / 10
                         servicio.setCantidad(n)
                         servicio.setValorTotal(total)
-                        self.item(row, 2).setText("%.1f" % n)
+                        if 't' not in cod:
+                            self.item(row, 2).setText("%.1f" % n)
                     else:
                         total = servicio.getValorTotal()
 
                     self.item(row, 1).setText(desc)
-                    self.item(row, 3).setText("{:,}".format(valor))
-                    self.item(row, 4).setText("{:,}".format(total))
+                    if 't' not in cod:
+                        self.item(row, 3).setText("{:,}".format(valor))
+                        self.item(row, 4).setText("{:,}".format(total))
+                    else:
+                        self.item(row, 3).setText("")
+                        self.item(row, 4).setText("")
 
-            if col == 2:
+            if (col == 2) & ('t' not in cod):
                 try:
                     n = round(float(self.item(row, 2).text()), 1)
                 except:
@@ -184,7 +192,7 @@ class Table(QtWidgets.QTableWidget):
 
                     self.item(row, 4).setText("{:,}".format(total))
 
-            if col == 4:
+            if (col == 4) & ('t' not in cod):
                 try:
                     total = int(self.item(row, 4).text())
                 except:
