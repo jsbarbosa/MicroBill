@@ -7,4 +7,4 @@ Old/*
 *.pkl
 *.pyc
 microbill/__pycache__/*
-
+.venv/*
