@@ -35,10 +35,10 @@ Name: "english"; MessagesFile: "compiler:Default.isl"
 Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{cm:AdditionalIcons}"; Flags: unchecked
 
 [Files]
-;Source: "C:\Users\Centro Microscopia\Documents\microbill\dist\MicroBill\MicroBill.exe"; DestDir: "{app}"; Flags: ignoreversion
-;Source: "C:\Users\Centro Microscopia\Documents\microbill\dist\MicroBill\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
-Source: "C:\Users\Juan\Documents\microbill\dist\MicroBill\MicroBill.exe"; DestDir: "{app}"; Flags: ignoreversion
-Source: "C:\Users\Juan\Documents\microbill\dist\MicroBill\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
+Source: "C:\Users\Centro Microscopia\Documents\microbill\dist\MicroBill\MicroBill.exe"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\Users\Centro Microscopia\Documents\microbill\dist\MicroBill\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
+;Source: "C:\Users\Juan\Documents\microbill\dist\MicroBill\MicroBill.exe"; DestDir: "{app}"; Flags: ignoreversion
+;Source: "C:\Users\Juan\Documents\microbill\dist\MicroBill\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 
 [Icons]
