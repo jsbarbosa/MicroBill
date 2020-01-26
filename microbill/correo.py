@@ -9,7 +9,7 @@ from .config import COTIZACION_SUBJECT_RECIBO, DEPENDENCIAS
 from .config import GESTOR_RECIBO_CORREO, GESTOR_RECIBO_SUBJECT, GESTOR_RECIBO_MENSAJE
 from .config import GESTOR_FACTURA_CORREO, GESTOR_FACTURA_SUBJECT, GESTOR_FACTURA_MENSAJE, SALUDO
 from . import constants, config
-from .utils import export
+from .utils import export, print_log
 from .objects import Cotizacion
 from typing import Callable, Iterable
 
@@ -46,8 +46,9 @@ GESTOR_RECIBO_MENSAJE = GESTOR_RECIBO_MENSAJE.replace("\n", "<br>")
 #: almacena la constante GESTOR_FACTURA_MENSAJE de config con saltos de línea dados por <br>
 GESTOR_FACTURA_MENSAJE = GESTOR_FACTURA_MENSAJE.replace("\n", "<br>")
 
-CORREO = smtplib.SMTP(SEND_SERVER, SEND_PORT, timeout=30)  #: instancia de SMTP
-
+CORREO = smtplib.SMTP(SEND_SERVER,
+                      SEND_PORT,
+                      timeout=10)  #: instancia de SMTP
 
 @export
 def initCorreo():
@@ -57,10 +58,11 @@ def initCorreo():
     global CORREO
     try:
         CORREO.starttls()  # Puts connection to SMTP server in TLS mode
-        CORREO.ehlo()  # Hostname to send for this command defaults to the fully qualified domain name of the local host.
+        CORREO.ehlo()  # Hostname to send, command defaults to the fully qualified domain name of the local host.
         CORREO.login(config.FROM, config.PASSWORD)
+        print_log("[INFO] initCorreo() successful")
     except smtplib.SMTPException:
-        pass
+        print_log("[EXCEPT] smtplib.SMTPException in initCorreo()")
 
 @export
 def sendEmail(to: str, subject: str, text: str, attachments: Iterable = []):
@@ -109,11 +111,12 @@ def sendEmail(to: str, subject: str, text: str, attachments: Iterable = []):
 
     for i in range(5):
         try:
-            initCorreo()
             CORREO.sendmail(config.FROM, to, msg.as_string())
+            print_log("[INFO] Email {to} sent successfully".format(to=to))
             break
         except Exception as e:
-            print("email error:", e)
+            initCorreo()
+            print_log("[EXCEPT] Email {to}:", e)
             if i == 4:
                 raise(Exception("Could not send email."))
 

@@ -1,6 +1,6 @@
 import sys
 import base64
-
+from . import constants
 
 def decode(enc: str) -> str:
     """ Descifra la informacion de la variable enc
@@ -40,3 +40,8 @@ def export(function_or_class):
     else:
         mod.__all__ = [function_or_class.__name__]
     return function_or_class
+
+
+def print_log(*args):
+    if constants.DEBUG:
+        print(*args)

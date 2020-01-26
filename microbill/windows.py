@@ -1055,6 +1055,7 @@ class CotizacionWindow(SubWindow):
                 numeros.append(n)
                 cotizacion.setServicios(servicios[key])
                 cotizacion.setNumero(n)
+                cotizacion.sortServicios(self.table.getCodigos())
                 cotizacion.makePDFCotizacion()
                 cotizaciones.append(cotizacion)
 

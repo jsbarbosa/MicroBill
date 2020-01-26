@@ -765,6 +765,19 @@ class Cotizacion(object):
         servicios = self.servicios + servicios
         self.setServicios(servicios)
 
+    def sortServicios(self, ui_codigos: list):
+        """
+        Método que ordena los servicios que se encuentran en la cotización con lo que se observa en la Interfaz
+        Parameters
+        ----------
+        ui_codigos: list
+            los codigos de los servicios de la Interfaz
+        """
+
+        cotizacion_cods = self.getCodigosPrefix()
+        new_servicios = [self.getServicio(cod) for cod in ui_codigos if cod in cotizacion_cods]
+        self.servicios = new_servicios
+
     def makeCotizacionTable(self):
         """ Método que genera la tabla que es usada por PDFCotizacion con la información de la cotización
 
