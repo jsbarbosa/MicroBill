@@ -1,4 +1,4 @@
-import os
+﻿import os
 import smtplib
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
@@ -50,19 +50,40 @@ CORREO = smtplib.SMTP(SEND_SERVER,
                       SEND_PORT,
                       timeout=10)  #: instancia de SMTP
 
+CORREO.starttls()  # Puts connection to SMTP server in TLS mode
+CORREO.ehlo()  # Hostname to send, command defaults to the fully qualified domain name of the local host.
+
+@export
+def check_connection():
+    """
+    Función que envia un comando noop al servidor. En caso de recibir un estado 250,
+ se entiende que la comunicación está abierta.
+
+    Returns
+    -------
+    bool: True en caso que la conexión esté abierta, o False en caso contrario
+    """
+    global CORREO
+    try: 
+        status = CORREO.noop()[0]
+    except:  # smtplib.SMTPServerDisconnected
+        status = -1
+    return True if status == 250 else False
+
 @export
 def initCorreo():
     """ Inicializa la comunicación con el servidor SMTP, y autentica a el usuario
     """
 
     global CORREO
-    try:
-        CORREO.starttls()  # Puts connection to SMTP server in TLS mode
-        CORREO.ehlo()  # Hostname to send, command defaults to the fully qualified domain name of the local host.
-        CORREO.login(config.FROM, config.PASSWORD)
-        print_log("[INFO] initCorreo() successful")
-    except smtplib.SMTPException:
-        print_log("[EXCEPT] smtplib.SMTPException in initCorreo()")
+    if not check_connection():
+        try:
+            CORREO.starttls()  # Puts connection to SMTP server in TLS mode
+            CORREO.ehlo()  # Hostname to send, command defaults to the fully qualified domain name of the local host.
+            print_log("[INFO] initCorreo() successful")
+        except smtplib.SMTPException as e:
+            print_log("[EXCEPT] smtplib.SMTPException in initCorreo():", e)
+    CORREO.login(config.FROM, config.PASSWORD)
 
 @export
 def sendEmail(to: str, subject: str, text: str, attachments: Iterable = []):
@@ -113,10 +134,11 @@ def sendEmail(to: str, subject: str, text: str, attachments: Iterable = []):
         try:
             CORREO.sendmail(config.FROM, to, msg.as_string())
             print_log("[INFO] Email {to} sent successfully".format(to=to))
+            CORREO.quit()
             break
         except Exception as e:
             initCorreo()
-            print_log("[EXCEPT] Email {to}:", e)
+            print_log("[EXCEPT] Email {to}:".format(to=to), e)
             if i == 4:
                 raise(Exception("Could not send email."))
 

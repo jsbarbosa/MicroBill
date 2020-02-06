@@ -1,4 +1,4 @@
-try:  # intenta importar el modulo config
+﻿try:  # intenta importar el modulo config
     from .objects import *
     from . import config
 except ImportError:  # si el modulo no se puede importar, lo crea usando la informacion de DEFAULT_CONFIG
@@ -17,6 +17,8 @@ except ImportError:  # si el modulo no se puede importar, lo crea usando la info
         from . import config
     sys.modules['microbill.config'] = config
 
+import os
+import sys
 from . import correo, utils
 from .main import run
 import importlib
@@ -24,3 +26,9 @@ import importlib
 importlib.reload(config)  # en caso que el programa se reinicie, el modulo config se vuelve a importar completamente
 
 config.PASSWORD = utils.decode(config.PASSWORD)  #: almacena la contraseña del correo desencriptada
+
+stdout_path = os.path.join(os.path.dirname(sys.executable), 'stdout.log')
+
+if 'python.exe' not in sys.executable:
+    sys.stdout = open(stdout_path, 'a')
+    sys.stderr = sys.stdout
