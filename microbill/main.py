@@ -6,19 +6,6 @@ from .utils import export
 
 
 @export
-def threadedCorreo():
-    """ Función que inicializa el correo cada 10 minutos """
-
-    while True:
-        try:
-            correo.initCorreo()
-            sleep(10 * 60)
-        except Exception as e:
-            sleep(1 * 60)
-            print("error correo: ", e)
-
-
-@export
 def testFiles():
     """ Función que revisa que los archivos de registro y clientes se encuentren configurados de manera correcta
 
@@ -91,10 +78,6 @@ def run() -> int:
         sys.exit()
 
     main = MainWindow()
-
-    thread = Thread(target=threadedCorreo)
-    thread.setDaemon(True)
-    thread.start()
 
     QtWidgets.QApplication.setStyle(QtWidgets.QStyleFactory.create('Fusion'))
 

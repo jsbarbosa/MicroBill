@@ -1,5 +1,6 @@
 ﻿import os
 import smtplib
+from time import sleep
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 from email.mime.application import MIMEApplication
@@ -46,44 +47,6 @@ GESTOR_RECIBO_MENSAJE = GESTOR_RECIBO_MENSAJE.replace("\n", "<br>")
 #: almacena la constante GESTOR_FACTURA_MENSAJE de config con saltos de línea dados por <br>
 GESTOR_FACTURA_MENSAJE = GESTOR_FACTURA_MENSAJE.replace("\n", "<br>")
 
-CORREO = smtplib.SMTP(SEND_SERVER,
-                      SEND_PORT,
-                      timeout=10)  #: instancia de SMTP
-
-CORREO.starttls()  # Puts connection to SMTP server in TLS mode
-CORREO.ehlo()  # Hostname to send, command defaults to the fully qualified domain name of the local host.
-
-@export
-def check_connection():
-    """
-    Función que envia un comando noop al servidor. En caso de recibir un estado 250,
- se entiende que la comunicación está abierta.
-
-    Returns
-    -------
-    bool: True en caso que la conexión esté abierta, o False en caso contrario
-    """
-    global CORREO
-    try: 
-        status = CORREO.noop()[0]
-    except:  # smtplib.SMTPServerDisconnected
-        status = -1
-    return True if status == 250 else False
-
-@export
-def initCorreo():
-    """ Inicializa la comunicación con el servidor SMTP, y autentica a el usuario
-    """
-
-    global CORREO
-    if not check_connection():
-        try:
-            CORREO.starttls()  # Puts connection to SMTP server in TLS mode
-            CORREO.ehlo()  # Hostname to send, command defaults to the fully qualified domain name of the local host.
-            print_log("[INFO] initCorreo() successful")
-        except smtplib.SMTPException as e:
-            print_log("[EXCEPT] smtplib.SMTPException in initCorreo():", e)
-    CORREO.login(config.FROM, config.PASSWORD)
 
 @export
 def sendEmail(to: str, subject: str, text: str, attachments: Iterable = []):
@@ -106,7 +69,7 @@ def sendEmail(to: str, subject: str, text: str, attachments: Iterable = []):
         en caso que luego de 5 intentos, no se pueda enviar el correo electrónico
     """
 
-    global CORREO
+    # global CORREO
     msg = MIMEMultipart()
     msg['Subject'] = subject
     msg['From'] = config.FROM
@@ -132,12 +95,19 @@ def sendEmail(to: str, subject: str, text: str, attachments: Iterable = []):
 
     for i in range(5):
         try:
-            CORREO.sendmail(config.FROM, to, msg.as_string())
-            print_log("[INFO] Email {to} sent successfully".format(to=to))
-            CORREO.quit()
+            with smtplib.SMTP(SEND_SERVER,
+                              SEND_PORT,
+                              timeout=10) as server:
+                server.starttls()
+                server.ehlo()  # Can be omitted
+                server.login(config.FROM, config.PASSWORD)
+                server.sendmail(config.FROM, to, msg.as_string())
+                print_log("[INFO] Email {to} sent successfully".format(to=to))
+
             break
+
         except Exception as e:
-            initCorreo()
+            sleep(0.1)
             print_log("[EXCEPT] Email {to}:".format(to=to), e)
             if i == 4:
                 raise(Exception("Could not send email."))
