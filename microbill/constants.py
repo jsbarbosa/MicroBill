@@ -1,5 +1,6 @@
 import os
 import pandas as pd
+from pandas import ExcelWriter
 
 DEBUG: bool = True
 
@@ -25,8 +26,16 @@ if os.path.exists(os.path.join(BASE_DIR, 'microbill')):
     BASE_DIR = os.path.join(BASE_DIR, 'microbill')
 
 OLD_DIR = os.path.join(BASE_DIR, OLD_DIR)
+if not os.path.exists(OLD_DIR):
+    os.mkdir(OLD_DIR)
+
 PDF_DIR = os.path.join(BASE_DIR, PDF_DIR)
+if not os.path.exists(PDF_DIR):
+    os.mkdir(PDF_DIR)
+
 REGISTERS_DIR = os.path.join(BASE_DIR, REGISTERS_DIR)
+if not os.path.exists(REGISTERS_DIR):
+    os.mkdir(REGISTERS_DIR)
 
 CLIENTES_FILE = os.path.join(REGISTERS_DIR, CLIENTES_FILE)
 REGISTRO_FILE = os.path.join(REGISTERS_DIR, REGISTRO_FILE)
@@ -47,8 +56,33 @@ REGISTRO_KEYS: list = ['Cotización', 'Fecha', 'Nombre', 'Correo', 'Teléfono', 
 CLIENTES_KEYS: list = ['Nombre', 'Correo', 'Teléfono', 'Institución', 'Documento',
                        'Dirección', 'Ciudad', 'Interno', 'Responsable', 'Proyecto', 'Código', 'Tipo de Pago']
 
+#: columnas que debe tener el archivo de precios para microbill daemon
+PRECIOS_DAEMON_KEYS: list = ['Equipo', 'Código', 'Item',
+                             'Interno', 'Académico', 'Industria',
+                             'Independiente']
+
+#: columnas que debe tener el archivo de clientes independientes
+INDEPENDIENTES_KEYS: list = ['Nombre', 'Correo']
+
 #: posibles formas de pago de una cotizacion
 DOCUMENTOS_FINALES: list = ["Transferencia interna", "Factura", "Recibo"]
+
+if not os.path.exists(PRECIOS_FILE):
+    df = pd.DataFrame(columns=EQUIPOS_KEYS)
+    with ExcelWriter(PRECIOS_FILE) as writer:
+        df.to_excel(writer, 'Equipo_prueba_01', index=False)
+
+if not os.path.exists(CLIENTES_FILE):
+    pd.DataFrame(columns=CLIENTES_KEYS).to_excel(CLIENTES_FILE, index=False)
+
+if not os.path.exists(REGISTRO_FILE):
+    pd.DataFrame(columns=REGISTRO_KEYS).to_excel(REGISTRO_FILE, index=False)
+
+if not os.path.exists(PRECIOS_DAEMON_FILE):
+    pd.DataFrame(columns=PRECIOS_DAEMON_KEYS).to_excel(PRECIOS_DAEMON_FILE, index=False)
+
+if not os.path.exists(INDEPENDIENTES_FILE):
+    pd.DataFrame(columns=INDEPENDIENTES_KEYS).to_excel(INDEPENDIENTES_FILE, index=False)
 
 df = pd.read_excel(PRECIOS_FILE, sheet_name=None)
 EQUIPOS: list = list(df.keys()) #: almacena el nombre de las hojas del archivo de precios
