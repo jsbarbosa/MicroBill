@@ -2189,7 +2189,7 @@ class MainWindow(QtWidgets.QMainWindow):
 
     def __init__(self, parent=None):
         super(QtWidgets.QMainWindow, self).__init__(parent)
-        self.setWindowTitle("Microbill")
+        self.setWindowTitle("Microbill v%s" % constants.__version__)
 
         central_widget = QtWidgets.QWidget(self)
         self.setCentralWidget(central_widget)

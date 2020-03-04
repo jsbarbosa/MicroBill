@@ -8,6 +8,8 @@ __all__ = ['OLD_DIR', 'PDF_DIR', 'REGISTERS_DIR', 'CLIENTES_FILE', 'REGISTRO_FIL
            'BASE_DIR', 'EQUIPOS_KEYS', 'REGISTRO_KEYS', 'CLIENTES_KEYS', 'DOCUMENTOS_FINALES', 'EQUIPOS',
            'PRICES_DIVISION', 'REPORTE_INTERNO', 'DEFAULT_CONFIG']
 
+__version__ = '1.0.1'
+
 OLD_DIR: str = "Old"  #: carpeta donde se guardan las cotizaciones realizadas
 PDF_DIR: str = "PDF"  #: carpeta donde se guardan los PDFs asociados a cotizaciones realizadas
 

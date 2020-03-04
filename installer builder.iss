@@ -2,7 +2,7 @@
 ; SEE THE DOCUMENTATION FOR DETAILS ON CREATING INNO SETUP SCRIPT FILES!
 
 #define MyAppName "Microbill"
-#define MyAppVersion "1.0"
+#define MyAppVersion "1.0.1"
 #define MyAppPublisher "Juan Barbosa"
 #define MyAppURL "http://www.github.com/jsbarbosa/microbill"
 #define MyAppExeName "MicroBill.exe"
@@ -49,4 +49,3 @@ Name: "{commondesktop}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"; Tasks: 
 
 [Run]
 Filename: "{app}\{#MyAppExeName}"; Description: "{cm:LaunchProgram,{#StringChange(MyAppName, '&', '&&')}}"; Flags: nowait postinstall skipifsilent
-
